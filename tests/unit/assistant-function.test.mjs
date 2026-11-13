@@ -201,7 +201,8 @@ test('chat request: cached system blocks, output cap, web search only when enabl
   assert.deepEqual(r.messages, [{ role: 'user', content: '¿Hola?' }]);
   assert.equal(r.tools[0].type, 'web_search_20250305');
   assert.equal(r.tools[0].max_uses, 2);
-  assert.equal(r.tools[0].user_location.country, 'CO');
+  // The API rejects country code CO in user_location, so the tool carries no location.
+  assert.equal('user_location' in r.tools[0], false);
   assert.equal('temperature' in r, false);
   assert.equal(buildChatRequest({ ...o, webSearch: { enabled: false, maxUses: 2 } }).tools, undefined);
   assert.equal(buildChatRequest({ ...o, webSearch: { enabled: true, maxUses: 0 } }).tools, undefined);
@@ -458,7 +459,7 @@ test('web search location comes from settings, never from source', () => {
     region: 'Test Region',
   });
   const r = buildChatRequest({ model: 'claude-sonnet-5-5', maxOutputTokens: 1200, context: 'C', history: [], question: 'q', webSearch: { enabled: true, maxUses: 1 }, timezone: 'America/Bogota' });
-  assert.equal(r.tools[0].user_location.city, undefined);
+  assert.equal('user_location' in r.tools[0], false);
 });
 
 test('a question that starts with the FAQ tag is not hidden from the history', () => {

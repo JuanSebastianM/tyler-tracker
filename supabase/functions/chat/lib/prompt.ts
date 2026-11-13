@@ -151,7 +151,9 @@ export function buildChatRequest(o: ChatRequestOptions): Record<string, unknown>
         type: WEB_SEARCH_TOOL_TYPE,
         name: 'web_search',
         max_uses: o.webSearch.maxUses,
-        user_location: searchLocation(o.location, o.timezone),
+        // No `user_location`: the API rejects country code CO ("Country code CO is not supported",
+        // seen live on 2026-11-13). The location is in the context block instead, so the model can
+        // put it in its queries.
       },
     ];
   }
