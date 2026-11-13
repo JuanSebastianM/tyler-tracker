@@ -1,5 +1,187 @@
 {
-  "emptyTitle": "His health, all in one place",
-  "emptyBody": "Vaccines, deworming, weight and vet visits.",
-  "add": "Add health record"
+  "add": "Add health record",
+  "chooserTitle": "What do you want to log?",
+  "emptyVisitor": "Once Juan or Daniela log it, you will see it here.",
+  "overview": {
+    "dueTitle": "Coming up",
+    "nothingDue": "Nothing due. When you log a vaccine or deworming with a next date, or a reminder, it shows up here.",
+    "moreDue": { "one": "And {count} more in their sections.", "other": "And {count} more in their sections." },
+    "weightTitle": "Latest weight",
+    "seeChart": "See chart",
+    "noWeight": "No weights yet. Add the first one to see his growth chart.",
+    "sectionsTitle": "Records"
+  },
+  "count": {
+    "records": { "one": "{count} record", "other": "{count} records" },
+    "active": { "one": "{count} active", "other": "{count} active" },
+    "pending": { "one": "{count} pending", "other": "{count} pending" }
+  },
+  "fields": { "vet": "Vet", "notes": "Notes" },
+  "form": {
+    "dateBefore": "This date can't be before the start date.",
+    "invalidWeight": "Enter a valid weight in kg, for example 4.6.",
+    "invalidNumber": "Use numbers only, for example 80000.",
+    "deleteBody": "It will be removed for both of you. This can't be undone."
+  },
+  "photo": {
+    "choose": "Choose photo",
+    "change": "Change photo",
+    "remove": "Remove photo",
+    "open": "View photo full screen",
+    "alt": "Card photo: {title}",
+    "badge": "Photo"
+  },
+  "calendar": {
+    "add": "Add to calendar",
+    "eventTitle": "Tyler · {kind}: {title}",
+    "reminderTitle": "Tyler · {title}",
+    "description": "Reminder from Tyler Tracker.",
+    "alarmDayBefore": "Tomorrow: {title}"
+  },
+  "vaccines": {
+    "title": "Vaccines",
+    "summary": "Doses, boosters and card photo",
+    "emptyTitle": "No vaccines yet",
+    "emptyBody": "Add the first vaccine with the next dose date so you get a heads-up.",
+    "add": "Add vaccine",
+    "editTitle": "Edit vaccine",
+    "save": "Save vaccine",
+    "saved": "Vaccine saved",
+    "deleteTitle": "Delete this vaccine?",
+    "givenOn": "Given on {date}",
+    "fields": {
+      "vaccine": "Vaccine",
+      "vaccineHint": "As written on the card.",
+      "givenOn": "Date given",
+      "nextDueOn": "Next dose",
+      "batch": "Batch",
+      "photo": "Photo of the sticker or card",
+      "photoHint": "Optional. Saved at a smaller size."
+    }
+  },
+  "deworming": {
+    "title": "Deworming",
+    "summary": "Internal and external, with next dose",
+    "emptyTitle": "No deworming yet",
+    "emptyBody": "Add the first one with the product and the next date.",
+    "add": "Add deworming",
+    "editTitle": "Edit deworming",
+    "save": "Save deworming",
+    "saved": "Deworming saved",
+    "deleteTitle": "Delete this deworming?",
+    "unnamed": "Deworming",
+    "kinds": { "internal": "Internal", "external": "External", "both": "Both" },
+    "fields": {
+      "product": "Product",
+      "kind": "Type",
+      "givenOn": "Date",
+      "weight": "Weight that day",
+      "nextDueOn": "Next dose"
+    }
+  },
+  "weight": {
+    "title": "Weight",
+    "summary": "Growth chart",
+    "emptyTitle": "No weights yet",
+    "emptyBody": "Add the first weight to see his growth chart.",
+    "add": "Add weight",
+    "editTitle": "Edit weight",
+    "save": "Save weight",
+    "saved": "Weight saved",
+    "deleteTitle": "Delete this weight?",
+    "age": "Age",
+    "changeLabel": "Change",
+    "change": "{delta} in {days} days",
+    "chartTitle": "Growth chart",
+    "chartSummary": { "one": "{count} weight. Latest: {kg} at {age}.", "other": "{count} weights. Latest: {kg} at {age}." },
+    "chartEmpty": "Add weights to see Tyler's curve.",
+    "axisWeeks": "weeks",
+    "legendTyler": "Tyler",
+    "legendBand": "Reference range",
+    "legendToday": "Today",
+    "noReference": "No reference range to compare with yet.",
+    "placeholderBadge": "Sample",
+    "fields": {
+      "kg": "Weight",
+      "kgHint": "A comma works too: 4,6.",
+      "measuredOn": "Date"
+    }
+  },
+  "visits": {
+    "title": "Vet visits",
+    "summary": "Reason, findings, treatment and follow-up",
+    "emptyTitle": "No vet visits yet",
+    "emptyBody": "Add the first visit with what the vet said and the follow-up date.",
+    "add": "Add visit",
+    "editTitle": "Edit visit",
+    "save": "Save visit",
+    "saved": "Visit saved",
+    "deleteTitle": "Delete this visit?",
+    "privateTitle": "Just for you two",
+    "privateEmpty": "No cost or private notes.",
+    "fields": {
+      "reason": "Reason",
+      "visitedOn": "Date",
+      "findings": "Findings",
+      "treatment": "Treatment",
+      "followUpOn": "Follow-up date",
+      "cost": "Cost",
+      "privateNotes": "Private notes",
+      "privateHint": "Only editors can see this."
+    }
+  },
+  "medications": {
+    "title": "Medications",
+    "summary": "Active and finished treatments",
+    "emptyTitle": "No medications",
+    "emptyBody": "If the vet prescribes something, add it with the dose and how often.",
+    "add": "Add medication",
+    "editTitle": "Edit medication",
+    "save": "Save medication",
+    "saved": "Medication saved",
+    "deleteTitle": "Delete this medication?",
+    "active": "Active",
+    "finished": "Finished",
+    "groupEmpty": { "active": "No active treatment." },
+    "since": "since {start}",
+    "period": "{start} – {end}",
+    "noEnd": "No end date",
+    "fields": {
+      "name": "Medication",
+      "dose": "Dose",
+      "doseHint": "For example: 1/2 tablet.",
+      "frequency": "Frequency",
+      "frequencyHint": "For example: every 12 hours.",
+      "startOn": "Start",
+      "endOn": "End"
+    }
+  },
+  "reminders": {
+    "title": "Reminders",
+    "summary": "Appointments and to-dos with alerts",
+    "emptyTitle": "No reminders",
+    "emptyBody": "Add one for an appointment, a bath or buying food, and send it to your calendar.",
+    "add": "Add reminder",
+    "editTitle": "Edit reminder",
+    "save": "Save reminder",
+    "saved": "Reminder saved",
+    "deleteTitle": "Delete this reminder?",
+    "open": "Pending",
+    "done": "Done",
+    "groupEmpty": { "open": "Nothing pending." },
+    "doneOn": "Done {date}",
+    "doneLabel": "Done",
+    "markDone": "Mark as done",
+    "reopen": "Reopen",
+    "markDoneNamed": "Mark as done: {title}",
+    "reopenNamed": "Reopen: {title}",
+    "doneToast": "Reminder done",
+    "reopenedToast": "Reminder reopened",
+    "fields": {
+      "title": "What needs doing",
+      "titleHint": "For example: check-up, buy food.",
+      "dueOn": "Date",
+      "dueTime": "Time"
+    }
+  }
 }
