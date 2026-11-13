@@ -2,7 +2,8 @@
 //
 // POST JSON { action: 'status' | 'send' | 'draft_faq', ... } with the editor's Supabase JWT.
 // Order of checks: origin → method → secrets → user JWT (Supabase Auth) → editors row (with the
-// caller's JWT, so RLS decides) → body → ai_settings limits → Claude.
+// caller's JWT, so RLS decides) → body (size-capped) → ai_settings limits → spend reservation and
+// re-check (lib/budget.ts) → Claude.
 //
 // Docs this follows (read 2026-11-13):
 //  - Messages API + streaming: https://platform.claude.com/docs/en/api/messages,
@@ -13,7 +14,19 @@
 //    https://supabase.com/docs/guides/functions/secrets, background work (EdgeRuntime.waitUntil)
 //    https://supabase.com/docs/guides/functions/background-tasks, limits (150 s idle timeout, 2 s CPU)
 //    https://supabase.com/docs/guides/functions/limits
-import { bearerToken, corsHeaders, errorResponse, isAllowedOrigin, jsonResponse, parseRequest, type ErrorCode } from './lib/http.ts';
+import {
+  bearerToken,
+  corsHeaders,
+  errorResponse,
+  isAllowedOrigin,
+  jsonResponse,
+  parseRequest,
+  readBodyText,
+  upstreamReason,
+  type ErrorCode,
+  type UpstreamReason,
+} from './lib/http.ts';
+import { checkReserved, pendingSends, release, reserve, settle, type ReservationKind } from './lib/budget.ts';
 import { budgetInfo, checkLimits, num, sumCosts, type AiSettings } from './lib/limits.ts';
 import { computeCost, estimateMaxCost, estimateTokens, type ApiUsage } from './lib/pricing.ts';
 import { buildContext, type ContextData } from './lib/context.ts';
@@ -23,6 +36,7 @@ import {
   buildTranscript,
   faqMaxTokens,
   FAQ_DRAFT_TAG,
+  isFaqDraftRow,
   makeThreadTitle,
   MAX_FAQ_MESSAGES,
   MAX_HISTORY_MESSAGES,
@@ -92,9 +106,11 @@ Deno.serve(async (req: Request) => {
     const editor = { id: userId, name: editors[0].display_name };
 
     // ---- What they want ----
+    const raw = await readBodyText(req);
+    if (raw === null) return errorResponse('bad_request', cors);
     let body: unknown = null;
     try {
-      body = await req.json();
+      body = JSON.parse(raw);
     } catch {
       body = null;
     }
@@ -146,13 +162,62 @@ async function spendSince(svc: Rest, since: string): Promise<number> {
   return sumCosts(rows);
 }
 
+/**
+ * Month spend (ledger, including in-flight reservations) and today's questions of this editor
+ * (saved ones plus sends still in flight).
+ */
 async function usageNow(ctx: Ctx) {
   const { dayStart, monthStart } = periodStarts(ctx.now, ctx.timezone);
-  const [spend, todays] = await Promise.all([
+  const [spend, todays, pending] = await Promise.all([
     spendSince(ctx.svc, monthStart),
     ctx.svc.select('chat_messages', `select=id&role=eq.user&created_by=eq.${enc(ctx.editor.id)}&created_at=gte.${enc(dayStart)}`),
+    ledgerAvailable === false ? Promise.resolve(0) : pendingSends(ctx.svc, ctx.editor.id, dayStart).catch(() => 0),
   ]);
-  return { spend, todayCount: todays.length };
+  return { spend, todayCount: todays.length + pending };
+}
+
+/**
+ * Reserve the worst-case cost in the ledger, then re-check the limits with every reservation counted
+ * (closes the race between parallel requests). Returns the reservation id or a refusal.
+ */
+async function reserveSpend(
+  ctx: Ctx,
+  kind: ReservationKind,
+  estimate: number,
+  threadId: string | null,
+): Promise<{ id: string | null; refused: Response | null }> {
+  const id = await reserve(ctx.svc, kind, estimate, { editorId: ctx.editor.id, editorName: ctx.editor.name, threadId });
+  if (!id) return { id: null, refused: null }; // no ledger table: pre-check only
+  try {
+    const { spend, todayCount } = await usageNow(ctx);
+    const limit = checkReserved({ settings: ctx.settings, monthSpendUsd: spend, todayUserMessages: todayCount, countsAsMessage: kind === 'send' });
+    if (!limit) return { id, refused: null };
+    await releaseQuietly(ctx, id);
+    return { id: null, refused: errorResponse(limit, ctx.cors, usagePayload(ctx, Math.max(0, spend - estimate), Math.max(0, todayCount - (kind === 'send' ? 1 : 0)))) };
+  } catch (e) {
+    await releaseQuietly(ctx, id);
+    throw e;
+  }
+}
+
+async function releaseQuietly(ctx: Ctx, id: string | null) {
+  try {
+    await release(ctx.svc, id);
+  } catch (e) {
+    // The reservation stays and over-counts the spend (the safe direction).
+    log('warn', 'reservation release failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error' });
+  }
+}
+
+/** A call that Claude billed but that could not be saved as a message: keep its cost in the ledger. */
+async function chargeQuietly(ctx: Ctx, id: string | null, usd: number, tokens: { input: number; output: number; searches: number }) {
+  if (!id) return;
+  try {
+    if (usd > 0) await settle(ctx.svc, id, usd, ctx.settings.model, tokens);
+    else await release(ctx.svc, id);
+  } catch (e) {
+    log('error', 'reservation settle failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error', cost_usd: usd });
+  }
 }
 
 function usagePayload(ctx: Ctx, spend: number, todayCount: number) {
@@ -183,6 +248,11 @@ function callClaude(apiKey: string, body: Record<string, unknown>, signal: Abort
   });
 }
 
+/** Refusal sent to the app when Claude fails: `reason` tells it whether retrying can help. */
+function upstreamResponse(ctx: Ctx, reason: UpstreamReason, spend: number, todayCount: number): Response {
+  return errorResponse('upstream_error', ctx.cors, { reason, ...usagePayload(ctx, spend, todayCount) });
+}
+
 /** Read Claude's error type for logs (never the prompt). */
 async function upstreamErrorType(res: Response): Promise<string> {
   try {
@@ -196,6 +266,8 @@ async function upstreamErrorType(res: Response): Promise<string> {
 // ---------------------------------------------------------------------------
 // Context (caller's JWT: RLS applies; public tables only)
 // ---------------------------------------------------------------------------
+
+const cleanLocation = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim().slice(0, 160) : null);
 
 async function loadContext(ctx: Ctx): Promise<string> {
   const tz = ctx.timezone;
@@ -230,7 +302,7 @@ async function loadContext(ctx: Ctx): Promise<string> {
       trainingSkills,
       reminders,
     };
-    return buildContext(data, ctx.now);
+    return buildContext(data, ctx.now, cleanLocation(ctx.settings.location));
   } catch (e) {
     log('warn', 'context failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error' });
     return "Tyler's data could not be loaded right now. Answer in general terms and say that his records were not available.";
@@ -262,16 +334,16 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
 
   const { spend, todayCount } = await usageNow(ctx);
   const maxSearches = settings.web_search_enabled ? num(settings.max_searches_per_message) : 0;
+  const context = await loadContext(ctx);
   const estimate = estimateMaxCost(settings.model, {
     promptTokens:
-      estimateTokens(SYSTEM_INSTRUCTIONS) + 1500 + estimateTokens(question) + history.reduce((a, m) => a + estimateTokens(m.content || ''), 0),
+      estimateTokens(SYSTEM_INSTRUCTIONS) + estimateTokens(context) + estimateTokens(question) + history.reduce((a, m) => a + estimateTokens(m.content || ''), 0) + 200,
     maxOutputTokens: num(settings.max_output_tokens),
     maxSearches,
   });
   const limit = checkLimits({ settings, monthSpendUsd: spend, todayUserMessages: todayCount, estimatedCostUsd: estimate, countsAsMessage: true });
   if (limit) return errorResponse(limit, cors, usagePayload(ctx, spend, todayCount));
 
-  const context = await loadContext(ctx);
   const request = buildChatRequest({
     model: settings.model,
     maxOutputTokens: num(settings.max_output_tokens),
@@ -280,7 +352,12 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
     question,
     webSearch: { enabled: !!settings.web_search_enabled, maxUses: maxSearches },
     timezone: ctx.timezone,
+    location: cleanLocation(settings.location),
   });
+
+  const reservation = await reserveSpend(ctx, 'send', estimate, threadId);
+  if (reservation.refused) return reservation.refused;
+  const reservationId = reservation.id;
 
   const abort = new AbortController();
   const timer = setTimeout(() => abort.abort(), UPSTREAM_TIMEOUT_MS);
@@ -289,13 +366,19 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
     upstream = await callClaude(ctx.apiKey, request, abort.signal);
   } catch (e) {
     clearTimeout(timer);
+    const timedOut = (e as Error)?.name === 'AbortError';
     log('warn', 'claude unreachable', { error: String((e as Error)?.name || e) });
-    return errorResponse('upstream_error', cors, usagePayload(ctx, spend, todayCount));
+    // A timeout may have been billed: keep the worst case. A connection failure was not.
+    if (timedOut) await chargeQuietly(ctx, reservationId, estimate, { input: 0, output: 0, searches: 0 });
+    else await releaseQuietly(ctx, reservationId);
+    return upstreamResponse(ctx, 'temporary', spend, todayCount);
   }
   if (!upstream.ok || !upstream.body) {
     clearTimeout(timer);
-    log('warn', 'claude error', { status: upstream.status, type: await upstreamErrorType(upstream) });
-    return errorResponse('upstream_error', cors, usagePayload(ctx, spend, todayCount));
+    const type = await upstreamErrorType(upstream);
+    log('warn', 'claude error', { status: upstream.status, type });
+    await releaseQuietly(ctx, reservationId); // refused requests are not billed
+    return upstreamResponse(ctx, upstreamReason(upstream.status, type), spend, todayCount);
   }
 
   const isNew = !threadId;
@@ -360,21 +443,28 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
     }
 
     const stopped = userStopped && !acc.complete;
+    // Stopped or cut off early: the final usage never arrived, so estimate the output generated so far.
+    const usage: ApiUsage = { ...acc.usage };
+    if (!acc.complete) usage.output_tokens = Math.max(num(usage.output_tokens), estimateTokens(acc.text) + 50);
+    const cost = computeCost(settings.model, usage);
+    const tokens = { input: cost.promptTokens, output: cost.outputTokens, searches: cost.webSearches };
+
     if (acc.error || readFailed || (!acc.complete && !stopped)) {
-      log('warn', 'claude stream failed', { type: acc.error?.type || (readFailed ? 'read_failed' : 'incomplete') });
-      send('error', { error: 'upstream_error' as ErrorCode, ...usagePayload(ctx, spend, todayCount) });
+      const type = acc.error?.type || (readFailed ? 'read_failed' : 'incomplete');
+      log('warn', 'claude stream failed', { type, cost_usd: acc.started ? cost.usd : 0 });
+      // What was generated before the failure is billed: record it (nothing if it never started).
+      await chargeQuietly(ctx, reservationId, acc.started ? cost.usd : 0, tokens);
+      const reason = acc.error ? upstreamReason(0, acc.error.type) : 'temporary';
+      send('error', { error: 'upstream_error' as ErrorCode, reason, ...usagePayload(ctx, spend + (acc.started ? cost.usd : 0), todayCount) });
       close();
       return;
     }
     if (stopped && !acc.started) {
+      await releaseQuietly(ctx, reservationId);
       close();
       return; // nothing was generated
     }
 
-    // Stopped early: the final usage never arrived, so estimate the output tokens generated so far.
-    const usage: ApiUsage = { ...acc.usage };
-    if (stopped) usage.output_tokens = Math.max(num(usage.output_tokens), estimateTokens(acc.text) + 50);
-    const cost = computeCost(settings.model, usage);
     const sources = acc.sources;
 
     try {
@@ -393,6 +483,8 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
         cost_usd: cost.usd,
         ...by,
       });
+      // The chat_messages trigger wrote the real cost to the ledger: drop the reservation.
+      await releaseQuietly(ctx, reservationId);
       if (!isNew) await ctx.svc.patch('chat_threads', `id=eq.${enc(id)}`, { updated_at: new Date().toISOString() });
       log('info', 'answered', {
         model: settings.model,
@@ -414,6 +506,7 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
       });
     } catch (e) {
       log('error', 'persist failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error', cost_usd: cost.usd });
+      await chargeQuietly(ctx, reservationId, cost.usd, tokens);
       send('error', { error: 'server_error' as ErrorCode, ...usagePayload(ctx, spend + cost.usd, todayCount) });
     }
     close();
@@ -435,7 +528,7 @@ async function handleDraftFaq(ctx: Ctx, threadId: string): Promise<Response> {
   const { settings, cors } = ctx;
   const t = await loadThread(ctx, threadId, MAX_FAQ_MESSAGES + 10);
   if (!t) return errorResponse('not_found', cors);
-  const messages = t.messages.filter((m) => !(m.content || '').startsWith(FAQ_DRAFT_TAG));
+  const messages = t.messages.filter((m) => !isFaqDraftRow(m));
   if (!messages.some((m) => m.role === 'assistant' && m.content?.trim())) return errorResponse('bad_request', cors);
 
   const { spend, todayCount } = await usageNow(ctx);
@@ -449,6 +542,10 @@ async function handleDraftFaq(ctx: Ctx, threadId: string): Promise<Response> {
   const limit = checkLimits({ settings, monthSpendUsd: spend, todayUserMessages: todayCount, estimatedCostUsd: estimate, countsAsMessage: false });
   if (limit) return errorResponse(limit, cors, usagePayload(ctx, spend, todayCount));
 
+  const reservation = await reserveSpend(ctx, 'faq', estimate, threadId);
+  if (reservation.refused) return reservation.refused;
+  const reservationId = reservation.id;
+
   const abort = new AbortController();
   const timer = setTimeout(() => abort.abort(), UPSTREAM_TIMEOUT_MS);
   // deno-lint-ignore no-explicit-any
@@ -456,13 +553,18 @@ async function handleDraftFaq(ctx: Ctx, threadId: string): Promise<Response> {
   try {
     const res = await callClaude(ctx.apiKey, buildFaqRequest({ model: settings.model, maxOutputTokens: num(settings.max_output_tokens), transcript }), abort.signal);
     if (!res.ok) {
-      log('warn', 'claude error (faq)', { status: res.status, type: await upstreamErrorType(res) });
-      return errorResponse('upstream_error', cors, usagePayload(ctx, spend, todayCount));
+      const type = await upstreamErrorType(res);
+      log('warn', 'claude error (faq)', { status: res.status, type });
+      await releaseQuietly(ctx, reservationId);
+      return upstreamResponse(ctx, upstreamReason(res.status, type), spend, todayCount);
     }
     result = await res.json();
   } catch (e) {
+    const timedOut = (e as Error)?.name === 'AbortError';
     log('warn', 'claude unreachable (faq)', { error: String((e as Error)?.name || e) });
-    return errorResponse('upstream_error', cors, usagePayload(ctx, spend, todayCount));
+    if (timedOut) await chargeQuietly(ctx, reservationId, estimate, { input: 0, output: 0, searches: 0 });
+    else await releaseQuietly(ctx, reservationId);
+    return upstreamResponse(ctx, 'temporary', spend, todayCount);
   } finally {
     clearTimeout(timer);
   }
@@ -490,14 +592,16 @@ async function handleDraftFaq(ctx: Ctx, threadId: string): Promise<Response> {
       created_by: ctx.editor.id,
       created_by_name: ctx.editor.name,
     });
+    await releaseQuietly(ctx, reservationId);
   } catch (e) {
     log('error', 'persist failed (faq)', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error', cost_usd: cost.usd });
+    await chargeQuietly(ctx, reservationId, cost.usd, { input: cost.promptTokens, output: cost.outputTokens, searches: 0 });
   }
   const draft = parseFaqDraft(text, sources);
   const usage = usagePayload(ctx, spend + cost.usd, todayCount);
   if (!draft) {
     log('warn', 'faq draft unparseable', { stop_reason: result?.stop_reason || null });
-    return errorResponse('upstream_error', cors, usage);
+    return errorResponse('upstream_error', cors, { reason: 'temporary', ...usage });
   }
   log('info', 'faq drafted', { model: settings.model, prompt_tokens: cost.promptTokens, output_tokens: cost.outputTokens, cost_usd: cost.usd });
   return jsonResponse({ draft, ...usage }, 200, cors);

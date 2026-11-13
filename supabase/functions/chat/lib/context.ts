@@ -3,8 +3,8 @@
 // editors) are never queried by the function.
 import { addDays, ageOn, localDate, localTime } from './dates.ts';
 
-/** Where Tyler lives (not stored in the database). */
-export const LOCATION = 'Sabaneta, Antioquia, Colombia (Aburrá Valley, about 1,550 m above sea level, warm all year)';
+// Where Tyler lives comes from ai_settings.location (editors-only table, migration 0005), never from
+// this public repository. When it is null the prompt simply has no location line.
 
 export interface ContextData {
   profile: {
@@ -73,8 +73,8 @@ function daySummary(label: string, date: string, tz: string, data: ContextData, 
   return `- ${label} (${date}): ${parts.join('; ')}.`;
 }
 
-/** Build the context block. `now` is injected for tests. */
-export function buildContext(data: ContextData, now: Date): string {
+/** Build the context block. `now` is injected for tests; `location` comes from ai_settings. */
+export function buildContext(data: ContextData, now: Date, location: string | null = null): string {
   const tz = data.settings?.timezone || 'America/Bogota';
   const today = localDate(now, tz);
   const lines: string[] = [];
@@ -93,7 +93,8 @@ export function buildContext(data: ContextData, now: Date): string {
   } else {
     lines.push('- Profile: not recorded.');
   }
-  lines.push(`- Location: ${LOCATION}.`);
+  const place = clip(location, 160);
+  if (place) lines.push(`- Location: ${place}.`);
 
   const slots = (data.settings?.meal_slots || []).slice().sort((a, b) => a.slot - b.slot);
   const food = p?.food ? `Food: ${clip(p.food, 100)}. ` : 'Food: not recorded. ';

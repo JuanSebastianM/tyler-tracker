@@ -75,6 +75,10 @@ test('questions are trimmed and capped', () => {
 test('errors map to known codes; only transient ones are retryable', () => {
   assert.equal(normalizeError('daily_limit'), 'daily_limit');
   assert.equal(normalizeError('weird'), 'server_error');
+  assert.equal(normalizeError('upstream_error', 'config'), 'upstream_config');
+  assert.equal(normalizeError('upstream_error', 'busy'), 'upstream_busy');
+  assert.equal(normalizeError('upstream_error', 'temporary'), 'upstream_error');
+  assert.equal(normalizeError('daily_limit', 'config'), 'daily_limit');
   assert.equal(normalizeError(undefined), 'server_error');
   assert.ok(RETRYABLE.has('upstream_error') && !RETRYABLE.has('budget_exhausted'));
 });

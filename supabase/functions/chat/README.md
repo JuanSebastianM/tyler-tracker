@@ -9,8 +9,12 @@ credits. It:
    `editors` row **with the caller's JWT** (RLS decides), before any Claude call;
 3. reads `ai_settings` with the service role on every request and enforces: `enabled`, the monthly
    budget (spend this calendar month in `settings.timezone`, plus a worst-case estimate of the request
-   so it cannot overshoot), and `daily_message_limit` questions per editor per day;
-4. builds Tyler's context from the database (profile and exact age, location, meal plan, latest
+   so it cannot overshoot), and `daily_message_limit` questions per editor per day. Before calling
+   Claude it **reserves** that worst-case cost in the `ai_usage` ledger and re-checks with every
+   reservation counted, so parallel requests cannot together overshoot the budget or the daily limit
+   (`lib/budget.ts`). Bodies over 16 KiB are rejected before parsing;
+4. builds Tyler's context from the database (profile and exact age, location from
+   `ai_settings.location` (migration 0005; nothing in the source), meal plan, latest
    vaccines and dewormings with next due dates, weights, vet visits, active medications, today's and
    yesterday's meals and potty events, training statuses, upcoming reminders). Private tables are
    never queried. Stable instructions come first and both system blocks carry `cache_control`;
@@ -19,7 +23,9 @@ credits. It:
    (`max_uses` = `max_searches_per_message`);
 6. streams the answer to the app as server-sent events, then saves the question and the answer (with
    cited sources, model, token counts, web searches and cost in USD) with the service role. A new
-   thread gets a title from the first question. If Claude fails, no answer is saved.
+   thread gets a title from the first question. If Claude fails, no answer is saved, but whatever
+   Claude already billed (a stream cut off after it started, a timeout, a failed save) stays in the
+   ledger as the settled reservation, so the budget is never under-counted.
 
 Prices live only in `lib/pricing.ts` (read from the official pricing page on 2026-11-13). Logs never
 contain the API key or message text.
@@ -31,6 +37,7 @@ contain the API key or message text.
 | `index.ts` | HTTP handler: auth, limits, Claude call, streaming, persistence |
 | `lib/http.ts` | CORS allowlist, error codes, request validation |
 | `lib/limits.ts` | Budget / daily limit checks |
+| `lib/budget.ts` | Spend reservations in the `ai_usage` ledger (race-free budget and daily limit) |
 | `lib/pricing.ts` | Price table and cost of a response |
 | `lib/context.ts` | Compact summary of Tyler's records |
 | `lib/prompt.ts` | System prompts, history trimming, request bodies |
@@ -64,7 +71,18 @@ Or deploy through the Supabase MCP `deploy_edge_function` with every file of thi
 
 Monthly spend is read from the `ai_usage` ledger (`supabase/migrations/0004_ai_usage_ledger.sql`,
 applied), which a trigger fills from `chat_messages` and which survives thread deletion. If the
-table were missing the function would fall back to summing `chat_messages.cost_usd`.
+table were missing the function would fall back to summing `chat_messages.cost_usd` (and could not
+reserve, so parallel requests would only get the pre-check).
+
+Reservations are `ai_usage` rows with `model = 'reservation:send'` or `'reservation:faq'`, no
+`message_id`, and the worst-case estimate as `cost_usd`. A saved answer deletes its reservation (the
+trigger has written the real row); a call billed but not saved turns it into the real charge (model
+set, real or estimated cost); a call Claude refused deletes it. A reservation left behind by a crashed
+worker keeps counting at the worst case: delete it by hand only if you are sure the call was not billed.
+
+**Location.** Set it once after applying `0005_ai_settings_location.sql`:
+`update public.ai_settings set location = '<Town>, <Region>, Colombia (<altitude, climate>)' where id = 1;`
+The first two comma-separated parts go to web search as city and region.
 
 ## Request and response
 
@@ -110,8 +128,8 @@ data: {"thread_id":"9b2…","title":"…","stopped":false,"stop_reason":"end_tur
        "budget":{…},"daily":{…},"enabled":true,"web_search":true,"model":"claude-sonnet-5-5"}
 ```
 
-If Claude fails mid-stream: `event: error` with `{"error":"upstream_error","budget":{…},…}` and
-nothing is saved. If the app closes the stream (the stop button), the function stops Claude and saves
+If Claude fails mid-stream: `event: error` with `{"error":"upstream_error","reason":"…","budget":{…},…}`
+and nothing is saved (what was billed is still recorded in the ledger). If the app closes the stream (the stop button), the function stops Claude and saves
 what was generated, with the output tokens estimated from the text (the final usage never arrives).
 
 ### `draft_faq` — one bilingual FAQ entry from a thread (not streamed)
@@ -142,7 +160,7 @@ Errors before streaming are JSON `{ "error": "<code>", …usage when known }`:
 
 | Code | HTTP | Meaning |
 |---|---|---|
-| `bad_request` | 400 | Invalid body, empty or too long question, bad thread id, thread without answers (FAQ) |
+| `bad_request` | 400 | Invalid or over-16-KiB body, empty or too long question, bad thread id, thread without answers (FAQ) |
 | `unauthorized` | 401 | Missing, invalid or expired JWT |
 | `not_editor` | 403 | Signed in, but not in `editors` |
 | `forbidden_origin` | 403 | Browser origin not in the allowlist |
@@ -150,7 +168,7 @@ Errors before streaming are JSON `{ "error": "<code>", …usage when known }`:
 | `budget_exhausted` | 402 | Monthly budget used, or this request could overshoot it |
 | `daily_limit` | 429 | The editor asked `daily_message_limit` questions today |
 | `not_found` | 404 | Thread does not exist |
-| `upstream_error` | 502 | Claude API failed or returned an unusable FAQ draft |
+| `upstream_error` | 502 | Claude API failed or returned an unusable FAQ draft. `reason`: `config` (401/402/403/404/400 from Claude: API key, billing or model; retrying will not help), `busy` (429/529, overloaded), `temporary` (anything else) |
 | `server_error` | 500 | Missing secrets, database error, or saving failed |
 
 ## Docs this was written against (read 2026-11-13)

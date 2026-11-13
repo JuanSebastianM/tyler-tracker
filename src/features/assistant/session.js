@@ -152,7 +152,7 @@ export async function ask(threadId, question) {
             usage: { budget: data.budget, daily: data.daily, enabled: data.enabled },
           }));
         } else if (event === 'error') {
-          fail(data?.error, data?.budget ? data : null);
+          fail(normalizeError(data?.error, data?.reason), data?.budget ? data : null);
         }
       },
     });

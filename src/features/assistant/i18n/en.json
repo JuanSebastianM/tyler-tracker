@@ -80,6 +80,14 @@
       "title": "The assistant could not answer",
       "body": "Something went wrong getting the answer and nothing was saved. Try again."
     },
+    "upstream_config": {
+      "title": "The assistant is not set up correctly",
+      "body": "Claude rejected the API key, the account balance or the model setting. Trying again will not help: check the key and the balance in the Claude Console. Nothing was saved."
+    },
+    "upstream_busy": {
+      "title": "The assistant is very busy",
+      "body": "Claude is under heavy load right now. Wait a minute and try again. Nothing was saved."
+    },
     "server_error": {
       "title": "Something failed on the server",
       "body": "The question could not be completed. Try again in a moment."

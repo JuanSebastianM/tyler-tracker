@@ -62,6 +62,62 @@ export function errorResponse(code: ErrorCode, headers: Record<string, string>, 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export const isUuid = (v: unknown): v is string => typeof v === 'string' && UUID.test(v);
 
+/** Largest request body accepted (bytes). A valid request is far smaller (2,000-character question). */
+export const MAX_BODY_BYTES = 16 * 1024;
+
+/**
+ * Read the body as text without ever buffering more than `max` bytes. Returns null when it is larger
+ * (or unreadable), so a huge body is rejected before any parsing.
+ */
+export async function readBodyText(req: Request, max = MAX_BODY_BYTES): Promise<string | null> {
+  const declared = Number(req.headers.get('Content-Length'));
+  if (Number.isFinite(declared) && declared > max) return null;
+  if (!req.body) return '';
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let size = 0;
+  try {
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > max) {
+        await reader.cancel().catch(() => {});
+        return null;
+      }
+      chunks.push(value);
+    }
+  } catch {
+    return null;
+  }
+  const all = new Uint8Array(size);
+  let at = 0;
+  for (const c of chunks) {
+    all.set(c, at);
+    at += c.byteLength;
+  }
+  return new TextDecoder().decode(all);
+}
+
+/**
+ * Why Claude failed, for the app: 'config' = the API key, billing or model setting is wrong (retrying
+ * will not help, the owner must fix it); 'busy' = rate limited or overloaded (try again in a minute);
+ * 'temporary' = anything else.
+ * Error types: https://platform.claude.com/docs/en/api/errors
+ */
+export type UpstreamReason = 'config' | 'busy' | 'temporary';
+
+export function upstreamReason(status: number, type: string): UpstreamReason {
+  if (type === 'rate_limit_error' || type === 'overloaded_error' || status === 429 || status === 529) return 'busy';
+  if (
+    ['authentication_error', 'permission_error', 'billing_error', 'not_found_error', 'invalid_request_error'].includes(type) ||
+    [400, 401, 402, 403, 404].includes(status)
+  ) {
+    return 'config';
+  }
+  return 'temporary';
+}
+
 /** Longest question accepted (characters). */
 export const MAX_QUESTION_CHARS = 2000;
 

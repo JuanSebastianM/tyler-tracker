@@ -80,6 +80,14 @@
       "title": "El asistente no pudo responder",
       "body": "Hubo un problema al obtener la respuesta y no se guardó nada. Inténtalo de nuevo."
     },
+    "upstream_config": {
+      "title": "El asistente no está bien configurado",
+      "body": "Claude rechazó la clave de la API, el saldo o el modelo configurado. Intentar de nuevo no sirve: hay que revisar la clave y el saldo en la consola de Claude. No se guardó nada."
+    },
+    "upstream_busy": {
+      "title": "El asistente está muy ocupado",
+      "body": "Claude tiene mucha demanda en este momento. Espera un minuto e inténtalo de nuevo. No se guardó nada."
+    },
     "server_error": {
       "title": "Algo falló en el servidor",
       "body": "No se pudo completar la pregunta. Inténtalo de nuevo en un momento."

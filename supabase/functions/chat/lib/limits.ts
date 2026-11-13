@@ -9,6 +9,8 @@ export interface AiSettings {
   web_search_enabled: boolean;
   max_searches_per_message: number;
   max_output_tokens: number;
+  /** Where Tyler lives, e.g. 'Town, Region, Country (notes)'. Column added by migration 0005; may be absent or null. */
+  location?: string | null;
 }
 
 export type LimitError = 'disabled' | 'budget_exhausted' | 'daily_limit';

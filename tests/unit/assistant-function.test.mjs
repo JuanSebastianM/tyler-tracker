@@ -67,7 +67,7 @@ test('cost rounds up to 6 decimals', () => {
 
 test('max cost estimate grows with searches', () => {
   const none = estimateMaxCost('claude-sonnet-5-5', { promptTokens: 3000, maxOutputTokens: 1200, maxSearches: 0 });
-  close(none, (3000 * 2 + 1200 * 10) / 1e6);
+  close(none, (3000 * 2.5 + 1200 * 10) / 1e6); // prompt at the cache-write price
   const two = estimateMaxCost('claude-sonnet-5-5', { promptTokens: 3000, maxOutputTokens: 1200, maxSearches: 2 });
   assert.ok(two > none + 0.02);
 });
@@ -140,10 +140,11 @@ const contextData = () => ({
 });
 
 test('context: exact age, schedule, due dates, today and yesterday, compact', () => {
-  const c = buildContext(contextData(), NOW);
+  const c = buildContext(contextData(), NOW, 'Testville, Test Region, Colombia (warm)');
   assert.match(c, /2026-11-13 10:30, America\/Bogota/);
   assert.match(c, /7 weeks and 0 days \(49 days, 1 full month\)/);
-  assert.match(c, /Sabaneta/);
+  assert.match(c, /Location: Testville, Test Region, Colombia \(warm\)\./);
+  assert.doesNotMatch(buildContext(contextData(), NOW), /Location:/); // null location: no line
   assert.match(c, /Meal plan: 2 meals at 07:00 \(80 g\), 11:00/);
   assert.match(c, /Puppy DP on 2026-11-08, next due 2026-11-29/);
   assert.match(c, /Dewormer X \(internal\) on 2026-11-01, next was due 2026-11-10 \(OVERDUE\)/);
@@ -362,4 +363,106 @@ test('API keys from the JSON dictionaries or the legacy variables', () => {
   assert.equal(pickKey('{"other":"k2"}', undefined), 'k2');
   assert.equal(pickKey('not json', 'legacy'), 'legacy');
   assert.equal(pickKey(undefined, undefined), null);
+});
+
+// ---------------------------------------------------------------------------
+// Review fixes: spend reservations, body cap, upstream reasons, location from settings.
+import { checkReserved, reservationRow, reserve, release, settle, pendingSends, RESERVATION_PREFIX } from '../../supabase/functions/chat/lib/budget.ts';
+import { readBodyText, upstreamReason, MAX_BODY_BYTES } from '../../supabase/functions/chat/lib/http.ts';
+import { searchLocation, selectHistory as selectHistory2, isFaqDraftRow } from '../../supabase/functions/chat/lib/prompt.ts';
+
+/** In-memory ai_usage table behind the Rest interface. */
+function fakeLedger() {
+  const rows = [];
+  let n = 0;
+  const idOf = (q) => decodeURIComponent(/id=eq\.([^&]+)/.exec(q)[1]);
+  return {
+    rows,
+    async select(_table, q) {
+      const model = /model=eq\.([^&]+)/.exec(q);
+      const by = /created_by=eq\.([^&]+)/.exec(q);
+      return rows.filter((r) => (!model || r.model === decodeURIComponent(model[1])) && (!by || r.created_by === decodeURIComponent(by[1])));
+    },
+    async insert(_table, row) {
+      const r = { id: `r${++n}`, ...row };
+      rows.push(r);
+      return r;
+    },
+    async patch(_table, q, body) {
+      Object.assign(rows.find((r) => r.id === idOf(q)), body);
+    },
+    async remove(_table, q) {
+      const i = rows.findIndex((r) => r.id === idOf(q));
+      if (i >= 0) rows.splice(i, 1);
+    },
+  };
+}
+
+test('reservations: parallel requests cannot both pass over the budget', async () => {
+  const s = { ...settings, monthly_budget_usd: '1.00' };
+  const svc = fakeLedger();
+  svc.rows.push({ id: 'spent', model: 'claude-sonnet-5-5', cost_usd: 0.5 });
+  const owner = { editorId: 'u1', editorName: 'Ed', threadId: null };
+  // Both pass the pre-check (0.5 + 0.3 <= 1), both reserve before either re-reads.
+  const a = await reserve(svc, 'send', 0.3, owner);
+  const b = await reserve(svc, 'send', 0.3, owner);
+  const spend = svc.rows.reduce((x, r) => x + r.cost_usd, 0);
+  assert.equal(checkReserved({ settings: s, monthSpendUsd: spend, todayUserMessages: 2, countsAsMessage: true }), 'budget_exhausted');
+  await release(svc, b);
+  const spendA = svc.rows.reduce((x, r) => x + r.cost_usd, 0);
+  assert.equal(checkReserved({ settings: s, monthSpendUsd: spendA, todayUserMessages: 1, countsAsMessage: true }), null);
+  assert.equal(await pendingSends(svc, 'u1', '2026-11-01T05:00:00Z'), 1);
+  // Billed but not saved: the reservation becomes the real charge, no longer a pending send.
+  await settle(svc, a, 0.12, 'claude-sonnet-5-5', { input: 100, output: 50, searches: 0 });
+  assert.equal(svc.rows.find((r) => r.id === a).cost_usd, 0.12);
+  assert.equal(await pendingSends(svc, 'u1', '2026-11-01T05:00:00Z'), 0);
+});
+
+test('reservations: row shape and the daily limit counts pending sends', () => {
+  const row = reservationRow('faq', 0.0123456, { editorId: 'u1', editorName: 'Ed', threadId: 't1' });
+  assert.equal(row.model, `${RESERVATION_PREFIX}faq`);
+  assert.equal(row.cost_usd, 0.012346);
+  assert.equal(row.created_by, 'u1');
+  assert.equal(checkReserved({ settings, monthSpendUsd: 1, todayUserMessages: 40, countsAsMessage: true }), null); // 40th incl. this one
+  assert.equal(checkReserved({ settings, monthSpendUsd: 1, todayUserMessages: 41, countsAsMessage: true }), 'daily_limit');
+  assert.equal(checkReserved({ settings, monthSpendUsd: 1, todayUserMessages: 41, countsAsMessage: false }), null);
+  assert.equal(checkReserved({ settings: { ...settings, enabled: false }, monthSpendUsd: 0, todayUserMessages: 0, countsAsMessage: true }), 'disabled');
+});
+
+test('request bodies over the cap are rejected before parsing', async () => {
+  const ok = new Request('https://x.test/', { method: 'POST', body: JSON.stringify({ action: 'status' }) });
+  assert.equal(await readBodyText(ok), '{"action":"status"}');
+  const big = new Request('https://x.test/', { method: 'POST', body: 'x'.repeat(MAX_BODY_BYTES + 1) });
+  assert.equal(await readBodyText(big), null);
+  const lying = new Request('https://x.test/', { method: 'POST', body: 'x', headers: { 'Content-Length': String(10 * MAX_BODY_BYTES) } });
+  assert.equal(await readBodyText(lying), null);
+});
+
+test('upstream failures say whether retrying can help', () => {
+  assert.equal(upstreamReason(401, 'authentication_error'), 'config');
+  assert.equal(upstreamReason(403, ''), 'config');
+  assert.equal(upstreamReason(400, 'invalid_request_error'), 'config');
+  assert.equal(upstreamReason(429, 'rate_limit_error'), 'busy');
+  assert.equal(upstreamReason(529, ''), 'busy');
+  assert.equal(upstreamReason(0, 'overloaded_error'), 'busy');
+  assert.equal(upstreamReason(500, 'api_error'), 'temporary');
+});
+
+test('web search location comes from settings, never from source', () => {
+  assert.deepEqual(searchLocation(null, 'America/Bogota'), { type: 'approximate', country: 'CO', timezone: 'America/Bogota' });
+  assert.deepEqual(searchLocation('Testville, Test Region, Colombia (1,500 m, warm)', 'America/Bogota'), {
+    type: 'approximate',
+    country: 'CO',
+    timezone: 'America/Bogota',
+    city: 'Testville',
+    region: 'Test Region',
+  });
+  const r = buildChatRequest({ model: 'claude-sonnet-5-5', maxOutputTokens: 1200, context: 'C', history: [], question: 'q', webSearch: { enabled: true, maxUses: 1 }, timezone: 'America/Bogota' });
+  assert.equal(r.tools[0].user_location.city, undefined);
+});
+
+test('a question that starts with the FAQ tag is not hidden from the history', () => {
+  assert.equal(isFaqDraftRow({ role: 'user', content: `${FAQ_DRAFT_TAG}hi` }), false);
+  assert.equal(isFaqDraftRow({ role: 'assistant', content: `${FAQ_DRAFT_TAG}{}` }), true);
+  assert.deepEqual(selectHistory2([{ role: 'user', content: `${FAQ_DRAFT_TAG}hi` }]), [{ role: 'user', content: `${FAQ_DRAFT_TAG}hi` }]);
 });

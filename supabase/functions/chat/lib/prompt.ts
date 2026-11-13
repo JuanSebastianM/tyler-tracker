@@ -23,6 +23,9 @@ export const MAX_FAQ_MESSAGES = 30;
 /** Marks the accounting row written for an FAQ draft so the app can hide it from the thread. */
 export const FAQ_DRAFT_TAG = '<!--faq-draft-->';
 
+/** Only assistant rows can be FAQ accounting rows (a question that happens to start with the tag stays). */
+export const isFaqDraftRow = (m: { role: string; content?: string | null }) => m.role === 'assistant' && (m.content || '').startsWith(FAQ_DRAFT_TAG);
+
 export const FAQ_CATEGORIES = ['feeding', 'health', 'training', 'routine', 'behaviour', 'general'] as const;
 
 export const WEB_SEARCH_TOOL_TYPE = 'web_search_20250305';
@@ -79,7 +82,7 @@ const cut = (s: string, max: number) => (s.length > max ? s.slice(0, max) + '…
  * starts with a user message (the caller appends the new question).
  */
 export function selectHistory(messages: HistoryMessage[], max = MAX_HISTORY_MESSAGES): ApiMessage[] {
-  const usable = messages.filter((m) => m.content && m.content.trim() && !m.content.startsWith(FAQ_DRAFT_TAG));
+  const usable = messages.filter((m) => m.content && m.content.trim() && !isFaqDraftRow(m));
   const merged: ApiMessage[] = [];
   for (const m of usable.slice(-max)) {
     const content = cut(m.content.trim(), MAX_HISTORY_CHARS);
@@ -110,6 +113,24 @@ export interface ChatRequestOptions {
   question: string;
   webSearch: { enabled: boolean; maxUses: number };
   timezone: string;
+  /** ai_settings.location ('Town, Region, Country (notes)'), or null. */
+  location?: string | null;
+}
+
+/**
+ * Approximate user location for the web search tool, from ai_settings.location: the first two
+ * comma-separated parts become city and region. Country is Colombia (the app's timezone).
+ */
+export function searchLocation(location: string | null | undefined, timezone: string): Record<string, string> {
+  const out: Record<string, string> = { type: 'approximate', country: 'CO', timezone };
+  const parts = (location || '')
+    .replace(/\([^)]*\)/g, '')
+    .split(',')
+    .map((p) => p.replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  if (parts[0] && parts[0].length <= 60) out.city = parts[0];
+  if (parts[1] && parts[1].length <= 60) out.region = parts[1];
+  return out;
 }
 
 /** Body for the streamed answer. */
@@ -130,7 +151,7 @@ export function buildChatRequest(o: ChatRequestOptions): Record<string, unknown>
         type: WEB_SEARCH_TOOL_TYPE,
         name: 'web_search',
         max_uses: o.webSearch.maxUses,
-        user_location: { type: 'approximate', city: 'Sabaneta', region: 'Antioquia', country: 'CO', timezone: o.timezone },
+        user_location: searchLocation(o.location, o.timezone),
       },
     ];
   }
@@ -145,7 +166,7 @@ export interface Source {
 /** Transcript of a thread for the FAQ draft. */
 export function buildTranscript(messages: HistoryMessage[], sources: Source[]): string {
   const usable = messages
-    .filter((m) => m.content && m.content.trim() && !m.content.startsWith(FAQ_DRAFT_TAG))
+    .filter((m) => m.content && m.content.trim() && !isFaqDraftRow(m))
     .slice(-MAX_FAQ_MESSAGES);
   const lines = usable.map((m) =>
     m.role === 'user'

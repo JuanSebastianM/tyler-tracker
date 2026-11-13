@@ -16,6 +16,8 @@ export const ERROR_CODES = [
   'disabled',
   'not_editor',
   'upstream_error',
+  'upstream_config',
+  'upstream_busy',
   'server_error',
   'unauthorized',
   'bad_request',
@@ -24,10 +26,16 @@ export const ERROR_CODES = [
 ];
 
 /** Codes where trying again can help. */
-export const RETRYABLE = new Set(['upstream_error', 'server_error', 'network']);
+export const RETRYABLE = new Set(['upstream_error', 'upstream_busy', 'server_error', 'network']);
 
-/** Map any error string to a known code (unknown → server_error). @param {unknown} code */
-export function normalizeError(code) {
+/**
+ * Map any error string to a known code (unknown → server_error). An `upstream_error` with the
+ * function's `reason` becomes `upstream_config` (API key, billing or model: retrying will not help)
+ * or `upstream_busy` (Claude is overloaded or rate limited: try again in a minute).
+ * @param {unknown} code @param {unknown} [reason]
+ */
+export function normalizeError(code, reason) {
+  if (code === 'upstream_error' && (reason === 'config' || reason === 'busy')) return `upstream_${reason}`;
   return typeof code === 'string' && ERROR_CODES.includes(code) ? code : 'server_error';
 }
 

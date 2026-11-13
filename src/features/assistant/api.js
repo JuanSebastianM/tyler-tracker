@@ -36,7 +36,7 @@ async function post(body, signal) {
     const res = await fetch(CHAT_URL, { method: 'POST', headers: h, body: JSON.stringify(body), signal });
     if (!res.ok) {
       const payload = await res.json().catch(() => null);
-      return { res: null, error: { ok: false, code: normalizeError(payload?.error), usage: usageOf(payload) } };
+      return { res: null, error: { ok: false, code: normalizeError(payload?.error, payload?.reason), usage: usageOf(payload) } };
     }
     return { res, error: null };
   } catch (e) {

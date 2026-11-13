@@ -128,6 +128,9 @@ export function estimateMaxCost(model: string, opts: { promptTokens: number; max
   const t = tierFor(model, opts.promptTokens);
   let input = opts.promptTokens * (1 + searches);
   for (let i = 1; i <= searches; i++) input += ASSUMED_TOKENS_PER_SEARCH * (searches - i + 1);
-  const usd = (input * t.input + opts.maxOutputTokens * t.output) / 1e6 + searches * WEB_SEARCH_USD_PER_SEARCH;
+  // The system prompt is sent with cache_control, so the first request of a window pays the cache-write
+  // price (1.25x input): estimate every prompt token at the higher of the two.
+  const promptPrice = Math.max(t.input, t.cacheWrite5m);
+  const usd = (input * promptPrice + opts.maxOutputTokens * t.output) / 1e6 + searches * WEB_SEARCH_USD_PER_SEARCH;
   return roundUsd(usd);
 }
