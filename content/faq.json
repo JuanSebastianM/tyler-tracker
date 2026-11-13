@@ -1,4 +1,33 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "id": "meal-schedule-7-weeks",
+      "category": "feeding",
+      "question": {
+        "es": "¿Está bien nuestro horario de comidas o deberíamos cambiarlo?",
+        "en": "Is our meal schedule fine, or should we change it?"
+      },
+      "answer": {
+        "es": "Cuatro comidas al día es lo correcto para su edad (7 semanas). Le venían dando de comer más o menos cada 4 horas: 7–8 a. m., 11 a. m.–1 p. m., 5–6 p. m. y 10–11 p. m. Conviene cambiar dos cosas.\n\n## Qué cambiar\n- **Horas fijas en vez de rangos**, por ejemplo 7:00 a. m., 11:30 a. m., 4:00 p. m. y 8:30 p. m. Los cachorros suelen necesitar salir poco después de comer, así que con comidas a horas fijas es más fácil prever cuándo va a hacer sus necesidades y eso acelera el aprendizaje.\n- **Adelantar la última comida** de las 10–11 p. m. a cerca de las 8:30 p. m. Así tiene tiempo de hacer la digestión y de una última salida antes de dormir, y suele haber menos accidentes en la noche.\n\n## Cantidad\nLas cucharadas varían mucho. Usa la tabla del empaque del alimento (gramos al día según su edad y peso, divididos entre cuatro) y una gramera de cocina. Para eso necesitas su peso, que el veterinario tomará en la primera cita.\n\n## Cambio de alimento\nMezcla el alimento nuevo con el anterior poco a poco durante cerca de una semana, aumentando la proporción cada par de días. Un cambio brusco suele causar diarrea en los cachorros.\n\nConfirma las porciones con su veterinario.",
+        "en": "Four meals a day is right for his age (7 weeks). You had been feeding him roughly every 4 hours: 7–8 am, 11 am–1 pm, 5–6 pm and 10–11 pm. Two things are worth changing.\n\n## What to change\n- **Fixed times instead of ranges**, for example 7:00 am, 11:30 am, 4:00 pm and 8:30 pm. Puppies usually need to go out shortly after eating, so fixed meal times make potty times predictable, which speeds up house-training.\n- **Move the last meal earlier**, from 10–11 pm to around 8:30 pm. That leaves time to digest and for one last potty trip before bed, which usually means fewer accidents overnight.\n\n## Amount\nSpoonfuls vary a lot. Use the feeding table on the food bag (grams per day for his age and weight, divided by four) and a kitchen scale. You need his weight for that, which the vet will take at the first visit.\n\n## Changing food\nMix the new food into the old one gradually over about a week, increasing the share every couple of days. A sudden switch commonly causes diarrhea in puppies.\n\nConfirm portions with his vet."
+      },
+      "sources": [
+        {
+          "title": "AKC: Puppy feeding fundamentals",
+          "url": "https://www.akc.org/expert-advice/nutrition/puppy-feeding-fundamentals/"
+        },
+        {
+          "title": "AAHA: Tips and timelines for transitioning your pet to a new food",
+          "url": "https://www.aaha.org/wp-content/uploads/globalassets/05-pet-health-resources/nutritionalresources/petparent/aaha-tips-and-timelines.pdf"
+        },
+        {
+          "title": "AKC: Puppy potty training schedule and timeline",
+          "url": "https://www.akc.org/expert-advice/training/potty-training-your-puppy-timeline-and-tips/"
+        }
+      ],
+      "reviewed_on": "2026-11-13",
+      "added_on": "2026-11-13"
+    }
+  ]
 }
