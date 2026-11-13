@@ -235,3 +235,14 @@ export interface ChatMessage extends Audit {
   web_searches: number;
   cost_usd: number;
 }
+
+/**
+ * Per-person app preferences (migration 0006). One row per signed-in user; each user reads and
+ * writes only their own row (RLS). Unknown theme names fall back to 'default' (src/lib/theme.js).
+ */
+export interface UserSettings extends Audit {
+  user_id: string;
+  /** 'default' | 'rose' | 'lavender' | 'mint' | 'sky' */
+  theme: string;
+  color_mode: 'auto' | 'light' | 'dark';
+}

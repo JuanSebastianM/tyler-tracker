@@ -192,5 +192,15 @@
       "friend": "First dog friend",
       "toy": "His favourite toy"
     }
+  },
+  "theme": {
+    "title": "Theme",
+    "color": "Colour",
+    "mode": "Mode",
+    "savedDevice": "Only changes the app for you, on this device.",
+    "savedAccount": "Only changes the app for you and is saved to your account.",
+    "autoHint": "Automatic follows your device's light or dark mode.",
+    "names": { "default": "Default", "rose": "Rose", "lavender": "Lavender", "mint": "Mint", "sky": "Sky" },
+    "modes": { "auto": "Automatic", "light": "Light", "dark": "Dark" }
   }
 }

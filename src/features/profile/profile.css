@@ -132,3 +132,32 @@
 @media (prefers-reduced-motion: reduce) {
   .profile .upload-bar span { transition: none; }
 }
+
+/* ---- Theme picker (theme-picker.js). Previews use the real tokens of each theme. ---- */
+.profile .theme-settings .profile-note { margin-top: calc(var(--sp-1) * -1); }
+.profile .theme-swatches { display: flex; flex-direction: column; gap: var(--sp-2); }
+.profile .theme-swatch {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: 5px var(--sp-3) 5px 5px; min-height: 54px; width: 100%;
+  background: var(--c-surface); border: 1.5px solid var(--c-line); border-radius: var(--r-control);
+  color: var(--c-ink); font-size: var(--fs-sm); font-weight: 650; text-align: left;
+}
+.profile .theme-swatch[aria-checked='true'] { border-color: var(--c-gold-ink); box-shadow: 0 0 0 1.5px var(--c-gold-ink) inset; }
+.profile .theme-preview {
+  flex: none; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+  width: 52px; height: 42px; padding: 5px; border-radius: 9px;
+  background: var(--c-bg); border: 1px solid var(--c-line);
+}
+.profile .tp-card { display: flex; align-items: center; gap: 4px; height: 16px; padding: 0 4px; border-radius: 5px; background: var(--c-surface); }
+.profile .tp-dot { flex: none; width: 9px; height: 9px; border-radius: 50%; background: var(--c-gold-soft); box-shadow: 0 0 0 1.5px var(--c-gold) inset; }
+.profile .tp-lines { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.profile .tp-line { display: block; height: 2px; border-radius: 1px; background: var(--c-ink-2); opacity: 0.55; }
+.profile .tp-line-short { width: 60%; }
+.profile .tp-pill { display: block; height: 8px; width: 60%; border-radius: var(--r-chip); background: var(--c-gold); }
+.profile .theme-name { flex: 1; min-width: 0; line-height: 1.25; overflow-wrap: anywhere; }
+.profile .tp-check {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--c-gold); color: var(--c-on-gold);
+}
+.profile .theme-mode { margin-top: var(--sp-4); }
+.profile .theme-mode-hint { margin-top: 6px; }

@@ -5,6 +5,9 @@ export const FIXED_NOW = '2026-11-13T15:30:00.000Z';
 
 export const EDITOR_USER = { id: '00000000-0000-4000-8000-0000000000e1', email: 'editor@example.test' };
 export const EDITOR_NAME = 'Alex';
+/** A second editor (per-user settings tests). Sign in as them with mockSupabase(page, { user: EDITOR_USER_2 }). */
+export const EDITOR_USER_2 = { id: '00000000-0000-4000-8000-0000000000e2', email: 'editor2@example.test' };
+export const EDITOR_NAME_2 = 'Sam';
 
 const audit = (at = '2026-11-10T15:00:00.000Z', by = EDITOR_NAME) => ({
   created_at: at,
@@ -88,8 +91,10 @@ export function defaultFixtures() {
     ],
     chat_threads: [],
     chat_messages: [],
+    // Per-user preferences: each user reads and writes only their own row (RLS, emulated by the mock).
+    user_settings: [],
   };
 }
 
 /** Tables only editors can read (RLS). */
-export const PRIVATE_TABLES = ['pet_private', 'vet_visit_private', 'editors', 'ai_settings', 'chat_threads', 'chat_messages'];
+export const PRIVATE_TABLES = ['pet_private', 'vet_visit_private', 'editors', 'ai_settings', 'chat_threads', 'chat_messages', 'user_settings'];

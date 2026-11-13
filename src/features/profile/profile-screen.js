@@ -1,4 +1,5 @@
-// #/profile (tab "Tyler"): profile, private details, memories, settings, export, account, about.
+// #/profile (tab "Tyler"): profile, private details, memories, settings (language, theme, meals,
+// timezone), export, account, about.
 import { html } from '../../../vendor/preact.js';
 import { t } from '../../lib/i18n.js';
 import { EditorOnly } from '../../lib/auth.js';
@@ -10,6 +11,7 @@ import { MemoriesCard } from './memories-screen.js';
 import { MealSchedule } from './meals.js';
 import { ExportCard } from './export-card.js';
 import { AboutCard } from './about-card.js';
+import { ThemeSettings } from './theme-picker.js';
 
 export function ProfileScreen() {
   const tz = useTimezone();
@@ -19,6 +21,7 @@ export function ProfileScreen() {
     <${MemoriesCard} />
     <${Card} title=${t('settings.title')} data-testid="settings-card">
       <${LanguageSwitch} />
+      <${ThemeSettings} />
       <${MealSchedule} />
       <h3 class="profile-subhead">${t('profile.settings.timezone')}</h3>
       <${List}>
