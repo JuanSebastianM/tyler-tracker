@@ -183,3 +183,21 @@ export interface Photo extends Audit {
   width: number | null;
   height: number | null;
 }
+
+/** Bilingual source link, as in /content. */
+export interface SourceLink {
+  title: string;
+  url: string;
+}
+
+/** FAQ entry saved from the in-app assistant. Public read, editors write. */
+export interface FaqEntry extends Audit {
+  id: string;
+  category: string | null;
+  question_es: string;
+  question_en: string;
+  answer_es: string;
+  answer_en: string;
+  sources: SourceLink[];
+  source_thread_id: string | null;
+}

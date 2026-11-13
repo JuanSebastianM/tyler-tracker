@@ -128,6 +128,21 @@ Source of truth: `supabase/migrations/*.sql`. Summary:
 - Schema changes: write a new numbered migration file and ask the orchestrator to apply it. Do not assume
   a migration is live until told so.
 
+### In-app assistant (chat with Claude)
+
+Editors can ask questions inside the app. Feature id `assistant` (no tab; route `#/assistant`).
+
+- A Supabase Edge Function `chat` (source in `supabase/functions/chat/`, deployed by the orchestrator)
+  holds the `ANTHROPIC_API_KEY` secret and calls the Claude Messages API. The key is never in the repo
+  or the client. The function requires a valid editor JWT, enforces the limits in `ai_settings`
+  (model, monthly budget in USD, daily messages per editor, web search on/off and max searches,
+  max output tokens), builds the system prompt with Tyler's context from the database, and writes
+  `chat_threads` / `chat_messages` with token counts and cost using the service role.
+- Tables (migration 0003): `ai_settings` (single row), `chat_threads`, `chat_messages` are readable by
+  editors only and writable only by the function (editors may rename/delete a thread).
+  `faq_entries` (bilingual question/answer saved from a conversation) is public read, editor write.
+- The FAQ screen shows `content/faq.json` entries and `faq_entries` rows together.
+
 ## 6. Reading content
 
 Reading content lives in `/content` as JSON with bilingual fields `{ "es": "...", "en": "..." }` and

@@ -8,7 +8,7 @@ import { SUPABASE_KEY, SUPABASE_URL } from '../src/config.js';
 
 const TABLES = [
   'pet_profile', 'settings', 'feedings', 'routine_events', 'weights', 'vaccinations', 'dewormings',
-  'vet_visits', 'medications', 'reminders', 'training_skills', 'checklist_done', 'milestones', 'photos',
+  'vet_visits', 'medications', 'reminders', 'training_skills', 'checklist_done', 'milestones', 'photos', 'faq_entries',
 ];
 const PAGE = 1000;
 const out = resolve(process.argv[2] || 'backup');

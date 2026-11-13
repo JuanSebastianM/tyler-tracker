@@ -72,6 +72,7 @@ export function defaultFixtures() {
     checklist_done: [],
     milestones: [{ id: 'm0000000-0000-4000-8000-000000000001', happened_on: '2026-11-10', title: 'Llegó a casa', story: null, ...audit() }],
     photos: [],
+    faq_entries: [],
   };
 }
 

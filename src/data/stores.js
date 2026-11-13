@@ -51,9 +51,12 @@ export const checklistDone = make({ table: 'checklist_done', key: 'item_key', ke
 export const milestones = make({ table: 'milestones', orderBy: { column: 'happened_on' } });
 export const photos = make({ table: 'photos', orderBy: { column: 'taken_on' } });
 
+// FAQ entries saved from the in-app assistant (public read). Repo FAQ lives in /content/faq.json.
+export const faqEntries = make({ table: 'faq_entries', orderBy: { column: 'created_at' } });
+
 export const publicStores = [
   petProfile, settings, feedings, routineEvents, weights, vaccinations, dewormings, vetVisits,
-  medications, reminders, trainingSkills, checklistDone, milestones, photos,
+  medications, reminders, trainingSkills, checklistDone, milestones, photos, faqEntries,
 ];
 export const privateStores = [petPrivate, vetVisitPrivate];
 export const allStores = [...publicStores, ...privateStores];
