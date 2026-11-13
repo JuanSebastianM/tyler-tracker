@@ -202,3 +202,39 @@ test('clear() forgets rows and cache', async () => {
   assert.equal(store.rows().length, 0);
   assert.equal(cache['cache.weights'], undefined);
 });
+
+test('private tables are not fetched without a valid session, so shown rows are kept', async () => {
+  const client = fakeClient();
+  let sessionOk = true;
+  const busy = [];
+  const store = createTableStore(
+    { table: 'chat_threads', private: true },
+    {
+      getClient: () => client,
+      notifyError: () => {},
+      readCache: () => null,
+      writeCache: () => {},
+      clearCache: () => {},
+      isOffline: () => false,
+      editorName: () => 'Alex',
+      t: (k) => k,
+      uuid: () => 'u',
+      ensureSession: async () => sessionOk,
+      beginBusy: (reason) => (busy.push(reason), () => busy.push(`end:${reason}`)),
+    },
+  );
+  client.results.select = { data: [{ id: 't1' }], error: null };
+  await store.load();
+  assert.deepEqual(store.rows().map((r) => r.id), ['t1']);
+  // iOS resumed the app with an expired token and no network: the anonymous read would be empty.
+  sessionOk = false;
+  client.results.select = { data: [], error: null };
+  const r = await store.load();
+  assert.equal(r.error, 'session');
+  assert.deepEqual(store.rows().map((x) => x.id), ['t1']);
+  assert.equal(client.calls.length, 1);
+  // Writes are marked busy (an update reload waits for them).
+  client.results.insert = { data: { id: 't2' }, error: null };
+  await store.insert({ title: 'x' });
+  assert.deepEqual(busy, ['write', 'end:write']);
+});

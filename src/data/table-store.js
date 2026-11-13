@@ -49,6 +49,10 @@ const MAX_CACHED_ROWS = 600;
  * @property {() => string} editorName
  * @property {(key: string) => string} t
  * @property {() => string} uuid
+ * @property {(reason: string) => () => void} [beginBusy]  marks a write in flight (no update reload)
+ * @property {() => Promise<boolean>} [ensureSession]  true when the editor's token is valid (refreshed
+ *   if needed). Private tables are not fetched without it: an anonymous read would return no rows
+ *   and wipe what is shown (e.g. after iOS resumes the app with an expired token and no network yet).
  */
 
 /**
@@ -110,6 +114,9 @@ export function createTableStore(config, deps) {
    * @returns {Promise<{ error: string | null }>}
    */
   async function fetchRows(range) {
+    if (config.private && deps.ensureSession && !(await deps.ensureSession())) {
+      return { error: 'session' }; // keep the rows already shown
+    }
     const client = deps.getClient();
     let q = client.from(config.table).select('*');
     if (config.rangeColumn && range) q = q.gte(config.rangeColumn, range.start).lt(config.rangeColumn, range.end);
@@ -287,11 +294,14 @@ export function createTableStore(config, deps) {
 
   /** @param {() => any} fn */
   async function run(fn) {
+    const done = deps.beginBusy?.('write') || (() => {});
     try {
       const r = await fn();
       return r && r.error ? { data: null, error: r.error } : { data: r?.data ?? null, error: null };
     } catch (e) {
       return { data: null, error: e };
+    } finally {
+      done();
     }
   }
 

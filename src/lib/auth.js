@@ -7,9 +7,11 @@
 // An editor is a signed-in user who can read their own row in `editors`. Hiding controls is
 // cosmetic: RLS enforces write access.
 import { createStore, useStore } from './store.js';
-import { getSupabase } from './supabase.js';
+import { getSupabase, isOffline, AUTH_STORAGE_KEY, setTokenRenewer } from './supabase.js';
 import { readJSON, writeJSON, removeKey } from './storage.js';
 import { t } from './i18n.js';
+import { toast } from './toast.js';
+import { classifyAuthError, needsRefresh, parseStoredSession, withTimeout } from './auth-logic.js';
 
 /**
  * @typedef {object} AuthState
@@ -37,20 +39,121 @@ export function onEditorChange(fn) {
 }
 
 let started = false;
+/** @type {(v?: unknown) => void} */
+let markReady = () => {};
+/** Resolves once the stored session has been read at boot (or after a few seconds). */
+const authReady = new Promise((resolve) => {
+  markReady = resolve;
+});
+/** True while signOut() runs: a SIGNED_OUT then is the person's choice, not an ended session. */
+let signingOut = false;
+
+/** The session supabase-js keeps on this device (null if none, or no refresh token). */
+export function storedSession() {
+  try {
+    return parseStoredSession(typeof localStorage === 'undefined' ? null : localStorage.getItem(AUTH_STORAGE_KEY));
+  } catch {
+    return null;
+  }
+}
 
 /** Restore the session and follow auth changes. Call once at boot. */
 export function initAuth() {
   if (started) return;
   started = true;
   const sb = getSupabase();
+  setTokenRenewer(async () => (await refreshAccessToken()).token);
   sb.auth.onAuthStateChange((/** @type {string} */ event, /** @type {any} */ session) => {
     // Never await Supabase calls inside this callback (it holds an auth lock).
-    setTimeout(() => applySession(session), 0);
+    setTimeout(() => applyEvent(event, session), 0);
   });
-  sb.auth
-    .getSession()
-    .then((/** @type {any} */ { data }) => applySession(data?.session ?? null))
-    .catch(() => applySession(null));
+  // Show the stored session right away (editor controls on launch, no wait for a token refresh).
+  // An expired token whose refresh fails for lack of network (typical when iOS resumes the app)
+  // must not look like a sign-out either: keep the stored session and refresh when the network is
+  // back. Only a refresh the auth server rejects ends it (SIGNED_OUT, see applyEvent).
+  const stored = storedSession();
+  if (stored?.user?.id) applySession(stored);
+  withTimeout(sb.auth.getSession(), 8000)
+    .then((/** @type {any} */ { data }) => {
+      const session = data?.session ?? storedSession();
+      if (session) applySession(session);
+      else endSession();
+    })
+    .catch(() => {
+      const session = storedSession();
+      if (session) applySession(session);
+      else endSession();
+    })
+    .finally(() => markReady());
+  if (typeof window !== 'undefined') {
+    window.addEventListener('online', () => {
+      if (needsRefresh(storedSession(), Date.now())) refreshAccessToken();
+    });
+  }
+}
+
+/** @param {string} event @param {any} session */
+function applyEvent(event, session) {
+  if (session) return applySession(session);
+  // supabase-js removes the stored session before it reports SIGNED_OUT, so a session still in
+  // storage means it only failed to refresh (no network): stay signed in.
+  const stored = storedSession();
+  if (stored && event !== 'SIGNED_OUT') return applySession(stored);
+  endSession();
+}
+
+/** No session any more. If the person was signed in and did not sign out, tell them it ended. */
+function endSession() {
+  const wasSignedIn = authStore.get().status === 'signedIn';
+  applySession(null);
+  if (wasSignedIn && !signingOut) {
+    toast(t('auth.sessionEnded'), { tone: 'error', duration: 10000, action: { label: t('auth.signIn'), onClick: openSignIn } });
+  }
+}
+
+/** @type {Promise<{ token: string | null, error: import('./auth-logic.js').TokenError | null }> | null} */
+let refreshing = null;
+
+/**
+ * Refresh the session now (one refresh at a time; concurrent callers share it).
+ * @param {number} [timeoutMs] give up waiting after this (the refresh itself goes on)
+ * @returns {Promise<{ token: string | null, error: import('./auth-logic.js').TokenError | null }>}
+ */
+export function refreshAccessToken(timeoutMs = 10000) {
+  if (!storedSession()) return Promise.resolve({ token: null, error: 'signedOut' });
+  if (isOffline()) return Promise.resolve({ token: null, error: 'network' });
+  if (!refreshing) {
+    refreshing = (async () => {
+      try {
+        const { data, error } = await getSupabase().auth.refreshSession();
+        if (data?.session?.access_token) return { token: data.session.access_token, error: null };
+        return { token: null, error: classifyAuthError(error) };
+      } catch (e) {
+        return { token: null, error: classifyAuthError(e) };
+      }
+    })();
+    const mine = refreshing;
+    mine.finally(() => {
+      if (refreshing === mine) refreshing = null;
+    });
+  }
+  return withTimeout(refreshing, timeoutMs).catch(() => ({ token: null, error: /** @type {const} */ ('network') }));
+}
+
+/**
+ * A user access token that is valid for at least another minute, for calls that need the editor's
+ * session (the chat function, writes, uploads). Waits for the session to be restored at boot,
+ * refreshes it when it is expired or about to expire, and never waits more than ~10 s.
+ * `error` says why there is no token: 'network' (keep the session, say "no connection"),
+ * 'expired' (the session really ended) or 'signedOut'.
+ * @returns {Promise<{ token: string | null, error: import('./auth-logic.js').TokenError | null }>}
+ */
+export async function getAccessToken() {
+  await withTimeout(authReady, 10000).catch(() => {});
+  const stored = storedSession();
+  if (!stored) return { token: null, error: 'signedOut' };
+  if (!needsRefresh(stored, Date.now())) return { token: stored.access_token, error: null };
+  return refreshAccessToken();
 }
 
 /** @type {string | null} */
@@ -80,6 +183,9 @@ function applySession(session) {
 
 /** @param {string} userId */
 async function checkEditor(userId) {
+  // Without a valid token the query would run anonymously and find no row: keep the cached state.
+  const tok = await getAccessToken();
+  if (tok.error) return;
   const { data, error } = await getSupabase().from('editors').select('display_name').eq('user_id', userId).maybeSingle();
   if (authStore.get().user?.id !== userId) return;
   if (error) return; // keep the cached state; a network blip should not hide controls
@@ -126,13 +232,26 @@ export async function signIn(email, password) {
   }
 }
 
+/** @type {Set<() => void>} */
+const signOutHooks = new Set();
+/** Run `fn` when the person signs out on purpose (not when a session ends): e.g. forget drafts. */
+export function onSignOut(/** @type {() => void} */ fn) {
+  signOutHooks.add(fn);
+  return () => signOutHooks.delete(fn);
+}
+
 export async function signOut() {
   const id = authStore.get().user?.id;
   if (id) removeKey(`editor.${id}`);
+  signingOut = true;
+  for (const fn of signOutHooks) fn();
   try {
     await getSupabase().auth.signOut({ scope: 'local' });
   } finally {
     applySession(null);
+    setTimeout(() => {
+      signingOut = false;
+    }, 0);
   }
 }
 

@@ -4,8 +4,9 @@ import { createTableStore } from './table-store.js';
 import { getSupabase, isOffline } from '../lib/supabase.js';
 import { readJSON, writeJSON, removeKey } from '../lib/storage.js';
 import { toast } from '../lib/toast.js';
+import { beginBusy } from '../lib/busy.js';
 import { t } from '../lib/i18n.js';
-import { editorName, onEditorChange, isEditor } from '../lib/auth.js';
+import { editorName, onEditorChange, isEditor, getAccessToken } from '../lib/auth.js';
 import { daysRange, todayIn } from '../lib/dates.js';
 import { DEFAULT_RANGE_DAYS, DEFAULT_TIMEZONE } from '../config.js';
 
@@ -20,6 +21,8 @@ const deps = {
   editorName,
   t: (k) => t(k),
   uuid: () => crypto.randomUUID(),
+  beginBusy,
+  ensureSession: async () => !(await getAccessToken()).error,
 };
 
 /** @param {import('./table-store.js').TableConfig} c */
@@ -108,6 +111,11 @@ export function startDataSync() {
         lastRefresh = Date.now();
         refreshAll();
       }
+    });
+    // Back online (e.g. the first requests after iOS resumed the app failed): refresh again.
+    window.addEventListener('online', () => {
+      lastRefresh = Date.now();
+      refreshAll();
     });
   }
   onEditorChange((editor) => {

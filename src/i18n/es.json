@@ -54,6 +54,7 @@
     "signInIntro": "Solo los papás de Tyler pueden editar. Cualquiera con el enlace puede ver.",
     "email": "Correo",
     "password": "Contraseña",
+    "sessionEnded": "Tu sesión terminó. Inicia sesión de nuevo para editar.",
     "signOut": "Cerrar sesión",
     "signedIn": "Sesión iniciada",
     "signedOut": "Sesión cerrada",
@@ -84,6 +85,7 @@
   "pwa": {
     "updateReady": "Hay una versión nueva de la app.",
     "reload": "Actualizar",
+    "updateAfterWork": "Se actualizará en cuanto termine lo que está en curso.",
     "updated": "La app se actualizó.",
     "installTitle": "Instala Tyler en tu iPhone",
     "installBefore": "Toca ",
