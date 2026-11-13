@@ -32,6 +32,7 @@ export type ErrorCode =
   | 'budget_exhausted'
   | 'daily_limit'
   | 'not_found'
+  | 'in_progress'
   | 'upstream_error'
   | 'server_error';
 
@@ -44,6 +45,7 @@ export const ERROR_STATUS: Record<ErrorCode, number> = {
   budget_exhausted: 402,
   daily_limit: 429,
   not_found: 404,
+  in_progress: 409,
   upstream_error: 502,
   server_error: 500,
 };
@@ -123,7 +125,7 @@ export const MAX_QUESTION_CHARS = 2000;
 
 export type ParsedRequest =
   | { action: 'status' }
-  | { action: 'send'; threadId: string | null; message: string }
+  | { action: 'send'; threadId: string | null; message: string; requestId: string | null }
   | { action: 'draft_faq'; threadId: string };
 
 /** Validate the JSON body. Returns null when it is not a valid request. */
@@ -135,7 +137,9 @@ export function parseRequest(body: unknown): ParsedRequest | null {
     const message = typeof b.message === 'string' ? b.message.trim() : '';
     if (!message || message.length > MAX_QUESTION_CHARS) return null;
     if (b.thread_id != null && !isUuid(b.thread_id)) return null;
-    return { action: 'send', threadId: (b.thread_id as string) || null, message };
+    // Client-generated id of this question (idempotency key; also the saved question's row id).
+    if (b.request_id != null && !isUuid(b.request_id)) return null;
+    return { action: 'send', threadId: (b.thread_id as string) || null, message, requestId: (b.request_id as string) || null };
   }
   if (b.action === 'draft_faq') {
     if (!isUuid(b.thread_id)) return null;

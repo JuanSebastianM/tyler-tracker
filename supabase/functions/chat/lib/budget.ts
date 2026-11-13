@@ -26,17 +26,41 @@ export interface ReservationOwner {
   editorId: string;
   editorName: string;
   threadId: string | null;
+  /**
+   * The client's request id for a send. Stored as the reservation's message_id (unique), so two
+   * requests with the same id cannot both call Claude: the second insert fails with 23505. The
+   * saved question later gets this id as its chat_messages id; the ledger row of the answer has
+   * the answer's id, so they never collide.
+   */
+  requestId?: string | null;
 }
 
 /** Row inserted in ai_usage for a reservation. */
 export function reservationRow(kind: ReservationKind, estimateUsd: number, owner: ReservationOwner): Record<string, unknown> {
-  return {
+  const row: Record<string, unknown> = {
     model: `${RESERVATION_PREFIX}${kind}`,
     cost_usd: roundUsd(Math.max(0, estimateUsd)),
     thread_id: owner.threadId,
     created_by: owner.editorId,
     created_by_name: owner.editorName,
   };
+  if (owner.requestId) row.message_id = owner.requestId;
+  return row;
+}
+
+/** A reservation older than this belongs to a worker that died (the Claude call times out at 120 s). */
+export const STALE_RESERVATION_MS = 4 * 60_000;
+
+/**
+ * What a reservation insert that hit the request id's unique key means:
+ *  - 'in_progress': another request with this id is still being answered (a live reservation);
+ *  - 'retry': an earlier attempt with this id failed and was settled, or its worker died: reserve
+ *    again without the id.
+ */
+export function duplicateRequestState(existing: { model?: string | null; created_at?: string } | null, now: Date): 'in_progress' | 'retry' {
+  if (!existing || !String(existing.model || '').startsWith(RESERVATION_PREFIX)) return 'retry';
+  const age = now.getTime() - Date.parse(existing.created_at || '');
+  return Number.isFinite(age) && age < STALE_RESERVATION_MS ? 'in_progress' : 'retry';
 }
 
 /**
@@ -56,13 +80,28 @@ export function checkReserved(input: {
   return null;
 }
 
-/** Insert a reservation and return its id (null if the ledger table is missing). */
-export async function reserve(svc: Rest, kind: ReservationKind, estimateUsd: number, owner: ReservationOwner): Promise<string | null> {
+/** Thrown by reserve() when a request with the same id is still being answered. */
+export class InProgressError extends Error {
+  constructor() {
+    super('a request with this id is in progress');
+  }
+}
+
+/**
+ * Insert a reservation and return its id (null if the ledger table is missing). With a request id,
+ * throws InProgressError when another request with that id holds a live reservation.
+ */
+export async function reserve(svc: Rest, kind: ReservationKind, estimateUsd: number, owner: ReservationOwner, now = new Date()): Promise<string | null> {
   try {
     const row = await svc.insert<{ id: string }>('ai_usage', reservationRow(kind, estimateUsd, owner));
     return row?.id || null;
   } catch (e) {
     if (e instanceof RestError && (e.status === 404 || e.code === '42P01' || e.code === 'PGRST205')) return null;
+    if (e instanceof RestError && e.code === '23505' && owner.requestId) {
+      const rows = await svc.select<{ model: string | null; created_at: string }>('ai_usage', `select=model,created_at&message_id=eq.${enc(owner.requestId)}&limit=1`);
+      if (duplicateRequestState(rows[0] || null, now) === 'in_progress') throw new InProgressError();
+      return reserve(svc, kind, estimateUsd, { ...owner, requestId: null }, now);
+    }
     throw e;
   }
 }

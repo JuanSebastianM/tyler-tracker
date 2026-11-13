@@ -347,7 +347,7 @@ test('CORS allowlist and request validation', () => {
   assert.equal(corsHeaders('https://evil.example')['Access-Control-Allow-Origin'], undefined);
   assert.equal(corsHeaders('http://localhost:4187')['Access-Control-Allow-Origin'], 'http://localhost:4187');
 
-  assert.deepEqual(parseRequest({ action: 'send', message: '  hola ' }), { action: 'send', threadId: null, message: 'hola' });
+  assert.deepEqual(parseRequest({ action: 'send', message: '  hola ' }), { action: 'send', threadId: null, message: 'hola', requestId: null });
   assert.equal(parseRequest({ action: 'send', message: '   ' }), null);
   assert.equal(parseRequest({ action: 'send', message: 'x'.repeat(2001) }), null);
   assert.equal(parseRequest({ action: 'send', message: 'hi', thread_id: 'nope' }), null);

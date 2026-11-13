@@ -73,10 +73,16 @@ export function userRest(url: string, publishableKey: string, jwt: string): Rest
   return client(url, publishableKey, jwt);
 }
 
-/** Verify a user JWT with Supabase Auth (GET /auth/v1/user). Returns the user id or null. */
-export async function verifyUser(url: string, publishableKey: string, jwt: string): Promise<string | null> {
-  const res = await fetch(`${url}/auth/v1/user`, { headers: { apikey: publishableKey, Authorization: `Bearer ${jwt}` } });
-  if (!res.ok) return null;
+/**
+ * Verify a user JWT with Supabase Auth (GET /auth/v1/user). Returns the user id, or null when Auth
+ * rejects the token (401/403: the app refreshes its session and retries). Any other failure (Auth
+ * unreachable, 5xx, 429) throws, so it is reported as a server error the app can retry, never as
+ * "your session expired".
+ */
+export async function verifyUser(url: string, publishableKey: string, jwt: string, fetchFn: typeof fetch = fetch): Promise<string | null> {
+  const res = await fetchFn(`${url}/auth/v1/user`, { headers: { apikey: publishableKey, Authorization: `Bearer ${jwt}` } });
+  if (res.status === 401 || res.status === 403) return null;
+  if (!res.ok) throw new RestError(res.status, 'auth_unavailable', `GET /auth/v1/user failed: ${res.status}`);
   const user = await res.json().catch(() => null);
   return typeof user?.id === 'string' ? user.id : null;
 }

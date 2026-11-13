@@ -26,7 +26,8 @@ import {
   type ErrorCode,
   type UpstreamReason,
 } from './lib/http.ts';
-import { checkReserved, pendingSends, release, reserve, settle, type ReservationKind } from './lib/budget.ts';
+import { checkReserved, InProgressError, pendingSends, release, reserve, settle, STALE_RESERVATION_MS, type ReservationKind } from './lib/budget.ts';
+import { KEEPALIVE_MS, pickAnswer, SSE_KEEPALIVE, type StoredMessage } from './lib/replay.ts';
 import { budgetInfo, checkLimits, num, sumCosts, type AiSettings } from './lib/limits.ts';
 import { computeCost, estimateMaxCost, estimateTokens, type ApiUsage } from './lib/pricing.ts';
 import { buildContext, type ContextData } from './lib/context.ts';
@@ -128,9 +129,10 @@ Deno.serve(async (req: Request) => {
     const ctx: Ctx = { svc, user, editor, settings, timezone: settingsRows[0]?.timezone || 'America/Bogota', cors, apiKey, now: new Date() };
 
     if (parsed.action === 'status') return await handleStatus(ctx);
-    if (parsed.action === 'send') return await handleSend(ctx, parsed.threadId, parsed.message);
+    if (parsed.action === 'send') return await handleSend(ctx, parsed.threadId, parsed.message, parsed.requestId);
     return await handleDraftFaq(ctx, parsed.threadId);
   } catch (e) {
+    if (e instanceof InProgressError) return errorResponse('in_progress', cors);
     log('error', 'request failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : String((e as Error)?.name || e) });
     return errorResponse('server_error', cors);
   }
@@ -185,8 +187,10 @@ async function reserveSpend(
   kind: ReservationKind,
   estimate: number,
   threadId: string | null,
+  requestId: string | null = null,
 ): Promise<{ id: string | null; refused: Response | null }> {
-  const id = await reserve(ctx.svc, kind, estimate, { editorId: ctx.editor.id, editorName: ctx.editor.name, threadId });
+  // Throws InProgressError when another request with this request id is still being answered.
+  const id = await reserve(ctx.svc, kind, estimate, { editorId: ctx.editor.id, editorName: ctx.editor.name, threadId, requestId }, ctx.now);
   if (!id) return { id: null, refused: null }; // no ledger table: pre-check only
   try {
     const { spend, todayCount } = await usageNow(ctx);
@@ -326,8 +330,64 @@ async function loadThread(ctx: Ctx, threadId: string, limit: number) {
   return { thread: threads[0], messages: rows.reverse() };
 }
 
-async function handleSend(ctx: Ctx, threadId: string | null, question: string): Promise<Response> {
+/**
+ * A question with this request id was already saved by this editor: its answer if there is one
+ * (replay it), 'in_progress' while it is being saved, or the orphan question (saved without an
+ * answer by a request that failed half-way) to answer again under the same id.
+ */
+async function findRequest(ctx: Ctx, requestId: string): Promise<{ question: StoredMessage; answer: StoredMessage | null } | null> {
+  const found = await ctx.svc.select<StoredMessage>(
+    'chat_messages',
+    `select=*&id=eq.${enc(requestId)}&role=eq.user&created_by=eq.${enc(ctx.editor.id)}&limit=1`,
+  );
+  if (!found.length) return null;
+  const question = found[0];
+  const rows = await ctx.svc.select<StoredMessage>(
+    'chat_messages',
+    `select=*&thread_id=eq.${enc(question.thread_id)}&role=eq.assistant&created_at=gte.${enc(question.created_at)}&order=created_at.asc&limit=5`,
+  );
+  return { question, answer: pickAnswer(question, rows) };
+}
+
+/** Send the saved answer again as a normal stream (no Claude call, nothing billed). */
+async function replayResponse(ctx: Ctx, question: StoredMessage, answer: StoredMessage): Promise<Response> {
+  const { spend, todayCount } = await usageNow(ctx);
+  const threads = await ctx.svc.select<{ title: string | null }>('chat_threads', `select=title&id=eq.${enc(question.thread_id)}`);
+  const title = threads[0]?.title ?? null;
+  log('info', 'replayed', { thread: 'existing' });
+  const body =
+    formatSse('meta', { thread_id: question.thread_id, title, new_thread: false, replayed: true }) +
+    formatSse('done', {
+      thread_id: question.thread_id,
+      title,
+      stopped: false,
+      stop_reason: 'replayed',
+      replayed: true,
+      user_message: question,
+      message: answer,
+      ...usagePayload(ctx, spend, todayCount),
+    });
+  return new Response(body, {
+    status: 200,
+    headers: { ...ctx.cors, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-store' },
+  });
+}
+
+async function handleSend(ctx: Ctx, threadIdIn: string | null, question: string, requestId: string | null): Promise<Response> {
   const { settings, cors } = ctx;
+  let threadId = threadIdIn;
+  // ---- Idempotency: never answer (and bill) the same request id twice ----
+  let savedQuestion: StoredMessage | null = null;
+  if (requestId) {
+    const prior = await findRequest(ctx, requestId);
+    if (prior?.answer) return await replayResponse(ctx, prior.question, prior.answer);
+    if (prior) {
+      // Saved moments ago and the answer is being saved: wait. Older: the save failed half-way.
+      if (ctx.now.getTime() - Date.parse(prior.question.created_at) < STALE_RESERVATION_MS) return errorResponse('in_progress', cors);
+      savedQuestion = prior.question;
+      threadId = prior.question.thread_id;
+    }
+  }
   let history: HistoryMessage[] = [];
   if (threadId) {
     const t = await loadThread(ctx, threadId, MAX_HISTORY_MESSAGES + 4);
@@ -358,7 +418,7 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
     location: cleanLocation(settings.location),
   });
 
-  const reservation = await reserveSpend(ctx, 'send', estimate, threadId);
+  const reservation = await reserveSpend(ctx, 'send', estimate, threadId, savedQuestion ? null : requestId);
   if (reservation.refused) return reservation.refused;
   const reservationId = reservation.id;
 
@@ -391,14 +451,15 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
   let clientOpen = true;
   let controller!: ReadableStreamDefaultController<Uint8Array>;
   let userStopped = false;
-  const send = (event: string, data: unknown) => {
+  const sendRaw = (text: string) => {
     if (!clientOpen) return;
     try {
-      controller.enqueue(encoder.encode(formatSse(event, data)));
+      controller.enqueue(encoder.encode(text));
     } catch {
       clientOpen = false;
     }
   };
+  const send = (event: string, data: unknown) => sendRaw(formatSse(event, data));
   const close = () => {
     if (!clientOpen) return;
     clientOpen = false;
@@ -422,6 +483,17 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
 
   const job = (async () => {
     send('meta', { thread_id: id, title, new_thread: isNew });
+    // Web searches and long answers can leave the stream silent for a while: a comment every 15 s
+    // tells the app the connection is alive (it gives up after 45 s of silence).
+    const keepAlive = setInterval(() => sendRaw(SSE_KEEPALIVE), KEEPALIVE_MS);
+    try {
+      await answer();
+    } finally {
+      clearInterval(keepAlive);
+    }
+    close();
+  })();
+  async function answer() {
     const acc = createClaudeAccumulator();
     const parser = createSseParser((e) => {
       for (const u of acc.apply(e)) {
@@ -459,12 +531,10 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
       await chargeQuietly(ctx, reservationId, acc.started ? cost.usd : 0, tokens);
       const reason = acc.error ? upstreamReason(0, acc.error.type) : 'temporary';
       send('error', { error: 'upstream_error' as ErrorCode, reason, ...usagePayload(ctx, spend + (acc.started ? cost.usd : 0), todayCount) });
-      close();
       return;
     }
     if (stopped && !acc.started) {
       await releaseQuietly(ctx, reservationId);
-      close();
       return; // nothing was generated
     }
 
@@ -473,7 +543,8 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
     try {
       const by = { created_by: ctx.editor.id, created_by_name: ctx.editor.name };
       if (isNew) await ctx.svc.insert('chat_threads', { id, title, ...by });
-      const userRow = await ctx.svc.insert('chat_messages', { thread_id: id, role: 'user', content: question, ...by });
+      // The question's id is the client's request id, so a repeat of this request finds it.
+      const userRow = savedQuestion || (await ctx.svc.insert('chat_messages', { ...(requestId ? { id: requestId } : {}), thread_id: id, role: 'user', content: question, ...by }));
       const assistantRow = await ctx.svc.insert('chat_messages', {
         thread_id: id,
         role: 'assistant',
@@ -512,8 +583,7 @@ async function handleSend(ctx: Ctx, threadId: string | null, question: string): 
       await chargeQuietly(ctx, reservationId, cost.usd, tokens);
       send('error', { error: 'server_error' as ErrorCode, ...usagePayload(ctx, spend + cost.usd, todayCount) });
     }
-    close();
-  })();
+  }
   // Keep the worker alive until the answer is saved, even if the app disconnects.
   runtime?.waitUntil?.(job);
 
