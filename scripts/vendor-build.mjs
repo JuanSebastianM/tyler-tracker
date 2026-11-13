@@ -7,7 +7,7 @@ import { join, resolve } from 'node:path';
 import { createRequire } from 'node:module';
 
 const root = resolve(import.meta.dirname, '..');
-const installDir = resolve(process.argv[2] || '.vendor-build');
+const installDir = resolve(process.argv[2] || 'vendor-build-tmp');
 const require = createRequire(join(installDir, 'package.json'));
 const esbuild = require('esbuild');
 

@@ -21,14 +21,14 @@ jobs:
           node-version: 22
       - name: Install pinned packages
         run: |
-          mkdir -p .vendor-build
-          cd .vendor-build
+          mkdir -p vendor-build-tmp
+          cd vendor-build-tmp
           npm init -y > /dev/null
           specs=$(node -e "const v=require('../vendor/versions.json').packages;console.log(Object.entries(v).map(([n,r])=>n+'@'+r).join(' '))")
           echo "Installing: $specs esbuild@0.28.2"
           npm install --no-audit --no-fund --save-exact $specs esbuild@0.28.2
       - name: Bundle
-        run: node scripts/vendor-build.mjs .vendor-build
+        run: node scripts/vendor-build.mjs vendor-build-tmp
       - name: Smoke test bundles
         run: |
           node --input-type=module -e "
@@ -40,7 +40,7 @@ jobs:
           ls -la vendor
       - name: Commit
         run: |
-          rm -rf .vendor-build
+          rm -rf vendor-build-tmp
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add vendor

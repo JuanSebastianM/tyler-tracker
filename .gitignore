@@ -1,0 +1,6 @@
+node_modules/
+vendor-build-tmp/
+test-results/
+playwright-report/
+_site/
+.DS_Store
