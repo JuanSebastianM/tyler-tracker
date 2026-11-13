@@ -63,12 +63,14 @@ src/
   lib/                     Framework-level helpers shared by all features
     supabase.js  auth.js  router.js  i18n.js  store.js  dates.js  markdown.js  content.js
     storage.js (safe localStorage)  toast.js  pwa.js (service worker, install detection)
-    ui/                    UI kit (index.js re-exports everything); kitchen-sink.js = #/dev/ui
+    ui/                    UI kit (index.js re-exports everything); kitchen-sink.js = #/dev/ui;
+                           photo-viewer.js + back-close.js (shared full-screen photo viewer)
+  version.js               APP_VERSION, stamped at deploy ('dev' locally)
   data/                    table-store.js (generic store), stores.js (one per table),
                            derived.js (age, today, due items), photos.js, types.d.ts (row types)
   features/
     registry.js            Imports every feature and exposes routes + tabs
-    today/ log/ health/ learn/ profile/
+    today/ log/ health/ learn/ profile/ assistant/
       index.js             export const feature = { id, routes, tab }
       i18n/es.json en.json Feature-local strings (merged at boot under the feature id namespace)
       *.js *.css           Components and styles for that feature only
@@ -76,7 +78,7 @@ src/
   styles/                  tokens.css, base.css, components.css
 content/                   Bilingual reading content (see docs/CONTENT.md)
 supabase/migrations/       SQL, applied to the project by the orchestrator only
-tests/unit/ tests/e2e/     Tests (e2e: helpers.js, fixtures.js, supabase-mock.js are shared)
+tests/unit/ tests/e2e/     Tests (e2e shared: helpers.js, fixtures.js, content-fixtures.js, supabase-mock.js)
 scripts/                   Dev server, deploy stamping, vendor build, checks
 docs/                      This file, CONTENT.md, FEATURE_GUIDE.md, PLAN.md
 .github/workflows/         ci.yml (checks + deploy), vendor.yml, nightly.yml
@@ -100,7 +102,14 @@ Hash routing (`#/today`), so GitHub Pages needs no rewrite rules. Route ids are 
 | profile  | Tyler         | `#/profile`  | Profile, photos and milestones, settings (language, meals), sign-in, export |
 
 Sub-routes are owned by the feature (`#/health/vaccines`, `#/learn/faq`, `#/learn/guide/<id>`...).
-Unknown routes redirect to `#/today`. The shell also owns `#/dev/ui` (UI kit reference page, not in
+Unknown routes redirect to `#/today`.
+
+**Back.** Sub-routes get a header back button. The router stamps every history entry the app creates
+with its depth (`history.state.ttIdx`, 0 = the page the app was opened on). `goBack(fallback)` uses
+`history.back()` only when the previous entry is the app's; on a deep link (first page opened, e.g.
+from a shared link or the home screen) it replaces the entry with the route's `back`, else the
+closest parent path that is a route (`parentPath()`). Nothing in the app may call `history.back()`
+directly: overlays use `useCloseOnBack()` (below), which only steps back over its own entry. The shell also owns `#/dev/ui` (UI kit reference page, not in
 the tab bar). Each feature's stylesheet `src/features/<id>/<id>.css` is linked statically from
 `index.html` (no flash of unstyled content); a feature may `@import` more files from its folder.
 
@@ -130,18 +139,41 @@ Source of truth: `supabase/migrations/*.sql`. Summary:
 
 ### In-app assistant (chat with Claude)
 
-Editors can ask questions inside the app. Feature id `assistant` (no tab; route `#/assistant`).
+Editors can ask questions inside the app. Feature id `assistant` (no tab; route `#/assistant`,
+`#/assistant?t=<thread id>`, `#/assistant/threads`; opened from the sparkle button in the header).
 
-- A Supabase Edge Function `chat` (source in `supabase/functions/chat/`, deployed by the orchestrator)
-  holds the `ANTHROPIC_API_KEY` secret and calls the Claude Messages API. The key is never in the repo
-  or the client. The function requires a valid editor JWT, enforces the limits in `ai_settings`
-  (model, monthly budget in USD, daily messages per editor, web search on/off and max searches,
-  max output tokens), builds the system prompt with Tyler's context from the database, and writes
+- A Supabase Edge Function `chat` (source in `supabase/functions/chat/`, `index.ts` + `lib/*.ts`,
+  deployed with `verify_jwt` on) holds the `ANTHROPIC_API_KEY` secret and calls the Claude Messages
+  API. The key is never in the repo or the client. The function checks that the caller is an editor
+  (the gateway also accepts the publishable key), enforces the limits in `ai_settings` (enabled,
+  model, monthly budget in USD, daily messages per editor, web search on/off and max searches, max
+  output tokens), builds the system prompt with Tyler's context from the database, and writes
   `chat_threads` / `chat_messages` with token counts and cost using the service role.
+- One endpoint, `POST /functions/v1/chat` with JSON `{ action, ... }` (client: `src/features/assistant/api.js`):
+  - `status` → `{ budget, daily, enabled, ... }` (no Claude call).
+  - `send` `{ message, thread_id? }` → Server-Sent Events: `meta` (thread id/title), `status`
+    (`searching`), `delta` (text chunks), then `done` (saved `user_message` and `message` rows +
+    usage) or `error`. Refusals (budget, daily limit, disabled, not an editor) are plain JSON with an
+    HTTP error and `{ error: <code>, ...usage }`.
+  - `draft_faq` `{ thread_id }` → `{ draft }`: a bilingual FAQ entry proposed from the thread. Nothing
+    is saved until the editor confirms in the sheet; then the client inserts a `faq_entries` row.
+    The draft call is billed and stored as an assistant message tagged `<!--faq-draft-->`, which the
+    chat hides (`visibleMessages()`).
 - Tables (migration 0003): `ai_settings` (single row), `chat_threads`, `chat_messages` are readable by
   editors only and writable only by the function (editors may rename/delete a thread).
   `faq_entries` (bilingual question/answer saved from a conversation) is public read, editor write.
-- The FAQ screen shows `content/faq.json` entries and `faq_entries` rows together.
+- **Usage ledger** (migration 0004, applied): `ai_usage` gets one row per billed message from a
+  trigger on `chat_messages` and is never deleted with a thread. The monthly budget is the sum of
+  `ai_usage.cost_usd` since the start of the month in the settings timezone, so deleting
+  conversations cannot lower the measured spend.
+- **Loading messages.** `chat_threads` is a normal private store (`chatThreads`). Messages are not a
+  table store: `src/features/assistant/session.js` loads one thread's `chat_messages` on demand
+  (`loadThreadMessages`), keeps them in memory only (never in `localStorage`), and clears everything
+  on sign-out. The answer being streamed lives in the same module-level `session` store, so it keeps
+  streaming while the editor moves around the app. When `done` arrives the thread is reloaded and the
+  streaming bubble is dropped as soon as the saved answer (`done.message.id`) is in the list.
+- The FAQ screen (`#/learn/faq`) shows `content/faq.json` entries and `faq_entries` rows together,
+  newest first; the "saved" toast after confirming a draft links there.
 
 ## 6. Reading content
 
@@ -159,22 +191,48 @@ site.
   deploy activates on next launch and shows an "updated" toast. If an update arrives while the app
   is open, a toast offers "Update". `scripts/build-site.mjs` stamps the version and precache list.
   The worker is never registered on localhost; `?sw=off` disables (and unregisters) it on any host.
+- **Version.** `src/version.js` exports `APP_VERSION` (`'<short sha>-<UTC yyyymmddThhmm>'`), stamped
+  by `scripts/build-site.mjs` with the same value as the service worker cache; `'dev'` locally. Use
+  it wherever the running version is shown (About card); never parse cache names. The deploy smoke
+  step checks the stamp on Pages.
 - Content JSON: network-first with cache fallback. Supabase requests are never cached by the service
   worker; each data store keeps its last successful result in `localStorage` and renders it immediately
   (stale-while-revalidate), refreshing on launch, on tab focus and after writes.
 - Writes need a connection in v1. Offline writes fail fast with a clear toast.
 
-## 8. Quality bar
+## 8. Shared UI conventions introduced by the features
 
-- `npm run check` = typecheck + unit tests + i18n key parity (every key exists in es and en) + e2e smoke.
-  It must pass before any push to `main`; CI runs the same and only then deploys.
+- **Photo viewer** (`PhotoViewer` in the UI kit): full screen, pinch / double-tap / wheel zoom,
+  pan, swipe between photos, close button, Escape, back gesture, focus returns to the opener. Use
+  it for every photo (Profile, Memories, Health records); pass `overSheet` when it opens from a sheet.
+- **Overlays and history.** `useCloseOnBack(onClose)` lets the browser/OS back close an overlay: it
+  pushes one same-URL entry (in a layout effect, before paint), closes the top overlay on popstate,
+  and on a UI close steps back only if the current entry is still its own, waiting for an in-flight
+  back before pushing again. Sheets do not touch history.
+- Modal key handlers (Escape, focus trap) attach in layout effects; the viewer listens in the capture
+  phase so a sheet underneath does not also close.
+- **Markdown headings.** `#`/`##` → h2, `###` → h3. Bodies under their own heading pass
+  `headingOffset` (`<Markdown headingOffset=${1}>` in Learn articles, whose title is an h2); the look
+  follows the source level (`.md-h2`..`.md-h4`).
+- **Due items** link to their Health screen with `DUE_KIND_PATH[kind]` (`src/data/derived.js`).
+- Icons include `search` (search fields) and `chevron-up`; add icons to `src/lib/ui/icons.js`
+  instead of rotating others.
+
+## 9. Quality bar
+
+- `npm run check` = typecheck + unit tests + i18n key parity (every key exists in es and en) + content
+  schemas + e2e. It must pass before any push to `main`; CI runs the same and only then deploys.
+- **Tests never depend on the real `/content` files**: `mockSupabase` serves the fake content in
+  `tests/e2e/content-fixtures.js` for every `content/*.json` request, so the content can be rewritten
+  or emptied without breaking the suite. Unit tests use inline fake content too. Only the review
+  screenshot spec `integration-screenshots.spec.js` uses the real files (`content: 'real'`).
 - Each feature ships unit tests for its pure logic and at least one e2e test for its main flow in both
   signed-out and editor modes.
 - Accessibility: semantic elements, labels on inputs, visible focus, colour contrast AA, respects
   `prefers-reduced-motion`.
 - No `innerHTML` with dynamic data. No secrets in the repo. No analytics or third-party requests.
 
-## 9. Git workflow
+## 10. Git workflow
 
 - `main` is always deployable. Feature work happens on `feat/<id>` branches; the orchestrator reviews and
   merges. Small, descriptive commits in English.

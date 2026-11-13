@@ -1,6 +1,6 @@
 # Feature guide
 
-How to build a feature (`today`, `log`, `health`, `learn`, `profile`) on top of the foundation.
+How to build a feature (`today`, `log`, `health`, `learn`, `profile`, `assistant`) on top of the foundation.
 Read `docs/ARCHITECTURE.md` first; this is the practical companion. The `#/dev/ui` page shows every
 shared component live.
 
@@ -25,7 +25,7 @@ On a `feat/<id>` branch, only:
 - `content/**` (content branch only), `docs/CONTENT.md` only if a schema changes (coordinate)
 
 Everything else (`src/lib`, `src/data`, `src/styles`, `src/i18n`, `index.html`, `sw.js`, workflows,
-`tests/e2e/helpers.js|fixtures.js|supabase-mock.js`) is shared: propose changes in your hand-off
+`tests/e2e/helpers.js|fixtures.js|content-fixtures.js|supabase-mock.js`) is shared: propose changes in your hand-off
 notes. A tiny, clearly necessary fix is OK if you call it out. Need a new shared string? Put it in
 your feature namespace instead.
 
@@ -50,6 +50,10 @@ export const feature = {
 };
 ```
 
+Back: the header button goes back in history only when the previous entry is the app's; on a deep
+link it goes to `back` or the closest parent route. Never call `history.back()` yourself (use
+`goBack(fallback)` from `src/lib/router.js`).
+
 Screens receive `{ params, query }`. Navigate with links (`href('/health/vaccines')` from
 `src/lib/router.js` gives `#/health/vaccines`) or `navigate(path)`. Wrap the screen in a root element
 with your feature class (`<div class="health stack">`) and scope all CSS under it in `<id>.css`
@@ -63,7 +67,7 @@ colours, and check both light and dark.
 import { html, useState } from '../../../vendor/preact.js';
 import { Card, ListRow, List, Button, IconButton, Fab, Sheet, ConfirmDialog, TextInput, NumberInput,
   DateInput, TimeInput, TextArea, Select, Segmented, Switch, EmptyState, Badge, Skeleton, Spinner,
-  Icon, Markdown, Sources, HealthDisclaimer, EditorOnly } from '../../lib/ui/index.js';
+  Icon, Markdown, Sources, HealthDisclaimer, EditorOnly, PhotoViewer, useCloseOnBack } from '../../lib/ui/index.js';
 ```
 
 - `Card` (`title`, `action`, `tone="gold|quiet"`), `List` + `ListRow` (`icon`, `iconTone`, `title`,
@@ -74,7 +78,18 @@ import { Card, ListRow, List, Button, IconButton, Fab, Sheet, ConfirmDialog, Tex
   `ConfirmDialog` before deletes (`danger`).
 - `Fab` is the one floating add button per screen; always inside `EditorOnly`.
 - `EmptyState` (`icon`, `title`, `body`, `action`) for empty lists: tell people what to do.
-- Icons: see `ICON_NAMES` / `#/dev/ui`. Add icons by proposing them in hand-off notes.
+- `PhotoViewer` for any full-screen photo: `photos=[{ id, url, alt, caption?, date? }]`, `index`,
+  `onIndex`, `onClose`, optional `actions(photo)` (editor buttons), `opener` (element to refocus),
+  `overSheet` when opened from a sheet. It handles pinch / double-tap / wheel zoom, pan, swipe,
+  Escape and the back gesture.
+- Any other full-screen overlay that should close on the back gesture: `useCloseOnBack(onClose)`
+  while mounted. Do not push or pop history yourself.
+- `Markdown`: pass `headingOffset=${1}` when the body sits under its own h2 (articles).
+- Icons: see `ICON_NAMES` / `#/dev/ui` (includes `search`, `chevron-up`). Add icons to
+  `src/lib/ui/icons.js` instead of rotating another one.
+- Optional fields: no `required`; say "Opcional." in the hint and save `null` when empty.
+- Due items: link to `DUE_KIND_PATH[item.kind]` from `src/data/derived.js`.
+- App version: `APP_VERSION` from `src/version.js` (`'dev'` locally).
 - Toasts: `toast(t('common.saved'), { tone: 'success' })` from `src/lib/toast.js`. Store writes
   already toast on failure; do not toast errors twice.
 
@@ -186,11 +201,21 @@ test('visitors see no add button', async ({ page }) => {
 });
 ```
 
-`openApp(page, path, { mode, fixtures, now, failWrites, locale })`; `sb.db` is the in-memory
-database (fixtures in `tests/e2e/fixtures.js`, override per test), `sb.restCalls(table, method)`
-lists requests. Use `failWrites: true` to test rollback. Prefer role/label locators; add
+`openApp(page, path, { mode, fixtures, now, failWrites, locale, content, chat })`; `sb.db` is the
+in-memory database (fixtures in `tests/e2e/fixtures.js`, override per test), `sb.restCalls(table,
+method)` lists requests.
+
+**Never depend on the real `/content` files.** Every `content/*.json` request is served from
+`tests/e2e/content-fixtures.js` (fake bilingual items for every file; the current stage at
+`FIXED_NOW` is `stage-early`). Read ids and titles from there (`contentItems('training')[0]`,
+`fixtureStage(7)`), and override per test: `openApp(page, '/learn/faq', { content: { faq: { version:
+1, items: [] } } })`; `null` makes the file 404. Do not `page.route()` content yourself (the mock's
+route wins). Only review screenshot specs may pass `content: 'real'`. Use `failWrites: true` to test rollback. Prefer role/label locators; add
 `data-testid` only where text is ambiguous. Each feature: both signed-out and editor coverage, and
 keep the "no horizontal scroll" check green.
+
+Overlays: assert that closing never changes the route and that `page.goBack()` with an overlay open
+only closes it.
 
 ## 9. Before you hand off
 
