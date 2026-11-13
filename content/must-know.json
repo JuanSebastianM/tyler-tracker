@@ -2,35 +2,385 @@
   "version": 1,
   "items": [
     {
-      "id": "toxic-foods",
-      "sample": true,
+      "id": "emergency-signs",
       "priority": "critical",
-      "title": { "es": "Alimentos tóxicos", "en": "Toxic foods" },
+      "title": {
+        "es": "Señales de emergencia: al veterinario ya",
+        "en": "Emergency signs: go to the vet now"
+      },
       "summary": {
-        "es": "Chocolate, uvas, pasas, cebolla, ajo y xilitol nunca.",
-        "en": "Never chocolate, grapes, raisins, onion, garlic or xylitol."
+        "es": "Si ves alguna de estas señales, llama a urgencias y sal para allá.",
+        "en": "If you see any of these signs, call an emergency vet and head there."
       },
       "body": {
-        "es": "Algunos alimentos comunes son peligrosos para los perros:\n\n- **Chocolate** y café\n- **Uvas y uvas pasas**\n- **Cebolla y ajo**, crudos o cocinados\n- **Xilitol** (chicles y productos sin azúcar)\n- Nueces de macadamia\n\nSi Tyler come algo de esta lista, llama al veterinario de inmediato.",
-        "en": "Some common foods are dangerous for dogs:\n\n- **Chocolate** and coffee\n- **Grapes and raisins**\n- **Onion and garlic**, raw or cooked\n- **Xylitol** (gum and sugar-free products)\n- Macadamia nuts\n\nIf Tyler eats anything on this list, call the vet right away."
+        "es": "Si Tyler muestra cualquiera de estas señales, llama a un veterinario de urgencias y ve en camino. No esperes a ver si mejora solo.\n\n## Prepárate hoy, antes de necesitarlo\n- Busquen \"veterinaria 24 horas\" en Sabaneta, Envigado e Itagüí y confirmen por teléfono que atienden urgencias de noche y los fines de semana.\n- Guarden en el celular de los dos el número y la dirección de la clínica de urgencias más cercana.\n- Pregúntenle al nuevo veterinario a qué clínica de urgencias recomienda ir fuera de su horario.\n\n## Parvovirus y moquillo (mientras no tenga todas las vacunas)\nUn cachorro sin el esquema completo es el más vulnerable. Ve al veterinario si notas:\n- Decaimiento, no quiere comer ni jugar.\n- Vómito o diarrea, sobre todo si es abundante o con sangre.\n- Barriga adolorida o hinchada, fiebre o temperatura baja, babeo por náuseas.\n- Secreción en ojos o nariz, problemas para respirar, temblores o convulsiones.\n\nEn un cachorro sin vacunas completas, cualquier vómito o diarrea merece consulta: el parvovirus puede empeorar en horas y la deshidratación es peligrosa.\n\n## Estómago hinchado (torsión gástrica)\nBarriga hinchada, arcadas sin sacar nada, babeo, inquietud, se mira la barriga, jadeo o debilidad. Es más común en perros grandes de pecho profundo y necesita atención inmediata; entre más temprano, mejor pronóstico.\n\n## Envenenamiento\nSi sabes o sospechas que comió algo tóxico, llama aunque se vea bien: algunos síntomas tardan horas o días en aparecer. Lleva el empaque o una muestra. No le provoques el vómito sin indicación de un veterinario. Mira la guía \"Alimentos tóxicos y peligros de la casa\".\n\n## Golpe de calor\nJadeo muy fuerte, babeo, inquietud, encías muy rojas o de color raro, tambaleo, vómito o colapso. Llévalo a la sombra, mójalo con agua fresca (no helada), ponle un ventilador y sal hacia el veterinario con el aire del carro encendido.\n\n## Atragantamiento\nLe cuesta respirar, hace ruidos de ahogo, se toca la boca con las patas o la lengua y las encías se ponen azuladas. Si ves el objeto, sácalo con cuidado usando unas pinzas, no los dedos: del susto puede morder. Si no sale, ve de inmediato al veterinario.\n\n## Otras señales que no esperan\n- Dificultad para respirar, o encías azuladas o muy pálidas.\n- Convulsiones, desmayo o colapso.\n- Se tragó un objeto, un hueso o un juguete.",
+        "en": "If Tyler shows any of these signs, call an emergency vet and get on your way. Do not wait to see whether he gets better on his own.\n\n## Get ready today, before you need it\n- Search for \"veterinaria 24 horas\" in Sabaneta, Envigado and Itagüí, and call to confirm they see emergencies at night and on weekends.\n- Save the number and address of the nearest emergency clinic on both of your phones.\n- Ask the new vet which emergency clinic they recommend outside their hours.\n\n## Parvovirus and distemper (until his vaccines are complete)\nA puppy who has not finished his series is the most vulnerable. Go to the vet if you notice:\n- Lethargy, no interest in food or play.\n- Vomiting or diarrhoea, especially if it is heavy or bloody.\n- A painful or swollen belly, fever or a low temperature, drooling from nausea.\n- Discharge from the eyes or nose, breathing problems, twitching or seizures.\n\nIn a puppy who is not fully vaccinated, any vomiting or diarrhoea deserves a visit: parvovirus can get worse within hours and dehydration is dangerous.\n\n## Swollen stomach (bloat and twisting)\nA swollen belly, retching without bringing anything up, drooling, restlessness, looking at his belly, panting or weakness. It is more common in large, deep-chested dogs and needs immediate care; the earlier, the better the outlook.\n\n## Poisoning\nIf you know or suspect he ate something toxic, call even if he seems fine: some signs take hours or days to show. Bring the packaging or a sample. Do not make him vomit unless a vet tells you to. See the \"Toxic foods and household hazards\" guide.\n\n## Heatstroke\nVery heavy panting, drooling, restlessness, very red or oddly coloured gums, wobbling, vomiting or collapse. Move him to the shade, wet him with cool (not ice-cold) water, put him in front of a fan and head to the vet with the car's air conditioning on.\n\n## Choking\nHe struggles to breathe, makes choking sounds, paws at his mouth, or his tongue and gums turn bluish. If you can see the object, remove it carefully with tweezers or pliers, not your fingers: he may bite out of panic. If it does not come out, go to the vet immediately.\n\n## Other signs that cannot wait\n- Trouble breathing, or bluish or very pale gums.\n- Seizures, fainting or collapse.\n- He swallowed an object, a bone or a toy."
       },
-      "sources": [{ "title": "ASPCA: People foods to avoid feeding your pets", "url": "https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets" }],
+      "sources": [
+        {
+          "title": "AVMA: Canine parvovirus",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/canine-parvovirus"
+        },
+        {
+          "title": "Merck Veterinary Manual (dog owners): Canine distemper (hardpad disease)",
+          "url": "https://merckvetmanual.com/dog-owners/disorders-affecting-multiple-body-systems-of-dogs/canine-distemper-hardpad-disease"
+        },
+        {
+          "title": "Texas A&M Veterinary Medicine: When to see a veterinarian for a dog's stomach ache",
+          "url": "https://vetmed.tamu.edu/news/pet-talk/dogs-stomach-ache"
+        },
+        {
+          "title": "American College of Veterinary Surgeons: Gastric dilatation-volvulus",
+          "url": "https://www.acvs.org/small-animal/gastric-dilatation-volvulus/"
+        },
+        {
+          "title": "ASPCA: What to do if your pet is poisoned",
+          "url": "https://www.aspca.org/news/what-do-if-your-pet-poisoned"
+        },
+        {
+          "title": "University of Illinois College of Veterinary Medicine: When your pet gets into household toxins",
+          "url": "https://vetmed.illinois.edu/pet-health-columns/pets-household-toxins/"
+        },
+        {
+          "title": "Texas A&M Veterinary Medicine: Keeping dogs cool for the summer to prevent heatstrokes",
+          "url": "https://vetmed.tamu.edu/news/pet-talk/prevent-heatstrokes"
+        },
+        {
+          "title": "AVMA: Warm weather pet safety",
+          "url": "https://avma.org/resources/pet-owners/petcare/warm-weather-pet-safety"
+        },
+        {
+          "title": "PDSA: First aid for choking",
+          "url": "https://www.pdsa.org.uk/pet-help-and-advice/pet-health-hub/other-veterinary-advice/first-aid-for-choking"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
-      "id": "sleep-needs",
-      "sample": true,
-      "priority": "important",
-      "title": { "es": "Necesita dormir mucho", "en": "He needs lots of sleep" },
+      "id": "toxic-foods",
+      "priority": "critical",
+      "title": {
+        "es": "Alimentos tóxicos y peligros de la casa",
+        "en": "Toxic foods and household hazards"
+      },
       "summary": {
-        "es": "Un cachorro duerme 18–20 horas al día; el cansancio lo pone mordelón.",
-        "en": "A puppy sleeps 18–20 hours a day; overtired puppies bite more."
+        "es": "Lo que nunca debe comer y qué hacer si se lo come.",
+        "en": "What he must never eat, and what to do if he does."
       },
       "body": {
-        "es": "Si Tyler está muy mordelón o acelerado, probablemente necesita una siesta. Llévalo a su lugar tranquilo después de jugar.",
-        "en": "If Tyler is very bitey or wound up, he probably needs a nap. Take him to his quiet spot after play."
+        "es": "Guarda todo esto fuera de su alcance. Si se come algo de la lista, sigue los pasos del final.\n\n## Alimentos\n- **Chocolate, café y bebidas con cafeína.** Entre más oscuro el chocolate, más peligroso.\n- **Uvas y uvas pasas:** pueden dañar los riñones.\n- **Xilitol**, un endulzante de chicles, dulces y productos \"sin azúcar\": baja el azúcar en la sangre y puede dañar el hígado.\n- **Cebolla, ajo y cebollín**, crudos o cocinados: dañan los glóbulos rojos.\n- **Nueces de macadamia:** debilidad, temblores y temperatura alta.\n- **Alcohol** y **masa cruda con levadura**.\n- Comida muy salada o muy grasosa, nueces en general y huesos, que pueden lastimar o atascarse en el intestino.\n\n## Cosas de la casa\n- **Medicamentos de personas**, con o sin fórmula: analgésicos, antigripales, suplementos, medicamentos para el corazón, antidepresivos. En Estados Unidos son la causa más común de intoxicación en mascotas.\n- **Productos veterinarios masticables con sabor**, como los calmantes: guárdalos como si fueran dulces.\n- **Veneno para ratas**, insecticidas y abonos.\n- **Productos de limpieza, pilas y los sobrecitos antihumedad** que vienen en zapatos y empaques.\n\n## Plantas comunes\n- **Palma sago o cica:** muy tóxica, puede dañar el hígado.\n- **Adelfa o laurel rosa** (*Nerium oleander*).\n- **Dieffenbachia**, una planta de interior muy común: irrita la boca y causa babeo y vómito.\n- Si no sabes si una planta es segura, asume que no lo es hasta confirmarlo con el veterinario o en la lista de plantas de la ASPCA.\n\n## Si se come algo tóxico\n1. Retíralo del lugar y recoge lo que quede, para que no coma más.\n2. Guarda el empaque, la etiqueta o una muestra, y calcula cuánto comió y a qué hora.\n3. Llama de inmediato a tu veterinario o a una clínica de urgencias, aunque Tyler se vea bien.\n4. No le provoques el vómito ni le des leche, aceite o remedios caseros, salvo que el veterinario lo indique: algunas sustancias hacen más daño al devolverse.\n5. Si tiene convulsiones, le cuesta respirar o colapsa, ve directo a urgencias.",
+        "en": "Keep everything on this list out of his reach. If he eats any of it, follow the steps at the end.\n\n## Foods\n- **Chocolate, coffee and caffeinated drinks.** The darker the chocolate, the more dangerous it is.\n- **Grapes and raisins:** they can damage the kidneys.\n- **Xylitol**, a sweetener in gum, sweets and \"sugar-free\" products: it drops blood sugar and can damage the liver.\n- **Onion, garlic and chives**, raw or cooked: they damage red blood cells.\n- **Macadamia nuts:** weakness, tremors and a high temperature.\n- **Alcohol** and **raw yeast dough**.\n- Very salty or very fatty food, nuts in general, and bones, which can injure or get stuck in the gut.\n\n## Household items\n- **Human medicines**, prescription or not: painkillers, cold and flu remedies, supplements, heart medicines, antidepressants. In the United States they are the most common cause of pet poisoning.\n- **Flavoured veterinary chews**, such as calming chews: store them as you would sweets.\n- **Rat poison**, insecticides and fertilisers.\n- **Cleaning products, batteries and the silica gel packets** that come in shoes and packaging.\n\n## Common plants\n- **Sago palm (cycad):** very toxic, it can damage the liver.\n- **Oleander** (*Nerium oleander*).\n- **Dieffenbachia**, a very common houseplant: it irritates the mouth and causes drooling and vomiting.\n- If you do not know whether a plant is safe, assume it is not until you confirm with the vet or the ASPCA plant list.\n\n## If he eats something toxic\n1. Move him away and pick up whatever is left so he cannot eat more.\n2. Keep the packaging, label or a sample, and work out how much he ate and when.\n3. Call your vet or an emergency clinic right away, even if Tyler seems fine.\n4. Do not make him vomit or give him milk, oil or home remedies unless the vet tells you to: some substances do more harm coming back up.\n5. If he has seizures, struggles to breathe or collapses, go straight to the emergency clinic."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "ASPCA: People foods to avoid feeding your pets",
+          "url": "https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets"
+        },
+        {
+          "title": "ASPCA: The official top 10 toxins of 2024",
+          "url": "https://aspca.org/node/69444"
+        },
+        {
+          "title": "ASPCA toxic plants: Sago palm",
+          "url": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/sago-palm"
+        },
+        {
+          "title": "ASPCA toxic plants: Oleander",
+          "url": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/oleander"
+        },
+        {
+          "title": "ASPCA toxic plants: Dieffenbachia",
+          "url": "https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/dieffenbachia"
+        },
+        {
+          "title": "ASPCA: What to do if your pet is poisoned",
+          "url": "https://www.aspca.org/news/what-do-if-your-pet-poisoned"
+        },
+        {
+          "title": "University of Illinois College of Veterinary Medicine: When your pet gets into household toxins",
+          "url": "https://vetmed.illinois.edu/pet-health-columns/pets-household-toxins/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "before-vaccines-complete",
+      "priority": "critical",
+      "title": {
+        "es": "Antes de completar las vacunas",
+        "en": "Before his vaccines are complete"
+      },
+      "summary": {
+        "es": "Socialízalo desde ya, pero lejos del piso donde pasan muchos perros.",
+        "en": "Socialise him now, but keep him off ground where many dogs pass."
+      },
+      "body": {
+        "es": "Hasta que el veterinario confirme que Tyler terminó su esquema de cachorro (la última dosis suele ser a las 16 semanas o después), no lo pongas en el piso de lugares por donde pasan muchos perros. Pero no lo encierres: estas semanas son las más importantes para que aprenda que el mundo es seguro.\n\n## Por qué las dos cosas importan\n- El parvovirus resiste mucho tiempo en el ambiente, y basta un rastro de popó de un perro infectado para contagiar.\n- La etapa en la que un cachorro acepta mejor lo nuevo va más o menos hasta los 3 meses. Por eso los veterinarios especialistas en comportamiento (AVSAB) recomiendan empezar a socializar antes de completar las vacunas, con precauciones.\n\n## Evita por ahora\n- Parques, zonas verdes del conjunto, aceras y mangas por donde pasan muchos perros.\n- Tiendas de mascotas, peluquerías caninas, guarderías y hoteles para perros.\n- Perros enfermos o de vacunación desconocida, y el popó de otros perros.\n\n## Sí puedes hacer\n- Cargarlo en brazos o en un coche para mascotas para que vea, oiga y huela la calle, el tráfico, las motos y la gente.\n- Recibir visitas en casa: niños tranquilos, personas con gorra, barba, casco o sombrilla.\n- Jugar con perros adultos sanos, vacunados y amables que conozcas, en una casa o un patio limpio.\n- Acostumbrarlo a sonidos de la casa: licuadora, aspiradora, timbre, lluvia fuerte.\n- Paseos cortos en carro y visitas al veterinario solo para saludar y comer premios.\n- Clases para cachorros en un lugar que se pueda limpiar y desinfectar, que pidan al menos una vacuna aplicada 7 días antes de la primera clase y la primera desparasitación.\n\n## A su ritmo\nSi se esconde o tiembla, aléjate un poco de lo que le da miedo y prémialo cuando esté tranquilo. Pocas experiencias buenas valen más que muchas abrumadoras.\n\n## Pregúntale al veterinario\nCuándo puede caminar en la calle y en parques, según su esquema y el riesgo de tu zona. Los veterinarios no siempre coinciden en la fecha: sigue al tuyo.",
+        "en": "Until the vet confirms Tyler has finished his puppy series (the last dose is usually at 16 weeks or later), do not put him down on the ground in places where many dogs pass. But do not shut him in either: these weeks are the most important for learning that the world is safe.\n\n## Why both matter\n- Parvovirus survives a long time in the environment, and a trace of faeces from an infected dog is enough to spread it.\n- The window when a puppy accepts new things most easily lasts until roughly 3 months of age. That is why veterinary behaviourists (AVSAB) recommend starting socialisation before the vaccine series is complete, with precautions.\n\n## Avoid for now\n- Parks, the green areas of your building complex, pavements and grass verges where many dogs pass.\n- Pet shops, dog groomers, daycares and boarding kennels.\n- Sick dogs or dogs of unknown vaccination status, and other dogs' faeces.\n\n## What you can do\n- Carry him, or use a pet stroller, so he can see, hear and smell the street, traffic, motorbikes and people.\n- Have visitors at home: calm children, people with caps, beards, helmets or umbrellas.\n- Let him play with healthy, vaccinated, friendly adult dogs you know, in a clean house or yard.\n- Get him used to household sounds: blender, vacuum cleaner, doorbell, heavy rain.\n- Short car rides, and visits to the vet just to say hello and get treats.\n- Puppy classes in a place that can be cleaned and disinfected, which require at least one vaccine given 7 days before the first class and a first deworming.\n\n## At his pace\nIf he hides or trembles, move a little further from what scares him and reward him when he is calm. A few good experiences are worth more than many overwhelming ones.\n\n## Ask the vet\nWhen he can walk on the street and in parks, based on his vaccines and the risk in your area. Vets do not always agree on the date: follow yours."
+      },
+      "sources": [
+        {
+          "title": "AVMA: Canine parvovirus",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/canine-parvovirus"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://indoorpet.osu.edu/sites/default/files/imce/Puppy_Socialization_Position_download_-_10-4-14.pdf"
+        },
+        {
+          "title": "WSAVA: 2024 guidelines for the vaccination of dogs and cats",
+          "url": "https://wsava.org/wp-content/uploads/2024/05/2024-Guidelines-for-the-Vaccination-of-Dogs-and-Cats.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "vaccine-deworming-calendar",
+      "priority": "critical",
+      "title": {
+        "es": "Calendario de vacunas y desparasitación",
+        "en": "Vaccine and deworming calendar"
+      },
+      "summary": {
+        "es": "Varias dosis hasta las 16 semanas o más, un refuerzo y la antirrábica obligatoria.",
+        "en": "Several doses until 16 weeks or later, a booster, and the legally required rabies shot."
+      },
+      "body": {
+        "es": "Lleva a Tyler a cada cita de vacunas y desparasitación en la fecha que te dé el veterinario, y regístrala en la app. Esta es la lógica, en palabras sencillas.\n\n## Por qué tantas dosis\nLos cachorros reciben defensas de la mamá que duran unas semanas. Mientras están, pueden bloquear la vacuna, y no se sabe exactamente cuándo desaparecen en cada cachorro. Por eso la vacuna se repite cada 2 a 4 semanas hasta las 16 semanas de edad o más: así alguna dosis lo protege justo cuando bajan las defensas de la mamá.\n\n## Lo que suele incluir el esquema\n- **Vacunas básicas** (la \"polivalente\" o \"múltiple\"): moquillo, parvovirus y hepatitis canina. Las guías mundiales de la WSAVA las recomiendan para todos los perros.\n- **Rabia:** obligatoria en Colombia (abajo hay más detalle).\n- **Otras según el riesgo de la zona**, como leptospirosis o tos de las perreras: las decide el veterinario.\n- **Un refuerzo a las 26 semanas o después.** La WSAVA lo recomienda para proteger a los pocos cachorros en los que la última dosis de cachorro no funcionó.\n\n## Por qué las fechas importan\nAtrasar una dosis deja una ventana sin protección justo en la edad de más riesgo. Si se pasa una fecha, no repitas nada por tu cuenta: llama al veterinario para reprogramar.\n\n## La vacuna antirrábica en Colombia\n- La ley colombiana hace obligatoria la vacunación de los animales domésticos contra las enfermedades prevenibles que pasan a las personas, entre ellas la rabia. Los dueños deben vacunarlos y mostrar el certificado vigente si la autoridad sanitaria lo pide (Decreto 780 de 2016).\n- En Sabaneta, la Secretaría de Salud vacuna contra la rabia a partir de los 3 meses de edad, y la vacuna se aplica cada año. Hace jornadas en barrios y veredas; tu veterinario también la puede aplicar.\n- Guarda el carné de vacunas: ahí queda el registro que te pueden pedir.\n\n## Desparasitación\n- Los cachorros se desparasitan seguido porque se infectan con lombrices desde muy pequeños. La guía europea ESCCAP propone empezar a los 14 días de vida, repetir cada 2 semanas hasta 2 semanas después del destete y, si el cachorro tiene riesgo extra (por ejemplo, va a clases o juega con otros perros), cada mes hasta los 6 meses.\n- Después, la frecuencia depende de su estilo de vida, y los veterinarios no siempre coinciden: sigue el plan del tuyo.\n- Algunas lombrices del perro pueden pasar a las personas: recojan siempre el popó y lávense las manos después.\n\n## Lo que ya tiene Tyler\n- Primera desparasitación: 1 de noviembre de 2026.\n- Primera vacuna: 8 de noviembre de 2026.\n\nLleva cualquier registro de esas dos fechas (carné, sticker de la vacuna, foto o factura) a la primera cita con el nuevo veterinario, para que arme con eso el resto del calendario.",
+        "en": "Take Tyler to every vaccine and deworming appointment on the date the vet gives you, and log it in the app. Here is the logic in plain words.\n\n## Why so many doses\nPuppies get antibodies from their mother that last a few weeks. While they are present they can block the vaccine, and nobody knows exactly when they fade in each puppy. That is why the vaccine is repeated every 2 to 4 weeks until 16 weeks of age or later: one of the doses protects him right as his mother's antibodies drop.\n\n## What the series usually includes\n- **Core vaccines** (the combined \"polyvalent\" shot): distemper, parvovirus and infectious canine hepatitis. The global WSAVA guidelines recommend them for every dog.\n- **Rabies:** required by law in Colombia (more detail below).\n- **Others depending on local risk**, such as leptospirosis or kennel cough: the vet decides.\n- **A booster at 26 weeks or later.** WSAVA recommends it to protect the few puppies in whom the last puppy dose did not work.\n\n## Why dates matter\nDelaying a dose leaves a gap without protection at the age of greatest risk. If a date slips, do not repeat anything on your own: call the vet to reschedule.\n\n## Rabies vaccination in Colombia\n- Colombian law makes vaccination of domestic animals mandatory against preventable diseases that pass to people, rabies among them. Owners must have their animals vaccinated and show a valid certificate if the health authority asks for it (Decreto 780 de 2016).\n- In Sabaneta, the municipal health office vaccinates against rabies from 3 months of age, and the vaccine is given every year. It runs vaccination days in neighbourhoods and rural areas; your vet can also give it.\n- Keep the vaccination card: it is the record you may be asked for.\n\n## Deworming\n- Puppies are dewormed often because they pick up worms from a very young age. The European ESCCAP guideline suggests starting at 14 days of age, repeating every 2 weeks until 2 weeks after weaning and then, if the puppy has extra risk (for example, he goes to classes or plays with other dogs), monthly until 6 months.\n- After that, the frequency depends on his lifestyle, and vets do not always agree: follow your vet's plan.\n- Some dog worms can pass to people: always pick up the poop and wash your hands afterwards.\n\n## What Tyler already has\n- First deworming: 1 November 2026.\n- First vaccine: 8 November 2026.\n\nBring any record of those two dates (vaccination card, vaccine sticker, photo or invoice) to the first visit with the new vet, so they can build the rest of the calendar from it."
+      },
+      "sources": [
+        {
+          "title": "WSAVA: 2024 guidelines for the vaccination of dogs and cats",
+          "url": "https://wsava.org/wp-content/uploads/2024/05/2024-Guidelines-for-the-Vaccination-of-Dogs-and-Cats.pdf"
+        },
+        {
+          "title": "Decreto 780 de 2016, Ministerio de Salud y Protección Social (arts. 2.8.5.2.19, 2.8.5.2.32 y 2.8.5.2.41)",
+          "url": "https://normativa.colpensiones.gov.co/colpens/docs/decreto_0780_2016_pr042.htm"
+        },
+        {
+          "title": "Alcaldía de Sabaneta, Secretaría de Salud: Vacunación antirrábica (hoja de vida del trámite)",
+          "url": "https://sabaneta.gov.co/files/tramites/hv/17744723967777.pdf"
+        },
+        {
+          "title": "ESCCAP: Scheme for individual worm management in dogs",
+          "url": "https://www.esccap.org/uploads/docs/k37pvjys_0778_ESCCAP_GL1__Worm_Management_Scheme_Fact_Sheet__Dogs_v8.pdf"
+        },
+        {
+          "title": "CDC Healthy Pets, Healthy People: Dogs",
+          "url": "https://www.cdc.gov/healthy-pets/about/dogs.html"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "first-vet-visit-and-id",
+      "priority": "important",
+      "title": {
+        "es": "Primera cita con el nuevo veterinario e identificación",
+        "en": "First visit with the new vet, and ID"
+      },
+      "summary": {
+        "es": "Qué llevar, qué preguntar y cómo identificarlo si se pierde.",
+        "en": "What to bring, what to ask, and how to identify him if he gets lost."
+      },
+      "body": {
+        "es": "Pide la primera cita pronto, antes de la fecha de la siguiente vacuna, y lleva esta lista.\n\n## Qué llevar\n- Cualquier registro de la vacuna del 8 de noviembre y de la desparasitación del 1 de noviembre: carné, sticker de la vacuna, foto o factura. Si no tienes nada escrito, anota lo que recuerdes: producto, clínica y fecha.\n- El nombre del alimento que come ahora y del que le vas a dar, y cuántos gramos come al día.\n- Una muestra fresca de popó, si te la piden al agendar.\n- Tus preguntas anotadas.\n- Premios pequeños, para que la visita sea agradable.\n\n## Qué preguntar\n1. ¿Qué vacunas le faltan y en qué fechas? ¿Recomienda leptospirosis u otras para nuestra zona?\n2. ¿Cuándo y con qué lo desparasitamos? ¿Qué protección contra pulgas, garrapatas y gusano del corazón recomienda para su edad?\n3. ¿Desde cuándo puede salir a la calle y a parques?\n4. ¿Está en buen peso? ¿Cuántos gramos al día y cómo ajustamos a medida que crece?\n5. ¿A qué clínica de urgencias 24 horas nos recomienda ir?\n6. ¿Cuándo hablamos de castración y qué opina de la edad para un Golden macho?\n7. ¿Le puede poner microchip y en qué registro queda?\n8. ¿Qué debemos vigilar en un Golden (caderas, piel, oídos, corazón, ojos) y cada cuánto lo revisamos?\n\n## Identificación\n- **Placa en el collar** con su nombre y un teléfono de contacto.\n- **Microchip:** un chip del tamaño de un grano de arroz que se pone bajo la piel. No es GPS: solo guarda un número que se lee con un lector. Sirve únicamente si el número queda registrado con sus datos y los mantienen al día.\n- Usen los dos: el microchip no reemplaza la placa.",
+        "en": "Book the first visit soon, before the next vaccine is due, and bring this list.\n\n## What to bring\n- Any record of the 8 November vaccine and the 1 November deworming: vaccination card, vaccine sticker, photo or invoice. If you have nothing in writing, note down what you remember: product, clinic and date.\n- The name of the food he eats now and the one you will switch to, and how many grams he eats per day.\n- A fresh poop sample, if they ask for one when you book.\n- Your questions, written down.\n- Small treats, so the visit is a pleasant one.\n\n## What to ask\n1. Which vaccines does he still need, and on what dates? Do you recommend leptospirosis or others for our area?\n2. When and with what do we deworm him? What protection against fleas, ticks and heartworm do you recommend at his age?\n3. From when can he go out on the street and to parks?\n4. Is he at a good weight? How many grams a day, and how do we adjust as he grows?\n5. Which 24-hour emergency clinic do you recommend?\n6. When should we talk about neutering, and what do you think about the timing for a male Golden?\n7. Can you microchip him, and which registry will it be in?\n8. What should we watch for in a Golden (hips, skin, ears, heart, eyes), and how often should he be checked?\n\n## Identification\n- **A tag on his collar** with his name and a contact phone number.\n- **Microchip:** a chip the size of a grain of rice placed under the skin. It is not GPS: it only stores a number that a scanner reads. It only helps if the number is registered with your details and you keep them up to date.\n- Use both: the microchip does not replace the tag."
+      },
+      "sources": [
+        {
+          "title": "AVMA: Microchips reunite pets with families",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/microchips-reunite-pets-families"
+        },
+        {
+          "title": "WSAVA: 2024 guidelines for the vaccination of dogs and cats",
+          "url": "https://wsava.org/wp-content/uploads/2024/05/2024-Guidelines-for-the-Vaccination-of-Dogs-and-Cats.pdf"
+        },
+        {
+          "title": "ESCCAP: Scheme for individual worm management in dogs",
+          "url": "https://www.esccap.org/uploads/docs/k37pvjys_0778_ESCCAP_GL1__Worm_Management_Scheme_Fact_Sheet__Dogs_v8.pdf"
+        },
+        {
+          "title": "AVMA: Heartworm disease",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/heartworm-disease"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "feeding-basics",
+      "priority": "important",
+      "title": {
+        "es": "Cómo alimentarlo",
+        "en": "Feeding basics"
+      },
+      "summary": {
+        "es": "Comida pesada en gramos, horarios fijos, cambios graduales y agua fresca siempre.",
+        "en": "Food weighed in grams, set meal times, gradual changes and fresh water always."
+      },
+      "body": {
+        "es": "Dale un alimento para cachorros de raza grande, pesado en gramos y repartido en comidas a horas fijas.\n\n## Cuántas comidas al día\n- Hasta los 3 meses: 4 comidas.\n- Entre los 3 y los 6 meses: pasa a 3 comidas.\n- De los 6 a los 12 meses: 2 comidas.\n- Los perros grandes suelen seguir con alimento de cachorro hasta los 12 a 14 meses. Pregúntale al veterinario cuándo cambiar a adulto.\n\n## Pesa la comida, no la midas con cucharas\n- Usa una gramera de cocina: pesar es mucho más exacto que medir con vasos o cucharas.\n- Empieza con la cantidad que indica la tabla del bulto para su peso y edad, repártela entre las comidas del día y ajústala con el veterinario según cómo va creciendo.\n- Los premios no deberían pasar de cerca del 10 % de lo que come en el día. En el entrenamiento, usa parte de su ración como premio.\n\n## Nada de comida servida todo el día\nSirve la comida y retírala a los 15 minutos, aunque no la termine. Así sabes cuánto come, notas rápido si pierde el apetito y controlas que no crezca demasiado rápido.\n\n## Cambio de alimento (de Ringo a Agility Gold)\nHaz el cambio en más o menos una semana, empezando con un cuarto del alimento nuevo. Un ejemplo:\n1. Días 1 y 2: un cuarto del nuevo y tres cuartos del anterior.\n2. Días 3 y 4: mitad y mitad.\n3. Días 5 y 6: tres cuartos del nuevo y un cuarto del anterior.\n4. Día 7: solo el nuevo.\n\nUsa la tabla del bulto nuevo: los gramos por día pueden cambiar de una marca a otra. Si le da diarrea, vuelve al alimento anterior hasta que el popó se normalice y haz el cambio más despacio. Si la diarrea sigue más de dos días o hay sangre, llama al veterinario.\n\n## Agua\nAgua fresca y limpia todo el tiempo. Lava el plato todos los días.\n\n## Sin suplementos por tu cuenta\nNo le des calcio, vitamina D ni otros suplementos salvo que el veterinario lo indique: en un cachorro de raza grande, el exceso de calcio puede dañar el desarrollo de los huesos.\n\n## Si come muy rápido\nDale parte de la comida en un juguete dispensador o en un plato lento. Comer muy rápido una comida grande se asocia con la torsión gástrica.",
+        "en": "Feed him a large-breed puppy food, weighed in grams and split into meals at set times.\n\n## How many meals a day\n- Up to 3 months: 4 meals.\n- Between 3 and 6 months: move to 3 meals.\n- From 6 to 12 months: 2 meals.\n- Large dogs usually stay on puppy food until 12 to 14 months. Ask the vet when to switch to adult food.\n\n## Weigh the food, do not measure it with spoons\n- Use a kitchen scale: weighing is far more accurate than measuring with cups or spoons.\n- Start with the amount on the bag's table for his weight and age, split it across the day's meals and adjust it with the vet as he grows.\n- Treats should stay under about 10 % of what he eats in a day. In training, use part of his daily ration as treats.\n\n## No food left out all day\nServe the meal and take it away after 15 minutes, even if he has not finished. That way you know how much he eats, notice quickly if he loses his appetite and keep his growth from going too fast.\n\n## Changing food (from Ringo to Agility Gold)\nMake the switch over about a week, starting with a quarter of the new food. An example:\n1. Days 1 and 2: a quarter new and three quarters old.\n2. Days 3 and 4: half and half.\n3. Days 5 and 6: three quarters new and a quarter old.\n4. Day 7: new food only.\n\nUse the new bag's table: grams per day can differ from one brand to another. If he gets diarrhoea, go back to the old food until his poop is normal again and switch more slowly. If the diarrhoea lasts more than two days or there is blood, call the vet.\n\n## Water\nFresh, clean water at all times. Wash the bowl every day.\n\n## No supplements on your own\nDo not give calcium, vitamin D or other supplements unless the vet tells you to: in a large-breed puppy, too much calcium can harm bone development.\n\n## If he eats very fast\nGive part of his food in a food-dispensing toy or a slow-feeder bowl. Eating a large meal very fast is linked to bloat."
+      },
+      "sources": [
+        {
+          "title": "AKC: Puppy feeding fundamentals",
+          "url": "https://www.akc.org/expert-advice/nutrition/puppy-feeding-fundamentals/"
+        },
+        {
+          "title": "VCA Animal Hospitals: Nutritional requirements of large and giant breed puppies",
+          "url": "https://vcahospitals.com/all-creatures-ca/know-your-pet/nutritional-requirements-of-large-and-giant-breed-puppies"
+        },
+        {
+          "title": "AAHA: Tips and timelines for transitioning your pet to a new food",
+          "url": "https://www.aaha.org/wp-content/uploads/globalassets/05-pet-health-resources/nutritionalresources/petparent/aaha-tips-and-timelines.pdf"
+        },
+        {
+          "title": "Cornell University College of Veterinary Medicine: Diarrhea",
+          "url": "https://vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/health-info/diarrhea"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: Canine hip dysplasia (CHD)",
+          "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/canine-hip-dysplasia-chd"
+        },
+        {
+          "title": "American College of Veterinary Surgeons: Gastric dilatation-volvulus",
+          "url": "https://www.acvs.org/small-animal/gastric-dilatation-volvulus/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "puppy-proofing",
+      "priority": "important",
+      "title": {
+        "es": "Casa a prueba de cachorro",
+        "en": "Puppy-proofing the home"
+      },
+      "summary": {
+        "es": "Recorre la casa a su altura y guarda cables, químicos, medicinas y cosas pequeñas.",
+        "en": "Walk the house at his height and put away cords, chemicals, medicines and small things."
+      },
+      "body": {
+        "es": "Recorre cada espacio a la altura de Tyler y quita o asegura todo lo que pueda morder o tragarse. Cuando no puedan vigilarlo, déjenlo en un espacio seguro, como su guacal o un corral.\n\n## Adentro\n- **Cables:** desconéctalos, súbelos o pásalos por canaletas. Morderlos puede causar quemaduras o descargas.\n- **Productos de limpieza, insecticidas y venenos:** en gabinetes altos o con seguro para niños.\n- **Medicamentos:** nunca en mesas de noche, mesas bajas ni en el baño. Recoge enseguida cualquier pastilla que se caiga.\n- **Basura:** con tapa o dentro de un mueble.\n- **Tapa del inodoro** siempre cerrada.\n- **Cosas pequeñas:** monedas, clips, ligas, medias, juguetes de niños, tapas, pilas y sobrecitos antihumedad.\n- **Plantas tóxicas:** sácalas o ponlas donde no llegue.\n- **Comida al alcance:** nada en mesas bajas ni en bolsos en el piso, sobre todo chocolate, chicles y uvas.\n\n## Afuera\n- Revisa que no quepa entre las rejas del balcón, la terraza o el antejardín, y que no tenga huecos por donde salirse.\n- Si hay piscina, debe estar cercada.\n- Quita plantas tóxicas del jardín y aléjalo de zonas recién fumigadas o abonadas.\n- No lo dejen solo afuera.\n\n## Juguetes seguros\nEscojan juguetes de su tamaño, revísenlos seguido y boten los que estén rotos. Vigílenlo cuando muerda juguetes o mordedores, y no le lancen pelotas ni comida para que las atrape en el aire.",
+        "en": "Walk through every room at Tyler's height and remove or secure anything he could chew or swallow. When you cannot watch him, leave him in a safe space such as his crate or a playpen.\n\n## Indoors\n- **Cords:** unplug them, lift them up or run them through cable covers. Chewing them can cause burns or shocks.\n- **Cleaning products, insecticides and poisons:** in high cupboards or behind childproof latches.\n- **Medicines:** never on bedside tables, low tables or in the bathroom. Pick up any dropped pill straight away.\n- **Rubbish:** in a bin with a lid or inside a cupboard.\n- **Toilet lid** always closed.\n- **Small things:** coins, paper clips, rubber bands, socks, children's toys, bottle caps, batteries and silica gel packets.\n- **Toxic plants:** remove them or put them out of reach.\n- **Food within reach:** nothing on low tables or in bags on the floor, especially chocolate, gum and grapes.\n\n## Outdoors\n- Check that he cannot squeeze through the railings of the balcony, terrace or front garden, and that there are no gaps he could escape through.\n- If there is a pool, it must be fenced.\n- Remove toxic plants from the garden and keep him away from areas recently treated with pesticides or fertiliser.\n- Do not leave him alone outside.\n\n## Safe toys\nChoose toys sized for him, check them often and throw away broken ones. Supervise him with toys and chews, and do not throw balls or food for him to catch in mid-air."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to puppy-proof your home",
+          "url": "https://www.akc.org/expert-advice/home-living/puppy-proofing-tips-for-your-home-and-yard/"
+        },
+        {
+          "title": "ASPCA: The official top 10 toxins of 2024",
+          "url": "https://aspca.org/node/69444"
+        },
+        {
+          "title": "PDSA: First aid for choking",
+          "url": "https://www.pdsa.org.uk/pet-help-and-advice/pet-health-hub/other-veterinary-advice/first-aid-for-choking"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "exercise-growing-joints",
+      "priority": "important",
+      "title": {
+        "es": "Ejercicio y articulaciones en crecimiento",
+        "en": "Exercise and growing joints"
+      },
+      "summary": {
+        "es": "Juego libre y paseos cortos sí; trotar, saltar y escaleras a diario, todavía no.",
+        "en": "Free play and short walks yes; jogging, jumping and daily stairs, not yet."
+      },
+      "body": {
+        "es": "Deja que Tyler se mueva a su ritmo con juego libre y paseos cortos, y evita el ejercicio forzado mientras crece.\n\n## Qué sí\n- Juego libre y supervisado en pasto o en pisos que no resbalen, donde él decide cuándo parar.\n- Cuando ya pueda salir, paseos cortos con correa. El AKC sugiere unos 5 minutos por cada mes de edad, una o dos veces al día (por ejemplo, 15 minutos a los 3 meses), y siempre al menos una hora después de comer.\n- Ejercicio mental: juguetes dispensadores, olfatear y buscar premios escondidos.\n\n## Qué no, por ahora\n- **Trotar o montar bicicleta con él:** en razas grandes, el AKC recomienda esperar entre los 12 y los 18 meses, cuando las zonas de crecimiento de los huesos ya se han endurecido.\n- **Saltos repetidos:** bajar del carro o de la cama de un salto, lanzarle la pelota hacia arriba o hacerlo saltar obstáculos.\n- **Escaleras a diario en los primeros meses:** un estudio noruego en cuatro razas grandes (no incluyó Golden) encontró más displasia de cadera en cachorros que usaban escaleras a diario en sus primeros 3 meses, y menos en los que hacían ejercicio libre en terreno suave. Cárgalo en las escaleras.\n\n## Por qué\nLa displasia de cadera es hereditaria, pero el crecimiento muy rápido y el sobrepeso pueden empeorarla en perros predispuestos como el Golden. Mantenerlo delgado y con ejercicio suave y regular es lo que más está en tus manos.\n\n## Cuándo consultar\nCojera, rigidez al levantarse, correr dando \"saltos de conejo\" con las dos patas traseras juntas, menos músculo atrás o que evite saltar. Coméntalo con el veterinario sin esperar: algunas señales aparecen desde los pocos meses.",
+        "en": "Let Tyler move at his own pace with free play and short walks, and avoid forced exercise while he is growing.\n\n## Yes\n- Free, supervised play on grass or non-slip floors, where he decides when to stop.\n- Once he can go out, short walks on a lead. The AKC suggests about 5 minutes for every month of age, once or twice a day (for example, 15 minutes at 3 months), and always at least an hour after a meal.\n- Mental exercise: food-dispensing toys, sniffing and finding hidden treats.\n\n## Not yet\n- **Jogging or cycling with him:** for large breeds, the AKC recommends waiting until 12 to 18 months, when the growth zones of the bones have hardened.\n- **Repeated jumping:** leaping out of the car or off the bed, throwing a ball straight up, or having him jump obstacles.\n- **Daily stairs in the first months:** a Norwegian study of four large breeds (Goldens were not included) found more hip dysplasia in puppies that used stairs daily in their first 3 months, and less in those that exercised freely on gentle terrain. Carry him on stairs.\n\n## Why\nHip dysplasia is inherited, but very fast growth and excess weight can make it worse in predisposed dogs such as Goldens. Keeping him lean, with gentle and regular exercise, is what is most in your hands.\n\n## When to see the vet\nLimping, stiffness when getting up, \"bunny hopping\" with both back legs together when running, less muscle at the back, or avoiding jumps. Mention it to the vet without waiting: some signs show from a few months of age."
+      },
+      "sources": [
+        {
+          "title": "AKC: How much mental and physical exercise do puppies need?",
+          "url": "https://www.akc.org/expert-advice/health/puppies-how-much-exercise/"
+        },
+        {
+          "title": "ScienceDaily (Norwegian School of Veterinary Science): A number of environmental factors can affect the incidence of hip dysplasia in dogs",
+          "url": "https://www.sciencedaily.com/releases/2012/03/120326112842.htm"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: Canine hip dysplasia (CHD)",
+          "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/canine-hip-dysplasia-chd"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "early-separation",
+      "priority": "important",
+      "title": {
+        "es": "Si dejó la camada antes de las 8 semanas",
+        "en": "If he left the litter before 8 weeks"
+      },
+      "summary": {
+        "es": "Enséñale a morder suave, cuida su sueño y socialízalo con calma.",
+        "en": "Teach him a soft mouth, protect his sleep and socialise him calmly."
+      },
+      "body": {
+        "es": "Tyler llegó a casa con unas 6 semanas y media, antes de las 8 semanas que suelen recomendarse. Muchos cachorros en esa situación crecen sin problemas, pero vale la pena reforzar tres cosas que normalmente aprenden con la mamá y los hermanos.\n\n## Qué vigilar\nUn estudio italiano encontró que los perros separados de la camada entre los 30 y 40 días de vida mostraban más adelante más conductas problemáticas que los separados a los 60 días: destrozos, ladridos excesivos, miedo en los paseos, reacción fuerte a los ruidos, celo por la comida o los juguetes y búsqueda constante de atención. Tyler salió un poco después de ese rango. Es una asociación, no un destino: lo que hagan en estas semanas cuenta mucho.\n\n## 1. Mordida suave\nCon los hermanos, el cachorro aprende que si muerde fuerte el juego se acaba. Ahora les toca a ustedes:\n1. Cuando muerda fuerte, digan \"ay\" en voz aguda y dejen la mano quieta.\n2. Si se aparta o se calma, prémienlo.\n3. Si se emociona más, aléjense en silencio unos segundos o terminen el juego.\n4. Ofrézcanle un juguete para morder en lugar de las manos, y tengan juguetes siempre a mano.\n5. Los dos deben reaccionar igual, siempre.\n\n## 2. Sueño\nUn cachorro duerme entre 18 y 20 horas al día, y uno que dormía junto a sus hermanos puede sentirse solo.\n- Denle siestas en un lugar fijo y tranquilo después de jugar.\n- Si está muy mordelón o acelerado, probablemente está cansado: llévenlo a su lugar a descansar.\n- De noche, cuenten con salidas para hacer sus necesidades: es normal a esta edad.\n\n## 3. Socialización\nNecesita experiencias buenas con personas, sonidos y superficies, y sobre todo con perros adultos tranquilos y vacunados que le enseñen modales. Mira la guía \"Antes de completar las vacunas\".\n\n## Pidan ayuda temprano\nSi en las próximas semanas ven miedo intenso, mordidas que no bajan o mucha angustia cuando se queda solo, coméntenlo con el veterinario. Una clase de cachorros en un lugar seguro también ayuda.",
+        "en": "Tyler came home at about 6 and a half weeks, before the 8 weeks usually recommended. Many puppies in this situation grow up without problems, but it is worth reinforcing three things they normally learn from their mother and littermates.\n\n## What to watch\nAn Italian study found that dogs separated from the litter at 30 to 40 days of age later showed more problem behaviours than dogs separated at 60 days: destructiveness, excessive barking, fearfulness on walks, strong reactions to noises, possessiveness over food or toys, and constant attention seeking. Tyler left a little after that range. It is an association, not a fate: what you do in these weeks matters a lot.\n\n## 1. A soft mouth\nWith littermates, a puppy learns that biting hard ends the game. Now it is your turn:\n1. When he bites hard, say \"ow\" in a high voice and keep your hand still.\n2. If he backs off or calms down, reward him.\n3. If he gets more excited, quietly step away for a few seconds or end the game.\n4. Offer him a chew toy instead of your hands, and always keep toys within reach.\n5. You both need to react the same way, every time.\n\n## 2. Sleep\nA puppy sleeps 18 to 20 hours a day, and one who used to sleep next to his littermates may feel lonely.\n- Give him naps in a fixed, quiet spot after play.\n- If he is very bitey or wound up, he is probably tired: take him to his spot to rest.\n- At night, expect trips outside to relieve himself: that is normal at this age.\n\n## 3. Socialisation\nHe needs good experiences with people, sounds and surfaces, and above all with calm, vaccinated adult dogs who can teach him manners. See the \"Before his vaccines are complete\" guide.\n\n## Ask for help early\nIf over the coming weeks you see intense fear, biting that does not ease, or a lot of distress when he is left alone, mention it to the vet. A puppy class in a safe place also helps."
+      },
+      "sources": [
+        {
+          "title": "Pierantoni et al. (2011), Veterinary Record: Prevalence of owner-reported behaviours in dogs separated from the litter at two different ages",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21865608/"
+        },
+        {
+          "title": "AKC: Puppy teething and nipping: a survival guide",
+          "url": "https://www.akc.org/expert-advice/puppy/puppy-teething-and-nipping/"
+        },
+        {
+          "title": "AKC: How to make sure your puppy gets enough sleep",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://indoorpet.osu.edu/sites/default/files/imce/Puppy_Socialization_Position_download_-_10-4-14.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "heat-and-humidity",
+      "priority": "important",
+      "title": {
+        "es": "Calor y humedad",
+        "en": "Heat and humidity"
+      },
+      "summary": {
+        "es": "Paseos en horas frescas, sombra y agua siempre, y nunca solo en el carro.",
+        "en": "Walks in the cool hours, shade and water always, and never alone in the car."
+      },
+      "body": {
+        "es": "Saquen a Tyler en las horas frescas, temprano en la mañana y al final de la tarde, y denle sombra y agua siempre. Los perros se refrescan sobre todo jadeando, y eso funciona peor cuando hay humedad. Los cachorros y los perros con sobrepeso tienen más riesgo de golpe de calor.\n\n## Todos los días\n- Agua fresca disponible siempre, también en los paseos: lleven una botella y un plato.\n- Un lugar fresco y con sombra en la casa; no lo dejen en balcones o patios al sol.\n- Antes de caminar, toquen el pavimento con el dorso de la mano: si les quema a ustedes, le quema las almohadillas.\n- Juego tranquilo en las horas de más calor.\n\n## Nunca\n- Dejarlo en el carro, ni a la sombra ni con las ventanas un poco abiertas: un carro se calienta a niveles peligrosos muy rápido, aunque el día no parezca tan caliente.\n- Raparlo para \"refrescarlo\": la guía de aseo del AKC recomienda no rapar ni recortar el manto del Golden. Cepillarlo para quitar el pelo muerto le ayuda más.\n\n## Señales de que se está calentando demasiado\nJadeo muy fuerte, babeo, inquietud, encías y lengua de color anormal, tambaleo, vómito o colapso.\n\n## Qué hacer\n1. Llévenlo a la sombra o a un lugar con aire acondicionado.\n2. Mójenlo con agua fresca o tibia, no helada, y pónganlo frente a un ventilador. El agua helada o meterlo en agua puede empeorar las cosas.\n3. Ofrézcanle agua si está alerta, sin obligarlo.\n4. Vayan al veterinario de inmediato, con el aire del carro encendido, aunque parezca recuperarse: el golpe de calor puede causar daños que no se ven.",
+        "en": "Take Tyler out in the cool hours, early in the morning and late in the afternoon, and always give him shade and water. Dogs cool down mainly by panting, and that works less well when it is humid. Puppies and overweight dogs are at higher risk of heatstroke.\n\n## Every day\n- Fresh water always available, on walks too: bring a bottle and a bowl.\n- A cool, shaded spot at home; do not leave him on balconies or patios in the sun.\n- Before a walk, touch the pavement with the back of your hand: if it burns you, it burns his paw pads.\n- Calm play during the hottest hours.\n\n## Never\n- Leave him in the car, not even in the shade or with the windows cracked: a car heats up to dangerous levels very quickly, even when the day does not feel that hot.\n- Shave him to \"cool him down\": the AKC grooming guide advises against shaving or clipping a Golden's coat. Brushing out the dead hair helps him more.\n\n## Signs he is overheating\nVery heavy panting, drooling, restlessness, abnormally coloured gums and tongue, wobbling, vomiting or collapse.\n\n## What to do\n1. Move him to the shade or somewhere air-conditioned.\n2. Wet him with cool or lukewarm water, not ice-cold, and put him in front of a fan. Ice water or putting him in water can make things worse.\n3. Offer water if he is alert, without forcing him.\n4. Go to the vet straight away, with the car's air conditioning on, even if he seems to recover: heatstroke can cause damage you cannot see."
+      },
+      "sources": [
+        {
+          "title": "AVMA: Warm weather pet safety",
+          "url": "https://avma.org/resources/pet-owners/petcare/warm-weather-pet-safety"
+        },
+        {
+          "title": "Texas A&M Veterinary Medicine: Keeping dogs cool for the summer to prevent heatstrokes",
+          "url": "https://vetmed.tamu.edu/news/pet-talk/prevent-heatstrokes"
+        },
+        {
+          "title": "AKC: Heatstroke in dogs: signs, symptoms, treatments",
+          "url": "https://www.akc.org/expert-advice/health/heat-stroke-in-dogs/"
+        },
+        {
+          "title": "AKC: How to groom a Golden Retriever",
+          "url": "https://www.akc.org/expert-advice/health/how-to-groom-golden-retriever/"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     }
   ]
