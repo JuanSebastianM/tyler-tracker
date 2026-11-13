@@ -4,7 +4,7 @@
 //   html`<${PhotoViewer} photos=${[{ id, url, alt, caption, date }]} index=${0} onClose=${close} />`
 //
 // Opened from inside a Sheet (e.g. a record's detail sheet), pass `overSheet` so it stacks above it.
-import { html, useEffect, useRef, useState } from '../../../vendor/preact.js';
+import { html, useEffect, useLayoutEffect, useRef, useState } from '../../../vendor/preact.js';
 import { t, formatDate } from '../i18n.js';
 import { IconButton } from './button.js';
 import { useCloseOnBack } from './back-close.js';
@@ -103,8 +103,9 @@ export function PhotoViewer({ photos, index = 0, onIndex, onClose, actions, labe
       }
     }
   };
-  // Capture phase, so a sheet underneath does not also close on Escape.
-  useEffect(() => {
+  // Capture phase, so a sheet underneath does not also close on Escape. Layout effect, so keys
+  // work as soon as the viewer is on screen.
+  useLayoutEffect(() => {
     document.addEventListener('keydown', onKeyDown, true);
     return () => document.removeEventListener('keydown', onKeyDown, true);
   });

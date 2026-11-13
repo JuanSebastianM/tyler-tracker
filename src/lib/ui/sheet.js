@@ -1,6 +1,6 @@
 // Bottom sheet (modal dialog) and confirm dialog.
 //   html`<${Sheet} open=${open} onClose=${close} title=${t('health.addVaccine')} footer=${buttons}>...form...</${Sheet}>`
-import { html, useEffect, useRef, useId } from '../../../vendor/preact.js';
+import { html, useLayoutEffect, useRef, useId } from '../../../vendor/preact.js';
 import { IconButton, Button } from './button.js';
 import { t } from '../i18n.js';
 
@@ -16,7 +16,8 @@ export function Sheet({ open, onClose, title, children, footer, initialFocus, di
   const panel = useRef(/** @type {HTMLDivElement | null} */ (null));
   const titleId = 'sheet' + useId();
 
-  useEffect(() => {
+  // Layout effect: Escape and the focus trap work as soon as the sheet is on screen.
+  useLayoutEffect(() => {
     if (!open) return;
     const previous = /** @type {HTMLElement | null} */ (document.activeElement);
     openCount++;

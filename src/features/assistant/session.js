@@ -18,6 +18,8 @@ import { normalizeError } from './logic.js';
  * @property {string} text
  * @property {'sending' | 'searching' | 'streaming'} status
  * @property {string} startedAt
+ * @property {string} [savedId] id of the saved assistant message (from the 'done' event); once the
+ *   reloaded thread contains it, the chat shows the saved row instead of this bubble
  *
  * @typedef {object} SessionState
  * @property {Pending | null} pending
@@ -144,7 +146,11 @@ export async function ask(threadId, question) {
           patch((p) => ({ ...p, status: p.text ? p.status : 'searching' }));
         } else if (event === 'done') {
           finished = true;
-          session.set((s) => ({ ...s, usage: { budget: data.budget, daily: data.daily, enabled: data.enabled } }));
+          session.set((s) => ({
+            ...s,
+            pending: s.pending ? { ...s.pending, savedId: data?.message?.id } : s.pending,
+            usage: { budget: data.budget, daily: data.daily, enabled: data.enabled },
+          }));
         } else if (event === 'error') {
           fail(data?.error, data?.budget ? data : null);
         }

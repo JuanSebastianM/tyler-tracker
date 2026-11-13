@@ -73,7 +73,9 @@ function Chat({ threadId }) {
           ? html`<${Intro} onPick=${send} disabled=${busy} />`
           : html`<ol class="chat-log" aria-live="polite" aria-relevant="additions">
               ${rows.map((m) => html`<${Message} key=${m.id} m=${m} tz=${tz} />`)}
-              ${pending ? html`<${PendingMessages} p=${pending} tz=${tz} />` : null}
+              ${pending && !(pending.savedId && rows.some((m) => m.id === pending.savedId))
+                ? html`<${PendingMessages} p=${pending} tz=${tz} />`
+                : null}
             </ol>`}
 
     ${msgs?.status === 'error' && !rows.length ? html`<p class="form-error" role="alert">${t('assistant.threads.loadFailed')}</p>` : null}

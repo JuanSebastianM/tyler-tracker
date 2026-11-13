@@ -12,7 +12,7 @@
 // - history.back() is asynchronous. While one is in flight, a newly opened overlay waits for it to
 //   land before pushing its own entry, so quick close-then-reopen sequences cannot pile up or
 //   swallow entries.
-import { useEffect, useRef } from '../../../vendor/preact.js';
+import { useLayoutEffect, useRef } from '../../../vendor/preact.js';
 
 /** @typedef {{ id: string, close: () => void, pushed: boolean, done: boolean }} Overlay */
 
@@ -23,6 +23,8 @@ let ownBacks = 0;
 /** @type {Array<() => void>} */
 let waiting = [];
 let seq = 0;
+/** Bumped on every own back, so a stale safety timer cannot reset a newer one. */
+let backGen = 0;
 let listening = false;
 
 function flushWaiting() {
@@ -75,10 +77,11 @@ function release(o) {
   if (closedByBack || !o.pushed) return;
   if (history.state?.ttOverlay !== o.id) return;
   ownBacks++;
+  const gen = ++backGen;
   history.back();
   // If the popstate never arrives (back was a no-op), do not block later overlays forever.
   setTimeout(() => {
-    if (ownBacks > 0) {
+    if (ownBacks > 0 && gen === backGen) {
       ownBacks = 0;
       flushWaiting();
     }
@@ -92,7 +95,9 @@ function release(o) {
 export function useCloseOnBack(onClose) {
   const closeRef = useRef(onClose);
   closeRef.current = onClose;
-  useEffect(() => {
+  // Layout effect: the entry is pushed before the overlay is painted, so a back gesture right
+  // after it appears already finds it.
+  useLayoutEffect(() => {
     /** @type {Overlay} */
     const o = { id: `o${++seq}-${Date.now()}`, close: () => closeRef.current(), pushed: false, done: false };
     open(o);
