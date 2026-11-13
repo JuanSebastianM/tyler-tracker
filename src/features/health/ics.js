@@ -95,7 +95,7 @@ function addMinutesLocal(date, time, minutes) {
  * @param {string} kind @param {string} rowId @param {string} dueOn
  */
 export function eventUid(kind, rowId, dueOn) {
-  const safe = (/** @type {string} */ s) => String(s).toLowerCase().replace(/[^a-z0-9-]/g, '');
+  const safe = (/** @type {string} */ s) => String(s).toLowerCase().replace(/[^a-z0-9_-]/g, '');
   return `${safe(kind)}-${safe(rowId)}-${icsDate(dueOn)}@tyler-tracker`;
 }
 

@@ -19,7 +19,7 @@ export function parseDecimal(input) {
 
 /** Number to an editable string in the current locale style ("4,6" for es). @param {number | null | undefined} n @param {'es' | 'en'} [locale] */
 export function decimalToInput(n, locale = 'es') {
-  if (n == null || n === '') return '';
+  if (n == null) return '';
   const s = String(Number(n));
   return locale === 'es' ? s.replace('.', ',') : s;
 }

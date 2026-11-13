@@ -209,7 +209,7 @@ test('date helpers', () => {
 });
 
 test('eventUid is stable and safe', () => {
-  assert.equal(eventUid('vaccination', 'V0-1_x', '2026-11-29'), 'vaccination-v0-1x-20261129@tyler-tracker');
+  assert.equal(eventUid('vaccination', 'V0-1_x', '2026-11-29'), 'vaccination-v0-1_x-20261129@tyler-tracker');
 });
 
 test('icsFileName slugifies Spanish text', () => {

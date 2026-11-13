@@ -1,5 +1,187 @@
 {
-  "emptyTitle": "Su salud, en un solo lugar",
-  "emptyBody": "Vacunas, desparasitaciones, peso y visitas al veterinario.",
-  "add": "Agregar registro de salud"
+  "add": "Agregar registro de salud",
+  "chooserTitle": "¿Qué quieres registrar?",
+  "emptyVisitor": "Cuando Juan o Daniela lo registren, lo verás aquí.",
+  "overview": {
+    "dueTitle": "Lo próximo",
+    "nothingDue": "Nada pendiente. Cuando registres una vacuna o desparasitación con próxima fecha, o un recordatorio, aparecerá aquí.",
+    "moreDue": { "one": "Y {count} más en sus secciones.", "other": "Y {count} más en sus secciones." },
+    "weightTitle": "Último peso",
+    "seeChart": "Ver curva",
+    "noWeight": "Todavía no hay pesos. Agrega el primero para ver su curva de crecimiento.",
+    "sectionsTitle": "Registros"
+  },
+  "count": {
+    "records": { "one": "{count} registro", "other": "{count} registros" },
+    "active": { "one": "{count} activo", "other": "{count} activos" },
+    "pending": { "one": "{count} pendiente", "other": "{count} pendientes" }
+  },
+  "fields": { "vet": "Veterinario", "notes": "Notas" },
+  "form": {
+    "dateBefore": "Esta fecha no puede ser anterior a la fecha de inicio.",
+    "invalidWeight": "Escribe un peso válido en kg, por ejemplo 4,6.",
+    "invalidNumber": "Escribe solo números, por ejemplo 80000.",
+    "deleteBody": "Se borrará para los dos. Esta acción no se puede deshacer."
+  },
+  "photo": {
+    "choose": "Elegir foto",
+    "change": "Cambiar foto",
+    "remove": "Quitar foto",
+    "open": "Ver foto en pantalla completa",
+    "alt": "Foto del carné: {title}",
+    "badge": "Foto"
+  },
+  "calendar": {
+    "add": "Agregar al calendario",
+    "eventTitle": "Tyler · {kind}: {title}",
+    "reminderTitle": "Tyler · {title}",
+    "description": "Recordatorio de Tyler Tracker.",
+    "alarmDayBefore": "Mañana: {title}"
+  },
+  "vaccines": {
+    "title": "Vacunas",
+    "summary": "Dosis, refuerzos y foto del carné",
+    "emptyTitle": "Aún no hay vacunas",
+    "emptyBody": "Agrega la primera vacuna con la fecha de la próxima dosis para que te avisemos.",
+    "add": "Agregar vacuna",
+    "editTitle": "Editar vacuna",
+    "save": "Guardar vacuna",
+    "saved": "Vacuna guardada",
+    "deleteTitle": "¿Eliminar esta vacuna?",
+    "givenOn": "Aplicada el {date}",
+    "fields": {
+      "vaccine": "Vacuna",
+      "vaccineHint": "Como aparece en el carné.",
+      "givenOn": "Fecha de aplicación",
+      "nextDueOn": "Próxima dosis",
+      "batch": "Lote",
+      "photo": "Foto del sticker o del carné",
+      "photoHint": "Opcional. Se guarda reducida."
+    }
+  },
+  "deworming": {
+    "title": "Desparasitación",
+    "summary": "Interna y externa, con próxima dosis",
+    "emptyTitle": "Aún no hay desparasitaciones",
+    "emptyBody": "Agrega la primera con el producto y la próxima fecha.",
+    "add": "Agregar desparasitación",
+    "editTitle": "Editar desparasitación",
+    "save": "Guardar desparasitación",
+    "saved": "Desparasitación guardada",
+    "deleteTitle": "¿Eliminar esta desparasitación?",
+    "unnamed": "Desparasitación",
+    "kinds": { "internal": "Interna", "external": "Externa", "both": "Ambas" },
+    "fields": {
+      "product": "Producto",
+      "kind": "Tipo",
+      "givenOn": "Fecha",
+      "weight": "Peso ese día",
+      "nextDueOn": "Próxima dosis"
+    }
+  },
+  "weight": {
+    "title": "Peso",
+    "summary": "Curva de crecimiento",
+    "emptyTitle": "Aún no hay pesos",
+    "emptyBody": "Agrega el primer peso para ver su curva de crecimiento.",
+    "add": "Agregar peso",
+    "editTitle": "Editar peso",
+    "save": "Guardar peso",
+    "saved": "Peso guardado",
+    "deleteTitle": "¿Eliminar este peso?",
+    "age": "Edad",
+    "changeLabel": "Cambio",
+    "change": "{delta} en {days} días",
+    "chartTitle": "Curva de crecimiento",
+    "chartSummary": { "one": "{count} peso. Último: {kg} con {age}.", "other": "{count} pesos. Último: {kg} con {age}." },
+    "chartEmpty": "Agrega pesos para ver la curva de Tyler.",
+    "axisWeeks": "semanas",
+    "legendTyler": "Tyler",
+    "legendBand": "Rango de referencia",
+    "legendToday": "Hoy",
+    "noReference": "Por ahora no hay rango de referencia para comparar.",
+    "placeholderBadge": "Ejemplo",
+    "fields": {
+      "kg": "Peso",
+      "kgHint": "Puedes usar coma: 4,6.",
+      "measuredOn": "Fecha"
+    }
+  },
+  "visits": {
+    "title": "Visitas al veterinario",
+    "summary": "Motivo, hallazgos, tratamiento y control",
+    "emptyTitle": "Aún no hay visitas",
+    "emptyBody": "Agrega la primera visita con lo que dijo el veterinario y la fecha del control.",
+    "add": "Agregar visita",
+    "editTitle": "Editar visita",
+    "save": "Guardar visita",
+    "saved": "Visita guardada",
+    "deleteTitle": "¿Eliminar esta visita?",
+    "privateTitle": "Solo para ustedes",
+    "privateEmpty": "Sin costo ni notas privadas.",
+    "fields": {
+      "reason": "Motivo",
+      "visitedOn": "Fecha",
+      "findings": "Hallazgos",
+      "treatment": "Tratamiento",
+      "followUpOn": "Fecha de control",
+      "cost": "Costo",
+      "privateNotes": "Notas privadas",
+      "privateHint": "Solo lo ven los editores."
+    }
+  },
+  "medications": {
+    "title": "Medicamentos",
+    "summary": "Tratamientos activos y terminados",
+    "emptyTitle": "Sin medicamentos",
+    "emptyBody": "Si el veterinario le receta algo, agrégalo con la dosis y la frecuencia.",
+    "add": "Agregar medicamento",
+    "editTitle": "Editar medicamento",
+    "save": "Guardar medicamento",
+    "saved": "Medicamento guardado",
+    "deleteTitle": "¿Eliminar este medicamento?",
+    "active": "Activos",
+    "finished": "Terminados",
+    "groupEmpty": { "active": "Ningún tratamiento activo." },
+    "since": "desde el {start}",
+    "period": "{start} – {end}",
+    "noEnd": "Sin fecha de fin",
+    "fields": {
+      "name": "Medicamento",
+      "dose": "Dosis",
+      "doseHint": "Por ejemplo: 1/2 tableta.",
+      "frequency": "Frecuencia",
+      "frequencyHint": "Por ejemplo: cada 12 horas.",
+      "startOn": "Inicio",
+      "endOn": "Fin"
+    }
+  },
+  "reminders": {
+    "title": "Recordatorios",
+    "summary": "Citas y pendientes con aviso",
+    "emptyTitle": "Sin recordatorios",
+    "emptyBody": "Agrega uno para una cita, el baño o comprar comida, y llévalo a tu calendario.",
+    "add": "Agregar recordatorio",
+    "editTitle": "Editar recordatorio",
+    "save": "Guardar recordatorio",
+    "saved": "Recordatorio guardado",
+    "deleteTitle": "¿Eliminar este recordatorio?",
+    "open": "Pendientes",
+    "done": "Hechos",
+    "groupEmpty": { "open": "Nada pendiente." },
+    "doneOn": "Hecho el {date}",
+    "doneLabel": "Hecho",
+    "markDone": "Marcar como hecho",
+    "reopen": "Volver a abrir",
+    "markDoneNamed": "Marcar como hecho: {title}",
+    "reopenNamed": "Volver a abrir: {title}",
+    "doneToast": "Recordatorio hecho",
+    "reopenedToast": "Recordatorio abierto otra vez",
+    "fields": {
+      "title": "Qué hay que hacer",
+      "titleHint": "Por ejemplo: cita de control, comprar comida.",
+      "dueOn": "Fecha",
+      "dueTime": "Hora"
+    }
+  }
 }
