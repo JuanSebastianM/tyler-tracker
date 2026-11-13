@@ -61,8 +61,9 @@ src/
   app.js                   Shell: header, route outlet, bottom tab bar, toasts
   config.js                Supabase URL/key, app constants
   lib/                     Framework-level helpers shared by all features
-    supabase.js  auth.js  router.js  i18n.js  store.js  dates.js  markdown.js  content.js
+    supabase.js  auth.js (+ auth-logic.js)  router.js  i18n.js  store.js  dates.js  markdown.js  content.js
     storage.js (safe localStorage)  toast.js  pwa.js (service worker, install detection)
+    busy.js (work in flight that an update must not interrupt)
     ui/                    UI kit (index.js re-exports everything); kitchen-sink.js = #/dev/ui;
                            photo-viewer.js + back-close.js (shared full-screen photo viewer)
   version.js               APP_VERSION, stamped at deploy ('dev' locally)
@@ -134,6 +135,22 @@ Source of truth: `supabase/migrations/*.sql`. Summary:
   grouping use the timezone in `settings.timezone` (America/Bogota), not the device's.
 - Sign-ups are disabled in Supabase Auth. Editors sign in with email + password
   (`signInWithPassword`); accounts are created by the owner in the dashboard.
+- **Session handling** (`src/lib/auth.js`). iOS suspends the installed app, so the one-hour access
+  token often expires while the app is in the background, and the first requests after a resume can
+  fail at the network level. Rules:
+  - At launch the stored session is shown at once (editor controls do not wait for a refresh).
+  - A session that cannot be refreshed because the auth server is unreachable stays signed in
+    (`applyEvent`); it is refreshed again on `online`, on resume (supabase-js) and on the next call.
+    Only a refresh the auth server rejects (supabase-js removes the session and reports
+    `SIGNED_OUT`) ends it; then a toast says the session ended and offers "Sign in", which opens the
+    sheet over the current screen.
+  - Calls that need the editor session use `getAccessToken()`: waits for the session to be restored,
+    refreshes a token that expires within 60 s (one refresh at a time, never waits more than ~10 s)
+    and returns `error: 'network' | 'expired' | 'signedOut'`. `'network'` is shown as "no
+    connection", never as "signed out".
+  - The Supabase client's `fetch` (`sessionFetch` in `src/lib/supabase.js`) retries a REST or
+    Storage request that got 401 once with a refreshed token, so store writes and photo uploads
+    survive an expired token. The chat function client does the same (`api.js`).
 - Schema changes: write a new numbered migration file and ask the orchestrator to apply it. Do not assume
   a migration is live until told so.
 
@@ -151,10 +168,19 @@ Editors can ask questions inside the app. Feature id `assistant` (no tab; route 
   `chat_threads` / `chat_messages` with token counts and cost using the service role.
 - One endpoint, `POST /functions/v1/chat` with JSON `{ action, ... }` (client: `src/features/assistant/api.js`):
   - `status` → `{ budget, daily, enabled, ... }` (no Claude call).
-  - `send` `{ message, thread_id? }` → Server-Sent Events: `meta` (thread id/title), `status`
-    (`searching`), `delta` (text chunks), then `done` (saved `user_message` and `message` rows +
-    usage) or `error`. Refusals (budget, daily limit, disabled, not an editor) are plain JSON with an
-    HTTP error and `{ error: <code>, ...usage }`.
+  - `send` `{ message, thread_id?, request_id? }` → Server-Sent Events: `meta` (thread id/title),
+    `status` (`searching`), `delta` (text chunks), then `done` (saved `user_message` and `message`
+    rows + usage) or `error`. A `: keep-alive` comment every 15 s keeps a silent stream (web search)
+    alive. Refusals (budget, daily limit, disabled, not an editor) are plain JSON with an HTTP error
+    and `{ error: <code>, ...usage }`.
+  - **Idempotent sends.** `request_id` is a UUID the app generates per question; the saved question
+    gets it as its `chat_messages.id`, and the spend reservation carries it as `ai_usage.message_id`
+    (unique). A repeat of an answered id replays the saved answer (`meta` + `done`, nothing billed);
+    a repeat while the first is still running gets `409 in_progress`; a repeat after a failed
+    attempt asks again. So a retry after a stall or a reload never asks (or bills) twice. No schema
+    change was needed.
+  - Auth: a token Supabase Auth rejects is `401 unauthorized`; Auth being unreachable is a `500
+    server_error` (retryable), never "unauthorized".
   - `draft_faq` `{ thread_id }` → `{ draft }`: a bilingual FAQ entry proposed from the thread. Nothing
     is saved until the editor confirms in the sheet; then the client inserts a `faq_entries` row.
     The draft call is billed and stored as an assistant message tagged `<!--faq-draft-->`, which the
@@ -179,6 +205,25 @@ Editors can ask questions inside the app. Feature id `assistant` (no tab; route 
   on sign-out. The answer being streamed lives in the same module-level `session` store, so it keeps
   streaming while the editor moves around the app. When `done` arrives the thread is reloaded and the
   streaming bubble is dropped as soon as the saved answer (`done.message.id`) is in the list.
+- **Requests that do not lose questions** (`session.js`, `api.js`):
+  - The composer text is saved per conversation as it is typed (`tt.assistant.drafts`, key = thread
+    id or `new`), and the question being answered with its request id (`tt.assistant.inflight`).
+    Both are the editor's own text on their own device; both are cleared on an explicit sign-out
+    (`onSignOut`), not when a session merely ends.
+  - If no byte arrives for 45 s (no event, no keep-alive) the app cancels the request. After a stall,
+    a dropped connection or a stream that ended without `done`, it looks for the saved answer by the
+    request id (`chat_messages?id=eq.<request id>`) before showing an error; if it is there it is
+    shown, otherwise the question goes back to the composer and Retry resends the same request id.
+    After a reload or relaunch mid-answer the same check runs when the chat opens (`interrupted`).
+  - A new conversation exists on the server only once its first answer is saved; if that fails the
+    app goes back to the "new conversation" screen with the question in the composer.
+  - Error codes shown (Spanish and English, `assistant.errors.*`): `offline`, `network` (session
+    kept), `timeout`, `interrupted`, `in_progress`, `unauthorized` (the session really ended; Sign in
+    button), `update_pending` (a server/bad-request error while a new app version is waiting: Update
+    button), plus the function's budget, daily limit, disabled, config and busy codes.
+  - The composer grows up to `min(160px, 28dvh)` and then scrolls inside. It reports the space it
+    covers (keyboard and safe area included) so the chat ends with a spacer of that height and the
+    newest message or error is never behind it; toasts sit above it (`--composer-space`).
 - The FAQ screen (`#/learn/faq`) shows `content/faq.json` entries and `faq_entries` rows together,
   newest first; the "saved" toast after confirming a draft links there.
 
@@ -200,12 +245,24 @@ site.
   stored under its clean URL, and the install fails (to be retried at the next update check) unless
   the fetched `src/version.js` carries the worker's own version. The worker is registered with
   `updateViaCache: 'none'`.
-- **Updates.** A new version that finishes installing within 15 s of launch, or of the app coming
-  back to the foreground (iOS resumes home-screen apps), is applied at once if nobody has touched the
-  app, no sheet is open and no text is typed; otherwise a toast offers "Update". A waiting version is
-  always applied before render on the next launch. Any page reloads when a new worker takes control
-  (also when another tab applied it), so old modules never run against the new cache. "Updated"
-  toast after the reload. `scripts/build-site.mjs` stamps the version and precache list.
+- **Updates never interrupt the person** (`src/lib/pwa.js`). "Busy" means work in flight that a
+  reload would lose, registered with `beginBusy()` (`src/lib/busy.js`): an assistant answer being
+  requested or streamed, an FAQ draft request, a store write, a photo upload. "Unsaved" means an open
+  sheet/dialog or text typed in any input.
+  - A new version that finishes installing within 15 s of launch, or of the app coming back to the
+    foreground (iOS resumes home-screen apps), is applied at once only if nobody has touched the app
+    and nothing is busy or unsaved.
+  - Otherwise a non-blocking toast offers "Update". Accepting waits for busy work to finish ("It
+    will update as soon as the work in progress finishes"); open sheets and typed text do not hold
+    it back (the person chose, and the assistant composer keeps its draft).
+  - It is also applied when the app goes to the background with nothing busy or unsaved, and always
+    before render on the next launch (if the new worker does not take over within 4 s, the current
+    version starts instead of a blank page).
+  - A page reloads when a new worker takes control, so old modules never run against the new
+    cache; when another tab applied the update while this one is busy or unsaved, the reload waits
+    for a safe moment (the app has no lazy imports, so its loaded modules keep working meanwhile).
+    "Updated" toast after the reload. `scripts/build-site.mjs` stamps the version and precache list.
+  - Tested against the built site with two deploys (`tests/e2e/pwa-update.spec.js`).
   The worker is never registered on localhost; `?sw=off` disables (and unregisters) it on any host.
 - **Version.** `src/version.js` exports `APP_VERSION` (`'<short sha>-<UTC yyyymmddThhmm>'`), stamped
   by `scripts/build-site.mjs` with the same value as the service worker cache; `'dev'` locally. Use
@@ -214,7 +271,8 @@ site.
 - Content JSON: network-first with cache fallback. Supabase requests are never cached by the service
   worker; each data store keeps its last successful result in `localStorage` and renders it immediately
   (stale-while-revalidate), refreshing on launch, on tab focus and after writes.
-- Writes need a connection in v1. Offline writes fail fast with a clear toast.
+- Writes need a connection in v1. Offline writes fail fast with a clear toast. Long-running work
+  that must not be cut by an update reload calls `beginBusy()` and ends it in `finally`.
 
 ## 8. Shared UI conventions introduced by the features
 
