@@ -311,7 +311,9 @@ site.
     `[data-scheme='dark']`; `themes.css` overrides them per `[data-theme='x'][data-scheme='light|dark']`.
     Because tokens are declared on any `[data-theme]` element, a subtree can preview another theme (the
     swatches do). Themes change the accent (`--c-gold*` = "accent", gold in the default theme), tinted
-    neutrals, focus ring and shadows; semantic colours (`--c-red`, `--c-green`, `--c-blue`) never change.
+    neutrals, focus ring and shadows; semantic colours (`--c-red`, `--c-green`, `--c-blue`, and the
+    amber warning tone `--c-warn`, `--c-warn-fill`, `--c-warn-soft`, `--c-on-warn-soft`) never change.
+    Warnings use the `warn` tone (Badge, ListRow), never the accent.
   - **Features use tokens only**: no hex/rgb colours (photo-viewer chrome and photo overlays may stay
     neutral black/white), no `@media (prefers-color-scheme)` (the person's mode would be ignored). A
     difference between light and dark is a token (`--border-raised`, `--c-raised-edge`,
@@ -330,7 +332,9 @@ site.
 - Each feature ships unit tests for its pure logic and at least one e2e test for its main flow in both
   signed-out and editor modes.
 - Accessibility: semantic elements, labels on inputs, visible focus, colour contrast AA, respects
-  `prefers-reduced-motion`.
+  `prefers-reduced-motion`. On navigation the shell moves focus to the page title (`tabindex="-1"`)
+  for screen readers; script-only focus targets like that never draw a focus ring (`base.css`), while
+  controls always do.
 - No `innerHTML` with dynamic data. No secrets in the repo. No analytics or third-party requests.
 
 ## 10. Git workflow

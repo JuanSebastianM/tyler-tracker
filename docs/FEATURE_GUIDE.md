@@ -80,6 +80,10 @@ import { Card, ListRow, List, Button, IconButton, Fab, Sheet, ConfirmDialog, Tex
 
 - `Card` (`title`, `action`, `tone="gold|quiet"`), `List` + `ListRow` (`icon`, `iconTone`, `title`,
   `subtitle`, `meta`, `trailing`, `href` or `onClick`).
+- Tones (`Badge tone`, `ListRow iconTone`): `gold` is the theme's accent (brand, "current",
+  "saved by the assistant"); `warn` is amber in every theme and means attention ("Hoy", "Pronto",
+  next meal, important, not ready yet); `red` danger/overdue, `green` done, `blue` info, `neutral`.
+  Never use `gold` for a warning: in other themes it is pink, lavender, mint or sky.
 - Inputs always take `label` and report `onValue(string)`; `error` shows an inline message.
   `DateInput` is `YYYY-MM-DD` and spells the chosen date out in the app language under the field (the
   native picker follows the device region, which the page cannot change), `TimeInput` is `HH:MM`,

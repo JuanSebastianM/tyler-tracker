@@ -42,7 +42,7 @@ visitors see the same screens without the add, edit and delete controls.
 | Diario (Diary) | `#/log` | A timeline of feedings and routine events (pee, poop, sleep, walk, play), one day at a time, with filters and edit/delete. `#/log/stats` shows house-training and daily statistics. |
 | Salud (Health) | `#/health` | Vaccines, deworming, weight with a growth chart against a reference range for the breed, vet visits (cost and private notes are for editors only), medications, reminders, and an "add to calendar" export (`.ics`) for due dates. |
 | Aprender (Learn) | `#/learn` | Must-know safety articles, an age roadmap with to-dos you can tick off, training guides with progress per skill, health explainers, advice for the puppy parents, the FAQ, fun facts, and search across all of it. |
-| Tyler | `#/profile` | Profile and photo, private details (microchip, vet contact, insurance; editors only), memories (milestones and photos), meal schedule settings, language, sign-in, data export (JSON and CSV), and an About card that shows the deployed version. |
+| Tyler | `#/profile` | Profile and photo, private details (microchip, vet contact, insurance; editors only), memories (milestones and photos), meal schedule settings, language, colour theme and light/dark mode, sign-in, data export (JSON and CSV), and an About card that shows the deployed version. |
 
 **Assistant.** Signed-in editors also get a sparkle button in the header that opens a chat with
 Claude (`#/assistant`, saved conversations at `#/assistant/threads`). The answers take Tyler's
@@ -78,14 +78,33 @@ bilingual FAQ entry. See [The in-app assistant](#the-in-app-assistant).
   `scripts/build-site.mjs`. It copies the site files into `_site/` and stamps the version and the
   precache list into the service worker and `src/version.js`.
 - **UI:** Preact with hooks and `htm` tagged templates (no JSX), plus small stores in
-  `src/lib/store.js`. Styling is plain CSS with custom properties in `src/styles/`. It has light and
-  dark themes through `prefers-color-scheme`.
+  `src/lib/store.js`. Styling is plain CSS with custom properties in `src/styles/`. Each person
+  picks a colour theme and light/dark mode for themselves (see [Themes](#themes)).
 - **Vendored libraries.** Preact, htm and `@supabase/supabase-js` are pinned in
   `vendor/versions.json`. The `vendor` workflow bundles them into single ESM files in `vendor/`. The
   app never loads code from a CDN at runtime, and there are no analytics or third-party requests.
 - **Backend:** Supabase (free plan) for Postgres, Auth, Storage and one Edge Function (`chat`).
 - **Reading content** (articles, roadmap, training guides, FAQ, facts, growth reference) is
   bilingual JSON in `content/`. It is served as static files and fetched network-first.
+
+### Themes
+
+Ajustes → Tema on the Tyler tab offers five colour themes (Predeterminado, the original gold, plus
+Rosa, Lavanda, Menta and Cielo), each in light and dark, and a mode (Automático follows the device,
+Claro, Oscuro). A choice applies only to the person who made it:
+
+- **Where it is stored.** Signed-in users: their own row in `public.user_settings`, also cached on
+  the device so the app paints it at launch. Visitors (and anyone after signing out): `localStorage`
+  on that device. `src/lib/theme-boot.js`, a small classic script linked from `index.html`, applies
+  the saved theme before the first paint (no flash, no inline script).
+- **How it works.** A theme only overrides design tokens: defaults in `src/styles/tokens.css`,
+  themes in `src/styles/themes.css`. Feature CSS uses tokens only. Danger, success, info and the
+  amber warning tone (`--c-warn*`: "Hoy", "Pronto", next meal) never change with the theme.
+- **Adding a theme.** Add a `[data-theme='x'][data-scheme='light']` and a `...='dark']` block to
+  `themes.css` (same token list as the others), add the id to `THEMES` in `src/lib/theme.js` and
+  `src/lib/theme-boot.js`, add its name to the profile feature's `i18n/{es,en}.json`, and run
+  `npm test`: `tests/unit/theme.test.mjs` checks WCAG AA contrast for every text pair in every theme
+  and mode.
 
 Why these choices:
 
@@ -112,7 +131,7 @@ supabase/migrations/                      Database schema and access rules (SQL)
 supabase/functions/chat/                  The assistant's Edge Function (TypeScript)
 scripts/                                  Dev server, checks, site build, vendor build, backup
 tests/unit/, tests/e2e/                   node:test unit tests, Playwright tests
-.github/workflows/                        ci.yml, vendor.yml, nightly.yml
+.github/workflows/                        ci.yml, deploy-function.yml, vendor.yml, nightly.yml
 ```
 
 ## Access model
@@ -161,6 +180,8 @@ The source of truth is `supabase/migrations/*.sql`, applied in order:
 | `0002_tighten_grants.sql` | Revokes unneeded privileges (see above) |
 | `0003_ai_assistant.sql` | `ai_settings`, `chat_threads`, `chat_messages`, `faq_entries` |
 | `0004_ai_usage_ledger.sql` | `ai_usage` spend ledger and its trigger |
+| `0005_ai_settings_location.sql` | `ai_settings.location` (where Tyler lives, for the assistant; the value lives only in the database) |
+| `0006_user_settings.sql` | `user_settings`: one row per signed-in user (`theme`, `color_mode`), readable and writable only by that user |
 
 Tables by purpose:
 
@@ -174,6 +195,7 @@ Tables by purpose:
 | FAQ saved from the assistant | `faq_entries` | Public |
 | Private | `pet_private` (single row), `vet_visit_private` | Editors |
 | Access | `editors` (a user can read only their own row) | Own row |
+| Per-person preferences | `user_settings` (theme and colour mode; any signed-in user, own row only) | Own row |
 | Assistant | `ai_settings` (single row), `chat_threads`, `chat_messages`, `ai_usage` | Editors |
 
 Conventions:
@@ -326,10 +348,23 @@ Playwright traces are uploaded if it fails. On `main`, once the checks pass, the
 
 **Service worker versioning.** The version is `<short sha>-<UTC yyyymmddThhmm>`. It is written into
 `sw.js` (cache name `tt-shell-<version>`) and into `src/version.js` as `APP_VERSION`, which the
-About card shows. Locally it is `dev`. The new worker installs in the background but does not take
-over a running session. It activates on the next launch, or immediately if the user taps "Update"
-on the toast. Old shell caches are deleted when it activates. Content JSON is network-first with a
-cache fallback. Supabase requests are never cached by the service worker.
+About card shows. Locally it is `dev`. Every file of the site (theme files included) is in the
+precache list. Old shell caches are deleted when a new worker activates. Content JSON is
+network-first with a cache fallback. Supabase requests are never cached by the service worker.
+
+**Update policy: updates never interrupt.** A new version installs in the background. It is applied
+at once only right after launch or resume, if nobody has touched the app yet and nothing is in
+progress. Otherwise a toast offers "Update"; accepting waits for work in flight (an assistant
+answer, a save, a photo upload) to finish, and the assistant keeps typed text as a draft. It is
+also applied when the app goes to the background with nothing in progress, and always on the next
+launch. Details in `docs/ARCHITECTURE.md` and `tests/e2e/pwa-update.spec.js`.
+
+**Session handling.** iOS suspends the installed app, so the one-hour token often expires in the
+background. The stored session is shown at once at launch; a refresh that fails because there is
+no connection keeps you signed in (it retries when back online); only a refresh the auth server
+rejects ends the session, with a toast that offers "Sign in". Requests refresh a token about to
+expire first and retry a 401 once, so saves, uploads and assistant questions survive an expired
+token. The assistant's sends are idempotent (`request_id`), so a retry never asks or bills twice.
 
 **Vendored libraries** (`.github/workflows/vendor.yml`). To bump a library, edit its version in
 `vendor/versions.json` and push to `main`, or run the workflow by hand. The workflow installs the
@@ -346,17 +381,20 @@ any table cannot be read. It uses the public key, so private tables, assistant t
 files are **not** in this backup.
 
 **Database migrations** are not applied by CI. Write a new numbered file in `supabase/migrations/`
-and apply it to the project yourself, for example with the Supabase SQL editor or CLI. All four
+and apply it to the project yourself, for example with the Supabase SQL editor or CLI. All six
 existing migrations are applied.
 
-**Edge Function.** It is deployed by hand, not by CI:
+**Edge Function** (`.github/workflows/deploy-function.yml`). A push to `main` that changes
+`supabase/functions/**` deploys the `chat` function from the repo automatically (it can also be run
+by hand), then smoke-tests that a request without a session is rejected. It needs the repository
+secret `SUPABASE_ACCESS_TOKEN` (a Supabase personal access token); without it the job skips the
+deploy with a warning. Manual fallback:
 
 ```sh
 supabase functions deploy chat --project-ref kegtfxoiijbytprfwqrl
 ```
 
-Keep `verify_jwt` on, which is the default. Deploy every file in `supabase/functions/chat/`
-(`index.ts` and `lib/*.ts`).
+Keep `verify_jwt` on, which is the default.
 
 ## Content and the FAQ workflow
 
@@ -408,9 +446,8 @@ The FAQ screen (`#/learn/faq`) merges two sources, newest first:
 - **Partial backup.** The nightly backup covers public tables only (see above). Private tables,
   assistant data and photo files are not backed up by this repo. Supabase's own backups on the
   free plan were not checked.
-- **Manual operations.** Migrations, the Edge Function deploy and the `ANTHROPIC_API_KEY` secret
-  are all handled by hand. Nothing in CI checks that the live database or function matches the
-  repo.
+- **Manual operations.** Migrations and the `ANTHROPIC_API_KEY` secret are handled by hand.
+  Nothing in CI checks that the live database matches the repo.
 - **Local development uses the live project.** There is no separate staging database.
 - **Assistant pricing is hard-coded** for two models, with prices read on 2026-11-13. A model
   change needs `pricing.ts` updated to get accurate costs.
@@ -454,6 +491,10 @@ report. The work ran in phases:
 3. **Integration**, one agent: fixed what the merges surfaced and made the features consistent.
 4. **Independent review**, one agent: security, behaviour and content accuracy.
 5. **This README**, one agent.
+6. **After launch day**, once the owner had tested the app on his phone, three more Claude Opus
+   5.5 (Medium effort) agents: one fixed the update and session behaviour (updates that never
+   interrupt, sessions that survive iOS suspending the app, idempotent assistant sends), one built
+   per-person colour themes, and one merged them.
 
 The commit trailers (`Co-Authored-By`) in the git history show which model wrote each commit.
 
