@@ -4,7 +4,7 @@ import {
   ageParts, daysWithUs, buildTimeline, groupByMonth, timelinePhotos, unusedSuggestions, photoDate,
   slotsToDraft, parseGrams, addSlot, removeSlot, moveSlot, sortSlotsByTime, isChronological, validateSlots, MAX_MEAL_SLOTS,
   csvCell, csvColumns, toCsv, buildExportJson, cleanRow, exportFileName, EXPORT_TABLES,
-  telHref, parseBuildVersion, versionFromSwSource, versionFromCaches,
+  telHref, parseBuildVersion,
 } from '../../src/features/profile/logic.js';
 
 const TZ = 'America/Bogota';
@@ -150,10 +150,6 @@ test('build version parsing', () => {
   assert.deepEqual(parseBuildVersion('abc1234-20261113T1530'), { sha: 'abc1234', date: '2026-11-13', raw: 'abc1234-20261113T1530' });
   assert.equal(parseBuildVersion('__SW_VERSION__'), null);
   assert.equal(parseBuildVersion(null), null);
+  assert.equal(parseBuildVersion('dev'), null);
   assert.deepEqual(parseBuildVersion('weird'), { sha: 'weird', date: null, raw: 'weird' });
-  assert.equal(versionFromSwSource("// x\nconst VERSION = \"abc1234-20261113T1530\";"), 'abc1234-20261113T1530');
-  assert.equal(versionFromSwSource("const VERSION = '__SW_VERSION__';"), '__SW_VERSION__');
-  assert.equal(versionFromSwSource(''), null);
-  assert.equal(versionFromCaches(['tt-content', 'tt-shell-v1']), 'v1');
-  assert.equal(versionFromCaches(['tt-shell-v1', 'tt-shell-v2']), null);
 });

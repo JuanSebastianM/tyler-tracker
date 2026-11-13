@@ -73,6 +73,7 @@ jobs:
             echo "waiting for the new deploy ($i)"; sleep 10
           done
           curl -fsS "${URL}sw.js" | grep -q "\"${short}-" || { echo "::error::sw.js on Pages is not stamped with ${short}"; exit 1; }
+          curl -fsS "${URL}src/version.js" | grep -q "\"${short}-" || { echo "::error::src/version.js on Pages is not stamped with ${short}"; exit 1; }
           curl -fsS "$URL" | grep -q 'src/main.js'
           for f in manifest.webmanifest vendor/preact.js vendor/supabase.js src/main.js src/i18n/es.json content/faq.json assets/icons/icon-192.png; do
             curl -fsS -o /dev/null "${URL}${f}" || { echo "::error::missing ${f}"; exit 1; }

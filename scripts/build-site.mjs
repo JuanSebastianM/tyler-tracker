@@ -1,5 +1,5 @@
-// Assembles the deployable site into _site/ and stamps the service worker with a version and
-// the precache list. Used by CI before deploying to GitHub Pages.
+// Assembles the deployable site into _site/ and stamps the version (sw.js and src/version.js,
+// APP_VERSION) and the service worker's precache list. Used by CI before deploying to GitHub Pages.
 //   node scripts/build-site.mjs [outDir]
 import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
@@ -58,4 +58,8 @@ writeFileSync(
   swPath,
   sw.replace("'__SW_VERSION__'", JSON.stringify(version)).replace('/* __PRECACHE__ */', precache.map((f) => JSON.stringify(f)).join(',\n  ')),
 );
+const versionPath = join(out, 'src', 'version.js');
+const versionSrc = readFileSync(versionPath, 'utf8');
+if (!versionSrc.includes("/* __APP_VERSION__ */ 'dev'")) throw new Error('src/version.js placeholder not found');
+writeFileSync(versionPath, versionSrc.replace("/* __APP_VERSION__ */ 'dev'", JSON.stringify(version)));
 console.log(`Built ${out}: ${files.length} files, service worker ${version}`);

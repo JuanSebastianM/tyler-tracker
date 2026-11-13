@@ -1,52 +1,21 @@
 // About: app version, how to install on iPhone, link to the public repo.
-import { html, useEffect, useState } from '../../../vendor/preact.js';
+import { html } from '../../../vendor/preact.js';
 import { t, formatDate } from '../../lib/i18n.js';
 import { Card, List, ListRow, Icon } from '../../lib/ui/index.js';
-import { parseBuildVersion, versionFromCaches, versionFromSwSource } from './logic.js';
+import { parseBuildVersion } from './logic.js';
+import { APP_VERSION } from '../../version.js';
 
 export const REPO_URL = 'https://github.com/JuanSebastianM/tyler-tracker';
 
-/**
- * The deployed build version. The foundation stamps it only into sw.js ('tt-shell-<version>'
- * cache name + VERSION constant), so read the running shell cache first, then sw.js.
- * @returns {Promise<string | null>}
- */
-async function readVersion() {
-  try {
-    if (typeof caches !== 'undefined') {
-      const v = versionFromCaches(await caches.keys());
-      if (v) return v;
-    }
-  } catch {
-    /* caches unavailable (private mode) */
-  }
-  try {
-    const res = await fetch('./sw.js', { cache: 'no-cache' });
-    if (res.ok) return versionFromSwSource(await res.text());
-  } catch {
-    /* offline */
-  }
-  return null;
-}
-
 export function AboutCard() {
-  const [version, setVersion] = useState(/** @type {ReturnType<typeof parseBuildVersion> | undefined} */ (undefined));
-  useEffect(() => {
-    let alive = true;
-    readVersion().then((v) => alive && setVersion(parseBuildVersion(v)));
-    return () => {
-      alive = false;
-    };
-  }, []);
+  const version = parseBuildVersion(APP_VERSION);
 
   const versionText =
-    version === undefined
-      ? t('common.loading')
-      : version === null
-        ? t('profile.about.devVersion')
-        : version.date
-          ? t('profile.about.versionBuilt', { sha: version.sha, date: formatDate(version.date, 'medium') })
-          : version.sha;
+    version === null
+      ? t('profile.about.devVersion')
+      : version.date
+        ? t('profile.about.versionBuilt', { sha: version.sha, date: formatDate(version.date, 'medium') })
+        : version.sha;
 
   return html`<${Card} title=${t('profile.about.title')} data-testid="about-card">
     <p class="muted profile-note">${t('profile.about.intro')}</p>

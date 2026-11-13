@@ -326,25 +326,14 @@ export function telHref(phone) {
 
 /**
  * Parse a build version 'abc1234-20261113T1530' (stamped by scripts/build-site.mjs).
- * Unstamped ('__SW_VERSION__') or unknown -> null.
+ * Unstamped ('dev' locally, or a '__…__' placeholder) -> null.
  * @param {string | null | undefined} version
  * @returns {{ sha: string, date: string | null, raw: string } | null}
  */
 export function parseBuildVersion(version) {
-  if (!version || version.includes('__')) return null;
+  if (!version || version === 'dev' || version.includes('__')) return null;
   const m = /^([0-9a-z]+)-(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})/i.exec(version);
   if (!m) return { sha: version, date: null, raw: version };
   return { sha: m[1], date: `${m[2]}-${m[3]}-${m[4]}`, raw: version };
 }
 
-/** Version from the service worker source text. @param {string} swSource */
-export function versionFromSwSource(swSource) {
-  const m = /const VERSION = ['"]([^'"]+)['"]/.exec(swSource || '');
-  return m ? m[1] : null;
-}
-
-/** Version from a shell cache name ('tt-shell-<version>'). @param {string[]} cacheNames */
-export function versionFromCaches(cacheNames) {
-  const shells = cacheNames.filter((n) => n.startsWith('tt-shell-'));
-  return shells.length === 1 ? shells[0].slice('tt-shell-'.length) : null;
-}
