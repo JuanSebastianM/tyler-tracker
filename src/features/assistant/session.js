@@ -35,6 +35,7 @@ const MAYBE_SAVED = new Set(['timeout', 'network', 'offline', 'upstream_error'])
  * @property {string} text
  * @property {'sending' | 'searching' | 'streaming' | 'checking'} status
  * @property {string} startedAt
+ * @property {string} [requestId] the question's request id (= the saved question's id)
  * @property {string} [savedId] id of the saved assistant message (from the 'done' event); once the
  *   reloaded thread contains it, the chat shows the saved row instead of this bubble
  *
@@ -201,7 +202,7 @@ export async function ask(threadId, question, opts = {}) {
   session.set((s) => ({
     ...s,
     error: null,
-    pending: { threadId, question, askedBy: editorName(), text: '', status: 'sending', startedAt: inflight.startedAt },
+    pending: { threadId, question, askedBy: editorName(), text: '', status: 'sending', startedAt: inflight.startedAt, requestId },
   }));
   /** @param {(p: Pending) => Pending} fn */
   const patch = (fn) => session.set((s) => (s.pending ? { ...s, pending: fn(s.pending) } : s));
@@ -318,7 +319,7 @@ export async function resumeInterrupted() {
   if (!inf?.requestId || !inf.question) return;
   session.set((s) => ({
     ...s,
-    pending: { threadId: inf.threadId, question: inf.question, askedBy: editorName(), text: '', status: 'checking', startedAt: inf.startedAt },
+    pending: { threadId: inf.threadId, question: inf.question, askedBy: editorName(), text: '', status: 'checking', startedAt: inf.startedAt, requestId: inf.requestId },
   }));
   const saved = await findSavedAnswer(inf.requestId);
   removeKey(INFLIGHT_KEY);

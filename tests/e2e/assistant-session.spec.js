@@ -247,12 +247,25 @@ test.describe('drafts', () => {
 test.describe('layout: the composer never hides the newest item', () => {
   const LONG = 'Primera línea de la pregunta\nsegunda línea\ntercera línea\ncuarta línea\nquinta línea\nsexta línea\nséptima línea\noctava línea';
 
-  /** The element's bottom edge is above the composer's top edge. */
+  /**
+   * The element's bottom edge is above the composer's top edge once the layout has settled. The
+   * composer grows with the text, a ResizeObserver reports it on the next frame, and only then does
+   * the chat reserve the space and follow the end; measuring before that (as this test used to, right
+   * after `fill`) caught the page mid-update and failed now and then. "Settled" is observable: the
+   * textarea is at its grown height and `--composer-space` matches the composer's current height.
+   * Both boxes are read in one evaluate, so they come from the same layout.
+   */
   const clearOfComposer = async (page, locator) => {
-    const box = await locator.boundingBox();
-    const composer = await page.getByTestId('assistant-composer').boundingBox();
-    expect(box && composer).toBeTruthy();
-    expect(box.y + box.height).toBeLessThanOrEqual(composer.y + 1);
+    const measure = () =>
+      locator.evaluate((el) => {
+        const form = /** @type {HTMLElement} */ (document.querySelector('[data-testid="assistant-composer"]'));
+        const ta = /** @type {HTMLTextAreaElement} */ (form.querySelector('textarea'));
+        const grown = ta.scrollHeight <= ta.clientHeight + 1 || ta.offsetHeight >= parseFloat(getComputedStyle(ta).maxHeight) - 1;
+        const reserved = document.documentElement.style.getPropertyValue('--composer-space') === `${Math.ceil(form.offsetHeight)}px`;
+        const overlap = el.getBoundingClientRect().bottom - (form.getBoundingClientRect().top + 1);
+        return { settled: grown && reserved, overlap: Math.max(0, Math.round(overlap)) };
+      });
+    await expect.poll(measure, { message: 'the element ends above the settled composer' }).toEqual({ settled: true, overlap: 0 });
   };
 
   for (const scheme of ['light', 'dark']) {
@@ -293,6 +306,8 @@ test.describe('layout: the composer never hides the newest item', () => {
     await openApp(page, '/assistant', { mode: 'asEditor', chat: { reply, sources: [] } });
     await ask(page, '¿Cómo es un buen día para él?');
     await expect(page.locator('.msg-assistant').last()).toContainText('Párrafo 14');
+    // The streamed bubble matches the text above too; wait for the saved answer that replaces it.
+    await expect(page.getByTestId('assistant-streaming')).toHaveCount(0);
     await input(page).fill(LONG);
     await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
     await clearOfComposer(page, page.locator('.msg-assistant .md p').last());

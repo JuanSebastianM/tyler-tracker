@@ -1,5 +1,5 @@
 // Chat screen: '#/assistant' (new conversation) and '#/assistant?t=<thread id>'.
-import { html, useEffect, useRef, useState } from '../../../vendor/preact.js';
+import { html, useEffect, useLayoutEffect, useRef, useState } from '../../../vendor/preact.js';
 import { t, formatDateTime } from '../../lib/i18n.js';
 import { navigate } from '../../lib/router.js';
 import { Button, IconButton, Markdown, Sources, Spinner, Skeleton, EmptyState, Icon } from '../../lib/ui/index.js';
@@ -7,7 +7,7 @@ import { chatThreads, petProfile, useTimezone } from '../../data/stores.js';
 import { getAge, getToday } from '../../data/derived.js';
 import { DEFAULT_BIRTH_DATE } from '../../config.js';
 import { ask, clearError, getDraft, session, loadThreadMessages, refreshUsage, resumeInterrupted, setDraft, stopAnswer, useSession, useThreadMessages } from './session.js';
-import { canDraftFaq, cleanQuestion, draftKey, MAX_QUESTION_CHARS, starterKeys, visibleMessages } from './logic.js';
+import { canDraftFaq, cleanQuestion, draftKey, MAX_QUESTION_CHARS, pendingIsSaved, starterKeys, visibleMessages } from './logic.js';
 import { BudgetIndicator, EditorGate, ErrorNotice, GlyphSend, GlyphStop } from './parts.js';
 import { FaqSheet } from './faq-sheet.js';
 
@@ -72,6 +72,10 @@ function Chat({ threadId }) {
 
   const rows = visibleMessages(msgs?.rows || []);
   const pending = s.pending && s.pending.threadId === threadId ? s.pending : null;
+  // The streaming bubble gives way to the saved answer as soon as the thread holds it. Opening the
+  // new thread's URL (at 'meta') loads its messages, and that load can arrive before 'done': without
+  // this the answer and the question were shown twice for a moment.
+  const answered = pendingIsSaved(pending, rows);
   const error = s.error && s.error.threadId === threadId ? s.error : null;
   const busy = !!s.pending;
   const loading = !!threadId && (!msgs || msgs.status === 'loading') && !rows.length && !pending;
@@ -89,8 +93,10 @@ function Chat({ threadId }) {
     scrollToEnd(false);
   }, [pending?.text, pending?.status]);
   // The composer grew (more lines, keyboard): keep the newest item above it if the reader was there.
+  // Layout effect: the space and the scroll change in the same frame, so the newest line is never
+  // painted behind the composer in between.
   const prevSpace = useRef(0);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const delta = composerSpace - prevSpace.current;
     prevSpace.current = composerSpace;
     if (delta > 0) scrollToEnd(false, delta);
@@ -120,7 +126,7 @@ function Chat({ threadId }) {
           ? html`<${Intro} onPick=${send} disabled=${busy} />`
           : html`<ol class="chat-log" aria-live="polite" aria-relevant="additions">
               ${rows.map((m) => html`<${Message} key=${m.id} m=${m} tz=${tz} />`)}
-              ${pending && !(pending.savedId && rows.some((m) => m.id === pending.savedId))
+              ${pending && !answered
                 ? html`<${PendingMessages} p=${pending} tz=${tz} />`
                 : null}
             </ol>`}
@@ -215,8 +221,9 @@ function Composer({ busy, onSend, usage, text, setText, onSpace }) {
   const input = useRef(/** @type {HTMLTextAreaElement | null} */ (null));
   const tooLong = text.trim().length > MAX_QUESTION_CHARS;
 
-  // Grow with the text up to the CSS max-height, then scroll inside the box.
-  useEffect(() => {
+  // Grow with the text up to the CSS max-height, then scroll inside the box. Before paint, so the
+  // ResizeObserver below reports the new size in the same frame as the text.
+  useLayoutEffect(() => {
     const el = input.current;
     if (!el) return;
     el.style.height = 'auto';

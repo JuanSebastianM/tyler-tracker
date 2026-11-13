@@ -71,6 +71,19 @@ export function answerFor(rows, requestId) {
 }
 
 /**
+ * Is the answer being streamed already in the thread? Then the chat shows the saved rows instead of
+ * the streaming bubble. Either signal may come first: the 'done' event (`savedId`) or a thread load
+ * that already includes the saved question (id = request id) and its answer.
+ * @param {{ savedId?: string, requestId?: string } | null} pending
+ * @param {any[]} rows visible chat_messages of the thread
+ */
+export function pendingIsSaved(pending, rows) {
+  if (!pending) return false;
+  if (pending.savedId && rows.some((m) => m.id === pending.savedId)) return true;
+  return !!pending.requestId && !!answerFor(rows, pending.requestId);
+}
+
+/**
  * Map any error string to a known code (unknown → server_error). An `upstream_error` with the
  * function's `reason` becomes `upstream_config` (API key, billing or model: retrying will not help)
  * or `upstream_busy` (Claude is overloaded or rate limited: try again in a minute).

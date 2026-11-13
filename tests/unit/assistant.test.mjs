@@ -11,6 +11,7 @@ import {
   validateDraft,
   faqRowFromDraft,
   normalizeError,
+  pendingIsSaved,
   FAQ_DRAFT_TAG,
   RETRYABLE,
 } from '../../src/features/assistant/logic.js';
@@ -92,4 +93,19 @@ test('FAQ draft validation and row', () => {
   assert.deepEqual(row.sources, [{ title: 'S', url: 'https://s.example' }]);
   assert.equal(row.source_thread_id, 't1');
   assert.equal('created_by' in row, false);
+});
+
+test('pendingIsSaved: the streaming bubble gives way to the saved answer, whichever signal comes first', () => {
+  const q = { id: 'req-1', role: 'user', content: '¿Agua?', created_at: '2026-11-13T15:00:01.000Z' };
+  const a = { id: 'ans-1', role: 'assistant', content: 'Siempre', created_at: '2026-11-13T15:00:02.000Z' };
+  const older = { id: 'old-a', role: 'assistant', content: 'Antes', created_at: '2026-11-13T14:00:00.000Z' };
+  assert.equal(pendingIsSaved(null, [q, a]), false);
+  // 'done' handled and the thread reloaded.
+  assert.equal(pendingIsSaved({ savedId: 'ans-1' }, [q, a]), true);
+  assert.equal(pendingIsSaved({ savedId: 'ans-1' }, [older]), false);
+  // A thread load that already holds the answer, before 'done' was handled.
+  assert.equal(pendingIsSaved({ requestId: 'req-1' }, [older, q, a]), true);
+  // The question alone (answer not saved yet) or another question's answer: keep streaming.
+  assert.equal(pendingIsSaved({ requestId: 'req-1' }, [older, q]), false);
+  assert.equal(pendingIsSaved({ requestId: 'req-2' }, [older, q, a]), false);
 });
