@@ -27,6 +27,10 @@ button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus { outline: none; }
 :focus-visible { outline: 3px solid var(--c-focus); outline-offset: 2px; border-radius: 6px; }
+/* Script-only focus targets (tabindex="-1": the page title focused on navigation for screen readers,
+   <main> for the skip link, sheets) are not controls: Chromium and WebKit can still match
+   :focus-visible on them after script focus, so they never draw the ring. Controls keep it. */
+[tabindex='-1']:not(a, button, input, select, textarea, summary):focus-visible { outline: none; }
 [hidden] { display: none !important; }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;

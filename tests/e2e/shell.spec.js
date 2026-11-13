@@ -138,3 +138,26 @@ test('header back after navigating inside the app goes back in history', async (
   // The entry before /learn/faq was /health: real history, not the fallback.
   await expect(page).toHaveURL(/#\/health$/);
 });
+
+test('navigation focuses the page title for screen readers without drawing a ring; controls keep theirs', async ({ page }) => {
+  await openApp(page, '/today');
+  const title = page.getByRole('heading', { level: 1 });
+  const outline = (loc) => loc.evaluate((el) => getComputedStyle(el).outlineStyle);
+  // Keyboard: follow a tab link with Enter, then the title gets focus (script) and shows no outline.
+  await tab(page, 'health').focus();
+  await page.keyboard.press('Enter');
+  await expect(title).toHaveText('Salud');
+  await expect(title).toBeFocused();
+  expect(await outline(title)).toBe('none');
+  // Hash navigation without any prior interaction (what the review screenshots do).
+  await page.goto('./#/profile');
+  await expect(title).toHaveText('Tyler');
+  await expect(title).toBeFocused();
+  expect(await outline(title)).toBe('none');
+  // Real keyboard focus on a control still shows the ring.
+  await page.keyboard.press('Tab');
+  const focused = page.locator(':focus');
+  await expect(focused).toHaveCount(1);
+  expect(await focused.evaluate((el) => el.tagName)).not.toBe('H1');
+  expect(await outline(focused)).toBe('solid');
+});
