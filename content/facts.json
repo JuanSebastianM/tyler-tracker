@@ -2,33 +2,725 @@
   "version": 1,
   "items": [
     {
-      "id": "scottish-origin",
-      "sample": true,
+      "id": "nous-the-first-golden",
       "text": {
-        "es": "Los Golden Retriever nacieron en **Escocia** en el siglo XIX, en la finca Guisachan de Lord Tweedmouth, para recoger aves en terrenos húmedos.",
-        "en": "Golden Retrievers were developed in **Scotland** in the 19th century, at Lord Tweedmouth's Guisachan estate, to retrieve birds on wet ground."
+        "es": "La historia del Golden empieza con Nous, un retriever amarillo que Lord Tweedmouth le compró a un zapatero en Brighton, Inglaterra, en 1865.",
+        "en": "The Golden story starts with Nous, a yellow retriever Lord Tweedmouth bought from a cobbler in Brighton, England, in 1865."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: The origins of the Golden Retriever revisited",
+          "url": "https://www.grca.org/about-the-breed/breed-history/the-origins-of-the-golden-retriever-revisited/"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
-      "id": "soft-mouth",
-      "sample": true,
+      "id": "tweed-water-spaniel",
       "text": {
-        "es": "Tienen **boca blanda**: fueron criados para cargar presas sin dañarlas. Por eso a Tyler le encanta llevar cosas en la boca.",
-        "en": "They have a **soft mouth**: they were bred to carry game without damaging it. That is why Tyler loves carrying things around."
+        "es": "Nous fue cruzado con Belle, una Tweed Water Spaniel, una raza escocesa que hoy ya no existe. De esa camada viene la base de la raza.",
+        "en": "Nous was bred to Belle, a Tweed Water Spaniel, a Scottish breed that no longer exists. That litter is considered the foundation of the breed."
       },
-      "sources": [{ "title": "Golden Retriever Club of America", "url": "https://www.grca.org/" }],
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: The origins of the Golden Retriever revisited",
+          "url": "https://www.grca.org/about-the-breed/breed-history/the-origins-of-the-golden-retriever-revisited/"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
-      "id": "baby-teeth",
-      "sample": true,
+      "id": "guisachan-estate",
       "text": {
-        "es": "Un cachorro tiene **28 dientes de leche**; un perro adulto tiene **42**. El cambio pasa más o menos entre los 3 y los 6 meses.",
-        "en": "A puppy has **28 baby teeth**; an adult dog has **42**. They change roughly between 3 and 6 months of age."
+        "es": "Los primeros Golden se criaron en Guisachan, la finca de Lord Tweedmouth en las Tierras Altas de Escocia.",
+        "en": "The first Goldens were bred at Guisachan, Lord Tweedmouth's estate in the Scottish Highlands."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: The origins of the Golden Retriever revisited",
+          "url": "https://www.grca.org/about-the-breed/breed-history/the-origins-of-the-golden-retriever-revisited/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "russian-circus-myth",
+      "text": {
+        "es": "Durante décadas se creyó que los Golden descendían de perros de un circo ruso. Los libros de cría de Lord Tweedmouth, estudiados en los años 50, desmintieron la historia.",
+        "en": "For decades people believed Goldens came from Russian circus dogs. Lord Tweedmouth's breeding records, studied in the 1950s, disproved the story."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: The origins of the Golden Retriever revisited",
+          "url": "https://www.grca.org/about-the-breed/breed-history/the-origins-of-the-golden-retriever-revisited/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "scottish-gundog",
+      "text": {
+        "es": "El AKC describe al Golden como un perro de caza escocés, y su estándar dice que es ante todo un perro de caza.",
+        "en": "The AKC describes the Golden as a Scottish gundog, and its standard says he is primarily a hunting dog."
+      },
+      "sources": [
+        {
+          "title": "AKC: Golden Retriever dog breed information",
+          "url": "https://www.akc.org/dog-breeds/golden-retriever/"
+        },
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "first-us-registration",
+      "text": {
+        "es": "El primer Golden Retriever registrado en Estados Unidos fue Lomberdale Blondin, en noviembre de 1925.",
+        "en": "The first Golden Retriever registered in the United States was Lomberdale Blondin, in November 1925."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Golden Retriever firsts, general",
+          "url": "https://grca.org/about-the-breed/breed-history/golden-retriever-firsts-akc-events/general-firsts/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "grca-founded",
+      "text": {
+        "es": "El Golden Retriever Club of America, el club de la raza en Estados Unidos, se constituyó en 1938.",
+        "en": "The Golden Retriever Club of America, the breed club in the United States, was incorporated in 1938."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Golden Retriever firsts, general",
+          "url": "https://grca.org/about-the-breed/breed-history/golden-retriever-firsts-akc-events/general-firsts/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "first-national-specialty",
+      "text": {
+        "es": "La primera exposición nacional del club de Golden de Estados Unidos se hizo en Thiensville, Wisconsin, el 13 de mayo de 1940.",
+        "en": "The first national specialty show of the US Golden club was held in Thiensville, Wisconsin, on 13 May 1940."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Golden Retriever firsts, general",
+          "url": "https://grca.org/about-the-breed/breed-history/golden-retriever-firsts-akc-events/general-firsts/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "first-field-champion",
+      "text": {
+        "es": "El primer Golden campeón de campo en Estados Unidos fue FC Rip, en noviembre de 1939.",
+        "en": "The first Golden field champion in the United States was FC Rip, in November 1939."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Golden Retriever firsts, field",
+          "url": "https://grca.org/?p=2392"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "king-midas-national-champion",
+      "text": {
+        "es": "En 1941, King Midas of Woodend se convirtió en el primer Golden en ganar el Campeonato Nacional de Retrievers de Estados Unidos.",
+        "en": "In 1941, King Midas of Woodend became the first Golden to win the US National Retriever Championship."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Golden Retriever firsts, field",
+          "url": "https://grca.org/?p=2392"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "first-dual-champion",
+      "text": {
+        "es": "El primer Golden con doble campeonato, de belleza y de campo, fue Stilrovin Rip's Pride, en 1946.",
+        "en": "The first Golden to be a dual champion, in both the show ring and the field, was Stilrovin Rip's Pride, in 1946."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Golden Retriever firsts, field",
+          "url": "https://grca.org/?p=2392"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "third-most-popular",
+      "text": {
+        "es": "Según los registros del AKC de 2025, el Golden Retriever es la tercera raza más popular de Estados Unidos.",
+        "en": "According to AKC registrations for 2025, the Golden Retriever is the third most popular breed in the United States."
+      },
+      "sources": [
+        {
+          "title": "AKC: The most popular dog breeds of 2025",
+          "url": "https://www.akc.org/expert-advice/news/most-popular-dog-breeds-2025/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "male-height",
+      "text": {
+        "es": "Según el estándar del AKC, un Golden macho adulto mide entre 58 y 61 cm (23 a 24 pulgadas) a la altura de la cruz.",
+        "en": "Under the AKC standard, an adult male Golden stands 23 to 24 inches (58 to 61 cm) at the withers."
+      },
+      "sources": [
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "male-weight",
+      "text": {
+        "es": "El estándar de la raza indica que un macho adulto pesa entre 65 y 75 libras, es decir, entre 29 y 34 kg aproximadamente.",
+        "en": "The breed standard says an adult male weighs 65 to 75 pounds, roughly 29 to 34 kg."
+      },
+      "sources": [
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "water-repellent-coat",
+      "text": {
+        "es": "Según el estándar de la raza, el pelo del Golden es denso y repele el agua, con una buena capa interna.",
+        "en": "According to the breed standard, the Golden's coat is dense and water-repellent, with a good undercoat."
+      },
+      "sources": [
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "friendly-reliable-trustworthy",
+      "text": {
+        "es": "El estándar oficial describe el temperamento del Golden con tres palabras: amigable, confiable y digno de confianza.",
+        "en": "The official standard describes the Golden's temperament in three words: friendly, reliable and trustworthy."
+      },
+      "sources": [
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "rich-golden-colour",
+      "text": {
+        "es": "El estándar pide un color dorado \"rico y brillante\" en distintos tonos.",
+        "en": "The standard calls for a \"rich, lustrous golden\" colour in various shades."
+      },
+      "sources": [
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "many-jobs",
+      "text": {
+        "es": "Además de cazar, los Golden trabajan como perros guía, en búsqueda y rescate, y compiten en obediencia y otros deportes.",
+        "en": "Besides hunting, Goldens work as guide dogs and in search and rescue, and compete in obedience and other sports."
+      },
+      "sources": [
+        {
+          "title": "AKC: Golden Retriever dog breed information",
+          "url": "https://www.akc.org/dog-breeds/golden-retriever/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "guide-dog-breed",
+      "text": {
+        "es": "Guide Dogs, la organización británica de perros guía, trabaja con Golden Retrievers y los describe como amigables, leales y cariñosos.",
+        "en": "Guide Dogs, the UK guide dog charity, works with Golden Retrievers and describes them as friendly, loyal and affectionate."
+      },
+      "sources": [
+        {
+          "title": "Guide Dogs UK: Get to know the different guide dog breeds",
+          "url": "https://guidedogs.org.uk/getting-support/guide-dogs/our-breeds"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "lifetime-study",
+      "text": {
+        "es": "Desde 2010, más de 3.000 Golden participan en un estudio que sigue su salud durante toda la vida, el estudio prospectivo más grande de la medicina veterinaria en Estados Unidos.",
+        "en": "Since 2010, more than 3,000 Goldens have taken part in a study that follows their health for life, the largest prospective study in US veterinary medicine."
+      },
+      "sources": [
+        {
+          "title": "Morris Animal Foundation: Golden Retriever Lifetime Study",
+          "url": "https://www.morrisanimalfoundation.org/study/golden-retriever-lifetime-study"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "slow-to-grow-up",
+      "text": {
+        "es": "Las razas grandes como el Golden pueden tardar casi dos años en llegar a la adultez, mucho más que las razas pequeñas.",
+        "en": "Large breeds such as the Golden can take almost two years to reach adulthood, much longer than small breeds."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "smell-receptors",
+      "text": {
+        "es": "Un perro tiene hasta 300 millones de receptores olfativos. Una persona tiene alrededor de seis millones.",
+        "en": "A dog has up to 300 million olfactory receptors. A person has around six million."
+      },
+      "sources": [
+        {
+          "title": "NOVA (PBS): Dogs' dazzling sense of smell",
+          "url": "https://www.pbs.org/wgbh/nova/article/dogs-sense-of-smell"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "smell-sensitivity",
+      "text": {
+        "es": "Los científicos calculan que el olfato de un perro es entre 10.000 y 100.000 veces más agudo que el nuestro. Las estimaciones varían según el estudio.",
+        "en": "Scientists estimate a dog's sense of smell is 10,000 to 100,000 times more acute than ours. Estimates vary between studies."
+      },
+      "sources": [
+        {
+          "title": "NOVA (PBS): Dogs' dazzling sense of smell",
+          "url": "https://www.pbs.org/wgbh/nova/article/dogs-sense-of-smell"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "smell-brain",
+      "text": {
+        "es": "En proporción al tamaño del cerebro, la parte que analiza los olores es unas 40 veces más grande en un perro que en una persona.",
+        "en": "Relative to brain size, the part that analyses smells is about 40 times larger in a dog than in a person."
+      },
+      "sources": [
+        {
+          "title": "NOVA (PBS): Dogs' dazzling sense of smell",
+          "url": "https://www.pbs.org/wgbh/nova/article/dogs-sense-of-smell"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "side-slits",
+      "text": {
+        "es": "Los perros exhalan por unas ranuras a los lados de la nariz. Así el aire que sale no espanta los olores nuevos y pueden olfatear casi sin parar.",
+        "en": "Dogs breathe out through slits at the sides of their nose. The outgoing air does not push new smells away, so they can sniff almost non-stop."
+      },
+      "sources": [
+        {
+          "title": "NOVA (PBS): Dogs' dazzling sense of smell",
+          "url": "https://www.pbs.org/wgbh/nova/article/dogs-sense-of-smell"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "stereo-nose",
+      "text": {
+        "es": "Un perro puede mover cada fosa nasal por separado y saber por cuál entró un olor. Eso le ayuda a ubicar de dónde viene.",
+        "en": "A dog can move each nostril independently and tell which one a smell came in through. That helps him locate where it comes from."
+      },
+      "sources": [
+        {
+          "title": "NOVA (PBS): Dogs' dazzling sense of smell",
+          "url": "https://www.pbs.org/wgbh/nova/article/dogs-sense-of-smell"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "vomeronasal-organ",
+      "text": {
+        "es": "Los perros tienen un órgano especial en la parte baja de la nariz, el órgano vomeronasal, que detecta feromonas. Las personas no tenemos ese órgano.",
+        "en": "Dogs have a special organ at the bottom of the nasal passage, the vomeronasal organ, which detects pheromones. People do not have one like it."
+      },
+      "sources": [
+        {
+          "title": "NOVA (PBS): Dogs' dazzling sense of smell",
+          "url": "https://www.pbs.org/wgbh/nova/article/dogs-sense-of-smell"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "unique-nose-print",
+      "text": {
+        "es": "La huella de la nariz de un perro es única, como nuestras huellas digitales, y ya está formada hacia los 2 meses de edad.",
+        "en": "A dog's nose print is unique, like our fingerprints, and is fully formed by about 2 months of age."
+      },
+      "sources": [
+        {
+          "title": "VCA Animal Hospitals: Are nose prints as unique as fingerprints?",
+          "url": "https://vcahospitals.com/resources/lifestyle/true-or-false-dog-and-cat-nose-prints-are-as-unique-as-a-fingerprint"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "high-pitched-hearing",
+      "text": {
+        "es": "Los perros oyen los sonidos agudos unas cuatro veces mejor que las personas, y sus canales auditivos profundos les ayudan a ubicar de dónde viene un ruido.",
+        "en": "Dogs hear high-pitched sounds about four times better than people, and their deep ear canals help them pinpoint where a sound comes from."
+      },
+      "sources": [
+        {
+          "title": "MSD Veterinary Manual: Description of dogs",
+          "url": "https://www.msdvetmanual.com/dog-owners/description-and-physical-characteristics-of-dogs/description-and-physical-characteristics-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "motion-and-low-light",
+      "text": {
+        "es": "Los perros ven el movimiento y en poca luz mejor que nosotros, pero distinguen menos los detalles finos y los colores.",
+        "en": "Dogs see movement and in low light better than we do, but they see fine detail and colours less well."
+      },
+      "sources": [
+        {
+          "title": "MSD Veterinary Manual: Description of dogs",
+          "url": "https://www.msdvetmanual.com/dog-owners/description-and-physical-characteristics-of-dogs/description-and-physical-characteristics-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "third-eyelid",
+      "text": {
+        "es": "Los perros tienen un tercer párpado, de color rosado blanquecino, que se desliza sobre el ojo para protegerlo.",
+        "en": "Dogs have a third eyelid, whitish pink in colour, that slides across the eye to protect it."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Eye structure and function in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/eye-disorders-of-dogs/eye-structure-and-function-in-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "panting-not-sweating",
+      "text": {
+        "es": "Los perros no sudan como nosotros: se refrescan sobre todo jadeando.",
+        "en": "Dogs do not sweat the way we do: they cool down mainly by panting."
+      },
+      "sources": [
+        {
+          "title": "MSD Veterinary Manual: Description of dogs",
+          "url": "https://www.msdvetmanual.com/dog-owners/description-and-physical-characteristics-of-dogs/description-and-physical-characteristics-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "body-temperature",
+      "text": {
+        "es": "La temperatura normal de un perro está entre 38,3 y 39,2 °C, más alta que la nuestra.",
+        "en": "A dog's normal body temperature is 38.3 to 39.2 °C (101 to 102.5 °F), higher than ours."
+      },
+      "sources": [
+        {
+          "title": "MSD Veterinary Manual: Description of dogs",
+          "url": "https://www.msdvetmanual.com/dog-owners/description-and-physical-characteristics-of-dogs/description-and-physical-characteristics-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "heart-rate",
+      "text": {
+        "es": "En reposo, el corazón de un perro late entre 70 y 120 veces por minuto. Los perros pequeños tienen el pulso más rápido que los grandes.",
+        "en": "At rest, a dog's heart beats 70 to 120 times a minute. Small dogs have faster heart rates than large ones."
+      },
+      "sources": [
+        {
+          "title": "MSD Veterinary Manual: Description of dogs",
+          "url": "https://www.msdvetmanual.com/dog-owners/description-and-physical-characteristics-of-dogs/description-and-physical-characteristics-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "dog-years",
+      "text": {
+        "es": "La regla de \"siete años humanos por año\" no es exacta: los dos primeros años de un perro equivalen a unos 10 a 12 años humanos, y luego cada año suma unos 4.",
+        "en": "The \"seven human years per year\" rule is not accurate: a dog's first two years equal about 10 to 12 human years, then each year adds about 4."
+      },
+      "sources": [
+        {
+          "title": "MSD Veterinary Manual: Description of dogs",
+          "url": "https://www.msdvetmanual.com/dog-owners/description-and-physical-characteristics-of-dogs/description-and-physical-characteristics-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "two-sets-of-teeth",
+      "text": {
+        "es": "Los perros tienen dos denticiones: 28 dientes de leche y 42 dientes de adulto.",
+        "en": "Dogs have two sets of teeth: 28 baby teeth and 42 adult teeth."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Dental development of dogs",
+          "url": "https://merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/dental-development-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "teeth-timeline",
+      "text": {
+        "es": "Los dientes de leche salen entre las 3 y 5 semanas de vida, y para los 7 meses ya deben estar todos los dientes de adulto.",
+        "en": "Baby teeth come in at 3 to 5 weeks of age, and all the adult teeth should be in by about 7 months."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Dental development of dogs",
+          "url": "https://merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/dental-development-of-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "puppy-sleep",
+      "text": {
+        "es": "Los cachorros duermen entre 18 y 20 horas al día. Mientras duermen se desarrollan su cerebro, su sistema inmune y sus músculos.",
+        "en": "Puppies sleep 18 to 20 hours a day. While they sleep, their brain, immune system and muscles develop."
+      },
+      "sources": [
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "newborn-senses",
+      "text": {
+        "es": "Los cachorros recién nacidos casi no ven, oyen ni huelen durante sus primeras tres semanas. Abren los ojos entre las 2 y las 4 semanas.",
+        "en": "Newborn puppies barely see, hear or smell during their first three weeks. Their eyes open between 2 and 4 weeks."
+      },
+      "sources": [
+        {
+          "title": "AKC: A puppy growth timeline",
+          "url": "https://www.akc.org/expert-advice/training/puppy-growth-timeline-transitions-puppyhood/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "dogs-then-people",
+      "text": {
+        "es": "Entre las 3 y las 8 semanas los cachorros se fijan sobre todo en otros perros; entre las 5 y las 12 semanas su interés pasa cada vez más a las personas.",
+        "en": "Between 3 and 8 weeks puppies focus mostly on other dogs; between 5 and 12 weeks their interest shifts more and more to people."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "socialization-window",
+      "text": {
+        "es": "Los primeros tres meses son la etapa más importante para que un cachorro aprenda que personas, sonidos y lugares nuevos son seguros.",
+        "en": "The first three months are the most important time for a puppy to learn that new people, sounds and places are safe."
+      },
+      "sources": [
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "fear-periods-normal",
+      "text": {
+        "es": "Muchos cachorros pasan por un periodo de miedo entre las 8 y las 11 semanas, y otro entre los 6 y los 14 meses. Es una etapa normal, no un retroceso.",
+        "en": "Many puppies go through a fear period between 8 and 11 weeks, and another between 6 and 14 months. It is a normal stage, not a setback."
+      },
+      "sources": [
+        {
+          "title": "AKC: What are puppy fear periods?",
+          "url": "https://www.akc.org/expert-advice/puppy-information/puppy-fear-periods/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "puppies-read-pointing",
+      "text": {
+        "es": "En un estudio con 375 cachorros de unas 8 semanas, muchos ya seguían el gesto de una persona señalando, y la genética explicaba más del 40 % de las diferencias.",
+        "en": "In a study of 375 puppies about 8 weeks old, many already followed a person's pointing gesture, and genetics explained more than 40% of the differences."
+      },
+      "sources": [
+        {
+          "title": "ScienceDaily (University of Arizona): Puppies are wired to communicate with people",
+          "url": "https://www.sciencedaily.com/releases/2021/06/210603111935.htm"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "teen-brain",
+      "text": {
+        "es": "En la adolescencia, la parte del cerebro que controla los impulsos todavía está madurando. Por eso un perro de 8 meses puede \"olvidar\" lo que sabía.",
+        "en": "In adolescence, the part of the brain that controls impulses is still maturing. That is why an 8-month-old dog may \"forget\" what he knew."
+      },
+      "sources": [
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "social-maturity",
+      "text": {
+        "es": "Aunque un perro sea adulto físicamente, su madurez social se desarrolla entre los 12 y los 36 meses.",
+        "en": "Even when a dog is physically adult, his social maturity develops between 12 and 36 months."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "reading-human-gestures",
+      "text": {
+        "es": "Los perros son muy buenos interpretando los gestos y el comportamiento de las personas.",
+        "en": "Dogs are very good at reading human gestures and behaviour."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "wolf-ancestor",
+      "text": {
+        "es": "Los perros descienden del lobo gris. El Manual Merck ubica la domesticación hace 12.000 a 14.000 años, aunque otros estudios proponen fechas distintas.",
+        "en": "Dogs descend from the grey wolf. The Merck Manual places domestication 12,000 to 14,000 years ago, although other studies suggest different dates."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "mouths-explore",
+      "text": {
+        "es": "Los cachorros usan la boca para explorar y jugar. Por eso morder y mordisquear es tan común a esta edad.",
+        "en": "Puppies use their mouths to explore and play. That is why chewing and biting are so common at this age."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "ASPCA: Mouthing, nipping and biting in puppies",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/mouthing-nipping-and-biting-puppies"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "body-language",
+      "text": {
+        "es": "Los perros se comunican con la postura, la cara, la posición de la cola y las orejas, el pelo erizado, sus sonidos y los olores.",
+        "en": "Dogs communicate through posture, facial expression, tail and ear position, raised hackles, vocal sounds and scent."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "zoomies-mean-tired",
+      "text": {
+        "es": "Las carreras locas de la noche, conocidas como \"zoomies\", suelen ser señal de que el cachorro está cansado, no de que le falte ejercicio.",
+        "en": "Evening bursts of crazy running, known as \"zoomies\", are usually a sign the puppy is tired, not that he needs more exercise."
+      },
+      "sources": [
+        {
+          "title": "Dogs Trust: First nights with a new puppy",
+          "url": "https://www.dogstrust.org.uk/dog-advice/puppy/first-night"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "sniffing-is-enrichment",
+      "text": {
+        "es": "Dejar que un perro olfatee y elija el camino en algunos paseos le da estimulación mental y puede ayudar a que jale menos la correa.",
+        "en": "Letting a dog sniff and choose the route on some walks gives him mental stimulation and can help reduce leash pulling."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to teach a puppy to walk on a leash",
+          "url": "https://www.akc.org/expert-advice/training/teach-puppy-walk-leash/"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     }
   ]
