@@ -88,19 +88,23 @@ Reference weight range for a male Golden Retriever, used for the growth chart.
 ```json
 {
   "version": 1,
-  "sample": true,
-  "placeholder_note": { "es": "...", "en": "..." },
+  "note": { "es": "...", "en": "..." },
   "breed": "golden_retriever",
   "sex": "male",
   "unit": "kg",
-  "points": [{ "age_weeks": 8, "min_kg": 5, "max_kg": 7 }],
+  "points": [{ "age_weeks": 17, "min_kg": 12.7, "max_kg": 20.4 }],
   "sources": [{ "title": "...", "url": "https://..." }],
   "reviewed_on": "YYYY-MM-DD"
 }
 ```
 
-`points` are sorted by `age_weeks` with `min_kg <= max_kg`. While `sample` is true the chart must
-show `placeholder_note`. **The current values are placeholders and are not verified.**
+- `points` are sorted by `age_weeks` with `min_kg <= max_kg` (at least 2). The band does not have
+  to start at Tyler's current age: while his ages are all before the first point, the chart draws
+  no band and says at what age the reference starts.
+- `note` (bilingual, optional but expected): how the range was built and its limits. The Health
+  weight chart always shows it under the chart.
+- `sample: true` + `placeholder_note` (bilingual) mark placeholder values; while `sample` is true
+  the chart shows `placeholder_note` with an "Example" badge. The current file is real (no `sample`).
 
 ## Reading content in code
 

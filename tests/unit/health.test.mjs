@@ -169,6 +169,21 @@ test('growthChartModel: domains, ticks, points and band', () => {
   assert.deepEqual(m.xTicks.map((tk) => tk.value), [6, 8, 10, 12]);
   assert.equal(m.yTicks[0].y, 170);
   assert.equal(m.nowX, m.points[1].x);
+  assert.equal(m.bandStatus, 'visible');
+  assert.deepEqual(m.bandRange, [8, 16]);
+});
+
+test('growthChartModel: a band that starts after the shown ages is reported, not drawn', () => {
+  const later = [{ age_weeks: 17, min_kg: 12.7, max_kg: 20.4 }, { age_weeks: 35, min_kg: 22.4, max_kg: 32.9 }];
+  const m = growthChartModel({ weights: [{ ageWeeks: 6.1, kg: 4.6 }, { ageWeeks: 7, kg: 5.1 }], band: later, nowWeeks: 7 });
+  assert.equal(m.bandPath, '');
+  assert.equal(m.bandStatus, 'later');
+  assert.deepEqual(m.bandRange, [17, 35]);
+  assert.ok(m.domain.y[1] < 10, 'y scale follows Tyler, not the far-away band');
+  const older = growthChartModel({ weights: [{ ageWeeks: 15, kg: 12 }], band: later, nowWeeks: 15.5 });
+  assert.equal(older.bandStatus, 'visible', 'band shows once the range reaches its start');
+  const ended = growthChartModel({ weights: [{ ageWeeks: 40, kg: 30 }], band: BAND, nowWeeks: 40 });
+  assert.equal(ended.bandStatus, 'earlier');
 });
 
 test('growthChartModel works without weights or reference', () => {
@@ -176,6 +191,8 @@ test('growthChartModel works without weights or reference', () => {
   assert.equal(m.points.length, 0);
   assert.equal(m.linePath, '');
   assert.equal(m.bandPath, '');
+  assert.equal(m.bandStatus, 'none');
+  assert.equal(m.bandRange, null);
   assert.ok(m.domain.x[1] - m.domain.x[0] >= 8);
   const single = growthChartModel({ weights: [{ ageWeeks: 7, kg: 5 }] });
   assert.equal(single.linePath, '', 'one point draws no line');

@@ -253,6 +253,12 @@ export function growthChartModel(input) {
     points,
     linePath: points.length >= 2 ? linePath(points.map((p) => [p.x, p.y])) : '',
     bandPath,
+    /** First and last age (weeks) of the whole reference band, or null without one. */
+    bandRange: input.band?.length
+      ? /** @type {[number, number]} */ ([Math.min(...input.band.map((b) => b.age_weeks)), Math.max(...input.band.map((b) => b.age_weeks))])
+      : null,
+    /** 'none' (no reference) | 'visible' | 'later' (band starts after the shown range) | 'earlier' (band ended). */
+    bandStatus: !input.band?.length ? 'none' : bandPath ? 'visible' : Math.min(...input.band.map((b) => b.age_weeks)) > x1 ? 'later' : 'earlier',
     nowX: input.nowWeeks != null ? sx(input.nowWeeks) : null,
   };
 }

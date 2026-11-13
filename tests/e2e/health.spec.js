@@ -1,6 +1,6 @@
 // Health feature: overview, sections, growth chart, private vet costs, reminders, calendar, rollback.
 import { test, expect } from 'playwright/test';
-import { openApp, toastWith, EDITOR_NAME } from './helpers.js';
+import { openApp, toastWith, EDITOR_NAME, GROWTH_STARTS_LATER } from './helpers.js';
 
 const VISIT_ID = 'a0000000-0000-4000-8000-000000000001';
 const visitFixtures = {
@@ -73,7 +73,8 @@ test('editor adds a weight with a comma and the chart updates', async ({ page })
   const svg = page.getByTestId('growth-chart').locator('svg[role="img"]');
   await expect(svg).toHaveAttribute('data-points', '1');
   await expect(page.getByTestId('growth-band')).toHaveCount(1);
-  await expect(page.getByTestId('growth-placeholder')).toBeVisible();
+  await expect(page.getByTestId('growth-note')).toHaveText('Nota de prueba sobre el rango de referencia.');
+  await expect(page.getByTestId('growth-band-later')).toHaveCount(0);
   await expect(page.getByTestId('growth-chart').locator('.disclaimer')).toBeVisible();
   await page.getByTestId('fab-add').click();
   const form = page.getByTestId('weight-form');
@@ -101,6 +102,16 @@ test('chart renders without a reference file', async ({ page }) => {
   await expect(page.getByTestId('growth-chart').locator('svg[role="img"]')).toHaveAttribute('data-points', '1');
   await expect(page.getByTestId('growth-no-reference')).toBeVisible();
   await expect(page.getByTestId('growth-band')).toHaveCount(0);
+});
+
+test('a reference band that starts later is explained, with its note, and not drawn', async ({ page }) => {
+  await openApp(page, '/health/weight', { content: { growth: GROWTH_STARTS_LATER } });
+  await expect(page.getByTestId('growth-chart').locator('svg[role="img"]')).toHaveAttribute('data-points', '1');
+  await expect(page.getByTestId('growth-band-later')).toContainText('empieza a las 17 semanas');
+  await expect(page.getByTestId('growth-band')).toHaveCount(0);
+  await expect(page.getByTestId('growth-chart')).not.toContainText('Rango de referencia');
+  await expect(page.getByTestId('growth-note')).toBeVisible();
+  await expect(page.getByTestId('growth-no-reference')).toHaveCount(0);
 });
 
 test('private visit cost: visible to editors only, never requested for visitors', async ({ page }) => {

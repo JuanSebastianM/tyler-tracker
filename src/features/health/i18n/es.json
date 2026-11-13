@@ -100,6 +100,7 @@
     "legendBand": "Rango de referencia",
     "legendToday": "Hoy",
     "noReference": "Por ahora no hay rango de referencia para comparar.",
+    "bandStartsLater": "El rango de referencia empieza a las {weeks} semanas. Aparecerá en la gráfica cuando Tyler se acerque a esa edad.",
     "placeholderBadge": "Ejemplo",
     "fields": {
       "kg": "Peso",

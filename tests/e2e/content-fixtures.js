@@ -111,8 +111,7 @@ export const CONTENT_FIXTURES = {
   },
   growth: {
     version: 1,
-    sample: true,
-    placeholder_note: bi('Valores de prueba, sin verificar.', 'Test values, not verified.'),
+    note: bi('Nota de prueba sobre el rango de referencia.', 'Test note about the reference range.'),
     breed: 'golden_retriever',
     sex: 'male',
     unit: 'kg',
@@ -125,6 +124,12 @@ export const CONTENT_FIXTURES = {
     sources: SRC,
     reviewed_on: REVIEWED,
   },
+};
+
+/** A growth reference that starts at 17 weeks, after Tyler's age at FIXED_NOW. */
+export const GROWTH_STARTS_LATER = {
+  ...CONTENT_FIXTURES.growth,
+  points: [{ age_weeks: 17, min_kg: 12, max_kg: 20 }, { age_weeks: 35, min_kg: 22, max_kg: 33 }],
 };
 
 /** Items of a fixture content file. @param {keyof typeof CONTENT_FIXTURES} name */

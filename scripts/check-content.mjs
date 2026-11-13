@@ -88,6 +88,7 @@ const itemValidators = {
 function checkGrowth(f, data) {
   if (data.sample !== undefined && typeof data.sample !== 'boolean') err(f, 'sample', 'must be boolean');
   if (data.sample) bilingual(f, 'placeholder_note', data.placeholder_note);
+  if (data.note !== undefined) bilingual(f, 'note', data.note);
   if (data.unit !== 'kg') err(f, 'unit', 'must be "kg"');
   oneOf(f, 'sex', data.sex, ['male', 'female']);
   sources(f, 'sources', data.sources);

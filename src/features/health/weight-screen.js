@@ -59,12 +59,16 @@ export function GrowthChart({ rows, birthDate, today }) {
       </svg>
       <figcaption class="health-legend">
         <span><i class="lg-dot"></i>${t('health.weight.legendTyler')}</span>
-        ${band ? html`<span><i class="lg-band"></i>${t('health.weight.legendBand')}</span>` : null}
+        ${m.bandStatus === 'visible' ? html`<span><i class="lg-band"></i>${t('health.weight.legendBand')}</span>` : null}
         <span><i class="lg-now"></i>${t('health.weight.legendToday')}</span>
       </figcaption>
     </figure>
     ${!series.length ? html`<p class="muted">${t('health.weight.chartEmpty')}</p>` : null}
     ${!band && status !== 'loading' ? html`<p class="muted" data-testid="growth-no-reference">${t('health.weight.noReference')}</p>` : null}
+    ${m.bandStatus === 'later' && m.bandRange
+      ? html`<p class="muted" data-testid="growth-band-later">${t('health.weight.bandStartsLater', { weeks: formatNumber(m.bandRange[0]) })}</p>`
+      : null}
+    ${band && growth?.note ? html`<p class="health-note muted" data-testid="growth-note">${pick(growth.note)}</p>` : null}
     ${band && growth?.sample
       ? html`<p class="health-note" data-testid="growth-placeholder"><${Badge} tone="gold" icon="info">${t('health.weight.placeholderBadge')}</${Badge}> ${pick(growth.placeholder_note) || t('content.placeholder')}</p>`
       : null}
