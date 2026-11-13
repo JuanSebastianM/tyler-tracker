@@ -1,31 +1,17 @@
 /* Design tokens. Palette: a golden coat on a fresh meadow — warm gold accents on a cool,
-   green-tinted base so the gold carries the warmth and the rest stays calm and legible. */
+   green-tinted base so the gold carries the warmth and the rest stays calm and legible.
+
+   Theming (docs/ARCHITECTURE.md, "Theming"): colours live only here and in themes.css.
+   src/lib/theme.js (and theme-boot.js before first paint) sets on <html>:
+     data-theme  = default | rose | lavender | mint | sky   (the person's colour theme)
+     data-mode   = auto | light | dark                       (their choice)
+     data-scheme = light | dark                              (resolved; auto follows the device)
+   Colour tokens are declared on :root and on any [data-theme] element, so a subtree (the
+   theme picker swatches) can preview another theme. Feature CSS uses tokens only and never
+   queries prefers-color-scheme itself: scheme differences are tokens too (--border-raised...).
+   The --c-gold* tokens are the theme's accent (gold in the default theme). */
 :root {
   color-scheme: light dark;
-
-  /* Colour (light) */
-  --c-bg: #f2f5ef;            /* meadow mist */
-  --c-surface: #ffffff;
-  --c-surface-2: #e8ede4;     /* inset areas, segmented track */
-  --c-ink: #1d2a22;           /* pine */
-  --c-ink-2: #536058;         /* secondary text, 6.3:1 on surface */
-  --c-line: #d6ddd1;
-  --c-gold: #e8a83a;          /* Tyler's coat: fills only, never text on light */
-  --c-gold-strong: #d18e1c;
-  --c-on-gold: #2b1d02;
-  --c-gold-soft: #fbedcf;
-  --c-on-gold-soft: #5a3b00;
-  --c-gold-ink: #8a5700;      /* gold used as text/links, 5.9:1 on surface */
-  --c-green: #2e6b4c;
-  --c-green-soft: #dcede2;
-  --c-red: #b0321d;
-  --c-red-soft: #fbe3dd;
-  --c-blue: #2c5d86;
-  --c-blue-soft: #e0ebf5;
-  --c-focus: #1f6fd1;
-  --c-backdrop: rgb(16 24 19 / 0.45);
-  --shadow-1: 0 1px 2px rgb(29 42 34 / 0.06), 0 2px 8px rgb(29 42 34 / 0.05);
-  --shadow-2: 0 8px 28px rgb(29 42 34 / 0.18);
 
   /* Type: SF Pro Rounded on Apple devices for headings, system UI for body */
   --font-display: ui-rounded, 'SF Pro Rounded', 'Nunito', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -69,29 +55,72 @@
   --dur-2: 220ms;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --c-bg: #111713;
-    --c-surface: #1a221d;
-    --c-surface-2: #242e28;
-    --c-ink: #e9efe9;
-    --c-ink-2: #a5b2aa;
-    --c-line: #2f3b34;
-    --c-gold: #f0b54c;
-    --c-gold-strong: #f6c56a;
-    --c-on-gold: #2b1d02;
-    --c-gold-soft: #3b2e13;
-    --c-on-gold-soft: #f7d9a0;
-    --c-gold-ink: #f3c46c;
-    --c-green: #7fc79f;
-    --c-green-soft: #1d3327;
-    --c-red: #f29482;
-    --c-red-soft: #3e221c;
-    --c-blue: #8fbbe3;
-    --c-blue-soft: #1d2d3c;
-    --c-focus: #7db4ff;
-    --c-backdrop: rgb(0 0 0 / 0.6);
-    --shadow-1: none;
-    --shadow-2: 0 8px 28px rgb(0 0 0 / 0.5);
-  }
+/* Colour (light). Default theme. */
+:root,
+[data-theme] {
+  --c-bg: #f2f5ef;            /* meadow mist */
+  --c-surface: #ffffff;
+  --c-surface-2: #e8ede4;     /* inset areas, segmented track */
+  --c-ink: #1d2a22;           /* pine */
+  --c-ink-2: #536058;         /* secondary text, 6.3:1 on surface */
+  --c-line: #d6ddd1;
+  --c-gold: #e8a83a;          /* accent (Tyler's coat): fills only, never text on light */
+  --c-gold-strong: #d18e1c;
+  --c-on-gold: #2b1d02;
+  --c-gold-soft: #fbedcf;
+  --c-on-gold-soft: #5a3b00;
+  --c-gold-ink: #8a5700;      /* accent used as text/links, 5.9:1 on surface */
+  --c-green: #2e6b4c;
+  --c-green-soft: #dcede2;
+  --c-red: #b0321d;
+  --c-red-soft: #fbe3dd;
+  --c-on-red: #ffffff;        /* text on --c-red (danger button, error toast) */
+  --c-blue: #2c5d86;
+  --c-blue-soft: #e0ebf5;
+  --c-focus: #1f6fd1;
+  --c-backdrop: rgb(16 24 19 / 0.45);
+  --c-segment-on: var(--c-surface);       /* selected segment */
+  --c-on-segment-on: var(--c-ink);
+  --c-progress-track: rgb(255 255 255 / 0.55); /* progress bar on an accent-soft card */
+  --c-toast-action: var(--c-gold);        /* action text on the toast (--c-ink background) */
+  --c-raised-edge: transparent;           /* edge of raised surfaces that already have a border */
+  --border-raised: none;                  /* raised surfaces: shadow in light, hairline in dark */
+  --shadow-1: 0 1px 2px rgb(29 42 34 / 0.06), 0 2px 8px rgb(29 42 34 / 0.05);
+  --shadow-2: 0 8px 28px rgb(29 42 34 / 0.18);
+  --shadow-fab: 0 6px 18px rgb(140 90 0 / 0.35);
 }
+
+/* Colour (dark). Default theme. */
+[data-scheme='dark'] {
+  color-scheme: dark;
+  --c-bg: #111713;
+  --c-surface: #1a221d;
+  --c-surface-2: #242e28;
+  --c-ink: #e9efe9;
+  --c-ink-2: #a5b2aa;
+  --c-line: #2f3b34;
+  --c-gold: #f0b54c;
+  --c-gold-strong: #f6c56a;
+  --c-on-gold: #2b1d02;
+  --c-gold-soft: #3b2e13;
+  --c-on-gold-soft: #f7d9a0;
+  --c-gold-ink: #f3c46c;
+  --c-green: #7fc79f;
+  --c-green-soft: #1d3327;
+  --c-red: #f29482;
+  --c-red-soft: #3e221c;
+  --c-on-red: #2a0d07;
+  --c-blue: #8fbbe3;
+  --c-blue-soft: #1d2d3c;
+  --c-focus: #7db4ff;
+  --c-backdrop: rgb(0 0 0 / 0.6);
+  --c-segment-on: var(--c-gold);
+  --c-on-segment-on: var(--c-on-gold);
+  --c-progress-track: rgb(0 0 0 / 0.3);
+  --c-toast-action: #7a4c00;              /* the toast is light in dark mode */
+  --c-raised-edge: var(--c-line);
+  --border-raised: 1px solid var(--c-line);
+  --shadow-1: none;
+  --shadow-2: 0 8px 28px rgb(0 0 0 / 0.5);
+}
+[data-scheme='light'] { color-scheme: light; }

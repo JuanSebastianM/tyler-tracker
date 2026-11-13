@@ -1,0 +1,157 @@
+/* Colour themes a person can pick in Ajustes → Tema (src/lib/theme.js). Each theme overrides the
+   accent (--c-gold*), the tinted neutrals, the focus ring and the shadows, in a light and a dark
+   version; every other token (danger, success, info, sizes) comes from tokens.css. Semantic
+   colours stay as they are so danger, success and info read the same in every theme.
+   Text pairs are checked for WCAG AA in tests/unit/theme.test.mjs. */
+
+/* ---- Rose ---- */
+[data-theme='rose'][data-scheme='light'] {
+  --c-bg: #f8f0f3;
+  --c-surface: #ffffff;
+  --c-surface-2: #f2e3e9;
+  --c-ink: #2c1b23;
+  --c-ink-2: #67515b;
+  --c-line: #e8d3dc;
+  --c-gold: #ee8db0;
+  --c-gold-strong: #e06f99;
+  --c-on-gold: #3b0a1f;
+  --c-gold-soft: #fce2ec;
+  --c-on-gold-soft: #7d1e48;
+  --c-gold-ink: #a32a5e;
+  --c-focus: #b0246a;
+  --c-backdrop: rgb(36 14 24 / 0.45);
+  --shadow-1: 0 1px 2px rgb(44 27 35 / 0.06), 0 2px 8px rgb(44 27 35 / 0.05);
+  --shadow-2: 0 8px 28px rgb(44 27 35 / 0.18);
+  --shadow-fab: 0 6px 18px rgb(160 40 90 / 0.32);
+}
+[data-theme='rose'][data-scheme='dark'] {
+  --c-bg: #181015;
+  --c-surface: #22181e;
+  --c-surface-2: #2e2229;
+  --c-ink: #f4e9ee;
+  --c-ink-2: #bba6b0;
+  --c-line: #3e2e36;
+  --c-gold: #f394b8;
+  --c-gold-strong: #f7b0ca;
+  --c-on-gold: #3b0a1f;
+  --c-gold-soft: #45202f;
+  --c-on-gold-soft: #fbd2e2;
+  --c-gold-ink: #f5a6c4;
+  --c-focus: #ff9fcb;
+  --c-toast-action: #9c2659;
+  --shadow-fab: 0 6px 18px rgb(0 0 0 / 0.45);
+}
+
+/* ---- Lavender ---- */
+[data-theme='lavender'][data-scheme='light'] {
+  --c-bg: #f4f2fa;
+  --c-surface: #ffffff;
+  --c-surface-2: #e9e5f4;
+  --c-ink: #221d33;
+  --c-ink-2: #5a5470;
+  --c-line: #dcd6eb;
+  --c-gold: #b49cec;
+  --c-gold-strong: #9c80e2;
+  --c-on-gold: #1c0f3c;
+  --c-gold-soft: #ece5fc;
+  --c-on-gold-soft: #462890;
+  --c-gold-ink: #6340bd;
+  --c-focus: #6340bd;
+  --c-backdrop: rgb(22 16 40 / 0.45);
+  --shadow-1: 0 1px 2px rgb(34 29 51 / 0.06), 0 2px 8px rgb(34 29 51 / 0.05);
+  --shadow-2: 0 8px 28px rgb(34 29 51 / 0.18);
+  --shadow-fab: 0 6px 18px rgb(90 60 180 / 0.32);
+}
+[data-theme='lavender'][data-scheme='dark'] {
+  --c-bg: #13111a;
+  --c-surface: #1c1926;
+  --c-surface-2: #272334;
+  --c-ink: #ece9f6;
+  --c-ink-2: #aba5c0;
+  --c-line: #353046;
+  --c-gold: #bba4f2;
+  --c-gold-strong: #cdbcf7;
+  --c-on-gold: #1c0f3c;
+  --c-gold-soft: #2f2651;
+  --c-on-gold-soft: #ddd1fc;
+  --c-gold-ink: #c6b2f6;
+  --c-focus: #c6b2f6;
+  --c-toast-action: #5b38b3;
+  --shadow-fab: 0 6px 18px rgb(0 0 0 / 0.45);
+}
+
+/* ---- Mint ---- */
+[data-theme='mint'][data-scheme='light'] {
+  --c-bg: #eef7f4;
+  --c-surface: #ffffff;
+  --c-surface-2: #dff0ea;
+  --c-ink: #13291f;
+  --c-ink-2: #48615a;
+  --c-line: #cde3db;
+  --c-gold: #5fd0ad;
+  --c-gold-strong: #3dbb95;
+  --c-on-gold: #032a1e;
+  --c-gold-soft: #d4f4e8;
+  --c-on-gold-soft: #0b5640;
+  --c-gold-ink: #0b7052;
+  --c-focus: #0b7052;
+  --c-backdrop: rgb(8 30 22 / 0.45);
+  --shadow-1: 0 1px 2px rgb(19 41 31 / 0.06), 0 2px 8px rgb(19 41 31 / 0.05);
+  --shadow-2: 0 8px 28px rgb(19 41 31 / 0.18);
+  --shadow-fab: 0 6px 18px rgb(20 130 95 / 0.32);
+}
+[data-theme='mint'][data-scheme='dark'] {
+  --c-bg: #0e1715;
+  --c-surface: #16211e;
+  --c-surface-2: #202d29;
+  --c-ink: #e5f2ed;
+  --c-ink-2: #9db5ad;
+  --c-line: #2b3b36;
+  --c-gold: #6cdab8;
+  --c-gold-strong: #8fe5ca;
+  --c-on-gold: #032a1e;
+  --c-gold-soft: #163a2f;
+  --c-on-gold-soft: #b8f1dd;
+  --c-gold-ink: #7fdfc0;
+  --c-focus: #7fdfc0;
+  --c-toast-action: #086448;
+  --shadow-fab: 0 6px 18px rgb(0 0 0 / 0.45);
+}
+
+/* ---- Sky ---- */
+[data-theme='sky'][data-scheme='light'] {
+  --c-bg: #eef4fa;
+  --c-surface: #ffffff;
+  --c-surface-2: #e0e9f4;
+  --c-ink: #182334;
+  --c-ink-2: #4e5c70;
+  --c-line: #d0dbea;
+  --c-gold: #72b6ec;
+  --c-gold-strong: #519fe0;
+  --c-on-gold: #05213c;
+  --c-gold-soft: #dcecfb;
+  --c-on-gold-soft: #12487a;
+  --c-gold-ink: #1c5e98;
+  --c-focus: #1c5e98;
+  --c-backdrop: rgb(10 22 38 / 0.45);
+  --shadow-1: 0 1px 2px rgb(24 35 52 / 0.06), 0 2px 8px rgb(24 35 52 / 0.05);
+  --shadow-2: 0 8px 28px rgb(24 35 52 / 0.18);
+  --shadow-fab: 0 6px 18px rgb(30 100 170 / 0.32);
+}
+[data-theme='sky'][data-scheme='dark'] {
+  --c-bg: #0f141b;
+  --c-surface: #171e28;
+  --c-surface-2: #212a36;
+  --c-ink: #e7eef7;
+  --c-ink-2: #a1afc1;
+  --c-line: #2d3847;
+  --c-gold: #80c0f1;
+  --c-gold-strong: #a0d0f5;
+  --c-on-gold: #05213c;
+  --c-gold-soft: #1a3049;
+  --c-on-gold-soft: #c5e1fb;
+  --c-gold-ink: #8fc8f3;
+  --c-focus: #8fc8f3;
+  --c-toast-action: #19588f;
+  --shadow-fab: 0 6px 18px rgb(0 0 0 / 0.45);
+}

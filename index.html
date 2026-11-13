@@ -28,6 +28,7 @@
     <link rel="modulepreload" href="vendor/preact.js" />
     <link rel="modulepreload" href="vendor/supabase.js" />
     <link rel="stylesheet" href="src/styles/tokens.css" />
+    <link rel="stylesheet" href="src/styles/themes.css" />
     <link rel="stylesheet" href="src/styles/base.css" />
     <link rel="stylesheet" href="src/styles/components.css" />
     <!-- One stylesheet per feature; a feature may @import more files from its own folder. -->
@@ -37,6 +38,8 @@
     <link rel="stylesheet" href="src/features/learn/learn.css" />
     <link rel="stylesheet" href="src/features/profile/profile.css" />
     <link rel="stylesheet" href="src/features/assistant/assistant.css" />
+    <!-- Applies the person's saved theme before first paint (after the stylesheets on purpose). -->
+    <script src="src/lib/theme-boot.js"></script>
     <script type="module" src="src/main.js"></script>
   </head>
   <body>
