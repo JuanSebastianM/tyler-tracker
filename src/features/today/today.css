@@ -1,0 +1,12 @@
+/* Today feature styles. Scope every selector under .today */
+.today-hero { padding-block: var(--sp-5); }
+.today-hello { font-size: var(--fs-sm); color: var(--c-on-gold-soft); margin: 0; }
+.today-age {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 800;
+  line-height: 1.1;
+  margin: var(--sp-1) 0;
+  color: var(--c-on-gold-soft);
+}
+.today-months { margin: 0; color: var(--c-on-gold-soft); opacity: 0.85; }

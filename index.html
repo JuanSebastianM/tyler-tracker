@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://kegtfxoiijbytprfwqrl.supabase.co; connect-src 'self' https://kegtfxoiijbytprfwqrl.supabase.co; font-src 'self'; manifest-src 'self'; worker-src 'self'; base-uri 'self'; form-action 'self'"
+    />
+    <title>Tyler Tracker</title>
+    <meta name="description" content="El diario de Tyler, nuestro Golden Retriever." />
+    <meta name="theme-color" content="#f2f5ef" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#111713" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="referrer" content="no-referrer" />
+
+    <!-- iOS home screen app -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Tyler" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+
+    <link rel="modulepreload" href="vendor/preact.js" />
+    <link rel="modulepreload" href="vendor/supabase.js" />
+    <link rel="stylesheet" href="src/styles/tokens.css" />
+    <link rel="stylesheet" href="src/styles/base.css" />
+    <link rel="stylesheet" href="src/styles/components.css" />
+    <!-- One stylesheet per feature; a feature may @import more files from its own folder. -->
+    <link rel="stylesheet" href="src/features/today/today.css" />
+    <link rel="stylesheet" href="src/features/log/log.css" />
+    <link rel="stylesheet" href="src/features/health/health.css" />
+    <link rel="stylesheet" href="src/features/learn/learn.css" />
+    <link rel="stylesheet" href="src/features/profile/profile.css" />
+    <script type="module" src="src/main.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <div class="boot" id="boot-splash">
+        <div><img src="assets/icons/icon-192.png" alt="" width="88" height="88" /></div>
+      </div>
+      <div class="boot" id="boot-error" hidden>
+        <div>
+          <img src="assets/icons/icon-192.png" alt="" width="88" height="88" />
+          <p lang="es">No se pudo abrir la app. Revisa tu conexión y vuelve a intentarlo.</p>
+          <p lang="en">The app could not start. Check your connection and try again.</p>
+        </div>
+      </div>
+    </div>
+    <noscript>Tyler Tracker necesita JavaScript. / Tyler Tracker needs JavaScript.</noscript>
+  </body>
+</html>

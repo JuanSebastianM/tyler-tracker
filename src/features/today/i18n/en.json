@@ -1,0 +1,10 @@
+{
+  "hello": "Hi, I am {name}",
+  "monthsOld": { "one": "{count} month old", "other": "{count} months old" },
+  "dueTitle": "Coming up",
+  "dueCount": { "one": "{count} item due soon", "other": "{count} items due soon" },
+  "nothingDue": "Nothing due this week.",
+  "emptyTitle": "Tyler’s day will show up here",
+  "emptyBody": "Today’s meals, walks and potty breaks, one tap away.",
+  "quickAdd": "Log something"
+}

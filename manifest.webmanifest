@@ -1,0 +1,20 @@
+{
+  "name": "Tyler Tracker",
+  "short_name": "Tyler",
+  "description": "El diario de Tyler, nuestro Golden Retriever.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#f2f5ef",
+  "background_color": "#f2f5ef",
+  "categories": ["lifestyle"],
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

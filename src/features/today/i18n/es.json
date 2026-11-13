@@ -1,0 +1,10 @@
+{
+  "hello": "Hola, soy {name}",
+  "monthsOld": { "one": "{count} mes de vida", "other": "{count} meses de vida" },
+  "dueTitle": "Pendientes",
+  "dueCount": { "one": "{count} pendiente cerca", "other": "{count} pendientes cerca" },
+  "nothingDue": "Nada pendiente esta semana.",
+  "emptyTitle": "Aquí verás el día de Tyler",
+  "emptyBody": "Comidas, paseos y pipís de hoy, a un toque de distancia.",
+  "quickAdd": "Registrar algo"
+}
