@@ -1,0 +1,63 @@
+# Deploys the `chat` Edge Function to Supabase from the exact source in this repo.
+# Needs the repository secret SUPABASE_ACCESS_TOKEN (a Supabase personal access token).
+# The function's own secret (ANTHROPIC_API_KEY) lives in Supabase, never here.
+name: Deploy chat function
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/functions/**'
+      - '.github/workflows/deploy-function.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-function
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      PROJECT_REF: kegtfxoiijbytprfwqrl
+    steps:
+      - name: Check the access token is configured
+        id: token
+        run: |
+          if [ -z "$SUPABASE_ACCESS_TOKEN" ]; then
+            echo "::warning::SUPABASE_ACCESS_TOKEN is not set; skipping the deploy."
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.token.outputs.present == 'true'
+        with:
+          persist-credentials: false
+
+      - uses: supabase/setup-cli@v1
+        if: steps.token.outputs.present == 'true'
+        with:
+          version: latest
+
+      - name: Deploy
+        if: steps.token.outputs.present == 'true'
+        run: supabase functions deploy chat --project-ref "$PROJECT_REF"
+
+      - name: Smoke test (a request without a session must be rejected)
+        if: steps.token.outputs.present == 'true'
+        run: |
+          sleep 5
+          code=$(curl -s -o /tmp/body -w '%{http_code}' -X POST \
+            "https://$PROJECT_REF.supabase.co/functions/v1/chat" \
+            -H 'Content-Type: application/json' -d '{"action":"status"}')
+          echo "HTTP $code"; head -c 300 /tmp/body; echo
+          if [ "$code" != "401" ] && [ "$code" != "403" ]; then
+            echo "::error::Expected 401 or 403 for an unauthenticated request, got $code"
+            exit 1
+          fi
