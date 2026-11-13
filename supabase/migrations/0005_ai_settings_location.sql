@@ -1,11 +1,11 @@
--- PROPOSED (not applied yet): where Tyler lives, for the assistant's prompt and web search location.
+-- Where Tyler lives, for the assistant's prompt and web search location (applied 2026-11-13).
 --
 -- The town used to be a constant in supabase/functions/chat/lib/context.ts, i.e. in the public repo.
 -- It now lives in ai_settings, which only editors can read (RLS "editors read") and only the service
 -- role can write. The function reads it with `select=*`; while the column is missing or null the
 -- prompt has no location line and web search gets only the country and timezone.
 --
--- After applying, the owner sets the value in the dashboard (SQL editor), for example:
+-- The value is set in the database (never in this repo), for example:
 --   update public.ai_settings set location = '<Town>, <Region>, Colombia (<altitude, climate>)' where id = 1;
 -- The first two comma-separated parts are sent to web search as city and region.
 
