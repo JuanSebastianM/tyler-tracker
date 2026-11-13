@@ -2,35 +2,345 @@
   "version": 1,
   "items": [
     {
-      "id": "same-rules",
-      "sample": true,
-      "category": "teamwork",
-      "title": { "es": "Las mismas reglas para los dos", "en": "Same rules for both of you" },
+      "id": "first-week-home",
+      "category": "home",
+      "title": {
+        "es": "La primera semana en casa",
+        "en": "The first week home"
+      },
       "summary": {
-        "es": "Pónganse de acuerdo en palabras, límites y horarios.",
-        "en": "Agree on cue words, limits and schedules."
+        "es": "Calma, rutina y pocas visitas. Lo importante es que se sienta seguro.",
+        "en": "Calm, routine and few visitors. What matters is that he feels safe."
       },
       "body": {
-        "es": "Tyler aprende más rápido si los dos usan **las mismas palabras** y **los mismos límites**.\n\n- Escriban la lista de señales («sentado», «ven», «suelta»).\n- Decidan si puede subirse al sofá antes de que lo intente.\n- Registren cada comida y salida en la app para no duplicar.",
-        "en": "Tyler learns faster when you both use **the same words** and **the same limits**.\n\n- Write down your cue list (“sit”, “come”, “drop”).\n- Decide whether he may use the sofa before he tries.\n- Log every meal and potty break in the app so nobody doubles up."
+        "es": "La primera semana no se trata de enseñarle todo, sino de que Tyler aprenda que su nueva casa es segura y predecible.\n\n## Qué hacer\n1. **Rutina desde el día uno**: comidas a la misma hora, salidas al baño al despertar, después de comer y de jugar, y siestas en su espacio.\n2. **Un espacio seguro**: guacal o corral con agua, una manta y juguetes para morder, en un lugar tranquilo pero cerca de ustedes.\n3. **Dormir cerca**: las primeras noches, su cama en su cuarto o muy cerca. Viene de dormir con su camada.\n4. **Visitas con calma**: pocas personas, tranquilas, que lo dejen acercarse a su ritmo.\n5. **Veterinario**: pidan cita con su nuevo veterinario y lleven el carné de vacunas y desparasitación que les entregaron.\n6. **Ratos cortos a solas**: unos minutos en su espacio con un juguete, mientras ustedes están en casa.\n\n## Qué esperar\n- Duerme entre 18 y 20 horas al día. Déjenlo dormir.\n- Llanto algunas noches, accidentes y muchos mordiscos de juego. Todo es normal.\n- Cada cachorro se adapta a su ritmo. Algunos tardan días, otros semanas.\n\n## Para ustedes\nEs normal sentirse cansados o abrumados los primeros días. Túrnense, duerman cuando puedan y recuerden que esta etapa pasa rápido.",
+        "en": "The first week is not about teaching him everything, but about Tyler learning that his new home is safe and predictable.\n\n## What to do\n1. **Routine from day one**: meals at the same times, potty breaks after waking, eating and playing, and naps in his space.\n2. **A safe space**: crate or pen with water, a blanket and chew toys, in a quiet spot but close to you.\n3. **Sleeping close**: for the first nights, his bed in your bedroom or very near. He is used to sleeping with his litter.\n4. **Calm visitors**: few people, calm ones, who let him approach at his own pace.\n5. **The vet**: book a visit with his new vet and bring the vaccine and deworming record you were given.\n6. **Short spells alone**: a few minutes in his space with a toy, while you are at home.\n\n## What to expect\n- He sleeps 18 to 20 hours a day. Let him sleep.\n- Crying some nights, accidents and lots of play biting. All normal.\n- Every puppy settles at his own pace. Some take days, others weeks.\n\n## For the two of you\nFeeling tired or overwhelmed in the first days is normal. Take turns, sleep when you can, and remember this stage passes quickly."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "Dogs Trust: First nights with a new puppy",
+          "url": "https://www.dogstrust.org.uk/dog-advice/puppy/first-night"
+        },
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "AKC: Everything you need to know about crate training your dog",
+          "url": "https://www.akc.org/expert-advice/training/how-to-crate-train-a-puppy/"
+        },
+        {
+          "title": "RSPCA: How to train your dog to stay home alone",
+          "url": "https://www.rspca.org.uk/adviceandwelfare/pets/dogs/behaviour/alone"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
-      "id": "night-shifts",
-      "sample": true,
+      "id": "daily-routine-7-12-weeks",
       "category": "routine",
-      "title": { "es": "Turnos de noche", "en": "Night shifts" },
+      "title": {
+        "es": "Un día realista con un cachorro de 7 a 12 semanas",
+        "en": "A realistic day with a 7 to 12 week old puppy"
+      },
       "summary": {
-        "es": "Las primeras semanas necesitará salir de noche: túrnense.",
-        "en": "In the first weeks he will need to go out at night: take turns."
+        "es": "Ciclos de baño, juego, entrenamiento corto y siesta, con cuatro comidas.",
+        "en": "Cycles of potty, play, short training and nap, with four meals."
       },
       "body": {
-        "es": "Un cachorro pequeño aguanta pocas horas sin orinar. Alternen quién se levanta para que ambos descansen.",
-        "en": "A young puppy can only hold it for a few hours. Alternate who gets up so you both rest."
+        "es": "A esta edad el día de Tyler es una repetición del mismo ciclo: **despertar, baño, juego o entrenamiento corto, baño, siesta**. Las comidas se reparten en cuatro, como les indicó el veterinario.\n\n## Ejemplo de día\nLas horas son solo una guía. Ajústenlas a sus horarios de trabajo y a la configuración de comidas de la app.\n\n- **6:00** Despierta y sale al baño de una vez.\n- **6:15** Primera comida. Baño entre 5 y 30 minutos después.\n- **6:45** Juego y dos minutos de entrenamiento (nombre, sentado).\n- **7:30** Siesta en su espacio con un juguete para morder.\n- **10:00** Despierta, baño, juego tranquilo, experiencia nueva corta.\n- **11:00** Segunda comida, baño y siesta.\n- **14:00** Despierta, baño, juego, ratito a solas practicado.\n- **16:00** Tercera comida, baño y siesta.\n- **18:30** Despierta, baño, juego y socialización tranquila.\n- **19:30** Cuarta comida (no muy cerca de la hora de dormir) y baño.\n- **20:30** Juego suave, último baño y luz baja.\n- **21:30** A dormir. Puede necesitar una salida en la madrugada.\n\n## Claves\n- Las siestas largas son necesarias: un cachorro cansado muerde más.\n- Las sesiones de entrenamiento duran de 2 a 5 minutos.\n- Anoten en el diario de la app sus horas de pipí y popó para ajustar el horario.",
+        "en": "At this age Tyler's day repeats the same cycle: **wake, potty, play or short training, potty, nap**. Meals are split into four, as your vet advised.\n\n## Sample day\nThe times are only a guide. Adjust them to your work schedules and the meal settings in the app.\n\n- **6:00** Wakes up and goes straight out to potty.\n- **6:15** First meal. Potty 5 to 30 minutes later.\n- **6:45** Play and two minutes of training (name, sit).\n- **7:30** Nap in his space with a chew toy.\n- **10:00** Wakes, potty, calm play, a short new experience.\n- **11:00** Second meal, potty and nap.\n- **14:00** Wakes, potty, play, a short practised spell alone.\n- **16:00** Third meal, potty and nap.\n- **18:30** Wakes, potty, play and calm socialization.\n- **19:30** Fourth meal (not too close to bedtime) and potty.\n- **20:30** Gentle play, last potty and dim lights.\n- **21:30** Bed. He may need one trip out during the night.\n\n## Keys\n- Long naps are essential: a tired puppy bites more.\n- Training sessions last 2 to 5 minutes.\n- Log his pee and poop times in the app to fine-tune the schedule."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AKC: Puppy potty training schedule and timeline",
+          "url": "https://www.akc.org/expert-advice/training/potty-training-your-puppy-timeline-and-tips/"
+        },
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "AKC: How much mental and physical exercise do puppies need?",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/puppies-how-much-exercise/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "house-rules-and-cues",
+      "category": "teamwork",
+      "title": {
+        "es": "Reglas de la casa y palabras iguales para los dos",
+        "en": "House rules and the same cue words for both of you"
+      },
+      "summary": {
+        "es": "Si cada uno pide distinto, Tyler se confunde. Pónganse de acuerdo y escríbanlo.",
+        "en": "If you each ask differently, Tyler gets confused. Agree and write it down."
+      },
+      "body": {
+        "es": "Los perros aprenden por repetición. Si uno dice «abajo» para bajarse del sofá y el otro lo usa para echarse, o si uno lo deja subir a la cama y el otro no, Tyler no puede saber qué esperan de él.\n\n## Qué acordar\n1. **Lugares**: ¿puede subirse al sofá o a la cama? ¿Qué cuartos están cerrados?\n2. **Comida**: nada de la mesa, y quién le da las comidas y a qué hora.\n3. **Saludos**: nadie lo saluda si salta, ni ustedes ni las visitas.\n4. **Palabras**: una sola palabra para cada señal.\n\n## Palabras sugeridas\nLo importante no es la palabra, sino que siempre sea la misma.\n- Marcador (algo bueno viene): «sí»\n- Liberación: «listo»\n- Sentarse: «sentado»\n- Acostarse: «echado»\n- Esperar en el sitio: «quieto»\n- Venir: «ven»\n- No tomar algo: «déjalo»\n- Soltar lo que tiene en la boca: «suelta»\n- Hacer sus necesidades: «pipí»\n- Caminar con ustedes: «vamos»\n- Bajarse de un mueble: «abajo» (no lo usen para echarse)\n\n## Consejos\n- Peguen la lista en la nevera y compártanla con quien lo cuide.\n- Si algo no funciona, cámbienlo juntos, no cada uno por su lado.\n- Todos deben usar métodos con premios, sin castigos físicos ni gritos.",
+        "en": "Dogs learn by repetition. If one of you says \"off\" to get him off the sofa and the other uses it to mean lie down, or if one lets him on the bed and the other does not, Tyler cannot know what you expect.\n\n## What to agree on\n1. **Places**: may he get on the sofa or the bed? Which rooms are closed?\n2. **Food**: nothing from the table, and who gives his meals and when.\n3. **Greetings**: nobody greets him if he jumps, neither you nor visitors.\n4. **Words**: one word for each cue.\n\n## Suggested words\nThe word itself matters less than always using the same one. The Spanish words you will use are listed with their English meaning.\n- Marker (something good is coming): «sí» (yes)\n- Release: «listo» (okay)\n- Sit: «sentado»\n- Lie down: «echado» (down)\n- Stay in place: «quieto» (stay)\n- Come: «ven»\n- Do not take something: «déjalo» (leave it)\n- Let go of what is in his mouth: «suelta» (drop)\n- Potty: «pipí»\n- Walk with you: «vamos» (let's go)\n- Get off furniture: «abajo» (off; do not use it for lying down)\n\n## Tips\n- Stick the list on the fridge and share it with anyone who looks after him.\n- If something is not working, change it together, not separately.\n- Everyone should use reward-based methods, without physical punishment or shouting."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to stop your dog from jumping up on people",
+          "url": "https://www.akc.org/expert-advice/training/how-to-stop-your-dog-from-jumping-up-on-people/"
+        },
+        {
+          "title": "The Royal Kennel Club: What is puppy socialisation?",
+          "url": "https://www.royalkennelclub.com/your-dog/getting-a-dog/caring-for-a-new-pup/what-is-puppy-socialisation"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "sharing-the-work",
+      "category": "teamwork",
+      "title": {
+        "es": "Repartir el trabajo entre los dos",
+        "en": "Sharing the work between the two of you"
+      },
+      "summary": {
+        "es": "Turnos claros evitan el cansancio y le dan a Tyler dos personas de confianza.",
+        "en": "Clear turns prevent burnout and give Tyler two people he trusts."
+      },
+      "body": {
+        "es": "Un cachorro pequeño necesita atención varias veces al día y algunas veces de noche. Repartirse las tareas evita que una sola persona termine agotada, y ayuda a que Tyler confíe en los dos por igual.\n\n## Cómo organizarse\n1. **Hagan una lista de tareas**: comidas, salidas al baño, paseos, entrenamiento, limpieza, cepillado, citas con el veterinario, compras.\n2. **Turnos de noche**: alternen noches o semanas para las salidas de madrugada.\n3. **Bloques del día**: por ejemplo, uno cubre la mañana y el otro la tarde y la noche, según sus horarios de trabajo.\n4. **Entrenamiento de los dos**: ambos deben practicar todas las señales, con las mismas palabras.\n5. **Registro compartido**: anoten comidas, necesidades, vacunas y pesos en la app. Así quien llega sabe qué falta.\n6. **Un momento semanal**: diez minutos para revisar qué va bien, qué no y qué cambiar.\n\n## Si alguien más ayuda\nFamilia, amigos o un paseador deben conocer las reglas y palabras de la casa, y usar solo métodos con premios.",
+        "en": "A young puppy needs attention several times a day and sometimes at night. Sharing the tasks keeps one person from burning out, and helps Tyler trust you both equally.\n\n## How to organise\n1. **Make a task list**: meals, potty breaks, walks, training, cleaning, brushing, vet visits, shopping.\n2. **Night shifts**: alternate nights or weeks for the early-morning trips.\n3. **Day blocks**: for example, one covers the morning and the other the afternoon and evening, depending on your work hours.\n4. **Both train**: you should both practise every cue, with the same words.\n5. **Shared log**: record meals, potties, vaccines and weights in the app. Whoever arrives knows what is still to do.\n6. **A weekly check-in**: ten minutes to review what is going well, what is not and what to change.\n\n## If someone else helps\nFamily, friends or a dog walker should know the house rules and cue words, and use only reward-based methods."
+      },
+      "sources": [
+        {
+          "title": "AKC: Puppy potty training schedule and timeline",
+          "url": "https://www.akc.org/expert-advice/training/potty-training-your-puppy-timeline-and-tips/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        },
+        {
+          "title": "AVSAB: How to choose a trainer",
+          "url": "https://avsab.org/wp-content/uploads/2026/08/How-to-Choose-a-Trainer-final-final.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "sleep-and-night-wakeups",
+      "category": "routine",
+      "title": {
+        "es": "El sueño y las noches",
+        "en": "Sleep and night wake-ups"
+      },
+      "summary": {
+        "es": "Dormir cerca, una rutina fija y salidas de noche cortas y aburridas.",
+        "en": "Sleeping close, a fixed routine, and short, boring night trips."
+      },
+      "body": {
+        "es": "Tyler necesita entre 18 y 20 horas de sueño al día para crecer bien. Un cachorro que no duerme lo suficiente suele estar más irritable y morder más.\n\n## Durante el día\n- Alternen juego y descanso. Muchas veces la siesta llega sola después de jugar.\n- Si se pone acelerado o muerde todo, probablemente necesita dormir: llévenlo a su espacio con un juguete para morder.\n- Las siestas duran de 30 minutos a 2 horas.\n\n## La noche\n1. Última comida unas horas antes de dormir.\n2. Juego tranquilo, mimos y última salida al baño.\n3. Luz baja y silencio. Una manta sobre el guacal puede ayudar.\n4. Su cama en su cuarto o muy cerca, al menos las primeras semanas. Si quieren que duerma en otro lugar, muévanla un poco cada pocas noches.\n\n## Si se despierta de noche\n- Puede necesitar salir. Llévenlo en brazos, en silencio, sin juego, y de vuelta a la cama.\n- Es normal que llore las primeras noches. No lo dejen llorar sin revisar si necesita salir.\n- Las salidas nocturnas disminuyen con la edad.\n\nLos \"zoomies\" de la noche, esas carreras repentinas, suelen ser señal de cansancio, no de que le falte ejercicio.",
+        "en": "Tyler needs 18 to 20 hours of sleep a day to grow well. A puppy who does not sleep enough is often crankier and bites more.\n\n## During the day\n- Alternate play and rest. Often a nap comes on its own after play.\n- If he gets wound up or bites everything, he probably needs sleep: take him to his space with a chew toy.\n- Naps last from 30 minutes to 2 hours.\n\n## At night\n1. Last meal a few hours before bed.\n2. Calm play, cuddles and a last potty break.\n3. Dim light and quiet. A blanket over the crate may help.\n4. His bed in your bedroom or very close, at least for the first weeks. If you want him to sleep elsewhere, move it a little every few nights.\n\n## If he wakes at night\n- He may need to go out. Carry him out quietly, no play, and back to bed.\n- Crying in the first nights is normal. Do not leave him to cry without checking whether he needs to go out.\n- Night trips become less frequent with age.\n\nEvening \"zoomies\", those sudden bursts of running, are usually a sign of tiredness, not a lack of exercise."
+      },
+      "sources": [
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "Dogs Trust: First nights with a new puppy",
+          "url": "https://www.dogstrust.org.uk/dog-advice/puppy/first-night"
+        },
+        {
+          "title": "AKC: Everything you need to know about crate training your dog",
+          "url": "https://www.akc.org/expert-advice/training/how-to-crate-train-a-puppy/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "preventing-separation-problems",
+      "category": "home",
+      "title": {
+        "es": "Prevenir problemas al quedarse solo cuando ambos trabajan",
+        "en": "Preventing separation problems when you both work"
+      },
+      "summary": {
+        "es": "Practicar ausencias cortas desde ya y no dejarlo más tiempo del que tolera.",
+        "en": "Practise short absences now and never leave him longer than he can cope with."
+      },
+      "body": {
+        "es": "Quedarse solo es una habilidad que se aprende. Lo ideal es enseñarla poco a poco antes de que la necesiten de verdad.\n\n## Desde ya\n1. Practiquen ausencias de segundos y minutos mientras están en casa (guía «Quedarse solo tranquilo»).\n2. Antes de salir: ejercicio, juego, baño y una comida pequeña o un juguete relleno.\n3. Despedidas y llegadas tranquilas.\n4. Un juguete especial que solo recibe cuando se queda solo.\n\n## Cuando vuelvan al trabajo\n- Un cachorro no puede aguantar muchas horas sin hacer sus necesidades. Un adulto bien entrenado y tranquilo puede quedarse como máximo unas cuatro horas.\n- Si van a estar fuera más tiempo, organicen quién lo visita: familia, un vecino, un paseador o una guardería de confianza.\n- Si pueden, alternen horarios o días de trabajo en casa durante las primeras semanas.\n\n## Señales de que lo está pasando mal\nLadridos o aullidos, accidentes solo cuando está solo, rasguños en puertas, jadeo, babeo, no tocar su juguete relleno. Una cámara ayuda a saberlo.\n\n## Qué evitar\n- Regañarlo al llegar por un desorden: lo empeora.\n- Pensar que lo hace \"por venganza\": es angustia.\n- Comprar otro perro como solución.\n\nSi ven estas señales, consulten al veterinario y a un profesional de comportamiento.",
+        "en": "Being alone is a skill that is learned. Ideally you teach it gradually, before you really need it.\n\n## Starting now\n1. Practise absences of seconds and minutes while you are home (guide \"Being alone without distress\").\n2. Before leaving: exercise, play, a potty break and a small meal or a stuffed toy.\n3. Calm goodbyes and hellos.\n4. A special toy he only gets when he is alone.\n\n## When you go back to work\n- A puppy cannot hold it for many hours. A relaxed, well-trained adult can be left for about four hours at most.\n- If you will be out longer, arrange for someone to visit: family, a neighbour, a dog walker or a trusted day care.\n- If you can, stagger your hours or work from home on different days during the first weeks.\n\n## Signs he is struggling\nBarking or howling, accidents only when alone, scratching at doors, panting, drooling, ignoring his stuffed toy. A camera helps you know.\n\n## What to avoid\n- Scolding him for a mess when you get home: it makes things worse.\n- Thinking he does it \"out of spite\": it is distress.\n- Getting another dog as a fix.\n\nIf you see these signs, talk to the vet and a behaviour professional."
+      },
+      "sources": [
+        {
+          "title": "RSPCA: How to train your dog to stay home alone",
+          "url": "https://www.rspca.org.uk/adviceandwelfare/pets/dogs/behaviour/alone"
+        },
+        {
+          "title": "Dogs Trust: Separation anxiety in dogs",
+          "url": "https://www.dogstrust.org.uk/dog-advice/understanding-your-dog/separation-anxiety-in-dogs"
+        },
+        {
+          "title": "ASPCA: Separation anxiety",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/separation-anxiety"
+        },
+        {
+          "title": "AKC: Puppy potty training schedule and timeline",
+          "url": "https://www.akc.org/expert-advice/training/potty-training-your-puppy-timeline-and-tips/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "safe-socialization-checklist",
+      "category": "general",
+      "title": {
+        "es": "Lista de socialización segura",
+        "en": "Safe socialization checklist"
+      },
+      "summary": {
+        "es": "Qué presentarle antes de las 16 semanas y cómo hacerlo sin riesgos.",
+        "en": "What to introduce before 16 weeks and how to do it safely."
+      },
+      "body": {
+        "es": "Usen esta lista como guía, no como examen. Una experiencia tranquila vale más que muchas apuradas. Avancen siempre a su ritmo y premien la curiosidad.\n\n## Reglas de seguridad\n- Antes de que el veterinario complete sus vacunas: nada de parques de perros ni zonas con muchos perros de vacunas desconocidas.\n- Solo perros adultos sanos, vacunados y tranquilos.\n- Lugares limpios. En la calle, en brazos o en un cargador.\n- Si muestra miedo, distancia y calma. Nunca forzarlo.\n\n## Personas\n- Hombres y mujeres de distintas edades.\n- Niños tranquilos y supervisados.\n- Gorras, cascos, gafas, barbas, sombrillas, uniformes.\n\n## Sonidos\n- Licuadora, aspiradora, secador, timbre, citófono.\n- Motos, buses, pitos y lluvia fuerte, primero desde lejos.\n\n## Superficies y lugares\n- Baldosa, tapete, grama, cartón, rejilla.\n- Ascensor, escaleras con ayuda, portería, parqueadero.\n- Paseos cortos en carro.\n\n## Manipulación\n- Patas, orejas, boca, cola, cepillo, toalla, arnés.\n- Visita \"feliz\" a la clínica veterinaria, si lo permiten.\n\n## Otros animales\n- Un perro adulto amable y vacunado.\n- Gatos u otras mascotas tranquilas, a distancia.\n\n## Estar solo y calmarse\n- Siestas en su espacio y ratos cortos a solas.",
+        "en": "Use this list as a guide, not a test. One calm experience is worth more than many rushed ones. Always go at his pace and reward curiosity.\n\n## Safety rules\n- Until the vet completes his vaccines: no dog parks or areas with many dogs of unknown vaccine status.\n- Only healthy, vaccinated, calm adult dogs.\n- Clean places. In the street, in your arms or in a carrier.\n- If he shows fear, distance and calm. Never force him.\n\n## People\n- Men and women of different ages.\n- Calm, supervised children.\n- Caps, helmets, glasses, beards, umbrellas, uniforms.\n\n## Sounds\n- Blender, vacuum cleaner, hair dryer, doorbell, intercom.\n- Motorbikes, buses, horns and heavy rain, from a distance first.\n\n## Surfaces and places\n- Tile, rug, grass, cardboard, grating.\n- Lift, stairs with help, building lobby, car park.\n- Short car rides.\n\n## Handling\n- Paws, ears, mouth, tail, brush, towel, harness.\n- A \"happy visit\" to the vet clinic, if they allow it.\n\n## Other animals\n- A friendly, vaccinated adult dog.\n- Cats or other calm pets, at a distance.\n\n## Being alone and settling\n- Naps in his space and short spells alone."
+      },
+      "sources": [
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "VCA Animal Hospitals: Puppy behavior and training, socialization and fear prevention",
+          "url": "https://vcahospitals.com/know-your-pet/puppy-behavior-and-training-socialization-and-fear-prevention"
+        },
+        {
+          "title": "The Royal Kennel Club: What is puppy socialisation?",
+          "url": "https://www.royalkennelclub.com/your-dog/getting-a-dog/caring-for-a-new-pup/what-is-puppy-socialisation"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "what-bad-behaviour-means",
+      "category": "general",
+      "title": {
+        "es": "Lo que suele significar el \"mal comportamiento\"",
+        "en": "What puppy \"bad behaviour\" usually means"
+      },
+      "summary": {
+        "es": "Morder, romper o llorar casi siempre es una necesidad sin cubrir, no desafío.",
+        "en": "Biting, chewing or crying is almost always an unmet need, not defiance."
+      },
+      "body": {
+        "es": "Los cachorros no hacen cosas \"para molestar\". Casi todo lo que nos parece mala conducta es comportamiento normal de perro, o una necesidad que no está cubierta.\n\n## Lo más común\n- **Morder manos y ropa**: así exploran y juegan. Necesita juguetes y aprender a morder suave. Si es muy intenso, a menudo es cansancio.\n- **Romper cosas**: está cambiando dientes o está aburrido. Necesita cosas apropiadas para morder y supervisión.\n- **Accidentes en casa**: el entrenamiento todavía no está completo, o pasó mucho tiempo desde la última salida. Si de pronto empeora, consulten al veterinario.\n- **Llorar o ladrar al quedarse solo**: todavía no aprendió que estar solo es seguro.\n- **Saltar encima**: quiere saludar y saltar le ha funcionado para llamar la atención.\n- **Carreras locas en la noche**: suele ser sueño acumulado.\n- **Ignorar señales en la adolescencia**: su autocontrol todavía está madurando.\n\n## Cómo responder\n1. Pregúntense: ¿está cansado, aburrido, con ganas de ir al baño, con hambre o asustado?\n2. Cubran esa necesidad y prevengan que repita el error (cerrar puertas, guardar cosas).\n3. Enséñenle qué hacer en lugar de eso y prémienlo cuando lo haga.\n\nLos castigos, los gritos y los métodos de \"dominancia\" pueden causar miedo y empeorar el problema. Los métodos con premios funcionan mejor.",
+        "en": "Puppies do not do things \"to annoy you\". Almost everything that looks like misbehaviour is normal dog behaviour, or a need that is not being met.\n\n## The most common ones\n- **Biting hands and clothes**: it is how puppies explore and play. He needs toys and to learn a soft mouth. When it is intense, it is often tiredness.\n- **Chewing things**: he is teething or bored. He needs suitable things to chew and supervision.\n- **Accidents indoors**: house-training is not finished yet, or it has been too long since the last trip out. If it suddenly gets worse, see the vet.\n- **Crying or barking when alone**: he has not yet learned that being alone is safe.\n- **Jumping up**: he wants to say hello, and jumping has worked to get attention.\n- **Crazy evening runs**: often built-up sleepiness.\n- **Ignoring cues in adolescence**: his self-control is still maturing.\n\n## How to respond\n1. Ask yourselves: is he tired, bored, needing the toilet, hungry or scared?\n2. Meet that need and prevent a repeat (close doors, put things away).\n3. Teach him what to do instead and reward him when he does it.\n\nPunishment, shouting and \"dominance\" methods can cause fear and make the problem worse. Reward-based methods work better."
+      },
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "ASPCA: Mouthing, nipping and biting in puppies",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/mouthing-nipping-and-biting-puppies"
+        },
+        {
+          "title": "ASPCA: Separation anxiety",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/separation-anxiety"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "enrichment-on-a-budget",
+      "category": "budget",
+      "title": {
+        "es": "Juegos y enriquecimiento sin gastar mucho",
+        "en": "Enrichment and play on a budget"
+      },
+      "summary": {
+        "es": "Olfato, masticar y resolver problemas cansan más que correr, y cuestan poco.",
+        "en": "Sniffing, chewing and problem-solving tire him more than running, and cost little."
+      },
+      "body": {
+        "es": "El ejercicio mental cansa a un cachorro tanto o más que el físico, y para un Golden en apartamento es clave. Casi todo se puede hacer con cosas de la casa y con parte de su comida diaria.\n\n## Ideas\n1. **Comer trabajando**: sirve parte de su comida en un juguete rellenable o en un comedero lento en vez del plato.\n2. **Toalla enrollada**: esparce concentrado en una toalla, enróllala y deja que la desenrolle.\n3. **Molde de muffins**: premios en los huecos, tapados con pelotas.\n4. **Canasta de ropa**: un premio debajo de una canasta volteada.\n5. **Cajas de cartón**: premios escondidos entre papel arrugado (supervisado, que no se coma el cartón).\n6. **Congelados**: un juguete relleno con su comida húmeda, congelado. Ideal para los dientes.\n7. **Buscar**: esconde premios en un cuarto y dile «busca».\n8. **Jalar la cuerda**: con reglas, cuando ya sepa «suelta». Pausa si se acelera o pone dientes en la piel.\n9. **Paseos de olfateo**: dejarlo oler sin prisa.\n10. **Trucos nuevos**: sesiones de cinco minutos.\n\n## Cuidados\n- Cuenten los premios dentro de su ración diaria.\n- Supervisen los juegos con cartón, tela o plástico.\n- Roten los juguetes para que no se aburra.",
+        "en": "Mental exercise tires a puppy as much as physical exercise, or more, and for a Golden in an apartment it is key. Almost everything can be done with household items and part of his daily food.\n\n## Ideas\n1. **Working for meals**: serve part of his food in a stuffable toy or a slow feeder instead of the bowl.\n2. **Rolled towel**: scatter kibble on a towel, roll it up and let him unroll it.\n3. **Muffin tin**: treats in the cups, covered with balls.\n4. **Laundry basket**: a treat under an upturned basket.\n5. **Cardboard boxes**: treats hidden among scrunched paper (supervised, so he does not eat the cardboard).\n6. **Frozen treats**: a stuffed toy with his wet food, frozen. Great for teething.\n7. **Find it**: hide treats in a room and say \"find it\".\n8. **Tug**: with rules, once he knows \"drop\". Pause if he gets wound up or puts teeth on skin.\n9. **Sniffing walks**: let him smell without rushing.\n10. **New tricks**: five-minute sessions.\n\n## Safety\n- Count treats within his daily food allowance.\n- Supervise games with cardboard, fabric or plastic.\n- Rotate toys so he does not get bored."
+      },
+      "sources": [
+        {
+          "title": "RSPCA Victoria: Enrichment ideas for your dog",
+          "url": "https://rspcavic.org/learn/8-enrichment-ideas-for-your-dog/"
+        },
+        {
+          "title": "AKC: How much mental and physical exercise do puppies need?",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/puppies-how-much-exercise/"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "RSPCA: How to train your dog to stay home alone",
+          "url": "https://www.rspca.org.uk/adviceandwelfare/pets/dogs/behaviour/alone"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "when-to-get-help",
+      "category": "general",
+      "title": {
+        "es": "Cuándo buscar un entrenador o un especialista en comportamiento",
+        "en": "When to get a trainer or a behaviourist"
+      },
+      "summary": {
+        "es": "Pedir ayuda a tiempo es más fácil y efectivo. Así se elige bien.",
+        "en": "Asking for help early is easier and works better. Here is how to choose well."
+      },
+      "body": {
+        "es": "Pedir ayuda no es fracasar. Los problemas son más fáciles de resolver cuando se atienden pronto.\n\n## Un entrenador, para\n- Clases de cachorros y socialización.\n- Modales y señales básicas.\n- Correa, saludos y llamado que no avanzan.\n- Deportes o actividades.\n\n## El veterinario y un especialista en comportamiento, si hay\n- Miedo frecuente, temblores o pánico.\n- Gruñidos, rigidez o mordiscos al defender comida u objetos.\n- Angustia fuerte al quedarse solo.\n- Mordiscos que parecen de miedo o agresión, no de juego.\n- Cambios de comportamiento repentinos. Primero hay que descartar dolor u otra causa médica.\n\n## Cómo elegir\nBusquen a alguien que:\n- Use premios (comida, juego, elogios) y enseñe qué hacer en lugar de castigar.\n- Hable con tono amable y les explique el porqué.\n- Tenga formación en métodos modernos y humanos.\n\nSeñales de alerta:\n- Collares de ahogo, de púas o eléctricos, tirones de correa, golpes o voltear al perro boca arriba.\n- Hablar de \"ser el alfa\", \"el líder de la manada\" o \"dominancia\".\n- Gritos o amenazas.\n\nSi ustedes o Tyler se sienten incómodos, busquen otra persona.",
+        "en": "Asking for help is not failing. Problems are easier to solve when they are addressed early.\n\n## A trainer, for\n- Puppy classes and socialization.\n- Manners and basic cues.\n- Leash walking, greetings or recall that are not improving.\n- Sports or activities.\n\n## The vet and a behaviour specialist, if there is\n- Frequent fear, trembling or panic.\n- Growling, freezing or biting to guard food or objects.\n- Strong distress when alone.\n- Biting that looks fearful or aggressive, not playful.\n- Sudden behaviour changes. Pain or another medical cause must be ruled out first.\n\n## How to choose\nLook for someone who:\n- Uses rewards (food, play, praise) and teaches what to do instead of punishing.\n- Speaks kindly and explains the why.\n- Has training in modern, humane methods.\n\nRed flags:\n- Choke, prong or shock collars, leash jerks, hitting or rolling the dog onto his back.\n- Talk of \"being the alpha\", \"pack leader\" or \"dominance\".\n- Shouting or threats.\n\nIf either of you or Tyler feels uncomfortable, find someone else."
+      },
+      "sources": [
+        {
+          "title": "AVSAB: How to choose a trainer",
+          "url": "https://avsab.org/wp-content/uploads/2026/08/How-to-Choose-a-Trainer-final-final.pdf"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        },
+        {
+          "title": "ASPCA: Mouthing, nipping and biting in puppies",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/mouthing-nipping-and-biting-puppies"
+        },
+        {
+          "title": "ASPCA: Separation anxiety",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/separation-anxiety"
+        },
+        {
+          "title": "VCA Animal Hospitals: Puppy behavior and training, socialization and fear prevention",
+          "url": "https://vcahospitals.com/know-your-pet/puppy-behavior-and-training-socialization-and-fear-prevention"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     }
   ]
