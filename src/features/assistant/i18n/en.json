@@ -1,0 +1,128 @@
+{
+  "title": "Assistant",
+  "open": "Ask the assistant",
+  "threadsTitle": "Conversations",
+  "intro": {
+    "title": "Ask anything about Tyler",
+    "body": "It answers with Tyler's data in the app. It does not replace the vet: in an emergency, call the clinic."
+  },
+  "starters": {
+    "label": "Ideas to start",
+    "food": "How much should Tyler eat at {weeks} weeks?",
+    "potty": "How often should I take him out to pee at {weeks} weeks?",
+    "outside": "When can he go outside and meet other dogs?",
+    "walks": "How long can he walk at {weeks} weeks?",
+    "biting": "How do I teach him not to bite hands?",
+    "training": "What can I teach him this week?"
+  },
+  "composer": {
+    "label": "Your question",
+    "placeholder": "Type your question…",
+    "send": "Send question",
+    "stop": "Stop answer",
+    "tooLong": "The question is too long (up to {max} characters)."
+  },
+  "askedBy": "{name} asked",
+  "you": "You",
+  "assistantName": "Assistant",
+  "status": {
+    "sending": "Thinking…",
+    "searching": "Searching the web…"
+  },
+  "stopped": "Answer stopped.",
+  "budget": "{used} of {total} used this month",
+  "budgetLabel": "Assistant budget",
+  "actions": {
+    "threads": "View conversations",
+    "newThread": "New conversation",
+    "saveFaq": "Save to FAQ"
+  },
+  "threads": {
+    "empty": "No conversations yet",
+    "emptyBody": "Ask the first question and it will show up here for both of you.",
+    "subtitle": "{name} · {date}",
+    "untitled": "Untitled conversation",
+    "options": "Options for “{title}”",
+    "optionsTitle": "Conversation",
+    "rename": "Conversation name",
+    "saveName": "Save name",
+    "delete": "Delete conversation",
+    "confirmTitle": "Delete this conversation?",
+    "confirmBody": "All its questions and answers are deleted for both of you. This cannot be undone.",
+    "renamed": "Name saved",
+    "deleted": "Conversation deleted",
+    "loadFailed": "The conversation could not be loaded.",
+    "notFound": "This conversation no longer exists."
+  },
+  "signedOut": {
+    "title": "Sign in to use the assistant",
+    "body": "The assistant is only for Tyler's parents. Sign in with your account.",
+    "notEditor": "This account is not allowed to use the assistant."
+  },
+  "errors": {
+    "budget_exhausted": {
+      "title": "This month's budget is used up",
+      "body": "The assistant's monthly budget has been used. It is available again on the first day of next month, or the limit can be raised in the settings."
+    },
+    "daily_limit": {
+      "title": "You reached today's question limit",
+      "body": "You can ask up to {limit} questions a day. You can keep asking tomorrow."
+    },
+    "disabled": {
+      "title": "The assistant is turned off",
+      "body": "It is disabled in the settings. Turn it back on to keep asking."
+    },
+    "not_editor": {
+      "title": "This account cannot use the assistant",
+      "body": "Only Tyler's parents' accounts can ask questions."
+    },
+    "upstream_error": {
+      "title": "The assistant could not answer",
+      "body": "Something went wrong getting the answer and nothing was saved. Try again."
+    },
+    "server_error": {
+      "title": "Something failed on the server",
+      "body": "The question could not be completed. Try again in a moment."
+    },
+    "unauthorized": {
+      "title": "Your session expired",
+      "body": "Sign in again to keep asking."
+    },
+    "bad_request": {
+      "title": "The question could not be sent",
+      "body": "Check the text and try again."
+    },
+    "not_found": {
+      "title": "This conversation no longer exists",
+      "body": "It may have been deleted. Start a new conversation."
+    },
+    "network": {
+      "title": "No connection",
+      "body": "Cannot reach the server. Check your internet and try again."
+    }
+  },
+  "faq": {
+    "title": "Save to FAQ",
+    "drafting": "Writing the question and answer in Spanish and English…",
+    "intro": "Review and edit before saving. Nothing is saved until you confirm.",
+    "category": "Category",
+    "categories": {
+      "feeding": "Feeding",
+      "health": "Health",
+      "training": "Training",
+      "routine": "Routine",
+      "behaviour": "Behaviour",
+      "general": "General"
+    },
+    "spanish": "Spanish",
+    "english": "English",
+    "question": "Question",
+    "answer": "Answer",
+    "sources": "Sources",
+    "noSources": "No sources",
+    "confirm": "Save to FAQ",
+    "saved": "Saved to FAQ",
+    "view": "View FAQ",
+    "retry": "Try again"
+  }
+}

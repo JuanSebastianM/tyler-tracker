@@ -54,11 +54,15 @@ export const photos = make({ table: 'photos', orderBy: { column: 'taken_on' } })
 // FAQ entries saved from the in-app assistant (public read). Repo FAQ lives in /content/faq.json.
 export const faqEntries = make({ table: 'faq_entries', orderBy: { column: 'created_at' } });
 
+// In-app assistant (editors only). Messages are loaded per thread by the assistant feature;
+// ai_settings is read by the `chat` Edge Function, which reports usage to the app.
+export const chatThreads = make({ table: 'chat_threads', orderBy: { column: 'updated_at' }, private: true });
+
 export const publicStores = [
   petProfile, settings, feedings, routineEvents, weights, vaccinations, dewormings, vetVisits,
   medications, reminders, trainingSkills, checklistDone, milestones, photos, faqEntries,
 ];
-export const privateStores = [petPrivate, vetVisitPrivate];
+export const privateStores = [petPrivate, vetVisitPrivate, chatThreads];
 export const allStores = [...publicStores, ...privateStores];
 
 /** Timezone from settings, or the default until settings load. */

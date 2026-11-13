@@ -37,7 +37,10 @@ function Header({ title, backTo, path }) {
         ${auth.status === 'signedOut'
           ? html`<${IconButton} icon="lock" label=${t('auth.signIn')} onClick=${openSignIn} data-testid="header-sign-in" />`
           : auth.editor
-            ? html`<a class="header-editor" href=${href('/profile')} aria-label=${t('nav.account')} title=${auth.editor.displayName} data-testid="header-editor">
+            ? html`<a class="icon-btn header-assistant" href=${href('/assistant')} aria-label=${t('assistant.open')} title=${t('assistant.open')} aria-current=${path.startsWith('/assistant') ? 'page' : undefined} data-testid="header-assistant">
+                <${Icon} name="sparkle" size=${22} />
+              </a>
+              <a class="header-editor" href=${href('/profile')} aria-label=${t('nav.account')} title=${auth.editor.displayName} data-testid="header-editor">
                 ${auth.editor.displayName.slice(0, 1).toUpperCase()}
               </a>`
             : null}
