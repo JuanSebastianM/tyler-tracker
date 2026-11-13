@@ -36,12 +36,17 @@ for (const theme of THEMES) {
     test(`${theme} ${mode}`, async ({ page }) => {
       // The editor's saved theme, also cached as the launch theme so the first paint matches.
       await page.addInitScript((c) => localStorage.setItem('tt.theme.active', JSON.stringify(c)), { theme, mode });
-      await openApp(page, '/today', { mode: 'asEditor', fixtures: fixtures(theme, mode), content: 'real' });
+      // Budget at 84 %: the meter shows the warning tone.
+      const sb = await openApp(page, '/today', { mode: 'asEditor', fixtures: fixtures(theme, mode), content: 'real', chat: { budget: { used_usd: 21, budget_usd: 25 } } });
       await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
       await expect(page.locator('html')).toHaveAttribute('data-scheme', mode);
       const name = (screen) => `${screen}-${theme}-${mode}`;
       await settle(page);
       await shot(page, name('today'));
+      // What is due ("Hoy", "Pronto" in the warning tone).
+      await page.getByTestId('due-card').evaluate((el) => el.scrollIntoView({ block: 'center' }));
+      await settle(page);
+      await shot(page, name('today-due'));
       await page.goto(`./#/health`);
       await settle(page);
       await shot(page, name('health'));
@@ -52,6 +57,13 @@ for (const theme of THEMES) {
       await expect(page.locator('.msg')).toHaveCount(2);
       await settle(page);
       await shot(page, name('assistant'));
+      // A failed question: the error sits above the composer, the question is back in it.
+      sb.setChat({ refuse: 'upstream_error' });
+      await page.getByLabel('Tu pregunta').fill('¿Puede comer zanahoria?');
+      await page.getByTestId('assistant-send').click();
+      await expect(page.getByTestId('assistant-error')).toBeVisible();
+      await settle(page);
+      await shot(page, name('assistant-error'));
       await page.goto('./#/profile');
       await page.getByTestId('theme-settings').scrollIntoViewIfNeeded();
       await page.evaluate(() => document.querySelector('[data-testid="theme-settings"]')?.scrollIntoView({ block: 'center' }));
