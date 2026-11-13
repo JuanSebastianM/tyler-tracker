@@ -62,9 +62,9 @@ function still verifies the user itself, because the gateway also accepts the pu
 Or deploy through the Supabase MCP `deploy_edge_function` with every file of this folder
 (`index.ts` and `lib/*.ts`).
 
-Optional: apply `supabase/migrations/0004_ai_usage_ledger.sql` (proposed). Without it, deleting a
-thread deletes its messages and therefore lowers the measured monthly spend. The function uses the
-`ai_usage` ledger automatically once it exists.
+Monthly spend is read from the `ai_usage` ledger (`supabase/migrations/0004_ai_usage_ledger.sql`,
+applied), which a trigger fills from `chat_messages` and which survives thread deletion. If the
+table were missing the function would fall back to summing `chat_messages.cost_usd`.
 
 ## Request and response
 

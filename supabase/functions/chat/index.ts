@@ -124,12 +124,12 @@ Deno.serve(async (req: Request) => {
 // Spend and usage
 // ---------------------------------------------------------------------------
 
-/** null until we know whether migration 0004 (ai_usage ledger) is applied. */
+/** null until the first read tells whether the ai_usage ledger (migration 0004) exists. */
 let ledgerAvailable: boolean | null = null;
 
 /**
- * Spend since `since`. Prefers the append-only `ai_usage` ledger (proposed migration 0004), which
- * survives thread deletion; falls back to chat_messages.cost_usd while it does not exist.
+ * Spend since `since`. Uses the append-only `ai_usage` ledger (migration 0004, applied), which
+ * survives thread deletion; falls back to chat_messages.cost_usd if the table is missing.
  */
 async function spendSince(svc: Rest, since: string): Promise<number> {
   if (ledgerAvailable !== false) {

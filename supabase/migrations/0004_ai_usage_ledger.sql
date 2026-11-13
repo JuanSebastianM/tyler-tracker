@@ -1,10 +1,10 @@
--- PROPOSED (not applied): append-only ledger of assistant spend.
+-- Append-only ledger of assistant spend (applied to the live project).
 --
 -- Why: the monthly budget is the sum of chat_messages.cost_usd, but deleting a thread cascades to
 -- its messages, so deleting conversations would lower the measured spend and let the budget be
 -- exceeded. This ledger keeps one row per billed message that survives thread deletion.
--- The `chat` Edge Function reads `ai_usage` when it exists and falls back to chat_messages
--- otherwise, so this migration can be applied at any time without redeploying the function.
+-- A trigger on chat_messages copies every billed message here; the `chat` Edge Function sums this
+-- table for the monthly budget (it falls back to chat_messages only if the table is missing).
 
 create table public.ai_usage (
   id uuid primary key default gen_random_uuid(),
