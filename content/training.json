@@ -3,38 +3,484 @@
   "items": [
     {
       "id": "name-response",
-      "sample": true,
       "min_age_weeks": 7,
       "difficulty": "easy",
       "duration_min": 3,
-      "title": { "es": "Responder a su nombre", "en": "Responding to his name" },
+      "title": {
+        "es": "Responder a su nombre",
+        "en": "Responding to his name"
+      },
       "summary": {
         "es": "Que al oír «Tyler» te mire. La base de todo lo demás.",
-        "en": "He looks at you when he hears “Tyler”. The base for everything else."
+        "en": "He looks at you when he hears \"Tyler\". The base for everything else."
       },
       "body": {
-        "es": "## Pasos\n1. En un lugar tranquilo, di «Tyler» una sola vez con tono alegre.\n2. Cuando te mire, di «¡sí!» y dale un premio.\n3. Repite 5 veces por sesión, varias sesiones al día.\n4. Poco a poco practica con más distracciones.\n\n**Consejo:** nunca uses su nombre para regañarlo.",
-        "en": "## Steps\n1. Somewhere quiet, say “Tyler” once in a happy voice.\n2. When he looks at you, say “yes!” and give a treat.\n3. Repeat 5 times per session, several sessions a day.\n4. Gradually practice with more distractions.\n\n**Tip:** never use his name to scold him."
+        "es": "## Por qué importa\nSi su nombre significa \"mírame, algo bueno viene\", tienes su atención antes de pedirle cualquier cosa. Es el primer paso para que venga cuando lo llamas.\n\n## Cuándo empezar\nDesde el primer día en casa.\n\n## Qué necesitas\n- Premios pequeños y blandos, o parte de su comida.\n- Un lugar tranquilo.\n- Una palabra marcadora corta, como «sí», que siempre va seguida de un premio.\n\n## Pasos\n1. Di «sí» y dale un premio, cinco veces seguidas, para que aprenda que esa palabra anuncia algo bueno.\n2. Espera a que esté distraído, a un metro de ti, y di «Tyler» una sola vez con tono alegre.\n3. En el momento en que gire la cabeza hacia ti, di «sí» y dale el premio.\n4. Repite cinco veces por sesión, varias sesiones al día.\n5. Cuando responda casi siempre, practica en otros cuartos, luego con ruido de fondo y después afuera.\n\n## Cómo saber que va funcionando\nGira la cabeza rápido apenas oye su nombre, incluso cuando está jugando.\n\n## Errores comunes\n- Repetir el nombre varias veces seguidas: aprende que puede ignorar las primeras.\n- Usar su nombre para regañarlo o antes de algo que no le gusta.\n- Avanzar a lugares con muchas distracciones demasiado pronto.\n\n## Si no está funcionando\nVuelve a un lugar más tranquilo, usa un premio más valioso y practica cuando no esté muy cansado ni muy acelerado.",
+        "en": "## Why it matters\nIf his name means \"look at me, something good is coming\", you have his attention before you ask for anything. It is the first step towards coming when called.\n\n## When to start\nFrom his first day at home.\n\n## What you need\n- Small soft treats, or part of his meal.\n- A quiet place.\n- A short marker word, such as \"yes\", that is always followed by a treat.\n\n## Steps\n1. Say \"yes\" and give a treat, five times in a row, so he learns that the word announces something good.\n2. Wait until he is distracted, about a metre away, and say \"Tyler\" once in a happy voice.\n3. The moment he turns his head towards you, say \"yes\" and give the treat.\n4. Repeat five times per session, several sessions a day.\n5. When he responds almost every time, practise in other rooms, then with background noise, then outside.\n\n## How to know it is working\nHe turns his head quickly as soon as he hears his name, even while playing.\n\n## Common mistakes\n- Repeating his name several times in a row: he learns he can ignore the first ones.\n- Using his name to scold him or before something he dislikes.\n- Moving to busy places too soon.\n\n## When it is not working\nGo back to a quieter place, use a more valuable treat, and practise when he is neither very tired nor very wound up."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "AKC: How to train your dog to come when called",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-dog-to-come-when-called/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "house-training",
+      "min_age_weeks": 7,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Hacer sus necesidades en el lugar correcto",
+        "en": "House-training"
+      },
+      "summary": {
+        "es": "Un horario atado a comidas y siestas, y un premio cada vez que acierta.",
+        "en": "A schedule tied to meals and naps, and a reward every time he gets it right."
+      },
+      "body": {
+        "es": "## Por qué importa\nEs lo que más facilita la convivencia en un apartamento. Con un horario constante, la mayoría de los cachorros son confiables casi siempre hacia los 6 meses.\n\n## Cuándo empezar\nDesde el primer día.\n\n## Qué necesitas\n- Un lugar fijo para sus necesidades (afuera, o un tapete o pañal en el balcón mientras el veterinario autoriza salir).\n- Premios a mano cerca de la puerta.\n- Un limpiador enzimático o \"biológico\" para quitar el olor de los accidentes.\n- El diario de la app para anotar pipí y popó.\n\n## Horario base para un cachorro de 7 a 12 semanas\n- Al despertar, de la noche o de cualquier siesta.\n- Entre 5 y 30 minutos después de cada comida o de tomar bastante agua.\n- Durante y después del juego.\n- Cuando esté muy emocionado, por ejemplo al llegar visitas.\n- Justo antes de dormir.\n- Como referencia, un cachorro aguanta más o menos tantas horas como meses tiene, más una. Durante el día, a esta edad, sácalo mucho más seguido que eso.\n\n## Pasos\n1. Llévalo siempre al mismo lugar, por la misma ruta, con la correa puesta.\n2. Quédate quieto y en silencio. Cuando empiece, di tu palabra para ese momento (por ejemplo «pipí»).\n3. Apenas termine, felicítalo y dale un premio allí mismo.\n4. Si no hace nada en unos minutos, vuelve a entrar, vigílalo de cerca o déjalo en su espacio, y prueba de nuevo en un rato.\n5. Dentro de casa, observa las señales: olfatear el piso, dar vueltas, empezar a agacharse. Interrúmpelo con suavidad y llévalo a su lugar.\n6. Anota en la app cada salida para descubrir su patrón.\n\n## Cómo saber que va funcionando\nHay más aciertos que accidentes cada semana, y empieza a ir hacia la puerta o a su lugar por su cuenta.\n\n## Errores comunes\n- Regañarlo o restregarle la nariz: aprende a esconderse para hacer sus necesidades.\n- Darle demasiada libertad sin supervisión demasiado pronto.\n- Limpiar con productos que dejan olor, lo que lo invita a repetir en el mismo sitio.\n- Darle la comida muy cerca de la hora de dormir.\n\n## Si no está funcionando\nVuelve a un horario más frecuente y a más supervisión. Si los accidentes aumentan de golpe, orina muy seguido o hace esfuerzo, consulta al veterinario: una infección urinaria u otro problema de salud puede ser la causa.",
+        "en": "## Why it matters\nNothing makes apartment life easier. With a consistent schedule, most puppies are reliable most of the time by about 6 months.\n\n## When to start\nFrom day one.\n\n## What you need\n- A fixed potty spot (outside, or a mat or pad on the balcony until the vet clears outdoor walks).\n- Treats within reach near the door.\n- An enzymatic or \"biological\" cleaner to remove the smell of accidents.\n- The app's log to record pees and poops.\n\n## Basic schedule for a 7 to 12 week old puppy\n- On waking, from the night or any nap.\n- 5 to 30 minutes after each meal or a good drink.\n- During and after play.\n- When he is very excited, for example when visitors arrive.\n- Right before bed.\n- As a guide, a puppy can hold it for about his age in months plus one, in hours. During the day at this age, take him out much more often than that.\n\n## Steps\n1. Always take him to the same spot, by the same route, on leash.\n2. Stand still and quiet. When he starts, say your cue word (for example \"potty\").\n3. As soon as he finishes, praise him and give a treat right there.\n4. If nothing happens within a few minutes, go back in, watch him closely or put him in his space, and try again shortly.\n5. Indoors, watch for the signs: sniffing the floor, circling, starting to squat. Gently interrupt and take him to his spot.\n6. Log each trip in the app to discover his pattern.\n\n## How to know it is working\nEach week there are more successes than accidents, and he starts heading to the door or his spot on his own.\n\n## Common mistakes\n- Scolding him or rubbing his nose in it: he learns to hide when he goes.\n- Giving too much unsupervised freedom too soon.\n- Cleaning with products that leave a smell, which invites him back to the same spot.\n- Feeding too close to bedtime.\n\n## When it is not working\nGo back to more frequent trips and closer supervision. If accidents suddenly increase, or he pees very often or strains, see the vet: a urinary infection or another health problem may be the cause."
+      },
+      "sources": [
+        {
+          "title": "AKC: Puppy potty training schedule and timeline",
+          "url": "https://www.akc.org/expert-advice/training/potty-training-your-puppy-timeline-and-tips/"
+        },
+        {
+          "title": "Dogs Trust: How to toilet or house train your dog",
+          "url": "https://www.dogstrust.org.uk/help-advice/training/house-or-toilet-training"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "crate-training",
+      "min_age_weeks": 7,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Guacal y dormir toda la noche",
+        "en": "Crate and sleeping through the night"
+      },
+      "summary": {
+        "es": "Que su guacal o corral sea su lugar favorito para descansar.",
+        "en": "Make his crate or pen his favourite place to rest."
+      },
+      "body": {
+        "es": "## Por qué importa\nUn espacio seguro le da un lugar para descansar, ayuda con las necesidades y lo protege cuando nadie puede vigilarlo. Nunca debe ser un castigo.\n\n## Cuándo empezar\nDesde el primer día, con la puerta abierta.\n\n## Qué necesitas\n- Un guacal donde pueda pararse, darse vuelta y acostarse. Si compras uno para su tamaño adulto, usa un divisor para que no le sobre espacio.\n- Una manta suave que no se deshilache. Si destroza telas o tiene accidentes encima, espera para ponerle cama.\n- Juguetes para morder, idealmente uno relleno y congelado.\n- Agua disponible.\n\n## Pasos\n1. Siéntate al lado del guacal con premios y lanza uno adentro cada vez que se acerque. Deja la puerta abierta.\n2. Esconde premios dentro para que los encuentre solo.\n3. Cuando entre por su cuenta, sigue premiándolo cada pocos segundos mientras esté adentro.\n4. Dale un juguete relleno adentro y cierra la puerta unos segundos mientras come. Ábrela antes de que se inquiete.\n5. Alarga el tiempo poco a poco, primero contigo al lado y después saliendo del cuarto.\n6. Úsalo para siestas cuando esté cansado, después de hacer sus necesidades y de jugar.\n\n## Para dormir de noche\n1. Una rutina igual cada noche: juego tranquilo, última salida al baño, luz baja.\n2. Pon su cama o guacal en tu cuarto o muy cerca, para que no se sienta solo. Si quieren que duerma en otro lugar, muévanlo un poco cada pocas noches.\n3. Si llora de noche, puede necesitar salir. Llévalo en brazos, en silencio, sin juego, y de vuelta a la cama.\n4. Las salidas nocturnas son normales y van disminuyendo con la edad.\n\n## Cómo saber que va funcionando\nEntra solo a descansar y se queda tranquilo con la puerta cerrada.\n\n## Errores comunes\n- Meterlo a la fuerza o usarlo como castigo.\n- Dejarlo llorar hasta que se canse.\n- Dejarlo más tiempo del que puede aguantar sin hacer sus necesidades.\n- Dejarle el collar puesto adentro.\n\n## Si no está funcionando\nSi jadea, tiembla, rasca la puerta, ladra sin parar o babea, para y vuelve a los pasos con la puerta abierta. Algunos perros están mejor en un corral o un cuarto seguro con reja. Si el pánico sigue, consulta al veterinario.",
+        "en": "## Why it matters\nA safe space gives him a place to rest, helps with house-training and keeps him safe when nobody can watch him. It must never be a punishment.\n\n## When to start\nFrom day one, with the door open.\n\n## What you need\n- A crate where he can stand up, turn around and lie down. If you buy one for his adult size, use a divider so it is not too big.\n- A soft blanket that will not unravel. If he shreds fabric or has accidents on it, wait before adding bedding.\n- Chew toys, ideally a stuffed, frozen one.\n- Water available.\n\n## Steps\n1. Sit beside the crate with treats and toss one inside each time he comes close. Leave the door open.\n2. Hide treats inside for him to find on his own.\n3. When he walks in by himself, keep rewarding every few seconds while he stays inside.\n4. Give him a stuffed toy inside and close the door for a few seconds while he eats. Open it before he gets restless.\n5. Lengthen the time gradually, first with you next to him, then leaving the room.\n6. Use it for naps when he is tired, after a potty break and after play.\n\n## Sleeping through the night\n1. The same routine every night: calm play, last potty break, dim lights.\n2. Put his bed or crate in your bedroom or very close, so he does not feel alone. If you want him to sleep elsewhere, move it a little every few nights.\n3. If he cries at night he may need to go out. Carry him out quietly, no play, and back to bed.\n4. Night trips are normal and decrease with age.\n\n## How to know it is working\nHe goes in on his own to rest and stays relaxed with the door closed.\n\n## Common mistakes\n- Forcing him in or using it as punishment.\n- Leaving him to cry it out.\n- Leaving him in longer than he can hold his bladder.\n- Leaving his collar on inside.\n\n## When it is not working\nIf he pants, trembles, scratches at the door, barks non-stop or drools, stop and go back to the open-door steps. Some dogs do better in a pen or a safe room with a gate. If the panic continues, talk to the vet."
+      },
+      "sources": [
+        {
+          "title": "AKC: Everything you need to know about crate training your dog",
+          "url": "https://www.akc.org/expert-advice/training/how-to-crate-train-a-puppy/"
+        },
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "Dogs Trust: First nights with a new puppy",
+          "url": "https://www.dogstrust.org.uk/dog-advice/puppy/first-night"
+        },
+        {
+          "title": "AKC: Puppy potty training schedule and timeline",
+          "url": "https://www.akc.org/expert-advice/training/potty-training-your-puppy-timeline-and-tips/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "bite-inhibition",
+      "min_age_weeks": 7,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Mordisco suave y menos mordiscos",
+        "en": "Bite inhibition and mouthing"
+      },
+      "summary": {
+        "es": "Que aprenda a medir la fuerza de su boca y a morder juguetes en vez de manos.",
+        "en": "He learns to control the force of his mouth and to chew toys instead of hands."
+      },
+      "body": {
+        "es": "## Por qué importa\nTodos los cachorros exploran y juegan con la boca. Aprender a morder con suavidad es una de las lecciones más importantes de su vida, y Tyler se perdió parte de esa práctica con sus hermanos por llegar temprano.\n\n## Cuándo empezar\nYa. Primero se enseña a morder suave y después a no poner los dientes en la piel.\n\n## Qué necesitas\n- Juguetes para morder y una cuerda o juguete largo para jalar.\n- Paciencia: es un proceso de semanas.\n\n## Pasos\n1. Juega con él con calma. Si muerde fuerte, di un «ay» corto y agudo, deja la mano quieta y floja, y felicítalo cuando suelte o lama.\n2. Si el «ay» no funciona o lo acelera más, haz una pausa: levántate y deja de jugar de 10 a 20 segundos. Luego retoma.\n3. Poco a poco, pide mordiscos cada vez más suaves hasta que el juego sea casi sin presión.\n4. Cuando intente morder dedos o pies, ofrécele un juguete.\n5. Dale premios mientras lo acaricias, para que la mano signifique comida y no juego de morder.\n6. Si va por los tobillos al caminar, quédate quieto y ofrécele un juguete.\n7. Prefiere juegos de buscar y jalar con reglas en vez de luchar con las manos.\n\n## Cómo saber que va funcionando\nLos mordiscos son menos frecuentes y mucho más suaves, y busca un juguete por su cuenta.\n\n## Errores comunes\n- Mover los dedos frente a su cara para incitarlo.\n- Retirar la mano de golpe: lo invita a perseguirla.\n- Pegarle, sacudirlo o cerrarle la boca: puede aumentar los mordiscos o generar miedo.\n- Dejar de jugar con él del todo: el juego construye el vínculo.\n\n## Si no está funcionando\nRevisa si está cansado o sobreestimulado: muchas \"crisis\" de mordiscos son sueño. Llévalo a su espacio con un juguete para descansar. Si los mordiscos parecen de miedo o agresión, consulta a un profesional de comportamiento.",
+        "en": "## Why it matters\nAll puppies explore and play with their mouths. Learning to bite softly is one of the most important lessons of his life, and Tyler missed some of that practice with his littermates by coming home early.\n\n## When to start\nNow. First teach a softer bite, then no teeth on skin.\n\n## What you need\n- Chew toys and a long rope or tug toy.\n- Patience: it takes weeks.\n\n## Steps\n1. Play calmly. If he bites hard, give a short high \"ouch\", let your hand go still and limp, and praise him when he lets go or licks.\n2. If the \"ouch\" does not work or winds him up more, take a pause: stand up and stop playing for 10 to 20 seconds. Then start again.\n3. Gradually ask for softer and softer mouthing until play involves almost no pressure.\n4. When he goes for fingers or feet, offer a toy.\n5. Give treats while you pet him, so hands mean food rather than biting games.\n6. If he goes for your ankles as you walk, freeze and offer a toy.\n7. Prefer fetch and tug with rules over wrestling with your hands.\n\n## How to know it is working\nBites are less frequent and much softer, and he looks for a toy on his own.\n\n## Common mistakes\n- Wiggling fingers in his face to invite play.\n- Jerking your hand away: it invites him to chase it.\n- Hitting, shaking or holding his mouth shut: it can increase biting or cause fear.\n- Stopping play altogether: play builds your bond.\n\n## When it is not working\nCheck whether he is tired or overstimulated: many biting \"meltdowns\" are really sleepiness. Take him to his space with a chew toy to rest. If the biting looks fearful or aggressive, consult a behaviour professional."
+      },
+      "sources": [
+        {
+          "title": "ASPCA: Mouthing, nipping and biting in puppies",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/mouthing-nipping-and-biting-puppies"
+        },
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
       "id": "sit",
-      "sample": true,
       "min_age_weeks": 8,
       "difficulty": "easy",
-      "duration_min": 5,
-      "title": { "es": "Sentado", "en": "Sit" },
+      "duration_min": 3,
+      "title": {
+        "es": "Sentado",
+        "en": "Sit"
+      },
       "summary": {
         "es": "Su primera señal: sentarse para pedir las cosas.",
         "en": "His first cue: sitting to ask for things."
       },
       "body": {
-        "es": "## Pasos\n1. Pon un premio frente a su nariz.\n2. Súbelo despacio por encima de su cabeza: su cola bajará sola.\n3. Cuando se siente, di «¡sí!» y dale el premio.\n4. Cuando lo haga fácil, añade la palabra «sentado» justo antes.",
-        "en": "## Steps\n1. Hold a treat in front of his nose.\n2. Slowly move it up over his head: his bottom will drop on its own.\n3. When he sits, say “yes!” and give the treat.\n4. Once it is easy, add the word “sit” just before."
+        "es": "## Por qué importa\nUn perro sentado no puede saltar ni salir corriendo. Es la forma más sencilla de enseñarle a \"pedir por favor\".\n\n## Cuándo empezar\nDesde las 8 semanas, en sesiones de dos o tres minutos.\n\n## Qué necesitas\nPremios pequeños y un lugar tranquilo.\n\n## Pasos\n1. Agáchate frente a él con un premio pegado a su nariz.\n2. Sube el premio despacio por encima de su cabeza. Al seguirlo con la mirada, la cola baja al piso.\n3. Cuando la cola toque el piso, di «sí» y dale el premio.\n4. Después de dos o tres repeticiones, haz el mismo gesto con la mano vacía y premia desde la otra mano.\n5. Cuando siga el gesto con facilidad, di «sentado» justo antes del gesto.\n6. Practica en distintos cuartos y antes de cosas que él quiere: comida, salir, juego.\n\n## Cómo saber que va funcionando\nSe sienta con la palabra sola, sin ver la mano.\n\n## Errores comunes\n- Empujarle la cola hacia abajo.\n- Repetir «sentado, sentado, sentado».\n- Subir el premio demasiado alto: salta en vez de sentarse.\n\n## Si no está funcionando\nPractica contra una pared o en un rincón, mueve la mano más despacio y premia incluso un intento a medias al principio.",
+        "en": "## Why it matters\nA sitting dog cannot jump up or bolt. It is the simplest way to teach him to \"say please\".\n\n## When to start\nFrom 8 weeks, in two to three minute sessions.\n\n## What you need\nSmall treats and a quiet place.\n\n## Steps\n1. Crouch in front of him with a treat at his nose.\n2. Slowly raise the treat over his head. As he follows it, his bottom goes down.\n3. When his bottom touches the floor, say \"yes\" and give the treat.\n4. After two or three repetitions, make the same gesture with an empty hand and reward from the other hand.\n5. When he follows the gesture easily, say \"sit\" just before the gesture.\n6. Practise in different rooms and before things he wants: food, going out, play.\n\n## How to know it is working\nHe sits to the word alone, without seeing your hand.\n\n## Common mistakes\n- Pushing his bottom down.\n- Repeating \"sit, sit, sit\".\n- Holding the treat too high: he jumps instead of sitting.\n\n## When it is not working\nPractise against a wall or in a corner, move your hand more slowly, and at first reward even a half-attempt."
       },
-      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "sources": [
+        {
+          "title": "AKC: Teach your puppy these 5 basic cues",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-puppy-these-5-basic-commands/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "down",
+      "min_age_weeks": 9,
+      "difficulty": "easy",
+      "duration_min": 4,
+      "title": {
+        "es": "Echado",
+        "en": "Down"
+      },
+      "summary": {
+        "es": "Acostarse cuando se lo pides: la base para calmarse.",
+        "en": "Lying down when asked: the base for settling."
+      },
+      "body": {
+        "es": "## Por qué importa\nEchado es una postura relajada. Ayuda en restaurantes, visitas y en el veterinario, y es la base de «quieto».\n\n## Cuándo empezar\nCuando ya entienda «sentado», hacia las 9 semanas.\n\n## Qué necesitas\nPremios pequeños y una superficie cómoda, como un tapete (la baldosa puede ser fría o resbalosa).\n\n## Pasos\n1. Con Tyler sentado, pon un premio frente a su nariz.\n2. Baja el premio despacio hasta el piso, entre sus patas delanteras.\n3. Cuando los codos toquen el piso, di «sí» y dale el premio.\n4. Repite y luego haz el gesto con la mano vacía, premiando desde la otra mano.\n5. Cuando siga el gesto con facilidad, di «echado» justo antes de mover la mano.\n\n## Cómo saber que va funcionando\nSe echa con la palabra y se queda unos segundos tranquilo.\n\n## Errores comunes\n- Empujarlo hacia abajo.\n- Bajar la mano demasiado rápido.\n- Practicar sobre una superficie incómoda.\n\n## Si no está funcionando\nSiéntate en el piso con una pierna doblada formando un túnel y guíalo con el premio por debajo: para pasar tendrá que agacharse. Premia cada avance.",
+        "en": "## Why it matters\nDown is a relaxed position. It helps in cafés, with visitors and at the vet, and it is the base for \"stay\".\n\n## When to start\nOnce he understands \"sit\", around 9 weeks.\n\n## What you need\nSmall treats and a comfortable surface such as a rug (tile can be cold or slippery).\n\n## Steps\n1. With Tyler sitting, hold a treat in front of his nose.\n2. Slowly lower the treat to the floor, between his front paws.\n3. When his elbows touch the floor, say \"yes\" and give the treat.\n4. Repeat, then make the gesture with an empty hand and reward from the other hand.\n5. When he follows the gesture easily, say \"down\" just before you move your hand.\n\n## How to know it is working\nHe lies down to the word and stays relaxed for a few seconds.\n\n## Common mistakes\n- Pushing him down.\n- Lowering your hand too fast.\n- Practising on an uncomfortable surface.\n\n## When it is not working\nSit on the floor with one leg bent to make a tunnel and lure him under it with the treat: to pass he has to lie low. Reward every bit of progress."
+      },
+      "sources": [
+        {
+          "title": "AKC: Teach your puppy these 5 basic cues",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-puppy-these-5-basic-commands/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "recall",
+      "min_age_weeks": 8,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Ven (el llamado)",
+        "en": "Come (recall)"
+      },
+      "summary": {
+        "es": "Que venga corriendo cuando lo llamas. Puede protegerlo de un peligro.",
+        "en": "He comes running when you call. It can keep him out of danger."
+      },
+      "body": {
+        "es": "## Por qué importa\nUn buen llamado es la señal más importante para su seguridad. Se construye haciendo que venir a ustedes sea siempre lo mejor que le puede pasar.\n\n## Cuándo empezar\nDesde las 8 semanas, con juegos dentro de la casa. Antes conviene que responda a su nombre.\n\n## Qué necesitas\n- Premios que le encanten o su juguete favorito.\n- Más adelante, una cuerda larga (de 5 a 10 metros) para practicar afuera.\n\n## Pasos\n1. A un par de pasos, di su nombre y «ven» con voz alegre. Muévete hacia atrás para animarlo.\n2. Cuando llegue, di «sí» y celébralo con premio, caricias o juego.\n3. Juego del \"te tengo\": toca suavemente el arnés o el collar y dale un premio, para que no aprenda a esquivar la mano.\n4. Jueguen entre los dos: uno llama, premia y luego el otro llama desde otro cuarto.\n5. Aumenta la distancia dentro de casa, luego en lugares tranquilos afuera con correa y después con la cuerda larga.\n6. Agrega distracciones de a poco.\n\n## Cómo saber que va funcionando\nViene rápido y contento a la primera llamada, también con algo de distracción.\n\n## Errores comunes\n- Llamarlo para algo que no le gusta (baño, uñas, terminar el paseo). En esos casos, ve tú por él.\n- Llamarlo con voz brava o aburrida.\n- Repetir «ven» cuando no viene: la palabra pierde valor.\n- Soltarlo en lugares abiertos antes de que el llamado sea confiable.\n- Usar la cuerda larga para arrastrarlo: sirve para controlar la situación, no para jalarlo.\n\n## Si no está funcionando\nRetrocede a menos distancia y menos distracción, sube el valor del premio y practica más veces al día por menos tiempo. En la adolescencia el llamado suele empeorar un tiempo; vuelve a la cuerda larga.",
+        "en": "## Why it matters\nA good recall is the most important cue for his safety. You build it by making coming to you the best thing that can happen to him.\n\n## When to start\nFrom 8 weeks, with games indoors. It helps if he already responds to his name.\n\n## What you need\n- Treats he loves or his favourite toy.\n- Later, a long line (5 to 10 metres) to practise outside.\n\n## Steps\n1. A couple of steps away, say his name and \"come\" in a happy voice. Move backwards to encourage him.\n2. When he arrives, say \"yes\" and celebrate with a treat, petting or play.\n3. \"Gotcha\" game: gently touch his harness or collar and give a treat, so he does not learn to dodge your hand.\n4. Play between the two of you: one calls and rewards, then the other calls from another room.\n5. Increase the distance indoors, then in quiet places outside on leash, then on the long line.\n6. Add distractions gradually.\n\n## How to know it is working\nHe comes quickly and happily on the first call, even with some distraction.\n\n## Common mistakes\n- Calling him for something he dislikes (bath, nails, ending a walk). In those cases, go and get him.\n- Calling in an angry or boring voice.\n- Repeating \"come\" when he does not come: the word loses value.\n- Letting him off leash in open places before the recall is reliable.\n- Using the long line to reel him in: it is for controlling the situation, not for pulling him.\n\n## When it is not working\nGo back to less distance and less distraction, raise the value of the reward, and practise more often for shorter times. Recall often gets worse for a while in adolescence; go back to the long line."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to train your dog to come when called",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-dog-to-come-when-called/"
+        },
+        {
+          "title": "AKC: Teach your puppy these 5 basic cues",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-puppy-these-5-basic-commands/"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "leave-it-drop-it",
+      "min_age_weeks": 10,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Déjalo y suelta",
+        "en": "Leave it and drop it"
+      },
+      "summary": {
+        "es": "Ignorar lo que no debe tomar y soltar lo que ya tiene en la boca.",
+        "en": "Ignoring what he should not take and letting go of what is already in his mouth."
+      },
+      "body": {
+        "es": "## Por qué importa\nUn cachorro curioso encuentra de todo en el piso. «Déjalo» evita que lo tome y «suelta» hace que entregue lo que ya agarró, sin peleas.\n\n## Cuándo empezar\nDesde las 10 semanas, con comida en la mano.\n\n## Qué necesitas\nDos tipos de premio: uno sencillo para el piso y uno mejor para recompensarlo.\n\n## Pasos para «déjalo»\n1. Ten un premio en el puño cerrado. Deja que lo huela y lo intente sacar.\n2. Cuando deje de intentarlo, aunque sea un segundo, di «sí» y dale un premio mejor de la otra mano. Nunca le des el que estaba ignorando.\n3. Pon un premio en el piso y cúbrelo con la mano. Premia cuando se aleje.\n4. Destápalo poco a poco, listo para cubrirlo de nuevo.\n5. Cuando ya lo ignore, di «déjalo» justo antes de poner el premio en el piso.\n6. Practica con correa, caminando junto a premios en el piso, y luego afuera con objetos y juguetes.\n\n## Pasos para «suelta»\n1. Dale un juguete que le guste, pero no su favorito.\n2. Pon un premio muy bueno frente a su nariz. Cuando suelte el juguete, di «sí» y dale el premio.\n3. Mientras come, guarda el juguete y después devuélveselo. Así aprende que soltar no significa perderlo.\n4. Cuando suelte con solo ver el premio, agrega la palabra «suelta» antes de mostrarlo.\n5. Practica sin mostrar el premio y dale varios seguidos cuando lo logre.\n\n## Cómo saber que va funcionando\nAleja la cara de algo en el piso cuando oye «déjalo» y abre la boca cuando oye «suelta».\n\n## Errores comunes\n- Perseguirlo cuando agarra algo: se vuelve un juego y puede tragárselo.\n- Abrirle la boca a la fuerza o pelear por el objeto: puede generar que lo cuide y lo defienda.\n- Usar la palabra cuando sabes que no va a responder.\n\n## Si no está funcionando\nUsa premios de más valor y practica con cosas menos tentadoras. Si se pone tenso, gruñe o se queda rígido con objetos o con la comida, consulta a un entrenador o profesional de comportamiento antes de seguir.",
+        "en": "## Why it matters\nA curious puppy finds everything on the floor. \"Leave it\" stops him picking things up, and \"drop it\" makes him give up what he has already grabbed, without a fight.\n\n## When to start\nFrom 10 weeks, with food in your hand.\n\n## What you need\nTwo kinds of treat: a plain one for the floor and a better one as the reward.\n\n## Steps for \"leave it\"\n1. Hold a treat in your closed fist. Let him sniff and try to get it.\n2. When he stops trying, even for a second, say \"yes\" and give a better treat from the other hand. Never give him the one he was ignoring.\n3. Put a treat on the floor and cover it with your hand. Reward when he moves away.\n4. Uncover it gradually, ready to cover it again.\n5. Once he ignores it, say \"leave it\" just before you put the treat down.\n6. Practise on leash, walking past treats on the floor, then outside with objects and toys.\n\n## Steps for \"drop it\"\n1. Give him a toy he likes, but not his favourite.\n2. Hold a great treat in front of his nose. When he lets go of the toy, say \"yes\" and give the treat.\n3. While he eats, put the toy away, then give it back. He learns that letting go does not mean losing it.\n4. When he drops it just at the sight of the treat, add the word \"drop\" before you show it.\n5. Practise without showing the treat, and give several in a row when he succeeds.\n\n## How to know it is working\nHe turns his face away from something on the floor when he hears \"leave it\", and opens his mouth when he hears \"drop\".\n\n## Common mistakes\n- Chasing him when he grabs something: it becomes a game and he may swallow it.\n- Prying his mouth open or fighting over the object: it can lead to guarding.\n- Using the cue when you know he will not respond.\n\n## When it is not working\nUse higher-value treats and practise with less tempting things. If he goes tense, growls or freezes over objects or food, consult a trainer or behaviour professional before continuing."
+      },
+      "sources": [
+        {
+          "title": "AKC: \"Leave it\" command",
+          "url": "https://www.akc.org/expert-advice/training/teach-leave-it/"
+        },
+        {
+          "title": "AKC: How to teach your dog to drop it",
+          "url": "https://www.akc.org/expert-advice/training/teaching-your-dog-to-drop-it/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "stay",
+      "min_age_weeks": 12,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Quieto",
+        "en": "Stay"
+      },
+      "summary": {
+        "es": "Quedarse en su sitio hasta oír la palabra que lo libera.",
+        "en": "Staying put until he hears the release word."
+      },
+      "body": {
+        "es": "## Por qué importa\n«Quieto» le enseña paciencia y autocontrol: esperar en la puerta, mientras sirven su comida o cuando llega una visita.\n\n## Cuándo empezar\nHacia las 12 semanas, cuando ya sepa «sentado» o «echado».\n\n## Qué necesitas\nPremios pequeños y una palabra de liberación que ambos usen igual, por ejemplo «listo».\n\n## Pasos\n1. Enseña la liberación: di «listo» cuando dé un paso y lanza un premio lejos de él.\n2. Pídele «sentado», dale un premio, espera un segundo y dale otro. Luego di «listo».\n3. Alarga poco a poco el tiempo entre premios: 2, 3, 5 segundos.\n4. Cuando aguante varios segundos, di «quieto», da un paso atrás, vuelve, premia y libéralo.\n5. Aumenta una sola cosa a la vez: tiempo, distancia o distracción.\n6. Vuelve siempre tú a premiarlo antes de liberarlo.\n\n## Cómo saber que va funcionando\nSe queda en su sitio mientras te alejas unos pasos y espera la palabra de liberación.\n\n## Errores comunes\n- Aumentar tiempo, distancia y distracción al mismo tiempo.\n- Llamarlo desde el «quieto» con «ven»: confunde las dos señales.\n- Olvidar liberarlo, de modo que él decide cuándo terminar.\n\n## Si no está funcionando\nSi se levanta antes, no lo regañes: acorta la espera, vuelve a acercarte y practica unas repeticiones fáciles.",
+        "en": "## Why it matters\n\"Stay\" teaches patience and self-control: waiting at the door, while his food is served or when visitors arrive.\n\n## When to start\nAround 12 weeks, once he knows \"sit\" or \"down\".\n\n## What you need\nSmall treats and a release word you both use the same way, for example \"okay\".\n\n## Steps\n1. Teach the release: say \"okay\" as he takes a step and toss a treat away from him.\n2. Ask for \"sit\", give a treat, wait a second and give another. Then say \"okay\".\n3. Gradually lengthen the time between treats: 2, 3, 5 seconds.\n4. When he holds it for several seconds, say \"stay\", take a step back, return, reward and release.\n5. Increase only one thing at a time: duration, distance or distraction.\n6. Always go back to reward him before releasing.\n\n## How to know it is working\nHe stays put while you walk a few steps away and waits for the release word.\n\n## Common mistakes\n- Increasing time, distance and distraction all at once.\n- Calling him out of a stay with \"come\": it blurs the two cues.\n- Forgetting to release him, so he decides when it ends.\n\n## When it is not working\nIf he gets up early, do not scold him: shorten the wait, move closer again and do a few easy repetitions."
+      },
+      "sources": [
+        {
+          "title": "AKC: Teach your puppy these 5 basic cues",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-puppy-these-5-basic-commands/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "loose-leash-walking",
+      "min_age_weeks": 8,
+      "difficulty": "hard",
+      "duration_min": 5,
+      "title": {
+        "es": "Arnés y caminar sin jalar",
+        "en": "Harness and loose-leash walking"
+      },
+      "summary": {
+        "es": "Acostumbrarse al arnés y aprender que caminar a tu lado vale la pena.",
+        "en": "Getting used to the harness and learning that walking by your side pays off."
+      },
+      "body": {
+        "es": "## Por qué importa\nUn Golden macho adulto suele pesar entre 29 y 34 kilos. Aprender ahora a caminar con la correa floja hace los paseos agradables para todos.\n\n## Cuándo empezar\nEn casa desde las 8 semanas, aunque todavía no pueda salir a la calle.\n\n## Qué necesitas\n- Un arnés bien ajustado: no presiona el cuello como un collar.\n- Una correa liviana de unos 2 metros (no extensible).\n- Muchos premios pequeños.\n\n## Pasos\n1. Muéstrale el arnés, dale un premio y guárdalo. Repite varias veces.\n2. Pónselo unos segundos mientras come premios y quítaselo. Alarga el tiempo poco a poco.\n3. Engancha la correa y deja que la arrastre bajo supervisión, dentro de casa.\n4. Premia cada vez que te mire o esté cerca de ti con la correa puesta.\n5. Di «vamos» y camina unos pasos; premia cada pocos pasos mientras la correa va floja.\n6. Si la correa se tensa, detente o di su nombre. Cuando vuelva hacia ti, di «sí», premia y sigue.\n7. Practica primero en casa, luego en la portería o el parqueadero, y después en la calle cuando el veterinario lo autorice.\n8. Algunos paseos deben ser para olfatear y elegir el camino.\n\n## Cómo saber que va funcionando\nCamina cerca de ti con la correa en forma de \"U\" y te mira de vez en cuando.\n\n## Errores comunes\n- Seguir caminando cuando jala: aprende que jalar funciona.\n- Usar collares de ahogo, de púas o eléctricos.\n- Esperar que camine perfecto en lugares con mucha distracción desde el principio.\n\n## Si no está funcionando\nVuelve a un lugar más tranquilo, usa premios más valiosos y paseos más cortos. Si muerde la correa, pídele «suelta» y premia cuando la suelte.",
+        "en": "## Why it matters\nAn adult male Golden usually weighs 29 to 34 kg. Learning loose-leash walking now makes walks pleasant for everyone.\n\n## When to start\nAt home from 8 weeks, even before he can go out in the street.\n\n## What you need\n- A well-fitted harness: it does not press on the neck like a collar.\n- A light leash about 2 metres long (not retractable).\n- Lots of small treats.\n\n## Steps\n1. Show him the harness, give a treat and put it away. Repeat several times.\n2. Put it on for a few seconds while he eats treats, then take it off. Lengthen the time gradually.\n3. Clip on the leash and let him drag it under supervision, indoors.\n4. Reward him every time he looks at you or stays close with the leash on.\n5. Say \"let's go\" and walk a few steps; reward every few steps while the leash is loose.\n6. If the leash goes tight, stop or say his name. When he comes back towards you, say \"yes\", reward and carry on.\n7. Practise at home first, then in the building lobby or car park, then in the street once the vet approves.\n8. Some walks should be for sniffing and choosing the route.\n\n## How to know it is working\nHe walks near you with the leash hanging in a \"U\" and glances at you now and then.\n\n## Common mistakes\n- Walking on when he pulls: he learns that pulling works.\n- Using choke, prong or shock collars.\n- Expecting perfect walking in very busy places from the start.\n\n## When it is not working\nGo back to a quieter place, use more valuable treats and shorter walks. If he bites the leash, ask for \"drop\" and reward when he lets go."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to teach a puppy to walk on a leash",
+          "url": "https://www.akc.org/expert-advice/training/teach-puppy-walk-leash/"
+        },
+        {
+          "title": "AKC: Official standard for the Golden Retriever",
+          "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "alone-time",
+      "min_age_weeks": 7,
+      "difficulty": "hard",
+      "duration_min": 5,
+      "title": {
+        "es": "Quedarse solo tranquilo",
+        "en": "Being alone without distress"
+      },
+      "summary": {
+        "es": "Aprender poco a poco que quedarse solo es seguro y aburridamente normal.",
+        "en": "Learning step by step that being alone is safe and boringly normal."
+      },
+      "body": {
+        "es": "## Por qué importa\nSi los dos trabajan, Tyler va a pasar ratos solo. Enseñarlo desde ahora, de a poco, es la mejor forma de prevenir la ansiedad por separación. Los cachorros separados temprano de su mamá pueden tener más riesgo, así que vale la pena dedicarle tiempo.\n\n## Cuándo empezar\nDesde los primeros días, con ausencias de segundos.\n\n## Qué necesitas\n- Su espacio seguro con agua, cama y juguetes para morder.\n- Un juguete relleno \"especial\" que solo recibe cuando se queda solo.\n- Si puedes, una cámara para ver cómo está.\n\n## Pasos\n1. Antes de practicar, asegúrate de que hizo sus necesidades, jugó y está cansado.\n2. Pídele que se acueste en su cama y quédate cerca. Premia la calma.\n3. Aléjate un paso, vuelve y premia. Aumenta la distancia y el tiempo poco a poco.\n4. Sal por la puerta del cuarto y vuelve enseguida. Luego ciérrala unos segundos.\n5. Varía la duración: a veces 10 segundos, a veces 2 minutos, a veces 30 segundos.\n6. Despedidas y llegadas tranquilas, sin drama.\n7. Si se inquieta, no lo premies: vuelve al paso anterior.\n\n## Cómo saber que va funcionando\nEn la cámara se ve que se acuesta, mastica su juguete o duerme mientras no estás.\n\n## Errores comunes\n- Pasar de minutos a horas de golpe.\n- Regañarlo al llegar por un desorden: lo asocia con tu regreso y empeora la ansiedad.\n- Confiar solo en el guacal: a algunos perros los angustia más.\n\n## Si no está funcionando\nGraba lo que hace. Si ladra, aúlla, jadea, babea o intenta escapar, acorta las ausencias y pide ayuda al veterinario o a un profesional de comportamiento. Mientras tanto, busquen quién lo acompañe para no dejarlo más tiempo del que tolera.",
+        "en": "## Why it matters\nIf you both work, Tyler will spend time alone. Teaching it now, gradually, is the best way to prevent separation anxiety. Puppies separated early from their mother may be at higher risk, so it is worth the time.\n\n## When to start\nFrom the first days, with absences of seconds.\n\n## What you need\n- His safe space with water, bed and chew toys.\n- A \"special\" stuffed toy he only gets when he is alone.\n- If possible, a camera to see how he is doing.\n\n## Steps\n1. Before practising, make sure he has had a potty break, played and is tired.\n2. Ask him to lie on his bed and stay close. Reward calm.\n3. Step away, come back and reward. Increase distance and time gradually.\n4. Go out through the room door and come straight back. Then close it for a few seconds.\n5. Vary the length: sometimes 10 seconds, sometimes 2 minutes, sometimes 30 seconds.\n6. Calm goodbyes and hellos, no drama.\n7. If he gets restless, do not reward: go back a step.\n\n## How to know it is working\nOn camera he lies down, chews his toy or sleeps while you are gone.\n\n## Common mistakes\n- Jumping from minutes to hours.\n- Scolding him for a mess when you get home: he links it to your return and the anxiety gets worse.\n- Relying only on the crate: some dogs find it more distressing.\n\n## When it is not working\nFilm him. If he barks, howls, pants, drools or tries to escape, shorten the absences and ask the vet or a behaviour professional for help. Meanwhile, find someone to keep him company so he is never left longer than he can cope with."
+      },
+      "sources": [
+        {
+          "title": "RSPCA: How to train your dog to stay home alone",
+          "url": "https://www.rspca.org.uk/adviceandwelfare/pets/dogs/behaviour/alone"
+        },
+        {
+          "title": "Dogs Trust: Separation anxiety in dogs",
+          "url": "https://www.dogstrust.org.uk/dog-advice/understanding-your-dog/separation-anxiety-in-dogs"
+        },
+        {
+          "title": "ASPCA: Separation anxiety",
+          "url": "https://www.aspca.org/pet-care/dog-care/common-dog-behavior-issues/separation-anxiety"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "handling",
+      "min_age_weeks": 7,
+      "difficulty": "easy",
+      "duration_min": 3,
+      "title": {
+        "es": "Dejarse tocar: veterinario y aseo",
+        "en": "Handling for vet and grooming"
+      },
+      "summary": {
+        "es": "Patas, orejas, boca y cepillo asociados con premios, no con miedo.",
+        "en": "Paws, ears, mouth and brush linked with treats, not fear."
+      },
+      "body": {
+        "es": "## Por qué importa\nUn Golden necesita cepillado frecuente, uñas, orejas y dientes revisados toda la vida, además de exámenes en el veterinario. Si aprende ahora que eso trae cosas buenas, todo será más fácil y menos estresante.\n\n## Cuándo empezar\nDesde el primer día, un minuto a la vez.\n\n## Qué necesitas\n- Premios pequeños o algo para lamer, como un poco de comida húmeda en un plato.\n- Un cepillo suave y un cepillo de dedo para perro.\n- Pasta dental para perros (nunca de humanos).\n\n## Pasos\n1. Empieza tocando donde ya le gusta. Toca, premia y suelta.\n2. Pasa poco a poco a zonas sensibles: patas, entre los dedos, orejas, boca, cola. Una o dos zonas por sesión.\n3. Patas: toca, sostén un segundo, premia. Luego sostén más tiempo y toca una uña.\n4. Orejas: levanta la oreja, mira adentro, premia.\n5. Boca: levanta el labio un segundo, mira los dientes, premia. Más adelante, presenta el cepillo de dedo con pasta para perros.\n6. Cepillo: una pasada, premio. Ve sumando pasadas.\n7. Opción para elegir: pon el premio para lamer en un plato y cepilla mientras lame. Si se va, déjalo ir y retoma cuando vuelva.\n8. Enséñale a apoyar la barbilla en tu mano (señal «barbilla») para exámenes y gotas.\n\n## Cómo saber que va funcionando\nSe queda tranquilo, o incluso se acerca, cuando ve el cepillo o le tocas una pata.\n\n## Errores comunes\n- Querer hacerlo todo en una sesión.\n- Sujetarlo a la fuerza cuando se resiste.\n- Practicar solo cuando de verdad hay que cortar uñas o dar una medicina.\n\n## Si no está funcionando\nRetrocede a un contacto más leve y sube el valor del premio. Si se pone rígido, gruñe o intenta morder, para y pide consejo al veterinario: pueden planear las visitas para que sean menos estresantes.",
+        "en": "## Why it matters\nA Golden needs frequent brushing and regular checks of nails, ears and teeth all his life, plus vet examinations. If he learns now that these bring good things, everything will be easier and less stressful.\n\n## When to start\nFrom day one, one minute at a time.\n\n## What you need\n- Small treats or something to lick, such as a little wet food on a plate.\n- A soft brush and a dog finger toothbrush.\n- Dog toothpaste (never human toothpaste).\n\n## Steps\n1. Start by touching where he already enjoys it. Touch, treat, let go.\n2. Gradually move to sensitive areas: paws, between the toes, ears, mouth, tail. One or two areas per session.\n3. Paws: touch, hold for a second, treat. Then hold longer and touch a nail.\n4. Ears: lift the ear flap, look inside, treat.\n5. Mouth: lift his lip for a second, look at his teeth, treat. Later, introduce the finger brush with dog toothpaste.\n6. Brush: one stroke, treat. Add strokes over time.\n7. Give him a choice: put a lickable treat on a plate and brush while he licks. If he walks away, let him go and resume when he returns.\n8. Teach him to rest his chin in your hand (cue \"chin\") for exams and drops.\n\n## How to know it is working\nHe stays relaxed, or even comes over, when he sees the brush or you touch a paw.\n\n## Common mistakes\n- Trying to do everything in one session.\n- Holding him down when he resists.\n- Only practising when you really need to trim nails or give medicine.\n\n## When it is not working\nGo back to lighter touch and raise the value of the reward. If he stiffens, growls or tries to bite, stop and ask the vet for advice: you can plan visits to make them less stressful."
+      },
+      "sources": [
+        {
+          "title": "AKC: Teach your dog to enjoy grooming",
+          "url": "https://www.akc.org/expert-advice/health/teaching-your-dog-cooperative-grooming-skills/"
+        },
+        {
+          "title": "AKC: A timeline of puppy teething",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/timeline-of-puppy-teething/"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "socialization",
+      "min_age_weeks": 7,
+      "difficulty": "medium",
+      "duration_min": 10,
+      "title": {
+        "es": "Plan de socialización",
+        "en": "Socialization plan"
+      },
+      "summary": {
+        "es": "Conocer personas, sonidos, lugares y perros con calma, antes de las 16 semanas.",
+        "en": "Meeting people, sounds, places and dogs calmly, before 16 weeks."
+      },
+      "body": {
+        "es": "## Por qué importa\nLos primeros tres meses son el periodo más importante para que un cachorro aprenda que el mundo es seguro. Los problemas de comportamiento por miedo son mucho más difíciles de corregir después.\n\n## Cuándo empezar\nYa. Los expertos en comportamiento veterinario recomiendan no esperar a completar las vacunas, siempre que sea en lugares limpios y con perros sanos y vacunados. El veterinario les dirá qué es seguro según los riesgos locales.\n\n## Qué necesitas\n- Premios pequeños.\n- Una lista de experiencias, en papel o en el celular, para anotar cada una.\n- Un morral o cargador si lo van a sacar en brazos.\n\n## Pasos\n1. Elige una o dos experiencias nuevas al día: personas, sonidos, superficies, objetos, lugares, transporte.\n2. Empieza a una distancia en la que esté tranquilo y pueda comer premios.\n3. Deja que él decida si se acerca. Premia cuando mire, huela o explore.\n4. Mantén la experiencia corta y termínala antes de que se canse.\n5. Anota cómo reaccionó: tranquilo, curioso, dudoso o asustado.\n6. Repite lo que salió bien en otros lugares y con otras personas.\n7. Antes de la clase de cachorros, revisa que pidan vacunas al día y que el lugar sea limpio.\n\n## Señales de miedo\nTemblar, rechazar premios o el juego, retroceder después de tomar un premio, intentar escapar, cola entre las patas.\n\n## Cómo saber que va funcionando\nSe recupera rápido de un susto, explora con curiosidad y acepta premios en lugares nuevos.\n\n## Errores comunes\n- Llevarlo a parques de perros o lugares con perros de vacunas desconocidas.\n- Obligarlo a acercarse o dejar que muchas personas lo carguen a la vez.\n- Hacer demasiado en un solo día.\n\n## Si no está funcionando\nSi muestra miedo, termina la experiencia sin regañarlo, llévalo a un lugar donde se sienta seguro y vuelve a intentarlo otro día con más distancia. Si el miedo es frecuente, consulta al veterinario.",
+        "en": "## Why it matters\nThe first three months are the most important time for a puppy to learn that the world is safe. Fear-based behaviour problems are much harder to change later.\n\n## When to start\nNow. Veterinary behaviour experts advise not waiting for the full vaccine series, as long as it happens in clean places and with healthy, vaccinated dogs. Your vet will tell you what is safe given local risks.\n\n## What you need\n- Small treats.\n- A list of experiences, on paper or on your phone, to note each one.\n- A sling or carrier if you take him out in your arms.\n\n## Steps\n1. Pick one or two new experiences a day: people, sounds, surfaces, objects, places, transport.\n2. Start at a distance where he is relaxed and can eat treats.\n3. Let him choose whether to approach. Reward him for looking, sniffing or exploring.\n4. Keep it short and end before he gets tired.\n5. Note how he reacted: relaxed, curious, unsure or scared.\n6. Repeat what went well in other places and with other people.\n7. Before a puppy class, check that they require up-to-date vaccines and that the place is clean.\n\n## Signs of fear\nTrembling, refusing treats or play, backing away after taking a treat, trying to escape, tail tucked.\n\n## How to know it is working\nHe recovers quickly from a startle, explores with curiosity and takes treats in new places.\n\n## Common mistakes\n- Taking him to dog parks or places with dogs of unknown vaccine status.\n- Forcing him closer or letting many people hold him at once.\n- Doing too much in one day.\n\n## When it is not working\nIf he shows fear, end the experience without scolding, take him somewhere he feels safe and try again another day from further away. If fear is frequent, talk to the vet."
+      },
+      "sources": [
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "VCA Animal Hospitals: Puppy behavior and training, socialization and fear prevention",
+          "url": "https://vcahospitals.com/know-your-pet/puppy-behavior-and-training-socialization-and-fear-prevention"
+        },
+        {
+          "title": "The Royal Kennel Club: What is puppy socialisation?",
+          "url": "https://www.royalkennelclub.com/your-dog/getting-a-dog/caring-for-a-new-pup/what-is-puppy-socialisation"
+        },
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "greeting-without-jumping",
+      "min_age_weeks": 8,
+      "difficulty": "medium",
+      "duration_min": 5,
+      "title": {
+        "es": "Saludar sin saltar",
+        "en": "Greeting without jumping"
+      },
+      "summary": {
+        "es": "Las cuatro patas en el piso traen caricias; saltar no trae nada.",
+        "en": "Four paws on the floor bring attention; jumping brings nothing."
+      },
+      "body": {
+        "es": "## Por qué importa\nUn cachorro que salta es tierno; un Golden adulto que salta puede tumbar a un niño o a una persona mayor. Es mucho más fácil enseñarlo ahora.\n\n## Cuándo empezar\nDesde las 8 semanas, en cada saludo.\n\n## Qué necesitas\n- Premios a mano cerca de la puerta.\n- Una correa o una reja para cuando lleguen visitas.\n- Que todos en casa y las visitas sigan las mismas reglas.\n\n## Pasos\n1. Cuando alguien se acerque, lanza premios al piso antes de que llegue: así come con las cuatro patas abajo.\n2. La persona lo saluda mientras come y se retira antes de que se acaben los premios.\n3. Alarga los saludos poco a poco y sigue dando premios al piso.\n4. Si salta, la persona se da vuelta y se aleja, sin hablarle. Vuelve cuando tenga las patas en el piso.\n5. Cuando ya sepa «sentado» con distracciones, pídeselo para saludar.\n6. Explícales a las visitas el plan antes de que entren.\n\n## Cómo saber que va funcionando\nLlega a saludar y se queda con las patas en el piso o se sienta por su cuenta.\n\n## Errores comunes\n- Gritarle, empujarlo o agarrarle las patas: sigue siendo atención.\n- Que una persona lo deje saltar y otra no.\n- Enseñarle solo lo que no debe hacer, sin enseñarle qué hacer en su lugar.\n\n## Si no está funcionando\nUsa la correa o la reja cuando lleguen visitas para que no pueda practicar el salto, y vuelve a los saludos cortos con premios al piso.",
+        "en": "## Why it matters\nA jumping puppy is cute; a jumping adult Golden can knock over a child or an older person. It is much easier to teach now.\n\n## When to start\nFrom 8 weeks, at every greeting.\n\n## What you need\n- Treats within reach near the door.\n- A leash or a gate for when visitors arrive.\n- Everyone at home and every visitor following the same rules.\n\n## Steps\n1. When someone approaches, toss treats on the floor before they reach him: he eats with all four paws down.\n2. The person greets him while he eats and steps away before the treats run out.\n3. Lengthen greetings gradually and keep tossing treats on the floor.\n4. If he jumps, the person turns and walks away without speaking. They come back when his paws are on the floor.\n5. Once he knows \"sit\" with distractions, ask for it to greet.\n6. Explain the plan to visitors before they come in.\n\n## How to know it is working\nHe comes to say hello and keeps his paws on the floor, or sits on his own.\n\n## Common mistakes\n- Shouting, pushing him away or grabbing his paws: it is still attention.\n- One person letting him jump and another not.\n- Only teaching what not to do, without teaching what to do instead.\n\n## When it is not working\nUse the leash or the gate when visitors arrive so he cannot practise jumping, and go back to short greetings with treats on the floor."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to stop your dog from jumping up on people",
+          "url": "https://www.akc.org/expert-advice/training/how-to-stop-your-dog-from-jumping-up-on-people/"
+        },
+        {
+          "title": "AVSAB: Position statement on humane dog training (2021)",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/AVSAB-Humane-Dog-Training-Position-Statement-2021.pdf"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     }
   ]
