@@ -287,7 +287,8 @@ site.
   and on a UI close steps back only if the current entry is still its own, waiting for an in-flight
   back before pushing again. Sheets do not touch history.
 - Modal key handlers (Escape, focus trap) attach in layout effects; the viewer listens in the capture
-  phase so a sheet underneath does not also close.
+  phase so a sheet underneath does not also close. Sheets and the viewer move focus in on the next
+  frame, and never take it from a control inside them that already has it (a fast tap wins).
 - **Markdown headings.** `#`/`##` → h2, `###` → h3. Bodies under their own heading pass
   `headingOffset` (`<Markdown headingOffset=${1}>` in Learn articles, whose title is an h2); the look
   follows the source level (`.md-h2`..`.md-h4`).
@@ -325,6 +326,7 @@ site.
 
 - `npm run check` = typecheck + unit tests + i18n key parity (every key exists in es and en) + content
   schemas + e2e. It must pass before any push to `main`; CI runs the same and only then deploys.
+  A test that passes only on CI's retry fails the job (`failOnFlakyTests`; FEATURE_GUIDE "Flaky tests").
 - **Tests never depend on the real `/content` files**: `mockSupabase` serves the fake content in
   `tests/e2e/content-fixtures.js` for every `content/*.json` request, so the content can be rewritten
   or emptied without breaking the suite. Unit tests use inline fake content too. Only the review

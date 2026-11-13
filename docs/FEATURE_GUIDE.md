@@ -233,6 +233,32 @@ keep the "no horizontal scroll" check green.
 Overlays: assert that closing never changes the route and that `page.goBack()` with an overlay open
 only closes it.
 
+### Flaky tests
+
+A test that sometimes fails is a bug, in the test or in the app; it is never fixed by a retry.
+
+- **CI policy** (`playwright.config.js`): CI retries a failed test once, only so the report tells
+  "broken" from "flaky" and keeps the trace of both attempts. `failOnFlakyTests` is on, so a test
+  that passed only on its retry still **fails the job** (and nothing deploys). Locally there are no
+  retries. A red "flaky" job means: find the cause now, do not re-run until green.
+- **Wait on observable conditions**, never on time: no `waitForTimeout` as a fix, no raised
+  timeouts. Use web-first assertions (`toBeVisible`, `toHaveValue`, `toHaveCount`) and
+  `expect.poll` for anything measured by hand (bounding boxes, `sb.db`, call counts).
+- **Layout is not settled when an action returns.** A `ResizeObserver`, a `useEffect` or a
+  `requestAnimationFrame` may still change sizes and scroll on the next frame. Poll the geometric
+  assertion and include a "settled" condition in it (see `clearOfComposer` in
+  `assistant-session.spec.js`); read every box in one `evaluate` so they come from the same layout.
+- **Wait for the state you mean.** A streamed answer and the saved one look alike: wait for
+  `assistant-streaming` to be gone before acting on "the answer".
+- **App races are fixed in the app.** Before calling it a test problem, check whether a person could
+  hit it too: a sheet that focused its first field a frame late stole a fast tap (now it never takes
+  focus from a field already focused in it), and a thread load that arrived before the `done` event
+  showed the answer twice (now `pendingIsSaved`). Add a regression test that reproduces the
+  ordering deterministically when you can (`a field focused right after a sheet opens keeps the
+  focus`).
+- **Hunting:** `npm run test:e2e -- --repeat-each=10 --retries=0`, also with `--workers=1` and with
+  more workers than cores, and prove a fix with `--repeat-each=30 --retries=0 -g "<test>"`.
+
 ## 9. Before you hand off
 
 - `npm run check` green; screenshots of your screens at 390×844 in light and dark, es and en, plus one

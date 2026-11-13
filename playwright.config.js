@@ -11,7 +11,11 @@ export default defineConfig({
   testMatch: /.*\.spec\.js$/,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
+  // Flakiness policy (docs/FEATURE_GUIDE.md, "Flaky tests"): CI retries a failed test once so the
+  // report says whether it is broken or flaky and keeps the trace of both attempts, but a test that
+  // only passed on its retry still fails the job. Locally there are no retries.
   retries: process.env.CI ? 1 : 0,
+  failOnFlakyTests: !!process.env.CI,
   workers: process.env.CI ? 2 : 4,
   reporter: process.env.CI ? [['list'], ['github']] : 'list',
   timeout: 20_000,
