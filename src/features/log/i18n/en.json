@@ -1,5 +1,160 @@
 {
-  "emptyTitle": "The log is empty",
-  "emptyBody": "Every meal and potty break will show up here, day by day.",
-  "add": "Add to log"
+  "add": "Add to log",
+  "undo": "Undo",
+  "added": "Added to the log",
+  "accident": "Accident",
+  "ongoing": "Ongoing",
+  "ongoingFor": "{duration} so far",
+  "mealN": "Meal {n}",
+  "extraMeal": "Extra meal",
+  "slotOption": "Meal {n} · {time}",
+  "grams": "{g} g",
+  "duration": {
+    "min": "{m} min",
+    "h": "{h} h",
+    "hm": "{h} h {m} min"
+  },
+  "kind": {
+    "meal": "Meal",
+    "pee": "Pee",
+    "poop": "Poop",
+    "sleep": "Sleep",
+    "walk": "Walk",
+    "play": "Play"
+  },
+  "kindPlural": {
+    "meal": "Meals",
+    "pee": "Pees",
+    "poop": "Poops",
+    "sleep": "Sleep",
+    "walk": "Walks",
+    "play": "Play"
+  },
+  "potty": {
+    "pee": {
+      "outside": "Pee outside",
+      "inside": "Pee inside"
+    },
+    "poop": {
+      "outside": "Poop outside",
+      "inside": "Poop inside"
+    }
+  },
+  "where": {
+    "outside": "Outside",
+    "inside": "Inside"
+  },
+  "appetite": {
+    "all": "Ate it all",
+    "most": "Ate most of it",
+    "some": "Ate a little",
+    "none": "Didn’t eat"
+  },
+  "appetiteShort": {
+    "all": "All",
+    "most": "Most",
+    "some": "Some",
+    "none": "None"
+  },
+  "sheet": {
+    "add": "Add to log",
+    "addExtraMeal": "Add an extra meal",
+    "edit": "Edit entry",
+    "save": "Save",
+    "kind": "Type",
+    "date": "Date",
+    "time": "Time",
+    "startTime": "Start time",
+    "slot": "Meal",
+    "appetite": "Appetite",
+    "amountG": "Amount",
+    "amountNote": "Portion",
+    "amountNotePlaceholder": "E.g. 1 cup",
+    "where": "Where?",
+    "accident": "It was an accident",
+    "accidentHint": "He went inside by mistake.",
+    "ongoing": "Still going",
+    "duration": "Duration",
+    "notes": "Notes"
+  },
+  "errors": {
+    "required": "This field is required.",
+    "future": "The time can’t be in the future.",
+    "amount": "Type a number, for example 80.",
+    "duration": "Type the minutes, for example 30."
+  },
+  "confirmDelete": {
+    "title": "Delete this entry?",
+    "body": "“{what}” will be removed from the log.",
+    "confirm": "Delete entry"
+  },
+  "prevDay": "Previous day",
+  "nextDay": "Next day",
+  "pickDay": "Pick a day",
+  "goToday": "Go to today",
+  "filterLabel": "Filter by type",
+  "clearFilters": "Clear filters",
+  "editEntry": "Edit {what} at {time}",
+  "summary": {
+    "meals": {
+      "one": "{count} meal",
+      "other": "{count} meals"
+    },
+    "pee": {
+      "one": "{count} pee",
+      "other": "{count} pees"
+    },
+    "poop": {
+      "one": "{count} poop",
+      "other": "{count} poops"
+    },
+    "accidents": {
+      "one": "{count} accident",
+      "other": "{count} accidents"
+    }
+  },
+  "emptyTodayTitle": "Nothing logged today yet",
+  "emptyDayTitle": "Nothing logged this day",
+  "emptyFiltered": "Nothing matches these filters",
+  "emptyFilteredBody": "Remove a filter to see more.",
+  "emptyBody": "Every meal, pee and nap Tyler has will show up here.",
+  "emptyBodyEditor": "Use the + button to add meals, pees or naps.",
+  "stats": {
+    "open": "See summary",
+    "title": "Summary",
+    "range": "Period",
+    "day": "Day",
+    "days": {
+      "one": "Last day",
+      "other": "Last {count} days"
+    },
+    "emptyTitle": "No data for the summary yet",
+    "emptyBody": "Log meals, pees and naps and you’ll see how Tyler is doing here.",
+    "accidentsTotal": {
+      "one": "accident",
+      "other": "accidents"
+    },
+    "mealToPoop": "from meal to poop",
+    "mealsLogged": "meals logged",
+    "hoursShort": "{h} h",
+    "sleepAvg": "of sleep a day (average)",
+    "accidentsTitle": "Accidents per day",
+    "accidents": "Accidents",
+    "noAccidents": "No accidents in this period. Well done!",
+    "pottyTitle": "Pees and poops per day",
+    "pottyTotals": "{pee} pees and {poop} poops in total.",
+    "hoursTitle": "Usual times",
+    "usualTimes": "He usually goes around {times}",
+    "noPotty": "No pees or poops logged yet.",
+    "mealToPoopTitle": "From meal to poop",
+    "mealToPoopBody": {
+      "one": "On average he poops {duration} after eating (based on {count} meal).",
+      "other": "On average he poops {duration} after eating (based on {count} meals)."
+    },
+    "mealToPoopNone": "Not enough data yet. Log meals and poops to see it.",
+    "mealsTitle": "Meals logged",
+    "mealsBody": "{logged} of {expected} expected meals.",
+    "sleepTitle": "Sleep per day",
+    "sleepNote": "Adds up the logged naps; one still going counts until now."
+  }
 }
