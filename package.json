@@ -1,0 +1,25 @@
+{
+  "name": "tyler-tracker",
+  "private": true,
+  "version": "0.1.0",
+  "description": "PWA to track Tyler, a Golden Retriever puppy",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "typecheck": "node scripts/bin.mjs tsc -p tsconfig.json",
+    "test": "node --test \"tests/unit/**/*.test.mjs\"",
+    "test:e2e": "node scripts/bin.mjs playwright test",
+    "check:i18n": "node scripts/check-i18n.mjs",
+    "check:content": "node scripts/check-content.mjs",
+    "check": "npm run typecheck && npm test && npm run check:i18n && npm run check:content && npm run test:e2e",
+    "build": "node scripts/build-site.mjs",
+    "screenshots": "SCREENSHOT_DIR=${SCREENSHOT_DIR:-../review/foundation} node scripts/bin.mjs playwright test tests/e2e/screenshots.spec.js"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0",
+    "typescript": "6.0.3"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

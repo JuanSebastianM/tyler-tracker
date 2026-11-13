@@ -1,11 +1,65 @@
 name: CI
+# Every push and PR: typecheck, unit tests, i18n parity, content schemas, e2e smoke tests.
+# On main, when the checks pass: assemble _site, stamp the service worker, deploy to GitHub Pages.
 on:
   push:
-    branches: [main]
   pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  placeholder:
+  check:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: 'true'
     steps:
       - uses: actions/checkout@v4
-      - run: echo "Checks are added by the foundation phase."
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install tools (exact versions from package.json devDependencies)
+        run: npm install --no-audit --no-fund --no-package-lock
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+      - name: npm run check
+        run: npm run check
+      - name: Upload Playwright traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-results
+          path: test-results/
+          retention-days: 7
+
+  deploy:
+    needs: check
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Assemble site and stamp service worker
+        run: node scripts/build-site.mjs _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

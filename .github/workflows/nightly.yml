@@ -1,0 +1,28 @@
+name: nightly
+# Reads every public table (keeps the free Supabase project from pausing) and stores the JSON as
+# a workflow artifact. Fails loudly if the API is unreachable.
+on:
+  schedule:
+    - cron: '17 8 * * *' # 03:17 in Bogota
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Read public tables
+        run: node scripts/backup.mjs backup
+      - name: Upload backup
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: supabase-backup-${{ github.run_number }}
+          path: backup/
+          retention-days: 90
+          if-no-files-found: error
