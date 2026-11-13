@@ -47,9 +47,9 @@ export function ThemeSettings() {
                 <span class="tp-lines"><span class="tp-line"></span><span class="tp-line tp-line-short"></span></span>
               </span>
               <span class="tp-pill"></span>
-              ${id === theme ? html`<span class="tp-check"><${Icon} name="check" size=${14} /></span>` : null}
             </span>
             <span class="theme-name">${t(`profile.theme.names.${id}`)}</span>
+            ${id === theme ? html`<span class="tp-check"><${Icon} name="check" size=${16} /></span>` : null}
           </button>`,
         )}
       </div>
@@ -61,8 +61,8 @@ export function ThemeSettings() {
         onValue=${(/** @type {any} */ v) => setThemeChoice({ mode: v })}
         options=${[
           { value: 'auto', label: t('profile.theme.modes.auto') },
-          { value: 'light', label: t('profile.theme.modes.light'), icon: 'sun' },
-          { value: 'dark', label: t('profile.theme.modes.dark'), icon: 'moon' },
+          { value: 'light', label: t('profile.theme.modes.light') },
+          { value: 'dark', label: t('profile.theme.modes.dark') },
         ]}
       />
       <p class="field-hint theme-mode-hint">${t('profile.theme.autoHint')}</p>
