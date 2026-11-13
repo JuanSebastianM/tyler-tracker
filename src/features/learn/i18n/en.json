@@ -1,6 +1,187 @@
 {
-  "factTitle": "Fact of the day",
-  "mustKnowTitle": "Must-know",
-  "emptyTitle": "More guides on the way",
-  "emptyBody": "Training, age stages, health and frequently asked questions."
+  "startHere": "Start here",
+  "sectionsTitle": "Sections",
+  "sample": "Example",
+  "loadErrorTitle": "Couldn't load",
+  "notFoundTitle": "We couldn't find this",
+  "notFoundBody": "The link may be wrong, or the content may have moved.",
+  "backTo": "Go to {section}",
+  "emptySectionTitle": "Nothing here yet",
+  "emptySectionBody": "Guides for this section are coming soon.",
+  "sections": {
+    "mustKnow": {
+      "title": "Must-know",
+      "intro": "The essentials",
+      "longIntro": "The most important things for caring for Tyler, from critical to useful."
+    },
+    "roadmap": {
+      "title": "Age roadmap",
+      "intro": "What to expect week by week",
+      "longIntro": "What Tyler is going through at each stage and what to do. The current stage is open."
+    },
+    "training": {
+      "title": "Training",
+      "intro": "Step-by-step guides and progress",
+      "longIntro": "Short, positive sessions. Track how Tyler is doing with each skill."
+    },
+    "health": {
+      "title": "Health tips",
+      "intro": "Vaccines, parasites, food and more",
+      "longIntro": "The basics for keeping Tyler healthy. When in doubt, ask his vet."
+    },
+    "parents": {
+      "title": "Puppy parents",
+      "intro": "Teamwork and wellbeing",
+      "longIntro": "Advice for the two of you: routines, agreements and looking after yourselves too."
+    },
+    "faq": {
+      "title": "FAQ",
+      "intro": "Your questions, answered",
+      "longIntro": "Questions about Tyler and their answers."
+    },
+    "facts": {
+      "title": "Fun facts",
+      "intro": "Fun things about Goldens",
+      "longIntro": "Fun facts about Golden Retrievers."
+    }
+  },
+  "count": {
+    "articles": {
+      "one": "{count} article",
+      "other": "{count} articles"
+    },
+    "stages": {
+      "one": "{count} stage",
+      "other": "{count} stages"
+    },
+    "guides": {
+      "one": "{count} guide",
+      "other": "{count} guides"
+    },
+    "questions": {
+      "one": "{count} question",
+      "other": "{count} questions"
+    },
+    "facts": {
+      "one": "{count} fact",
+      "other": "{count} facts"
+    }
+  },
+  "search": {
+    "label": "Search Learn",
+    "placeholder": "Search guides, tips and questions",
+    "results": {
+      "zero": "No results",
+      "one": "{count} result",
+      "other": "{count} results"
+    },
+    "emptyTitle": "Nothing found",
+    "emptyBody": "Try another word, like “vaccines” or “biting”."
+  },
+  "now": {
+    "title": "Now: {weeks}",
+    "open": "See this stage"
+  },
+  "facts": {
+    "today": "Fact of the day",
+    "more": "See all",
+    "all": {
+      "one": "{count} fun fact",
+      "other": "{count} fun facts"
+    }
+  },
+  "priority": {
+    "critical": "Critical",
+    "important": "Important",
+    "goodToKnow": "Good to know"
+  },
+  "categories": {
+    "vaccines": "Vaccines",
+    "parasites": "Parasites",
+    "nutrition": "Nutrition",
+    "dental": "Teeth",
+    "grooming": "Grooming",
+    "emergency": "Emergencies",
+    "exercise": "Exercise",
+    "general": "General",
+    "teamwork": "Teamwork",
+    "routine": "Routine",
+    "wellbeing": "Wellbeing",
+    "home": "Home",
+    "budget": "Budget",
+    "feeding": "Feeding",
+    "health": "Health",
+    "training": "Training",
+    "behaviour": "Behaviour",
+    "uncategorized": "Other"
+  },
+  "roadmap": {
+    "weeks": "Weeks {from}–{to}",
+    "timing": {
+      "past": "Done",
+      "current": "Current stage",
+      "future": "Coming up"
+    },
+    "todos": "Stage to-dos",
+    "progress": "{done} of {total} done",
+    "progressLabel": "To-dos done"
+  },
+  "training": {
+    "overview": "Overall progress",
+    "overviewShort": "Training: {percent}%",
+    "guides": "Guides",
+    "status": {
+      "notStarted": "Not started",
+      "learning": "Learning",
+      "reliable": "Reliable",
+      "mastered": "Mastered"
+    },
+    "difficulty": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "fromAge": "From {age}",
+    "fromAgeWait": "From {age} · in {wait}",
+    "readyNow": "Old enough now",
+    "minutes": {
+      "one": "{count} min per session",
+      "other": "{count} min per session"
+    },
+    "progressTitle": "Tyler's progress",
+    "statusLabel": "Status",
+    "startedLabel": "Started on",
+    "masteredLabel": "Mastered on",
+    "startedOn": "Started {date}",
+    "masteredOn": "Mastered {date}",
+    "notesLabel": "Notes",
+    "notesHint": "What works, what he finds hard.",
+    "save": "Save progress",
+    "saved": "Progress saved",
+    "errors": {
+      "futureDate": "The date can't be after today.",
+      "masteredBeforeStarted": "The mastered date can't be before the start date."
+    }
+  },
+  "faq": {
+    "intro": "Questions about Tyler and their answers. New ones show up first.",
+    "searchLabel": "Search questions",
+    "searchPlaceholder": "Search the questions",
+    "filterLabel": "Filter by topic",
+    "all": "All",
+    "clear": "Show all questions",
+    "emptyTitle": "No questions yet",
+    "emptyBody": "When you save an answer from the assistant, it will show up here.",
+    "noMatchTitle": "No questions match",
+    "noMatchBody": "Try another word or topic.",
+    "fromAssistant": "From the assistant",
+    "savedByShort": "by {name}",
+    "savedBy": "Saved by {name} on {date}.",
+    "addedOn": "Added on {date}.",
+    "delete": "Delete question",
+    "deleteTitle": "Delete this question?",
+    "deleteBody": "It will be removed from the FAQ for everyone. This can't be undone.",
+    "deleteConfirm": "Delete",
+    "deleted": "Question deleted"
+  }
 }
