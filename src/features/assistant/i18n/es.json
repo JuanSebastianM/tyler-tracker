@@ -1,0 +1,128 @@
+{
+  "title": "Asistente",
+  "open": "Preguntarle al asistente",
+  "threadsTitle": "Conversaciones",
+  "intro": {
+    "title": "Pregúntale lo que quieras sobre Tyler",
+    "body": "Responde con los datos de Tyler en la app. No reemplaza al veterinario: ante una emergencia, llama a la clínica."
+  },
+  "starters": {
+    "label": "Ideas para empezar",
+    "food": "¿Cuánto debería comer Tyler a las {weeks} semanas?",
+    "potty": "¿Cada cuánto debo sacarlo a hacer pipí a las {weeks} semanas?",
+    "outside": "¿Cuándo puede salir a la calle y conocer otros perros?",
+    "walks": "¿Cuánto tiempo puede caminar a las {weeks} semanas?",
+    "biting": "¿Cómo le enseño a no morder las manos?",
+    "training": "¿Qué le puedo enseñar esta semana?"
+  },
+  "composer": {
+    "label": "Tu pregunta",
+    "placeholder": "Escribe tu pregunta…",
+    "send": "Enviar pregunta",
+    "stop": "Detener respuesta",
+    "tooLong": "La pregunta es muy larga (máximo {max} caracteres)."
+  },
+  "askedBy": "{name} preguntó",
+  "you": "Tú",
+  "assistantName": "Asistente",
+  "status": {
+    "sending": "Pensando…",
+    "searching": "Buscando en internet…"
+  },
+  "stopped": "Respuesta detenida.",
+  "budget": "{used} de {total} usados este mes",
+  "budgetLabel": "Presupuesto del asistente",
+  "actions": {
+    "threads": "Ver conversaciones",
+    "newThread": "Nueva conversación",
+    "saveFaq": "Guardar en FAQ"
+  },
+  "threads": {
+    "empty": "Aún no hay conversaciones",
+    "emptyBody": "Haz la primera pregunta y aparecerá aquí para los dos.",
+    "subtitle": "{name} · {date}",
+    "untitled": "Conversación sin título",
+    "options": "Opciones de «{title}»",
+    "optionsTitle": "Conversación",
+    "rename": "Nombre de la conversación",
+    "saveName": "Guardar nombre",
+    "delete": "Eliminar conversación",
+    "confirmTitle": "¿Eliminar esta conversación?",
+    "confirmBody": "Se borran todas sus preguntas y respuestas para los dos. Esto no se puede deshacer.",
+    "renamed": "Nombre guardado",
+    "deleted": "Conversación eliminada",
+    "loadFailed": "No se pudo cargar la conversación.",
+    "notFound": "Esta conversación ya no existe."
+  },
+  "signedOut": {
+    "title": "Inicia sesión para usar el asistente",
+    "body": "El asistente es solo para los papás de Tyler. Inicia sesión con tu cuenta.",
+    "notEditor": "Esta cuenta no tiene permiso para usar el asistente."
+  },
+  "errors": {
+    "budget_exhausted": {
+      "title": "Se acabó el presupuesto de este mes",
+      "body": "Ya se usó el presupuesto mensual del asistente. Vuelve a estar disponible el primer día del próximo mes, o se puede subir el límite en la configuración."
+    },
+    "daily_limit": {
+      "title": "Llegaste al límite de preguntas de hoy",
+      "body": "Puedes hacer hasta {limit} preguntas al día. Mañana puedes seguir preguntando."
+    },
+    "disabled": {
+      "title": "El asistente está apagado",
+      "body": "Está desactivado en la configuración. Actívalo de nuevo para seguir preguntando."
+    },
+    "not_editor": {
+      "title": "Esta cuenta no puede usar el asistente",
+      "body": "Solo las cuentas de los papás de Tyler pueden hacerle preguntas."
+    },
+    "upstream_error": {
+      "title": "El asistente no pudo responder",
+      "body": "Hubo un problema al obtener la respuesta y no se guardó nada. Inténtalo de nuevo."
+    },
+    "server_error": {
+      "title": "Algo falló en el servidor",
+      "body": "No se pudo completar la pregunta. Inténtalo de nuevo en un momento."
+    },
+    "unauthorized": {
+      "title": "Tu sesión expiró",
+      "body": "Inicia sesión de nuevo para seguir preguntando."
+    },
+    "bad_request": {
+      "title": "No se pudo enviar la pregunta",
+      "body": "Revisa el texto e inténtalo de nuevo."
+    },
+    "not_found": {
+      "title": "Esta conversación ya no existe",
+      "body": "Puede que la hayan eliminado. Empieza una conversación nueva."
+    },
+    "network": {
+      "title": "Sin conexión",
+      "body": "No hay conexión con el servidor. Revisa tu internet e inténtalo de nuevo."
+    }
+  },
+  "faq": {
+    "title": "Guardar en FAQ",
+    "drafting": "Preparando la pregunta y la respuesta en español e inglés…",
+    "intro": "Revisa y edita antes de guardar. Nada se guarda hasta que confirmes.",
+    "category": "Categoría",
+    "categories": {
+      "feeding": "Alimentación",
+      "health": "Salud",
+      "training": "Entrenamiento",
+      "routine": "Rutina",
+      "behaviour": "Comportamiento",
+      "general": "General"
+    },
+    "spanish": "Español",
+    "english": "Inglés",
+    "question": "Pregunta",
+    "answer": "Respuesta",
+    "sources": "Fuentes",
+    "noSources": "Sin fuentes",
+    "confirm": "Guardar en FAQ",
+    "saved": "Guardado en FAQ",
+    "view": "Ver FAQ",
+    "retry": "Intentar de nuevo"
+  }
+}

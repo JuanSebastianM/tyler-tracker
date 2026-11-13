@@ -201,3 +201,37 @@ export interface FaqEntry extends Audit {
   sources: SourceLink[];
   source_thread_id: string | null;
 }
+
+/** In-app assistant settings (single row). Editors read; only the `chat` function writes. */
+export interface AiSettings extends Audit {
+  id: 1;
+  enabled: boolean;
+  model: string;
+  monthly_budget_usd: number;
+  daily_message_limit: number;
+  web_search_enabled: boolean;
+  max_searches_per_message: number;
+  max_output_tokens: number;
+}
+
+/** Assistant conversation. Editors read, rename (title) and delete; the function creates them. */
+export interface ChatThread extends Audit {
+  id: string;
+  title: string | null;
+}
+
+/** Assistant message. Editors read; only the `chat` function writes. */
+export interface ChatMessage extends Audit {
+  id: string;
+  thread_id: string;
+  role: 'user' | 'assistant';
+  /** Markdown-lite. Assistant rows starting with '<!--faq-draft-->' only record an FAQ draft's cost. */
+  content: string;
+  sources: SourceLink[];
+  model: string | null;
+  /** All prompt tokens (uncached + cache writes + cache reads). */
+  input_tokens: number;
+  output_tokens: number;
+  web_searches: number;
+  cost_usd: number;
+}

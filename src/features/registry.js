@@ -4,6 +4,7 @@ import { feature as log } from './log/index.js';
 import { feature as health } from './health/index.js';
 import { feature as learn } from './learn/index.js';
 import { feature as profile } from './profile/index.js';
+import { feature as assistant } from './assistant/index.js';
 
 /**
  * @typedef {object} Route
@@ -19,7 +20,7 @@ import { feature as profile } from './profile/index.js';
  */
 
 /** @type {Feature[]} */
-export const features = [today, log, health, learn, profile];
+export const features = [today, log, health, learn, profile, assistant];
 
 /** All routes, tagged with their feature id. */
 export const routes = features.flatMap((f) => f.routes.map((r) => ({ ...r, featureId: f.id })));

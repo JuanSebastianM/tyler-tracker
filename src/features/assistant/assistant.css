@@ -1,0 +1,129 @@
+/* Assistant feature styles. Scoped under .assistant, except the header button it adds to the shell. */
+
+/* Header entry point (rendered by src/app.js for editors). */
+.header-assistant { margin-right: var(--sp-1); color: var(--c-gold-ink); text-decoration: none; }
+.header-assistant[aria-current='page'] { background: var(--c-gold-soft); color: var(--c-on-gold-soft); }
+
+/* ---- Chat layout ---- */
+.assistant.chat { display: flex; flex-direction: column; gap: var(--sp-4); }
+.assistant .chat-toolbar { display: flex; align-items: center; gap: var(--sp-1); min-height: var(--tap); }
+.assistant .chat-title {
+  flex: 1; min-width: 0; font-size: var(--fs-lg); font-weight: 750;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.assistant .chat-toolbar .icon-btn:disabled { opacity: 0.4; cursor: default; background: transparent; }
+
+/* The shell's .app-main bottom padding (tab bar + 96 px) already clears the fixed composer. */
+
+/* ---- Intro and starters ---- */
+.assistant .chat-intro-head { display: flex; gap: var(--sp-3); align-items: flex-start; }
+.assistant .chat-intro-icon {
+  flex: none; width: 48px; height: 48px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--c-gold-soft); color: var(--c-on-gold-soft);
+}
+.assistant .chat-intro-title { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 750; margin-bottom: var(--sp-1); }
+.assistant .chat-starters-label { font-size: var(--fs-sm); font-weight: 700; color: var(--c-ink-2); margin-bottom: var(--sp-2); }
+.assistant .chat-starters { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-2); }
+.assistant .chat-starter {
+  width: 100%; min-height: var(--tap); text-align: left;
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--r-control); border: 1.5px solid var(--c-line);
+  background: var(--c-surface); color: var(--c-ink); font-size: var(--fs-sm); line-height: 1.35;
+}
+.assistant .chat-starter .icon { flex: none; color: var(--c-gold-ink); }
+.assistant .chat-starter:hover:not(:disabled) { background: var(--c-surface-2); }
+.assistant .chat-starter:disabled { opacity: 0.55; }
+
+/* ---- Messages ---- */
+.assistant .chat-log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-4); }
+.assistant .msg { display: flex; flex-direction: column; gap: var(--sp-1); min-width: 0; }
+.assistant .msg-user { align-items: flex-end; }
+.assistant .msg-meta {
+  display: inline-flex; align-items: center; gap: var(--sp-1);
+  margin: 0 var(--sp-2); font-size: var(--fs-xs); color: var(--c-ink-2);
+}
+.assistant .bubble { border-radius: var(--r-card); padding: var(--sp-3) var(--sp-4); max-width: 100%; overflow-wrap: anywhere; }
+.assistant .bubble-user {
+  max-width: 85%; white-space: pre-wrap;
+  background: var(--c-gold-soft); color: var(--c-on-gold-soft);
+  border-bottom-right-radius: 6px;
+}
+.assistant .bubble-assistant {
+  background: var(--c-surface); box-shadow: var(--shadow-1);
+  border-bottom-left-radius: 6px;
+}
+@media (prefers-color-scheme: dark) { .assistant .bubble-assistant { border: 1px solid var(--c-line); } }
+.assistant .bubble-assistant .sources { margin-top: var(--sp-3); }
+.assistant .chat-thinking { display: flex; align-items: center; gap: var(--sp-2); color: var(--c-ink-2); margin: 0; }
+.assistant .chat-faq { display: flex; justify-content: center; }
+
+/* ---- Errors (also shown inside the FAQ sheet, outside .assistant) ---- */
+.chat-error {
+  display: flex; gap: var(--sp-3); align-items: flex-start;
+  padding: var(--sp-4); border-radius: var(--r-card);
+  background: var(--c-red-soft); color: var(--c-ink);
+}
+.chat-error-icon { flex: none; color: var(--c-red); margin-top: 2px; }
+.chat-error-text { min-width: 0; }
+.chat-error-title { font-weight: 750; margin-bottom: var(--sp-1); }
+.chat-error-body { font-size: var(--fs-sm); color: var(--c-ink); }
+.chat-error .button-row { margin-top: var(--sp-2); }
+
+/* ---- Composer (fixed above the tab bar, or above the keyboard) ---- */
+.assistant .composer {
+  position: fixed; left: 0; right: 0; z-index: 26;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom));
+  background: color-mix(in srgb, var(--c-bg) 92%, transparent);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  backdrop-filter: saturate(1.4) blur(14px);
+  border-top: 1px solid var(--c-line);
+}
+.assistant .composer.composer-kb { bottom: var(--kb, 0px); }
+.assistant .composer-inner {
+  max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-2) calc(var(--sp-4) + var(--safe-right)) var(--sp-2) calc(var(--sp-4) + var(--safe-left));
+}
+.assistant .composer-row { display: flex; align-items: flex-end; gap: var(--sp-2); }
+.assistant .composer-input {
+  flex: 1; min-height: var(--tap); max-height: 160px; resize: none;
+  padding-top: 10px; padding-bottom: 10px; line-height: 1.35;
+  /* 16 px or more stops iOS from zooming into the field */
+  font-size: max(16px, var(--fs-md));
+}
+.assistant .composer-btn {
+  flex: none; width: var(--tap); height: var(--tap); border-radius: 50%; border: 0;
+  display: grid; place-items: center;
+  background: var(--c-gold); color: var(--c-on-gold);
+}
+.assistant .composer-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.assistant .composer-stop { background: var(--c-ink); color: var(--c-bg); }
+.assistant .composer .field-error { margin: 0 0 var(--sp-1); }
+
+/* ---- Budget indicator ---- */
+.assistant .chat-budget {
+  display: flex; align-items: center; gap: var(--sp-2);
+  margin: 0 0 var(--sp-2); font-size: var(--fs-xs); color: var(--c-ink-2);
+}
+.assistant .budget-meter { flex: none; width: 44px; height: 6px; border-radius: var(--r-chip); background: var(--c-surface-2); overflow: hidden; }
+.assistant .budget-fill { display: block; height: 100%; background: var(--c-green); border-radius: inherit; }
+.assistant .budget-high .budget-fill { background: var(--c-gold-strong); }
+.assistant .budget-out .budget-fill { background: var(--c-red); }
+.assistant .budget-out { color: var(--c-red); font-weight: 700; }
+
+/* ---- Threads ---- */
+.assistant .thread-list {
+  list-style: none; margin: 0; padding: 0;
+  background: var(--c-surface); border-radius: var(--r-card); box-shadow: var(--shadow-1); overflow: hidden;
+}
+@media (prefers-color-scheme: dark) { .assistant .thread-list { border: 1px solid var(--c-line); } }
+.assistant .thread-item { display: flex; align-items: center; gap: var(--sp-1); padding-right: var(--sp-2); }
+.assistant .thread-item + .thread-item { border-top: 1px solid var(--c-line); }
+.assistant .thread-item > .row { flex: 1; min-width: 0; }
+.assistant .thread-item .row-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+
+/* ---- FAQ draft sheet ---- */
+.faq-drafting { display: flex; align-items: center; gap: var(--sp-3); color: var(--c-ink-2); padding: var(--sp-4) 0; }
+.assistant.faq-form fieldset { border: 1.5px solid var(--c-line); border-radius: var(--r-card); padding: var(--sp-3) var(--sp-4) var(--sp-4); margin: 0; display: flex; flex-direction: column; gap: var(--sp-3); }
+.assistant.faq-form legend { font-family: var(--font-display); font-weight: 750; padding: 0 var(--sp-2); }
+.assistant .faq-sources { margin: var(--sp-1) 0 0; padding-left: var(--sp-5); font-size: var(--fs-sm); }

@@ -73,8 +73,23 @@ export function defaultFixtures() {
     milestones: [{ id: 'm0000000-0000-4000-8000-000000000001', happened_on: '2026-11-10', title: 'Llegó a casa', story: null, ...audit() }],
     photos: [],
     faq_entries: [],
+    ai_settings: [
+      {
+        id: 1,
+        enabled: true,
+        model: 'claude-sonnet-5-5',
+        monthly_budget_usd: 25,
+        daily_message_limit: 40,
+        web_search_enabled: true,
+        max_searches_per_message: 2,
+        max_output_tokens: 1200,
+        ...audit(),
+      },
+    ],
+    chat_threads: [],
+    chat_messages: [],
   };
 }
 
 /** Tables only editors can read (RLS). */
-export const PRIVATE_TABLES = ['pet_private', 'vet_visit_private', 'editors'];
+export const PRIVATE_TABLES = ['pet_private', 'vet_visit_private', 'editors', 'ai_settings', 'chat_threads', 'chat_messages'];
