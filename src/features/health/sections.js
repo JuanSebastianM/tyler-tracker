@@ -129,7 +129,7 @@ export const dewormingConfig = {
   icon: 'pill',
   iconTone: 'green',
   fields: [
-    { name: 'product', kind: 'text', label: 'health.deworming.fields.product', required: true },
+    { name: 'product', kind: 'text', label: 'health.deworming.fields.product', hint: 'health.deworming.fields.productHint' },
     { name: 'kind', kind: 'segmented', label: 'health.deworming.fields.kind', options: kindOptions },
     [
       { name: 'given_on', kind: 'date', label: 'health.deworming.fields.givenOn', required: true },
@@ -138,7 +138,7 @@ export const dewormingConfig = {
     { name: 'next_due_on', kind: 'date', label: 'health.deworming.fields.nextDueOn' },
     { name: 'notes', kind: 'textarea', label: 'health.fields.notes' },
   ],
-  rules: { required: ['product', 'given_on'], after: [['next_due_on', 'given_on']] },
+  rules: { required: ['given_on'], after: [['next_due_on', 'given_on']] },
   check: (v) => (v.weight && !isValidWeight(parseDecimal(v.weight)) ? { weight: 'health.form.invalidWeight' } : {}),
   toForm: (row, ctx) => ({
     product: row?.product || '',
@@ -149,7 +149,7 @@ export const dewormingConfig = {
     notes: row?.notes || '',
   }),
   toPayload: (v) => ({
-    product: v.product.trim(),
+    product: orNull(v.product),
     kind: v.kind,
     given_on: v.given_on,
     weight_kg: parseDecimal(v.weight),

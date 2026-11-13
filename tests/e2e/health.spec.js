@@ -220,6 +220,17 @@ test('rollback: a failed write removes the row, toasts and reopens the form', as
   await expect(page.getByTestId('weight-row')).toHaveCount(1);
 });
 
+test('deworming product is optional; a row without one shows a generic title', async ({ page }) => {
+  const sb = await openApp(page, '/health/deworming', { mode: 'asEditor', fixtures: { dewormings: [] } });
+  await page.getByTestId('fab-add').click();
+  const form = page.getByTestId('deworming-form');
+  await expect(form.getByText('Si no sabes qué le dieron')).toBeVisible();
+  await page.getByTestId('form-save').click();
+  await expect.poll(() => sb.db.dewormings.length).toBe(1);
+  expect(sb.db.dewormings[0].product).toBeNull();
+  await expect(page.getByTestId('deworming-row')).toContainText('Desparasitación');
+});
+
 test('editor deletes a deworming', async ({ page }) => {
   const sb = await openApp(page, '/health/deworming', { mode: 'asEditor' });
   await page.getByTestId('deworming-row').click();

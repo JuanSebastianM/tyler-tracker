@@ -73,6 +73,7 @@
     "kinds": { "internal": "Interna", "external": "Externa", "both": "Ambas" },
     "fields": {
       "product": "Producto",
+      "productHint": "Opcional. Si no sabes qué le dieron, déjalo vacío.",
       "kind": "Tipo",
       "givenOn": "Fecha",
       "weight": "Peso ese día",

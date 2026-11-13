@@ -73,6 +73,7 @@
     "kinds": { "internal": "Internal", "external": "External", "both": "Both" },
     "fields": {
       "product": "Product",
+      "productHint": "Optional. If you do not know what he was given, leave it empty.",
       "kind": "Type",
       "givenOn": "Date",
       "weight": "Weight that day",

@@ -100,7 +100,7 @@ export function CalendarButton({ item, tz, compact = false }) {
     downloadIcs(item, tz);
   };
   if (compact) {
-    return html`<${IconButton} icon="calendar" label=${`${label}: ${item.title}`} onClick=${onClick} class="health-cal-btn" data-testid="add-to-calendar" />`;
+    return html`<${IconButton} icon="calendar" label=${item.title ? `${label}: ${item.title}` : label} onClick=${onClick} class="health-cal-btn" data-testid="add-to-calendar" />`;
   }
   return html`<${Button} variant="secondary" icon="calendar" onClick=${onClick} data-testid="add-to-calendar">${label}</${Button}>`;
 }
