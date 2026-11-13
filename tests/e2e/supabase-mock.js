@@ -9,6 +9,9 @@
 //
 // Options:
 //   mode: 'signedOut' (default) | 'asEditor' (session pre-seeded, editors row readable)
+//   user: the account that is (or signs in as) the session user (default EDITOR_USER; EDITOR_USER_2
+//     needs its own `editors` row in fixtures to be an editor). Own-row tables (user_settings) only
+//     show and accept that user's rows.
 //   fixtures: { table: rows } overrides
 //   now: ISO string for the page clock (default FIXED_NOW); pass null to use the real clock
 //   failWrites: true -> every insert/update/delete returns HTTP 500 (test rollback + toast)
@@ -23,19 +26,21 @@ import { CONTENT_FIXTURES } from './content-fixtures.js';
 export const SUPABASE_URL = 'https://kegtfxoiijbytprfwqrl.supabase.co';
 export const AUTH_STORAGE_KEY = 'tt-auth';
 
-const KEYS = { training_skills: 'skill_key', checklist_done: 'item_key', vet_visit_private: 'visit_id', editors: 'user_id' };
+const KEYS = { training_skills: 'skill_key', checklist_done: 'item_key', vet_visit_private: 'visit_id', editors: 'user_id', user_settings: 'user_id' };
+/** Tables whose RLS lets a user see and write only rows with their own user_id. */
+const OWN_ROW_TABLES = ['editors', 'user_settings'];
 const keyOf = (table) => KEYS[table] || 'id';
 
 const b64url = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
 
 /** A session object as supabase-js stores it. @param {number} nowMs */
-export function makeSession(nowMs) {
+export function makeSession(nowMs, account = EDITOR_USER) {
   const exp = Math.floor(nowMs / 1000) + 3600;
   const user = {
-    id: EDITOR_USER.id,
+    id: account.id,
     aud: 'authenticated',
     role: 'authenticated',
-    email: EDITOR_USER.email,
+    email: account.email,
     app_metadata: { provider: 'email' },
     user_metadata: {},
     created_at: '2026-11-10T00:00:00Z',
@@ -92,11 +97,12 @@ function applyOrder(rows, order) {
 /**
  * @param {import('playwright/test').Page} page
  * @param {{ mode?: 'signedOut' | 'asEditor', fixtures?: Record<string, any[]>, now?: string | null,
- *   failWrites?: boolean, password?: string, chat?: any,
+ *   failWrites?: boolean, password?: string, chat?: any, user?: { id: string, email: string },
  *   content?: 'real' | Record<string, any> }} [opts]
  */
 export async function mockSupabase(page, opts = {}) {
   const mode = opts.mode || 'signedOut';
+  const account = opts.user || EDITOR_USER;
   const now = opts.now === undefined ? FIXED_NOW : opts.now;
   const nowMs = now ? Date.parse(now) : Date.now();
   const db = structuredClone({ ...defaultFixtures(), ...(opts.fixtures || {}) });
@@ -109,7 +115,7 @@ export async function mockSupabase(page, opts = {}) {
     ([key, session]) => {
       if (session) localStorage.setItem(key, JSON.stringify(session));
     },
-    [AUTH_STORAGE_KEY, mode === 'asEditor' ? makeSession(nowMs) : null],
+    [AUTH_STORAGE_KEY, mode === 'asEditor' ? makeSession(nowMs, account) : null],
   );
 
   const json = (route, status, body, headers = {}) =>
@@ -155,11 +161,11 @@ export async function mockSupabase(page, opts = {}) {
       if (ep === 'token' && url.searchParams.get('grant_type') === 'password') {
         if (body?.password === (opts.password || 'correct-password')) {
           state.signedIn = true;
-          return json(route, 200, makeSession(Date.now()));
+          return json(route, 200, makeSession(Date.now(), account));
         }
         return json(route, 400, { code: 400, error_code: 'invalid_credentials', msg: 'Invalid login credentials' });
       }
-      if (ep === 'token') return json(route, 200, makeSession(Date.now())); // refresh
+      if (ep === 'token') return json(route, 200, makeSession(Date.now(), account)); // refresh
       if (ep === 'logout') {
         state.signedIn = false;
         return json(route, 204);
@@ -169,7 +175,7 @@ export async function mockSupabase(page, opts = {}) {
         if (method === 'PUT' && body?.password && body.password.length < 8) {
           return json(route, 422, { code: 422, error_code: 'weak_password', msg: 'Password should be at least 8 characters.' });
         }
-        return json(route, 200, makeSession(nowMs).user);
+        return json(route, 200, makeSession(nowMs, account).user);
       }
       return json(route, 404, { msg: 'not mocked' });
     }
@@ -204,7 +210,7 @@ export async function mockSupabase(page, opts = {}) {
     if (method === 'GET' || method === 'HEAD') {
       let rows = db[table];
       if (PRIVATE_TABLES.includes(table) && !state.signedIn) rows = [];
-      if (table === 'editors') rows = state.signedIn ? rows.filter((r) => r.user_id === EDITOR_USER.id) : [];
+      if (OWN_ROW_TABLES.includes(table)) rows = state.signedIn ? rows.filter((r) => r.user_id === account.id) : [];
       rows = applyOrder(rows.filter(match), url.searchParams.get('order'));
       const limit = Number(url.searchParams.get('limit') || 0);
       if (limit) rows = rows.slice(0, limit);
@@ -214,6 +220,12 @@ export async function mockSupabase(page, opts = {}) {
     // Writes
     if (!state.signedIn) return json(route, 401, { code: '42501', message: `new row violates row-level security policy for table "${table}"` });
     if (state.failWrites) return json(route, 500, { code: 'XX000', message: 'mock failure' });
+    if (OWN_ROW_TABLES.includes(table)) {
+      const items = Array.isArray(body) ? body : [body];
+      if (method !== 'DELETE' && items.some((it) => it && it.user_id != null && it.user_id !== account.id)) {
+        return json(route, 403, { code: '42501', message: `new row violates row-level security policy for table "${table}"` });
+      }
+    }
     const stamp = () => ({ updated_at: new Date(nowMs).toISOString() });
 
     if (method === 'POST') {
@@ -227,7 +239,8 @@ export async function mockSupabase(page, opts = {}) {
           Object.assign(existing, it, stamp());
           out.push(existing);
         } else {
-          const row = { ...it, created_at: new Date(nowMs).toISOString(), ...stamp(), created_by: EDITOR_USER.id, created_by_name: db.editors[0]?.display_name || null };
+          const by = db.editors.find((e) => e.user_id === account.id)?.display_name || null;
+          const row = { ...it, created_at: new Date(nowMs).toISOString(), ...stamp(), created_by: account.id, created_by_name: by };
           if (key === 'id' && row.id == null) row.id = crypto.randomUUID();
           db[table].push(row);
           out.push(row);
