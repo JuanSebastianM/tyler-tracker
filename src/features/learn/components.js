@@ -83,7 +83,7 @@ export function ArticleView({ item, health = false, meta, before, after, title, 
     </header>
     ${before || null}
     <div class="article-body">
-      <${Markdown} source=${body ?? pick(item.body)} />
+      <${Markdown} source=${body ?? pick(item.body)} headingOffset=${1} />
     </div>
     ${after || null}
     ${health ? html`<${HealthDisclaimer} />` : null}

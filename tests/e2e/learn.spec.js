@@ -59,6 +59,9 @@ test('open a must-know article from the list, with sources and the vet line', as
   await expect(article.locator('.article-title')).toHaveText(first.title.es);
   await expect(article.locator('.sources')).toContainText('Fuentes');
   await expect(article.locator('.disclaimer')).toBeVisible();
+  // Body sections sit below the article title (h2) in the outline.
+  await expect(article.locator('.article-body h3', { hasText: 'Qué hacer' })).toBeVisible();
+  await expect(article.locator('.article-body h2')).toHaveCount(0);
   await noOverflow(page);
 });
 

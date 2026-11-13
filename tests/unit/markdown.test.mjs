@@ -59,3 +59,11 @@ test('empty and whitespace input', () => {
   assert.deepEqual(parseMarkdown('\n\n  \n'), []);
   assert.deepEqual(renderMarkdown(undefined), []);
 });
+
+test('headingOffset shifts heading tags but keeps the look of the source level', () => {
+  const src = '## Qué hacer\n\n### Detalle\n\n#### Nota';
+  const tags = (nodes) => nodes.map((n) => `${n.type}.${n.props.class}`);
+  assert.deepEqual(tags(renderMarkdown(src)), ['h2.md-h2', 'h3.md-h3', 'h4.md-h4']);
+  assert.deepEqual(tags(renderMarkdown(src, { headingOffset: 1 })), ['h3.md-h2', 'h4.md-h3', 'h5.md-h4']);
+  assert.deepEqual(tags(renderMarkdown('#### Nota', { headingOffset: 4 })), ['h6.md-h4'], 'never beyond h6');
+});

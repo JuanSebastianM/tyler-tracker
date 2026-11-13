@@ -165,12 +165,20 @@ function inlineToVNodes(nodes) {
 
 /**
  * Markdown string to an array of vnodes.
+ * Headings: '#'/'##' -> h2, '###' -> h3, '####' -> h4, each shifted down by `headingOffset` (max h6)
+ * so a body sits below the heading of the page or article that contains it. The look follows the
+ * source level (class md-h2..md-h4), not the tag.
  * @param {string} src
+ * @param {{ headingOffset?: number }} [opts]
  * @returns {any[]}
  */
-export function renderMarkdown(src) {
+export function renderMarkdown(src, opts = {}) {
+  const offset = Math.max(0, Math.floor(opts.headingOffset || 0));
   return parseMarkdown(src).map((b, i) => {
-    if (b.type === 'heading') return h(`h${Math.min(4, b.level)}`, { key: i }, inlineToVNodes(b.children));
+    if (b.type === 'heading') {
+      const level = Math.min(4, b.level);
+      return h(`h${Math.min(6, level + offset)}`, { key: i, class: `md-h${level}` }, inlineToVNodes(b.children));
+    }
     if (b.type === 'paragraph') return h('p', { key: i }, inlineToVNodes(b.children));
     const items = b.items.map((it, j) => h('li', { key: j }, inlineToVNodes(it)));
     return b.ordered ? h('ol', { key: i, start: b.start === 1 ? undefined : b.start }, items) : h('ul', { key: i }, items);
@@ -179,8 +187,10 @@ export function renderMarkdown(src) {
 
 /**
  * <Markdown source=${text} /> renders inside a div.md (styled in components.css).
- * @param {{ source: string, class?: string }} props
+ * Pass headingOffset when the body sits under its own heading, e.g. an article whose title is an
+ * h2: headingOffset=${1} makes '##' an h3.
+ * @param {{ source: string, class?: string, headingOffset?: number }} props
  */
-export function Markdown({ source, class: cls }) {
-  return h('div', { class: cls ? `md ${cls}` : 'md' }, renderMarkdown(source));
+export function Markdown({ source, class: cls, headingOffset = 0 }) {
+  return h('div', { class: cls ? `md ${cls}` : 'md' }, renderMarkdown(source, { headingOffset }));
 }

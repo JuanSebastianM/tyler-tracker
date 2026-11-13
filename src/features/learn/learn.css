@@ -51,7 +51,7 @@
 .learn .article-body .md { font-size: var(--fs-md); line-height: 1.6; max-width: 65ch; overflow-wrap: break-word; }
 .learn .article-body .md p { margin: 0 0 var(--sp-3); }
 .learn .article-body .md p:last-child { margin-bottom: 0; }
-.learn .article-body .md h2:first-child, .learn .article-body .md h3:first-child { margin-top: 0; }
+.learn .article-body .md > :is(h2, h3, h4, h5):first-child { margin-top: 0; }
 .learn .article-note { margin: 0; font-size: var(--fs-sm); color: var(--c-ink-2); }
 .learn .article-actions { display: flex; justify-content: flex-start; }
 .learn .btn-danger-ghost { color: var(--c-red); }
