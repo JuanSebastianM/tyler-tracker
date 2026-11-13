@@ -47,7 +47,7 @@ jobs:
 
       - name: Deploy
         if: steps.token.outputs.present == 'true'
-        run: supabase functions deploy chat --project-ref "$PROJECT_REF"
+        run: supabase functions deploy chat --remote="$PROJECT_REF" --yes
 
       - name: Smoke test (a request without a session must be rejected)
         if: steps.token.outputs.present == 'true'
