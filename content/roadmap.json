@@ -2,46 +2,1179 @@
   "version": 1,
   "items": [
     {
-      "id": "new-home",
-      "sample": true,
+      "id": "weeks-6-8",
       "from_weeks": 6,
-      "to_weeks": 10,
-      "title": { "es": "Llegada a casa", "en": "Settling in" },
+      "to_weeks": 8,
+      "title": {
+        "es": "6 a 8 semanas: llegada a casa",
+        "en": "6 to 8 weeks: coming home"
+      },
       "summary": {
-        "es": "Todo es nuevo: rutinas, olores y personas. Duerme mucho y aprende rápido.",
-        "en": "Everything is new: routines, smells and people. He sleeps a lot and learns fast."
+        "es": "Todo es nuevo. Rutina, calma y mucho sueño; ustedes son ahora su \"camada\".",
+        "en": "Everything is new. Routine, calm and lots of sleep; you are now his \"litter\"."
       },
       "body": {
-        "es": "## Qué está pasando\nTyler se está separando de su camada y aprendiendo que su nueva casa es segura. Duerme entre **18 y 20 horas** al día y necesita salir a hacer sus necesidades al despertar, después de comer y después de jugar.\n\n## En qué enfocarse\n- Rutina fija de comidas, sueño y salidas.\n- Un lugar tranquilo para dormir.\n- Experiencias nuevas cortas y positivas.",
-        "en": "## What is happening\nTyler is leaving his litter and learning that his new home is safe. He sleeps **18 to 20 hours** a day and needs a potty break after waking up, after eating and after playing.\n\n## What to focus on\n- A fixed routine for meals, sleep and potty breaks.\n- A quiet place to sleep.\n- Short, positive new experiences."
+        "es": "## Qué está pasando\nTyler llegó a casa un poco antes de las 8 semanas que suelen recomendarse. Entre las 3 y las 8 semanas los cachorros aprenden mucho de su mamá y sus hermanos, por ejemplo a medir la fuerza del mordisco, y desde las 5 semanas se interesan cada vez más por las personas. Desde ahora, ustedes dos son su principal fuente de aprendizaje.\n\nDuerme entre 18 y 20 horas al día y ya tiene sus 28 dientes de leche. Está en plena etapa de socialización: lo que conozca ahora con calma le servirá toda la vida.\n\n## Qué esperar en casa\n- Necesita salir a hacer sus necesidades al despertar, después de comer o tomar agua y después de jugar.\n- Es normal que llore las primeras noches mientras se acostumbra a dormir sin su camada.\n- Va a explorar todo con la boca. No es mala conducta: es su forma de conocer el mundo.\n\n## En qué enfocarse\n1. Una rutina fija de comidas, siestas y salidas.\n2. Enseñarle con paciencia a moderar el mordisco, porque se perdió parte de esa práctica con sus hermanos.\n3. Experiencias nuevas cortas y agradables, dentro de casa o en brazos.\n4. Ratos cortos a solas desde el principio, para que aprenda que quedarse solo es normal.\n5. Que el veterinario defina el plan de vacunas y desparasitación.",
+        "en": "## What is happening\nTyler came home a little before the 8 weeks that are usually recommended. Between 3 and 8 weeks puppies learn a lot from their mother and littermates, such as how hard to bite, and from 5 weeks they become more and more interested in people. From now on, the two of you are his main teachers.\n\nHe sleeps 18 to 20 hours a day and already has his 28 baby teeth. He is right in the socialization period: what he meets calmly now will help him for life.\n\n## What to expect at home\n- He needs a potty break after waking up, after eating or drinking, and after playing.\n- Crying during the first nights is normal while he gets used to sleeping without his litter.\n- He will explore everything with his mouth. It is not bad behaviour: it is how he learns about the world.\n\n## What to focus on\n1. A fixed routine for meals, naps and potty breaks.\n2. Patiently teaching him to soften his bite, because he missed some of that practice with his littermates.\n3. Short, pleasant new experiences, indoors or in your arms.\n4. Short spells alone from the start, so he learns that being alone is normal.\n5. Letting the vet set the vaccine and deworming plan."
       },
       "todos": [
-        { "key": "new-home.first-vet-visit", "text": { "es": "Primera visita al veterinario", "en": "First vet visit" } },
-        { "key": "new-home.crate-setup", "text": { "es": "Preparar su cama o guacal", "en": "Set up his bed or crate" } },
-        { "key": "new-home.potty-spot", "text": { "es": "Elegir su lugar para hacer necesidades", "en": "Choose his potty spot" } }
+        {
+          "key": "weeks-6-8.first-vet-visit",
+          "text": {
+            "es": "Pedir la primera cita con su nuevo veterinario y llevar el carné de vacunas y desparasitación",
+            "en": "Book the first visit with his new vet and bring his vaccine and deworming record"
+          }
+        },
+        {
+          "key": "weeks-6-8.vaccine-plan",
+          "text": {
+            "es": "Acordar con el veterinario el plan de vacunas y desparasitación, según lo que él programe",
+            "en": "Agree a vaccine and deworming plan with the vet, as your vet schedules"
+          }
+        },
+        {
+          "key": "weeks-6-8.food-change",
+          "text": {
+            "es": "Preguntarle al veterinario cómo hacer el cambio de comida y qué cantidad darle",
+            "en": "Ask the vet how to make the food change and how much to feed"
+          }
+        },
+        {
+          "key": "weeks-6-8.safe-space",
+          "text": {
+            "es": "Armar su espacio seguro: guacal o corral, agua y juguetes para morder",
+            "en": "Set up his safe space: crate or pen, water and chew toys"
+          }
+        },
+        {
+          "key": "weeks-6-8.puppy-proofing",
+          "text": {
+            "es": "Revisar la casa a su altura: cables, zapatos, medicinas, productos de aseo y plantas fuera de alcance",
+            "en": "Check the home at his height: cables, shoes, medicines, cleaning products and plants out of reach"
+          }
+        },
+        {
+          "key": "weeks-6-8.potty-spot",
+          "text": {
+            "es": "Elegir su lugar para hacer necesidades y la palabra que van a usar",
+            "en": "Choose his potty spot and the cue word you will use"
+          }
+        },
+        {
+          "key": "weeks-6-8.house-rules",
+          "text": {
+            "es": "Acordar entre los dos las reglas de la casa y las palabras de cada señal",
+            "en": "Agree together on house rules and the word for each cue"
+          }
+        },
+        {
+          "key": "weeks-6-8.name-game",
+          "text": {
+            "es": "Empezar el juego del nombre (guía «Responder a su nombre»)",
+            "en": "Start the name game (guide \"Responding to his name\")"
+          }
+        }
       ],
-      "sources": [{ "title": "AVSAB: Position statements", "url": "https://avsab.org/resources/position-statements/" }],
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "AKC: How much do puppies sleep?",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "AKC: A timeline of puppy teething",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/timeline-of-puppy-teething/"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
-      "id": "socialization",
-      "sample": true,
-      "from_weeks": 10,
-      "to_weeks": 16,
-      "title": { "es": "Ventana de socialización", "en": "Socialization window" },
+      "id": "weeks-8-9",
+      "from_weeks": 8,
+      "to_weeks": 9,
+      "title": {
+        "es": "8 a 9 semanas: primer periodo de miedo",
+        "en": "8 to 9 weeks: first fear period"
+      },
       "summary": {
-        "es": "Lo que conozca ahora con calma le servirá toda la vida.",
-        "en": "What he meets calmly now will help him for life."
+        "es": "Puede asustarse más fácil. Experiencias suaves y la opción de alejarse.",
+        "en": "He may startle more easily. Gentle experiences and the choice to move away."
       },
       "body": {
-        "es": "## Qué está pasando\nEs la etapa en la que más fácil acepta personas, sonidos, superficies y otros animales.\n\n## En qué enfocarse\n- Muchas experiencias nuevas, cortas y con premios.\n- Manipular orejas, patas y boca con suavidad.\n- Seguir el esquema de vacunas.",
-        "en": "## What is happening\nThis is when he most easily accepts people, sounds, surfaces and other animals.\n\n## What to focus on\n- Many short new experiences with treats.\n- Gently handle his ears, paws and mouth.\n- Keep up with his vaccine schedule."
+        "es": "## Qué está pasando\nEntre las 8 y las 11 semanas, más o menos, muchos cachorros pasan por un primer periodo de miedo: cosas que antes ignoraban ahora los inquietan. Es una etapa normal del desarrollo, no terquedad. Al mismo tiempo sigue abierta la ventana de socialización, así que lo que viva ahora deja huella.\n\n## Qué esperar en casa\n- Puede retroceder ante un objeto nuevo, un ruido fuerte o una persona con gorra.\n- Puede buscarlos a ustedes más que antes.\n\n## En qué enfocarse\n1. Déjalo alejarse de lo que le da miedo y prémialo cuando mire el objeto o cuando te mire a ti.\n2. Que él decida qué tan cerca llega. No lo cargues hacia lo que le asusta ni lo obligues.\n3. Sesiones muy cortas que terminen bien.\n4. Tocarle con calma patas, orejas y boca, con premios, como preparación para el veterinario.",
+        "en": "## What is happening\nRoughly between 8 and 11 weeks, many puppies go through a first fear period: things they used to ignore now worry them. It is a normal developmental stage, not stubbornness. At the same time the socialization window is still open, so what he experiences now leaves a mark.\n\n## What to expect at home\n- He may back away from a new object, a loud noise or a person in a cap.\n- He may look for you more than before.\n\n## What to focus on\n1. Let him move away from what scares him, and reward him when he looks at the object or at you.\n2. Let him decide how close to get. Do not carry him towards what scares him or force him.\n3. Very short sessions that end on a good note.\n4. Calmly touch his paws, ears and mouth, with treats, to prepare for the vet."
       },
       "todos": [
-        { "key": "socialization.handling", "text": { "es": "Practicar tocar patas y orejas a diario", "en": "Practice touching paws and ears daily" } },
-        { "key": "socialization.car-ride", "text": { "es": "Primer paseo corto en carro", "en": "First short car ride" } }
+        {
+          "key": "weeks-8-9.handling-daily",
+          "text": {
+            "es": "Tocarle patas, orejas, boca y cola un minuto al día, con premios",
+            "en": "Touch his paws, ears, mouth and tail for a minute a day, with treats"
+          }
+        },
+        {
+          "key": "weeks-8-9.home-sounds",
+          "text": {
+            "es": "Presentarle tres sonidos de la casa (licuadora, aspiradora, timbre) desde lejos y con premios",
+            "en": "Introduce three household sounds (blender, vacuum, doorbell) from a distance, with treats"
+          }
+        },
+        {
+          "key": "weeks-8-9.carried-outing",
+          "text": {
+            "es": "Sacarlo en brazos a ver la calle desde un lugar tranquilo, sin ponerlo en el suelo",
+            "en": "Carry him out to watch the street from a quiet spot, without putting him down"
+          }
+        },
+        {
+          "key": "weeks-8-9.crate-games",
+          "text": {
+            "es": "Practicar juegos de guacal con la puerta abierta (guía «Guacal y dormir»)",
+            "en": "Play crate games with the door open (guide \"Crate and sleeping through the night\")"
+          }
+        },
+        {
+          "key": "weeks-8-9.sit-start",
+          "text": {
+            "es": "Empezar a enseñar «sentado» con un premio como guía",
+            "en": "Start teaching \"sit\" with a food lure"
+          }
+        },
+        {
+          "key": "weeks-8-9.harness-intro",
+          "text": {
+            "es": "Presentarle el arnés unos segundos dentro de la casa, con premios",
+            "en": "Introduce the harness for a few seconds indoors, with treats"
+          }
+        },
+        {
+          "key": "weeks-8-9.ask-puppy-class",
+          "text": {
+            "es": "Preguntarle al veterinario si ya puede ir a una clase de cachorros",
+            "en": "Ask the vet whether he can join a puppy class yet"
+          }
+        }
       ],
-      "sources": [{ "title": "AVSAB: Position statements", "url": "https://avsab.org/resources/position-statements/" }],
+      "sources": [
+        {
+          "title": "AKC: What are puppy fear periods?",
+          "url": "https://www.akc.org/expert-advice/puppy-information/puppy-fear-periods/"
+        },
+        {
+          "title": "VCA Animal Hospitals: Puppy behavior and training, socialization and fear prevention",
+          "url": "https://vcahospitals.com/know-your-pet/puppy-behavior-and-training-socialization-and-fear-prevention"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "AKC: Teach your dog to enjoy grooming",
+          "url": "https://www.akc.org/expert-advice/health/teaching-your-dog-cooperative-grooming-skills/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "weeks-9-10",
+      "from_weeks": 9,
+      "to_weeks": 10,
+      "title": {
+        "es": "9 a 10 semanas: conocer el mundo con cuidado",
+        "en": "9 to 10 weeks: meeting the world safely"
+      },
+      "summary": {
+        "es": "Personas nuevas, superficies y perros sanos y vacunados, siempre a su ritmo.",
+        "en": "New people, surfaces and healthy vaccinated dogs, always at his pace."
+      },
+      "body": {
+        "es": "## Qué está pasando\nTyler aprende rápido y su curiosidad crece. Su sistema inmune todavía se está formando, así que la idea es socializar en lugares limpios y controlados, no en parques de perros ni en zonas donde pasan muchos perros de vacunas desconocidas.\n\nLos expertos en comportamiento veterinario recomiendan no esperar a terminar todas las vacunas para socializar, porque la ventana se cierra antes. Lo importante es elegir bien dónde y con quién.\n\n## En qué enfocarse\n1. Personas variadas que lo saluden con calma y le dejen acercarse por su cuenta.\n2. Superficies distintas dentro de casa: baldosa, tapete, cartón, una toalla.\n3. Un perro adulto sano, vacunado y tranquilo de alguien de confianza.\n4. Ratos a solas cada vez un poco más largos en su espacio.",
+        "en": "## What is happening\nTyler learns fast and his curiosity is growing. His immune system is still developing, so the idea is to socialize in clean, controlled places, not in dog parks or areas used by many dogs of unknown vaccine status.\n\nVeterinary behaviour experts advise not waiting for the full vaccine series to socialize, because the window closes before that. What matters is choosing carefully where and with whom.\n\n## What to focus on\n1. Different people who greet him calmly and let him approach on his own.\n2. Different surfaces at home: tile, rug, cardboard, a towel.\n3. A healthy, vaccinated, calm adult dog belonging to someone you trust.\n4. Slightly longer spells alone in his space."
+      },
+      "todos": [
+        {
+          "key": "weeks-9-10.new-people",
+          "text": {
+            "es": "Conocer a cinco personas distintas (edades, gorras, gafas, barba) que lo saluden con calma",
+            "en": "Meet five different people (ages, caps, glasses, beards) who greet him calmly"
+          }
+        },
+        {
+          "key": "weeks-9-10.surfaces",
+          "text": {
+            "es": "Caminar sobre cuatro superficies nuevas dentro de casa",
+            "en": "Walk on four new surfaces at home"
+          }
+        },
+        {
+          "key": "weeks-9-10.calm-dog-visit",
+          "text": {
+            "es": "Una visita con un perro adulto sano, vacunado y tranquilo",
+            "en": "A visit with a healthy, vaccinated, calm adult dog"
+          }
+        },
+        {
+          "key": "weeks-9-10.car-ride",
+          "text": {
+            "es": "Un paseo corto en carro, con premios y sin prisa",
+            "en": "A short car ride, with treats and no rush"
+          }
+        },
+        {
+          "key": "weeks-9-10.alone-practice",
+          "text": {
+            "es": "Practicar cinco minutos a solas en su espacio con un juguete relleno",
+            "en": "Practise five minutes alone in his space with a stuffed toy"
+          }
+        },
+        {
+          "key": "weeks-9-10.down-start",
+          "text": {
+            "es": "Empezar a enseñar «echado»",
+            "en": "Start teaching \"down\""
+          }
+        },
+        {
+          "key": "weeks-9-10.next-vaccine",
+          "text": {
+            "es": "Siguiente vacuna o control cuando el veterinario lo programe",
+            "en": "Next vaccine or check-up when your vet schedules it"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "VCA Animal Hospitals: Puppy behavior and training, socialization and fear prevention",
+          "url": "https://vcahospitals.com/know-your-pet/puppy-behavior-and-training-socialization-and-fear-prevention"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "weeks-10-12",
+      "from_weeks": 10,
+      "to_weeks": 12,
+      "title": {
+        "es": "10 a 12 semanas: socialización a fondo",
+        "en": "10 to 12 weeks: socialization in full swing"
+      },
+      "summary": {
+        "es": "Pequeñas dosis diarias de mundo nuevo y las primeras señales de verdad.",
+        "en": "Small daily doses of new world and his first real cues."
+      },
+      "body": {
+        "es": "## Qué está pasando\nTyler ya entiende rutinas y aprende señales sencillas en sesiones de pocos minutos. Sigue en la etapa en la que acepta con más facilidad personas, sonidos y lugares nuevos. Calidad antes que cantidad: una experiencia tranquila vale más que diez agobiantes.\n\n## Qué esperar en casa\n- Más energía en ratos cortos, seguidos de siestas largas.\n- Mordiscos de juego todavía frecuentes. Es normal; el trabajo de inhibición del mordisco sigue.\n\n## En qué enfocarse\n1. Llevar una lista de experiencias y anotar cómo reaccionó.\n2. Señales básicas: nombre, sentado, echado y los primeros juegos de «ven».\n3. Una visita al veterinario solo para recibir premios y caricias, si la clínica lo permite.",
+        "en": "## What is happening\nTyler now understands routines and learns simple cues in sessions of a few minutes. He is still in the stage when he most easily accepts new people, sounds and places. Quality over quantity: one calm experience is worth more than ten overwhelming ones.\n\n## What to expect at home\n- More energy in short bursts, followed by long naps.\n- Play biting is still frequent. That is normal; bite-inhibition work continues.\n\n## What to focus on\n1. Keep a list of experiences and note how he reacted.\n2. Basic cues: name, sit, down and the first \"come\" games.\n3. A \"happy visit\" to the vet just for treats and petting, if the clinic allows it."
+      },
+      "todos": [
+        {
+          "key": "weeks-10-12.experience-log",
+          "text": {
+            "es": "Empezar una lista de experiencias nuevas y cómo reaccionó a cada una",
+            "en": "Start a list of new experiences and how he reacted to each"
+          }
+        },
+        {
+          "key": "weeks-10-12.recall-games",
+          "text": {
+            "es": "Jugar a «ven» dentro de la casa, entre los dos",
+            "en": "Play \"come\" games indoors, between the two of you"
+          }
+        },
+        {
+          "key": "weeks-10-12.collar-grab",
+          "text": {
+            "es": "Practicar tocarle el arnés o el collar y darle un premio",
+            "en": "Practise touching his harness or collar and giving a treat"
+          }
+        },
+        {
+          "key": "weeks-10-12.toothbrush-intro",
+          "text": {
+            "es": "Presentarle un cepillo de dedo para perro, sin cepillar todavía",
+            "en": "Introduce a dog finger toothbrush, without brushing yet"
+          }
+        },
+        {
+          "key": "weeks-10-12.happy-vet-visit",
+          "text": {
+            "es": "Una visita al veterinario solo para premios, si la clínica lo permite",
+            "en": "A treats-only \"happy visit\" to the vet, if the clinic allows it"
+          }
+        },
+        {
+          "key": "weeks-10-12.leave-it-start",
+          "text": {
+            "es": "Empezar «déjalo» con comida en la mano",
+            "en": "Start \"leave it\" with food in your hand"
+          }
+        },
+        {
+          "key": "weeks-10-12.next-vaccine",
+          "text": {
+            "es": "Siguiente vacuna o control cuando el veterinario lo programe",
+            "en": "Next vaccine or check-up when your vet schedules it"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "AKC: Teach your puppy these 5 basic cues",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-puppy-these-5-basic-commands/"
+        },
+        {
+          "title": "AKC: How to train your dog to come when called",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-dog-to-come-when-called/"
+        },
+        {
+          "title": "AKC: A timeline of puppy teething",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/timeline-of-puppy-teething/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "weeks-12-14",
+      "from_weeks": 12,
+      "to_weeks": 14,
+      "title": {
+        "es": "12 a 14 semanas: empiezan a cambiar los dientes",
+        "en": "12 to 14 weeks: teeth start to change"
+      },
+      "summary": {
+        "es": "Más ganas de morder, posible paso a tres comidas y primeros ratos de correa.",
+        "en": "More urge to chew, possibly three meals, and first leash practice."
+      },
+      "body": {
+        "es": "## Qué está pasando\nEntre las 12 y las 16 semanas los dientes de leche empiezan a caerse y salen los definitivos. Puedes encontrar dientecitos en el piso. Las ganas de morder aumentan, así que conviene tener juguetes apropiados siempre a mano.\n\nHacia los 3 meses muchos cachorros pasan de cuatro a tres comidas al día. Hazlo cuando el veterinario lo indique.\n\n## En qué enfocarse\n1. Juguetes para morder variados y rotarlos.\n2. Correa y arnés dentro de la casa, con premios por caminar a tu lado.\n3. Primeros pasos de «quieto», con una palabra para liberarlo.\n4. Seguir socializando: sonidos de la calle, visitas, transporte.",
+        "en": "## What is happening\nBetween 12 and 16 weeks the baby teeth start to fall out and the adult ones come in. You may find tiny teeth on the floor. The urge to chew increases, so keep suitable toys within reach at all times.\n\nAround 3 months many puppies go from four to three meals a day. Make the change when your vet advises.\n\n## What to focus on\n1. A variety of chew toys, rotated.\n2. Leash and harness indoors, with treats for walking next to you.\n3. First steps of \"stay\", with a release word.\n4. Keep socializing: street sounds, visitors, transport."
+      },
+      "todos": [
+        {
+          "key": "weeks-12-14.three-meals",
+          "text": {
+            "es": "Preguntarle al veterinario si ya es momento de pasar a tres comidas",
+            "en": "Ask the vet whether it is time to move to three meals"
+          }
+        },
+        {
+          "key": "weeks-12-14.chew-toys",
+          "text": {
+            "es": "Tener al menos tres juguetes para morder distintos y rotarlos",
+            "en": "Have at least three different chew toys and rotate them"
+          }
+        },
+        {
+          "key": "weeks-12-14.leash-indoors",
+          "text": {
+            "es": "Caminar con correa dentro de la casa, premiando cuando va a tu lado",
+            "en": "Walk on leash indoors, rewarding him for staying by your side"
+          }
+        },
+        {
+          "key": "weeks-12-14.stay-start",
+          "text": {
+            "es": "Empezar «quieto» y la palabra para liberarlo",
+            "en": "Start \"stay\" and the release word"
+          }
+        },
+        {
+          "key": "weeks-12-14.brush-intro",
+          "text": {
+            "es": "Cepillarlo un minuto con un cepillo suave, con premios",
+            "en": "Brush him for a minute with a soft brush, with treats"
+          }
+        },
+        {
+          "key": "weeks-12-14.potty-review",
+          "text": {
+            "es": "Revisar en el diario sus horas de pipí y popó y ajustar el horario",
+            "en": "Review his pee and poop times in the log and adjust the schedule"
+          }
+        },
+        {
+          "key": "weeks-12-14.next-vaccine",
+          "text": {
+            "es": "Siguiente vacuna o control cuando el veterinario lo programe",
+            "en": "Next vaccine or check-up when your vet schedules it"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "AKC: A timeline of puppy teething",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/timeline-of-puppy-teething/"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AKC: How to teach a puppy to walk on a leash",
+          "url": "https://www.akc.org/expert-advice/training/teach-puppy-walk-leash/"
+        },
+        {
+          "title": "AKC: Teach your puppy these 5 basic cues",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-puppy-these-5-basic-commands/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "weeks-14-16",
+      "from_weeks": 14,
+      "to_weeks": 16,
+      "title": {
+        "es": "14 a 16 semanas: se va cerrando la ventana",
+        "en": "14 to 16 weeks: the window is closing"
+      },
+      "summary": {
+        "es": "Últimas semanas de la etapa sensible. Clase de cachorros y primeras salidas.",
+        "en": "Last weeks of the sensitive period. Puppy class and first outings."
+      },
+      "body": {
+        "es": "## Qué está pasando\nLa etapa más sensible de socialización termina más o menos entre las 12 y las 16 semanas, aunque algunas fuentes la extienden hasta las 20. Aprender sigue siendo posible después, pero más despacio. Por eso estas semanas valen oro.\n\nHacia los 4 meses muchos cachorros terminan su serie de vacunas. Cuándo puede caminar por la calle lo decide el veterinario.\n\n## En qué enfocarse\n1. Repasar la lista de experiencias y llenar los vacíos: niños tranquilos, bicicletas, motos, lluvia, ascensor.\n2. Una clase de cachorros con métodos basados en premios.\n3. Primeros paseos cortos cuando el veterinario dé el visto bueno.\n4. «Ven» con una cuerda larga en un lugar seguro.",
+        "en": "## What is happening\nThe most sensitive part of the socialization period ends roughly between 12 and 16 weeks, although some sources extend it to 20. Learning is still possible afterwards, but more slowly. That makes these weeks precious.\n\nAround 4 months many puppies finish their vaccine series. When he can walk in the street is your vet's decision.\n\n## What to focus on\n1. Review the experience list and fill the gaps: calm children, bicycles, motorbikes, rain, the lift.\n2. A puppy class that uses reward-based methods.\n3. First short walks once the vet gives the go-ahead.\n4. \"Come\" on a long line in a safe place."
+      },
+      "todos": [
+        {
+          "key": "weeks-14-16.fill-gaps",
+          "text": {
+            "es": "Completar cinco experiencias que falten en la lista",
+            "en": "Complete five experiences missing from the list"
+          }
+        },
+        {
+          "key": "weeks-14-16.puppy-class",
+          "text": {
+            "es": "Inscribirse en una clase de cachorros con métodos basados en premios",
+            "en": "Sign up for a reward-based puppy class"
+          }
+        },
+        {
+          "key": "weeks-14-16.vaccines-complete",
+          "text": {
+            "es": "Confirmar con el veterinario si el esquema de vacunas ya está completo",
+            "en": "Confirm with the vet whether the vaccine series is complete"
+          }
+        },
+        {
+          "key": "weeks-14-16.first-walks",
+          "text": {
+            "es": "Primeros paseos cortos por la calle cuando el veterinario lo autorice",
+            "en": "First short street walks once the vet approves"
+          }
+        },
+        {
+          "key": "weeks-14-16.long-line-recall",
+          "text": {
+            "es": "Practicar «ven» con una cuerda larga en un lugar seguro",
+            "en": "Practise \"come\" on a long line in a safe place"
+          }
+        },
+        {
+          "key": "weeks-14-16.handling-check",
+          "text": {
+            "es": "Revisarle orejas, dientes y uñas como en el veterinario, con premios",
+            "en": "Check his ears, teeth and nails like the vet does, with treats"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "VCA Animal Hospitals: Puppy behavior and training, socialization and fear prevention",
+          "url": "https://vcahospitals.com/know-your-pet/puppy-behavior-and-training-socialization-and-fear-prevention"
+        },
+        {
+          "title": "AVSAB: Position statement on puppy socialization",
+          "url": "https://avsab.org/wp-content/uploads/2024/12/Puppy-Socialization-Position-Statement-FINAL.pdf"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AKC: How to train your dog to come when called",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-dog-to-come-when-called/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "month-4",
+      "from_weeks": 16,
+      "to_weeks": 20,
+      "title": {
+        "es": "4 meses: dientes nuevos y más independencia",
+        "en": "4 months: new teeth and more independence"
+      },
+      "summary": {
+        "es": "Muerde más, explora más lejos y los paseos empiezan a ser parte de la rutina.",
+        "en": "More chewing, wider exploring, and walks become part of the routine."
+      },
+      "body": {
+        "es": "## Qué está pasando\nEntre los 4 y los 5 meses salen muchos dientes definitivos, y para los 7 meses debería tener los 42. Tyler se vuelve más curioso e independiente y puede alejarse más de ustedes en espacios abiertos.\n\nSus huesos y articulaciones siguen en desarrollo. Una guía práctica del AKC es pasear unos 5 minutos por cada mes de edad, una o dos veces al día, y evitar saltos repetidos.\n\n## En qué enfocarse\n1. Caminar con la correa floja: premios frecuentes cuando va a tu lado.\n2. Saludos sin saltar, con las cuatro patas en el piso.\n3. Paseos para olfatear, sin prisa.\n4. Seguir con la socialización: la ventana sensible se cierra, pero el aprendizaje continúa.",
+        "en": "## What is happening\nBetween 4 and 5 months many adult teeth come in, and by 7 months he should have all 42. Tyler becomes more curious and independent and may wander further from you in open spaces.\n\nHis bones and joints are still developing. A practical AKC guideline is to walk about 5 minutes per month of age, once or twice a day, and avoid repeated jumping.\n\n## What to focus on\n1. Loose-leash walking: frequent treats when he is by your side.\n2. Greetings without jumping, with all four paws on the floor.\n3. Sniffing walks, with no rush.\n4. Keep socializing: the sensitive window closes, but learning continues."
+      },
+      "todos": [
+        {
+          "key": "month-4.walk-routine",
+          "text": {
+            "es": "Paseos de unos 20 minutos, una o dos veces al día, si el veterinario está de acuerdo",
+            "en": "Walks of about 20 minutes, once or twice a day, if the vet agrees"
+          }
+        },
+        {
+          "key": "month-4.loose-leash",
+          "text": {
+            "es": "Practicar caminar con la correa floja en la calle",
+            "en": "Practise loose-leash walking outside"
+          }
+        },
+        {
+          "key": "month-4.greeting-manners",
+          "text": {
+            "es": "Practicar saludos sin saltar con visitas",
+            "en": "Practise greetings without jumping with visitors"
+          }
+        },
+        {
+          "key": "month-4.sniff-walk",
+          "text": {
+            "es": "Un paseo de olfateo a la semana en el que él elige el camino",
+            "en": "One sniffing walk a week where he chooses the route"
+          }
+        },
+        {
+          "key": "month-4.alone-longer",
+          "text": {
+            "es": "Alargar poco a poco el tiempo a solas mientras siga tranquilo",
+            "en": "Gradually lengthen time alone as long as he stays relaxed"
+          }
+        },
+        {
+          "key": "month-4.vet-check",
+          "text": {
+            "es": "Control de crecimiento y peso cuando el veterinario lo programe",
+            "en": "Growth and weight check when your vet schedules it"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Dental development of dogs",
+          "url": "https://merckvetmanual.com/dog-owners/digestive-disorders-of-dogs/dental-development-of-dogs"
+        },
+        {
+          "title": "AKC: How much mental and physical exercise do puppies need?",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/puppies-how-much-exercise/"
+        },
+        {
+          "title": "AKC: A puppy growth timeline",
+          "url": "https://www.akc.org/expert-advice/training/puppy-growth-timeline-transitions-puppyhood/"
+        },
+        {
+          "title": "AKC: How to teach a puppy to walk on a leash",
+          "url": "https://www.akc.org/expert-advice/training/teach-puppy-walk-leash/"
+        },
+        {
+          "title": "AKC: How to stop your dog from jumping up on people",
+          "url": "https://www.akc.org/expert-advice/training/how-to-stop-your-dog-from-jumping-up-on-people/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "month-5",
+      "from_weeks": 20,
+      "to_weeks": 24,
+      "title": {
+        "es": "5 meses: afianzar lo aprendido",
+        "en": "5 months: strengthening the basics"
+      },
+      "summary": {
+        "es": "Las señales básicas ya salen en casa. Ahora toca practicarlas afuera.",
+        "en": "Basic cues work at home. Now it is time to practise them outside."
+      },
+      "body": {
+        "es": "## Qué está pasando\nTyler crece rápido y tiene más energía y resistencia. Sigue cambiando dientes, así que morder sigue siendo una necesidad. Es buen momento para llevar a la calle lo que ya sabe en casa.\n\n## En qué enfocarse\n1. Practicar sentado, echado, quieto y ven en lugares nuevos, empezando con pocas distracciones.\n2. «Déjalo» y «suelta» en paseos, con premios de alto valor.\n3. Juegos de olfato y juguetes rellenos para cansar la mente, no solo las patas.\n4. Mantener el arnés bien ajustado: crece rápido.",
+        "en": "## What is happening\nTyler is growing fast and has more energy and stamina. He is still changing teeth, so chewing is still a need. It is a good time to take outside what he already knows at home.\n\n## What to focus on\n1. Practise sit, down, stay and come in new places, starting with few distractions.\n2. \"Leave it\" and \"drop it\" on walks, with high-value treats.\n3. Sniffing games and stuffed toys to tire his mind, not just his legs.\n4. Keep the harness well fitted: he is growing fast."
+      },
+      "todos": [
+        {
+          "key": "month-5.cues-outside",
+          "text": {
+            "es": "Practicar las cuatro señales básicas en tres lugares nuevos",
+            "en": "Practise the four basic cues in three new places"
+          }
+        },
+        {
+          "key": "month-5.leave-it-walks",
+          "text": {
+            "es": "Usar «déjalo» en un paseo con una distracción fácil",
+            "en": "Use \"leave it\" on a walk with an easy distraction"
+          }
+        },
+        {
+          "key": "month-5.drop-it",
+          "text": {
+            "es": "Enseñar «suelta» con intercambio de juguete por premio",
+            "en": "Teach \"drop it\" by trading a toy for a treat"
+          }
+        },
+        {
+          "key": "month-5.enrichment",
+          "text": {
+            "es": "Hacer dos juegos de olfato o juguetes rellenos por semana",
+            "en": "Do two sniffing games or stuffed toys a week"
+          }
+        },
+        {
+          "key": "month-5.harness-fit",
+          "text": {
+            "es": "Revisar que el arnés todavía le quede bien",
+            "en": "Check that the harness still fits well"
+          }
+        },
+        {
+          "key": "month-5.grooming-routine",
+          "text": {
+            "es": "Fijar un día de cepillado y revisión de orejas y uñas",
+            "en": "Set a weekly day for brushing and checking ears and nails"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "AKC: \"Leave it\" command",
+          "url": "https://www.akc.org/expert-advice/training/teach-leave-it/"
+        },
+        {
+          "title": "AKC: How to teach your dog to drop it",
+          "url": "https://www.akc.org/expert-advice/training/teaching-your-dog-to-drop-it/"
+        },
+        {
+          "title": "RSPCA Victoria: Enrichment ideas for your dog",
+          "url": "https://rspcavic.org/learn/8-enrichment-ideas-for-your-dog/"
+        },
+        {
+          "title": "AKC: A timeline of puppy teething",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/timeline-of-puppy-teething/"
+        },
+        {
+          "title": "AKC: Teach your dog to enjoy grooming",
+          "url": "https://www.akc.org/expert-advice/health/teaching-your-dog-cooperative-grooming-skills/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "month-6",
+      "from_weeks": 24,
+      "to_weeks": 28,
+      "title": {
+        "es": "6 meses: llega la adolescencia",
+        "en": "6 months: adolescence begins"
+      },
+      "summary": {
+        "es": "Más energía, más prueba de límites y decisiones para hablar con el veterinario.",
+        "en": "More energy, more boundary-testing, and decisions to discuss with the vet."
+      },
+      "body": {
+        "es": "## Qué está pasando\nLa mayoría de los perros entran en la adolescencia alrededor de los 6 meses, y suele durar hasta los 18 meses, a veces hasta los 2 años. La madurez sexual llega entre los 6 y los 9 meses. Su capacidad de autocontrol todavía está madurando, así que puede parecer que \"olvidó\" lo aprendido. Es normal y pasa.\n\nA esta edad muchos perros pasan a dos comidas al día, y para esta fecha ya no deberían quedar dientes de leche.\n\n## En qué enfocarse\n1. Volver a lo básico con paciencia y sesiones cortas.\n2. Hablar con el veterinario sobre si castrarlo y cuándo. En Golden Retrievers hay estudios que relacionan la castración temprana con más problemas articulares, y los expertos no coinciden en una edad única, así que vale la pena decidirlo con calma.\n3. Revisar que no queden dientes de leche.",
+        "en": "## What is happening\nMost dogs enter adolescence around 6 months, and it usually lasts until about 18 months, sometimes up to 2 years. Sexual maturity arrives between 6 and 9 months. His self-control is still maturing, so it may look as if he has \"forgotten\" what he learned. This is normal and it passes.\n\nAt this age many dogs move to two meals a day, and by now there should be no baby teeth left.\n\n## What to focus on\n1. Go back to basics with patience and short sessions.\n2. Talk to the vet about whether and when to neuter him. In Golden Retrievers some studies link early neutering with more joint problems, and experts do not agree on a single age, so it is worth deciding calmly.\n3. Check that no baby teeth remain."
+      },
+      "todos": [
+        {
+          "key": "month-6.two-meals",
+          "text": {
+            "es": "Preguntarle al veterinario si ya es momento de pasar a dos comidas",
+            "en": "Ask the vet whether it is time to move to two meals"
+          }
+        },
+        {
+          "key": "month-6.neuter-talk",
+          "text": {
+            "es": "Hablar con el veterinario sobre si castrarlo y cuándo",
+            "en": "Discuss with the vet whether and when to neuter"
+          }
+        },
+        {
+          "key": "month-6.baby-teeth-check",
+          "text": {
+            "es": "Revisar que no queden dientes de leche y avisarle al veterinario si los hay",
+            "en": "Check for remaining baby teeth and tell the vet if there are any"
+          }
+        },
+        {
+          "key": "month-6.basics-refresh",
+          "text": {
+            "es": "Repasar las señales básicas una semana completa",
+            "en": "Spend a whole week refreshing the basic cues"
+          }
+        },
+        {
+          "key": "month-6.door-manners",
+          "text": {
+            "es": "Enseñarle a esperar en la puerta hasta oír la palabra de liberación",
+            "en": "Teach him to wait at the door until he hears the release word"
+          }
+        },
+        {
+          "key": "month-6.harness-size",
+          "text": {
+            "es": "Cambiar el arnés por una talla más grande si ya le queda justo",
+            "en": "Move to a bigger harness if the current one is tight"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AKC: A timeline of puppy teething",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/timeline-of-puppy-teething/"
+        },
+        {
+          "title": "UC Davis: Neutering health effects more severe for golden retrievers than Labradors",
+          "url": "https://ucdavis.edu/news/neutering-health-effects-more-severe-golden-retrievers-labradors"
+        },
+        {
+          "title": "UC Davis: When should you neuter your dog to avoid health risks?",
+          "url": "https://www.ucdavis.edu/magazine/when-should-you-neuter-your-dog-to-avoid-health-risks"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "months-7-8",
+      "from_weeks": 28,
+      "to_weeks": 35,
+      "title": {
+        "es": "7 a 8 meses: adolescente con mucha energía",
+        "en": "7 to 8 months: an energetic teenager"
+      },
+      "summary": {
+        "es": "Puede aparecer un segundo periodo de miedo. Paciencia y rutinas claras.",
+        "en": "A second fear period may appear. Patience and clear routines."
+      },
+      "body": {
+        "es": "## Qué está pasando\nEntre los 6 y los 14 meses muchos perros pasan por un segundo periodo de miedo, más tardío en razas grandes. Puede asustarse de algo que conocía. También es común que ignore el llamado o se distraiga fácil.\n\nSus huesos y ligamentos siguen creciendo. En razas grandes, el AKC sugiere esperar entre los 12 y los 18 meses antes de salir a trotar o correr con él.\n\n## En qué enfocarse\n1. Si algo lo asusta, dale distancia y prémialo por mirarlo con calma. No lo obligues a acercarse.\n2. Cuerda larga para practicar el llamado; no lo sueltes en lugares abiertos todavía.\n3. Juegos de autocontrol: esperar el plato, esperar en la puerta.\n4. Ejercicio mental todos los días.",
+        "en": "## What is happening\nBetween 6 and 14 months many dogs go through a second fear period, later in large breeds. He may get scared of something familiar. It is also common for him to ignore recall or get distracted easily.\n\nHis bones and ligaments are still growing. For large breeds, the AKC suggests waiting until 12 to 18 months before jogging or running with him.\n\n## What to focus on\n1. If something scares him, give him distance and reward him for looking at it calmly. Do not make him approach.\n2. A long line for recall practice; do not let him off leash in open places yet.\n3. Self-control games: waiting for his bowl, waiting at the door.\n4. Mental exercise every day."
+      },
+      "todos": [
+        {
+          "key": "months-7-8.fear-plan",
+          "text": {
+            "es": "Acordar entre los dos cómo reaccionar si algo lo asusta: distancia, calma y premios",
+            "en": "Agree together how to respond if something scares him: distance, calm and treats"
+          }
+        },
+        {
+          "key": "months-7-8.long-line",
+          "text": {
+            "es": "Practicar el llamado con cuerda larga dos veces por semana",
+            "en": "Practise recall on a long line twice a week"
+          }
+        },
+        {
+          "key": "months-7-8.bowl-wait",
+          "text": {
+            "es": "Enseñarle a esperar sentado mientras se sirve su comida",
+            "en": "Teach him to wait in a sit while his food is served"
+          }
+        },
+        {
+          "key": "months-7-8.brain-games",
+          "text": {
+            "es": "Un juego de olfato o comedero tipo rompecabezas al día",
+            "en": "One sniffing game or puzzle feeder a day"
+          }
+        },
+        {
+          "key": "months-7-8.no-jogging-yet",
+          "text": {
+            "es": "Mantener paseos sin trotar ni correr con él, hasta que el veterinario lo autorice",
+            "en": "Keep to walks, no jogging with him until the vet approves"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "AKC: What are puppy fear periods?",
+          "url": "https://www.akc.org/expert-advice/puppy-information/puppy-fear-periods/"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "AKC: How much mental and physical exercise do puppies need?",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/puppies-how-much-exercise/"
+        },
+        {
+          "title": "AKC: How to train your dog to come when called",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-dog-to-come-when-called/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "months-8-10",
+      "from_weeks": 35,
+      "to_weeks": 44,
+      "title": {
+        "es": "8 a 10 meses: probar límites con calma",
+        "en": "8 to 10 months: calmly handling boundary-testing"
+      },
+      "summary": {
+        "es": "Mucha energía y poca paciencia. Rutina, ejercicio mental y premios por lo bueno.",
+        "en": "Lots of energy and little patience. Routine, mental exercise and rewarding good choices."
+      },
+      "body": {
+        "es": "## Qué está pasando\nEl adolescente quiere explorar y se aburre fácil. Puede salir corriendo por una puerta abierta o tomar cosas prohibidas. No es desafío: es impulso, y su autocontrol todavía madura.\n\n## En qué enfocarse\n1. Prevenir antes que corregir: cosas tentadoras fuera de su alcance y rejas donde haga falta.\n2. Pedirle una señal sencilla antes de darle lo que quiere (salir, comer, jugar).\n3. Sesiones de entrenamiento de cinco minutos con algo nuevo: trucos, olfato, juegos con clicker.\n4. Si el aprendizaje se estanca, una clase o un entrenador que use premios.",
+        "en": "## What is happening\nThe teenager wants to explore and gets bored easily. He may bolt through an open door or grab forbidden things. It is not defiance: it is impulse, and his self-control is still maturing.\n\n## What to focus on\n1. Prevent rather than correct: tempting things out of reach and gates where needed.\n2. Ask for a simple cue before giving him what he wants (going out, eating, playing).\n3. Five-minute training sessions with something new: tricks, scent work, clicker games.\n4. If progress stalls, a class or a trainer who uses rewards."
+      },
+      "todos": [
+        {
+          "key": "months-8-10.management-check",
+          "text": {
+            "es": "Revisar la casa otra vez a su nueva altura",
+            "en": "Check the home again at his new height"
+          }
+        },
+        {
+          "key": "months-8-10.say-please",
+          "text": {
+            "es": "Pedirle «sentado» antes de salir, comer o jugar",
+            "en": "Ask for \"sit\" before going out, eating or playing"
+          }
+        },
+        {
+          "key": "months-8-10.new-trick",
+          "text": {
+            "es": "Enseñarle un truco nuevo",
+            "en": "Teach him a new trick"
+          }
+        },
+        {
+          "key": "months-8-10.class-or-trainer",
+          "text": {
+            "es": "Considerar una clase para adolescentes o un entrenador que use premios",
+            "en": "Consider a teenage-dog class or a reward-based trainer"
+          }
+        },
+        {
+          "key": "months-8-10.neuter-decision",
+          "text": {
+            "es": "Retomar con el veterinario la decisión sobre la castración",
+            "en": "Revisit the neutering decision with the vet"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "AVSAB: How to choose a trainer",
+          "url": "https://avsab.org/wp-content/uploads/2026/08/How-to-Choose-a-Trainer-final-final.pdf"
+        },
+        {
+          "title": "RSPCA Victoria: Enrichment ideas for your dog",
+          "url": "https://rspcavic.org/learn/8-enrichment-ideas-for-your-dog/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "months-10-12",
+      "from_weeks": 44,
+      "to_weeks": 52,
+      "title": {
+        "es": "10 a 12 meses: camino a su primer año",
+        "en": "10 to 12 months: towards his first birthday"
+      },
+      "summary": {
+        "es": "Casi tamaño adulto, pero todavía cachorro por dentro. Control anual y planes de comida.",
+        "en": "Nearly adult size but still a puppy inside. Annual check-up and food plans."
+      },
+      "body": {
+        "es": "## Qué está pasando\nTyler se ve casi adulto, pero las razas grandes pueden tardar casi dos años en madurar del todo. Las señales que practicaron mucho ya deberían salir con más facilidad, aunque las distracciones todavía le cuestan.\n\n## En qué enfocarse\n1. Control con el veterinario cerca de su primer año, con los refuerzos que él programe.\n2. Preguntar cuándo pasar a comida de adulto: en razas grandes suele ser más tarde que en razas pequeñas.\n3. Practicar en lugares con más distracciones, siempre con premios.",
+        "en": "## What is happening\nTyler looks almost adult, but large breeds can take almost two years to fully mature. Well-practised cues should come more easily now, although distractions are still hard.\n\n## What to focus on\n1. A check-up near his first birthday, with whatever boosters your vet schedules.\n2. Ask when to switch to adult food: in large breeds it is usually later than in small ones.\n3. Practise in places with more distractions, always with rewards."
+      },
+      "todos": [
+        {
+          "key": "months-10-12.annual-checkup",
+          "text": {
+            "es": "Control anual y refuerzos cuando el veterinario los programe",
+            "en": "Annual check-up and boosters as your vet schedules"
+          }
+        },
+        {
+          "key": "months-10-12.adult-food-plan",
+          "text": {
+            "es": "Preguntarle al veterinario cuándo y cómo pasar a comida de adulto",
+            "en": "Ask the vet when and how to switch to adult food"
+          }
+        },
+        {
+          "key": "months-10-12.weight-check",
+          "text": {
+            "es": "Revisar su peso y su silueta con el veterinario",
+            "en": "Check his weight and body shape with the vet"
+          }
+        },
+        {
+          "key": "months-10-12.distraction-practice",
+          "text": {
+            "es": "Practicar «ven» y «quieto» con más distracciones",
+            "en": "Practise \"come\" and \"stay\" with more distractions"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "AKC: A puppy growth timeline",
+          "url": "https://www.akc.org/expert-advice/training/puppy-growth-timeline-transitions-puppyhood/"
+        },
+        {
+          "title": "AKC: How to train your dog to come when called",
+          "url": "https://www.akc.org/expert-advice/training/teach-your-dog-to-come-when-called/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "months-12-15",
+      "from_weeks": 52,
+      "to_weeks": 65,
+      "title": {
+        "es": "12 a 15 meses: joven adulto",
+        "en": "12 to 15 months: young adult"
+      },
+      "summary": {
+        "es": "Madurez emocional en camino. Comida de adulto y más actividad, según el veterinario.",
+        "en": "Emotional maturity on the way. Adult food and more activity, as the vet advises."
+      },
+      "body": {
+        "es": "## Qué está pasando\nEntre los 12 y los 18 meses la mayoría de los perros alcanza la madurez emocional y se va viendo su temperamento adulto. Las razas grandes tardan más. Su esqueleto todavía se está terminando de formar.\n\n## En qué enfocarse\n1. El paso a comida de adulto cuando el veterinario lo indique.\n2. Preguntar antes de empezar a trotar o correr con él.\n3. Actividades nuevas y tranquilas: nadar con supervisión, rastreo, buscar objetos.",
+        "en": "## What is happening\nBetween 12 and 18 months most dogs reach emotional maturity and their adult temperament starts to show. Large breeds take longer. His skeleton is still finishing its growth.\n\n## What to focus on\n1. The switch to adult food when your vet advises.\n2. Ask before starting to jog or run with him.\n3. New, calm activities: supervised swimming, scent tracking, retrieving games."
+      },
+      "todos": [
+        {
+          "key": "months-12-15.adult-food-switch",
+          "text": {
+            "es": "Pasar a comida de adulto cuando el veterinario lo indique",
+            "en": "Switch to adult food when your vet advises"
+          }
+        },
+        {
+          "key": "months-12-15.running-ok",
+          "text": {
+            "es": "Preguntarle al veterinario si ya puede trotar o correr con ustedes",
+            "en": "Ask the vet whether he can jog or run with you yet"
+          }
+        },
+        {
+          "key": "months-12-15.new-activity",
+          "text": {
+            "es": "Probar una actividad nueva: nado supervisado, rastreo o búsqueda de objetos",
+            "en": "Try a new activity: supervised swimming, scent tracking or retrieving"
+          }
+        },
+        {
+          "key": "months-12-15.manners-review",
+          "text": {
+            "es": "Repasar saludos, correa floja y llamado en lugares concurridos",
+            "en": "Review greetings, loose leash and recall in busy places"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "AKC: A puppy growth timeline",
+          "url": "https://www.akc.org/expert-advice/training/puppy-growth-timeline-transitions-puppyhood/"
+        },
+        {
+          "title": "AKC: How much mental and physical exercise do puppies need?",
+          "url": "https://www.akc.org/expert-advice/health/puppy-health/puppies-how-much-exercise/"
+        },
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "months-15-18",
+      "from_weeks": 65,
+      "to_weeks": 78,
+      "title": {
+        "es": "15 a 18 meses: terminando la adolescencia",
+        "en": "15 to 18 months: adolescence winding down"
+      },
+      "summary": {
+        "es": "Más calma y mejor concentración. Buen momento para consolidar hábitos.",
+        "en": "More calm and better focus. A good time to cement habits."
+      },
+      "body": {
+        "es": "## Qué está pasando\nPara muchos perros la adolescencia termina alrededor de los 18 meses. Tyler debería concentrarse mejor, aunque los Golden suelen conservar energía de cachorro por un buen tiempo.\n\n## En qué enfocarse\n1. Mantener los hábitos que funcionan: rutina, ejercicio, juegos mentales.\n2. Dar más libertad poco a poco en casa si ya no destruye ni se accidenta.\n3. Revisar con el veterinario su condición física y su plan de ejercicio.",
+        "en": "## What is happening\nFor many dogs adolescence ends around 18 months. Tyler should focus better, although Goldens often keep puppy energy for quite a while.\n\n## What to focus on\n1. Keep the habits that work: routine, exercise, mental games.\n2. Gradually give him more freedom at home if he no longer chews things or has accidents.\n3. Review his fitness and exercise plan with the vet."
+      },
+      "todos": [
+        {
+          "key": "months-15-18.more-freedom",
+          "text": {
+            "es": "Darle acceso a un espacio más de la casa cuando esté solo, si va bien",
+            "en": "Give him access to one more room when alone, if things are going well"
+          }
+        },
+        {
+          "key": "months-15-18.fitness-review",
+          "text": {
+            "es": "Revisar con el veterinario su condición física y su ejercicio",
+            "en": "Review his fitness and exercise with the vet"
+          }
+        },
+        {
+          "key": "months-15-18.routine-review",
+          "text": {
+            "es": "Revisar entre los dos qué reglas y rutinas siguen sirviendo",
+            "en": "Review together which rules and routines still work"
+          }
+        },
+        {
+          "key": "months-15-18.canine-sport",
+          "text": {
+            "es": "Considerar un deporte o actividad con un club que use premios",
+            "en": "Consider a sport or activity with a reward-based club"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Cornell Riney Canine Health Center: The teenage years, puppy-proofing and training tips",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/teenage-years-puppy-proofing-and-training-tips"
+        },
+        {
+          "title": "AKC: A puppy growth timeline",
+          "url": "https://www.akc.org/expert-advice/training/puppy-growth-timeline-transitions-puppyhood/"
+        },
+        {
+          "title": "AKC: Golden Retriever dog breed information",
+          "url": "https://www.akc.org/dog-breeds/golden-retriever/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "months-18-24",
+      "from_weeks": 78,
+      "to_weeks": 104,
+      "title": {
+        "es": "18 a 24 meses: rumbo a la adultez",
+        "en": "18 to 24 months: heading into adulthood"
+      },
+      "summary": {
+        "es": "Las razas grandes terminan de madurar cerca de los dos años. Ajustar su rutina de adulto.",
+        "en": "Large breeds finish maturing around two years. Settle his adult routine."
+      },
+      "body": {
+        "es": "## Qué está pasando\nLas razas grandes como el Golden pueden tardar casi dos años en llegar a la adultez. La madurez social se desarrolla entre los 12 y los 36 meses, así que algunos cambios de comportamiento todavía pueden aparecer.\n\n## En qué enfocarse\n1. Una rutina de adulto: comidas, paseos y juegos estables.\n2. Mantener el entrenamiento vivo con retos nuevos.\n3. Consultar pronto si aparece miedo, ansiedad o agresividad que no estaba antes.",
+        "en": "## What is happening\nLarge breeds such as the Golden can take almost two years to reach adulthood. Social maturity develops between 12 and 36 months, so some behaviour changes can still appear.\n\n## What to focus on\n1. An adult routine: steady meals, walks and play.\n2. Keep training alive with new challenges.\n3. Ask for help early if fear, anxiety or aggression appear that were not there before."
+      },
+      "todos": [
+        {
+          "key": "months-18-24.adult-routine",
+          "text": {
+            "es": "Definir su rutina de adulto: horarios de comida, paseos y juego",
+            "en": "Set his adult routine: meal, walk and play times"
+          }
+        },
+        {
+          "key": "months-18-24.annual-checkup",
+          "text": {
+            "es": "Control anual cuando el veterinario lo programe",
+            "en": "Annual check-up when your vet schedules it"
+          }
+        },
+        {
+          "key": "months-18-24.new-challenge",
+          "text": {
+            "es": "Aprender algo nuevo juntos cada mes",
+            "en": "Learn something new together every month"
+          }
+        },
+        {
+          "key": "months-18-24.behaviour-watch",
+          "text": {
+            "es": "Consultar al veterinario si aparecen miedos o ansiedad nuevos",
+            "en": "Talk to the vet if new fears or anxiety appear"
+          }
+        }
+      ],
+      "sources": [
+        {
+          "title": "Merck Veterinary Manual: Puppy care",
+          "url": "https://merckvetmanual.com/dog-owners/routine-care-and-breeding-of-dogs/puppy-care"
+        },
+        {
+          "title": "Merck Veterinary Manual: Normal social behavior in dogs",
+          "url": "https://www.merckvetmanual.com/dog-owners/behavior-of-dogs/normal-social-behavior-in-dogs"
+        },
+        {
+          "title": "AVSAB: How to choose a trainer",
+          "url": "https://avsab.org/wp-content/uploads/2026/08/How-to-Choose-a-Trainer-final-final.pdf"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     }
   ]
