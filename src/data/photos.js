@@ -5,6 +5,7 @@
 //   photoUrl(row.storage_path)
 import { getSupabase, isOffline } from '../lib/supabase.js';
 import { PHOTO_BUCKET, PHOTO_MAX_PX, SUPABASE_URL } from '../config.js';
+import { beginBusy } from '../lib/busy.js';
 
 /** @typedef {'milestones' | 'vaccines' | 'profile'} PhotoKind */
 
@@ -53,13 +54,18 @@ export function photoUrl(path) {
  */
 export async function uploadPhoto(kind, file) {
   if (isOffline()) throw Object.assign(new Error('offline'), { code: 'offline' });
-  const { blob, width, height } = await resizeImage(file);
-  const path = `${kind}/${crypto.randomUUID()}.jpg`;
-  const { error } = await getSupabase()
-    .storage.from(PHOTO_BUCKET)
-    .upload(path, blob, { contentType: 'image/jpeg', cacheControl: '31536000', upsert: false });
-  if (error) throw Object.assign(new Error(error.message), { code: 'upload_failed' });
-  return { path, url: photoUrl(path), width, height };
+  const done = beginBusy('upload'); // a service worker update waits for the upload
+  try {
+    const { blob, width, height } = await resizeImage(file);
+    const path = `${kind}/${crypto.randomUUID()}.jpg`;
+    const { error } = await getSupabase()
+      .storage.from(PHOTO_BUCKET)
+      .upload(path, blob, { contentType: 'image/jpeg', cacheControl: '31536000', upsert: false });
+    if (error) throw Object.assign(new Error(error.message), { code: 'upload_failed' });
+    return { path, url: photoUrl(path), width, height };
+  } finally {
+    done();
+  }
 }
 
 /** Delete a stored photo. @param {string} path @returns {Promise<{ error: any }>} */
