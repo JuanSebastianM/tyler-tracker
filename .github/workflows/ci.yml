@@ -1,0 +1,11 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+jobs:
+  placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "Checks are added by the foundation phase."
