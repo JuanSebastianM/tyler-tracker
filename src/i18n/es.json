@@ -28,7 +28,16 @@
     "yesterday": "Ayer",
     "loggedBy": "Registrado por {name}",
     "showingCached": "Sin conexión: mostrando los últimos datos guardados.",
-    "optional": "opcional"
+    "optional": "opcional",
+    "viewer": {
+      "title": "Foto",
+      "close": "Cerrar foto",
+      "count": "{n} de {total}",
+      "previous": "Foto anterior",
+      "next": "Foto siguiente",
+      "resetZoom": "Quitar zoom",
+      "hint": "Pellizca o toca dos veces para hacer zoom."
+    }
   },
   "errors": {
     "network": "No hay conexión con el servidor. Revisa tu internet e inténtalo de nuevo.",

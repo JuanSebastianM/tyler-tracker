@@ -124,15 +124,6 @@
     "install3": "Elige «Agregar a inicio» y toca «Agregar».",
     "install4": "Abre Tyler desde el ícono en tu pantalla de inicio."
   },
-  "viewer": {
-    "title": "Foto",
-    "close": "Cerrar foto",
-    "count": "{n} de {total}",
-    "previous": "Foto anterior",
-    "next": "Foto siguiente",
-    "resetZoom": "Quitar zoom",
-    "hint": "Pellizca o toca dos veces para hacer zoom."
-  },
   "memories": {
     "title": "Recuerdos",
     "seeAll": "Ver recuerdos",

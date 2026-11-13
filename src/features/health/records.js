@@ -7,11 +7,11 @@ import { toast } from '../../lib/toast.js';
 import { navigate } from '../../lib/router.js';
 import {
   Card, List, ListRow, Button, Fab, Sheet, ConfirmDialog, EmptyState, Skeleton, TextInput, NumberInput, DateInput,
-  TimeInput, TextArea, Segmented,
+  TimeInput, TextArea, Segmented, PhotoViewer,
 } from '../../lib/ui/index.js';
 import { photoUrl } from '../../data/photos.js';
 import { validate } from './logic.js';
-import { CalendarButton, PhotoViewer, DueBadge } from './widgets.js';
+import { CalendarButton, DueBadge } from './widgets.js';
 
 /**
  * @typedef {object} FieldDef
@@ -183,7 +183,14 @@ function DetailSheet({ config, row, ctx, onClose, onEdit, onDelete }) {
       <p class="muted health-by-detail"><${LoggedBy} row=${row} /></p>
     </div>
   </${Sheet}>
-  ${viewer && path ? html`<${PhotoViewer} src=${photoUrl(path)} alt=${t('health.photo.alt', { title: v.title })} onClose=${() => setViewer(false)} />` : null}`;
+  ${viewer && path
+    ? html`<${PhotoViewer}
+        photos=${[{ id: path, url: photoUrl(path), alt: t('health.photo.alt', { title: v.title }), caption: v.title }]}
+        label=${t('health.photo.alt', { title: v.title })}
+        overSheet
+        onClose=${() => setViewer(false)}
+      />`
+    : null}`;
 }
 
 /**

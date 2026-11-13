@@ -28,7 +28,16 @@
     "yesterday": "Yesterday",
     "loggedBy": "Logged by {name}",
     "showingCached": "Offline: showing the last saved data.",
-    "optional": "optional"
+    "optional": "optional",
+    "viewer": {
+      "title": "Photo",
+      "close": "Close photo",
+      "count": "{n} of {total}",
+      "previous": "Previous photo",
+      "next": "Next photo",
+      "resetZoom": "Reset zoom",
+      "hint": "Pinch or double-tap to zoom."
+    }
   },
   "errors": {
     "network": "Can’t reach the server. Check your connection and try again.",

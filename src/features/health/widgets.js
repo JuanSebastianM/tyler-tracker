@@ -1,7 +1,7 @@
-// Small shared pieces of the Health feature: formatting, "Add to Calendar", photo viewer, badges.
-import { html, useEffect } from '../../../vendor/preact.js';
+// Small shared pieces of the Health feature: formatting, "Add to Calendar", badges.
+import { html } from '../../../vendor/preact.js';
 import { t, formatDate, formatNumber, formatClock, formatRelativeDay } from '../../lib/i18n.js';
-import { Badge, IconButton, Icon, Button } from '../../lib/ui/index.js';
+import { Badge, IconButton, Button } from '../../lib/ui/index.js';
 import { buildIcs, eventUid, icsFileName } from './ics.js';
 
 /** "4,6 kg" @param {number | string | null | undefined} kg */
@@ -105,25 +105,3 @@ export function CalendarButton({ item, tz, compact = false }) {
   return html`<${Button} variant="secondary" icon="calendar" onClick=${onClick} data-testid="add-to-calendar">${label}</${Button}>`;
 }
 
-/**
- * Full-screen photo. Tap anywhere or press Escape to close.
- * @param {{ src: string, alt: string, onClose: () => void }} props
- */
-export function PhotoViewer({ src, alt, onClose }) {
-  useEffect(() => {
-    const onKey = (/** @type {KeyboardEvent} */ e) => {
-      if (e.key === 'Escape') {
-        e.stopPropagation();
-        onClose();
-      }
-    };
-    document.addEventListener('keydown', onKey, true);
-    return () => document.removeEventListener('keydown', onKey, true);
-  }, []);
-  return html`<div class="health-viewer" role="dialog" aria-modal="true" aria-label=${alt} onClick=${onClose} data-testid="photo-viewer">
-    <img src=${src} alt=${alt} />
-    <button type="button" class="health-viewer-close" aria-label=${t('common.close')} onClick=${onClose} autofocus>
-      <${Icon} name="close" size=${26} />
-    </button>
-  </div>`;
-}

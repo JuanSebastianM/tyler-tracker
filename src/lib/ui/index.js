@@ -4,6 +4,8 @@ export { Button, IconButton, Fab } from './button.js';
 export { Card, ListRow, List, PageIntro } from './layout.js';
 export { Field, TextInput, NumberInput, DateInput, TimeInput, TextArea, Select, Segmented, Switch } from './fields.js';
 export { Sheet, ConfirmDialog } from './sheet.js';
+export { PhotoViewer } from './photo-viewer.js';
+export { useCloseOnBack } from './back-close.js';
 export { EmptyState, Badge, Spinner, Skeleton } from './feedback.js';
 export { Toaster } from './toaster.js';
 export { EditorOnly } from '../auth.js';

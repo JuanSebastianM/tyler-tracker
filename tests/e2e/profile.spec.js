@@ -184,6 +184,30 @@ test('tapping the profile photo opens the full-screen viewer and closing returns
   await expect(page.getByTestId('profile-card')).toBeVisible();
 });
 
+test('quickly closing and reopening the viewer never leaves the app or the route', async ({ page }) => {
+  await open(page, '/profile');
+  const photo = page.getByTestId('profile-photo');
+  const viewer = page.getByTestId('photo-viewer');
+  const depth = await page.evaluate(() => history.length);
+  for (let i = 0; i < 4; i++) {
+    await photo.click();
+    await expect(viewer).toBeVisible();
+    if (i % 2) await page.keyboard.press('Escape');
+    else await page.getByTestId('viewer-close').click();
+    await expect(viewer).toBeHidden();
+  }
+  // History is balanced: we are back on the screen's own entry (at most the last overlay entry
+  // remains as a forward entry), and no entries piled up.
+  await expect.poll(() => page.evaluate(() => !history.state?.ttOverlay)).toBe(true);
+  expect(await page.evaluate(() => history.length)).toBeLessThanOrEqual(depth + 1);
+  await expect(page).toHaveURL(/#\/profile$/);
+  // Back from a reopened viewer only closes it.
+  await photo.click();
+  await page.goBack();
+  await expect(viewer).toBeHidden();
+  await expect(page).toHaveURL(/#\/profile$/);
+});
+
 test('viewer zooms with double tap and pinch, and pans', async ({ page }) => {
   await open(page, '/profile');
   await page.getByTestId('profile-photo').click();

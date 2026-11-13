@@ -279,3 +279,42 @@ input[type='date']::-webkit-date-and-time-value, input[type='time']::-webkit-dat
 /* ---- Kitchen sink ---- */
 .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: var(--sp-2); color: var(--c-ink-2); }
 .icon-grid span { display: grid; place-items: center; height: 40px; }
+
+/* ---- Full-screen photo viewer (photo-viewer.js) ---- */
+body.viewer-open { overflow: hidden; }
+.viewer {
+  position: fixed; inset: 0; z-index: 45;
+  display: flex; flex-direction: column;
+  background: #000; color: #fff;
+  padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left);
+  animation: fade var(--dur-2) ease-out;
+}
+.viewer .icon-btn { color: #fff; background: rgb(255 255 255 / 0.12); }
+.viewer .icon-btn:hover { background: rgb(255 255 255 / 0.22); }
+.viewer .icon-btn:focus-visible { outline: 3px solid #7db4ff; outline-offset: 2px; }
+.viewer-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); padding: var(--sp-2) var(--sp-3); position: relative; z-index: 2; }
+.viewer-top-end { min-width: var(--tap); display: flex; justify-content: flex-end; }
+.viewer-count { font-size: var(--fs-sm); font-variant-numeric: tabular-nums; opacity: 0.9; }
+.viewer-stage {
+  flex: 1; min-height: 0; position: relative; overflow: hidden;
+  display: grid; place-items: center;
+  touch-action: none; user-select: none; -webkit-user-select: none;
+  cursor: zoom-in;
+}
+.viewer-stage.is-zoomed { cursor: grab; }
+.viewer-stage img {
+  width: 100%; height: 100%; object-fit: contain;
+  transform-origin: center center; will-change: transform;
+  -webkit-user-drag: none; pointer-events: none;
+}
+.viewer-nav { position: absolute; top: 50%; z-index: 2; transform: translateY(-50%); }
+.viewer-prev { left: calc(var(--sp-2) + var(--safe-left)); }
+.viewer-next { right: calc(var(--sp-2) + var(--safe-right)); }
+.viewer-bottom { padding: var(--sp-3) var(--sp-4) var(--sp-4); text-align: center; position: relative; z-index: 2; }
+.viewer-caption { margin: 0 0 var(--sp-1); font-weight: 600; }
+.viewer-date { margin: 0; opacity: 0.8; font-size: var(--fs-sm); }
+.viewer-date::first-letter { text-transform: uppercase; }
+.viewer-hint { margin: var(--sp-1) 0 0; opacity: 0.65; font-size: var(--fs-xs); }
+.viewer-actions { margin-top: var(--sp-3); display: flex; justify-content: center; }
+.viewer.viewer-over-sheet { z-index: 55; }
+@media (prefers-reduced-motion: reduce) { .viewer { animation: none; } }

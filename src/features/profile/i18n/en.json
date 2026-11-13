@@ -124,15 +124,6 @@
     "install3": "Choose \"Add to Home Screen\" and tap \"Add\".",
     "install4": "Open Tyler from the icon on your home screen."
   },
-  "viewer": {
-    "title": "Photo",
-    "close": "Close photo",
-    "count": "{n} of {total}",
-    "previous": "Previous photo",
-    "next": "Next photo",
-    "resetZoom": "Reset zoom",
-    "hint": "Pinch or double-tap to zoom."
-  },
   "memories": {
     "title": "Memories",
     "seeAll": "See memories",

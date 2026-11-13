@@ -1,8 +1,13 @@
-// Full-screen photo viewer: next/previous, caption, close (button, Escape, browser/OS back),
-// pinch-to-zoom, double-tap zoom and pan. Focus returns to the element that opened it.
+// Shared full-screen photo viewer: next/previous, caption, close (button, Escape, browser/OS back),
+// pinch-to-zoom, double-tap zoom, pan, wheel zoom on desktop. Focus returns to the opener.
+//
+//   html`<${PhotoViewer} photos=${[{ id, url, alt, caption, date }]} index=${0} onClose=${close} />`
+//
+// Opened from inside a Sheet (e.g. a record's detail sheet), pass `overSheet` so it stacks above it.
 import { html, useEffect, useRef, useState } from '../../../vendor/preact.js';
-import { t, formatDate } from '../../lib/i18n.js';
-import { IconButton } from '../../lib/ui/index.js';
+import { t, formatDate } from '../i18n.js';
+import { IconButton } from './button.js';
+import { useCloseOnBack } from './back-close.js';
 
 /**
  * @typedef {object} ViewerPhoto
@@ -34,11 +39,12 @@ function bound(z, box) {
 }
 
 /**
- * @param {{ photos: ViewerPhoto[], index: number, onIndex?: (i: number) => void, onClose: () => void,
- *   actions?: (photo: ViewerPhoto) => any, label?: string, opener?: HTMLElement | null }} props
+ * @param {{ photos: ViewerPhoto[], index?: number, onIndex?: (i: number) => void, onClose: () => void,
+ *   actions?: (photo: ViewerPhoto) => any, label?: string, opener?: HTMLElement | null, overSheet?: boolean }} props
  *   opener: element that gets focus back on close (iOS does not focus tapped buttons)
+ *   overSheet: stack above open sheets (the viewer was opened from one)
  */
-export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, opener: openerProp }) {
+export function PhotoViewer({ photos, index = 0, onIndex, onClose, actions, label, opener: openerProp, overSheet = false }) {
   const root = useRef(/** @type {HTMLDivElement | null} */ (null));
   const stage = useRef(/** @type {HTMLDivElement | null} */ (null));
   const [zoom, setZoomState] = useState({ scale: 1, x: 0, y: 0 });
@@ -48,8 +54,6 @@ export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, o
     zoomRef.current = z;
     setZoomState(z);
   };
-  const closeRef = useRef(onClose);
-  closeRef.current = onClose;
   const count = photos.length;
   const i = clamp(index, 0, Math.max(0, count - 1));
   const photo = photos[i];
@@ -60,28 +64,16 @@ export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, o
     onIndex?.((i + delta + count) % count);
   };
 
-  // Focus, Escape/arrows, scroll lock, back button closes, focus returns to the opener.
+  // Browser/OS back closes the viewer (never leaves the app; see back-close.js).
+  useCloseOnBack(onClose);
+
+  // Focus, scroll lock, focus returns to the opener.
   useEffect(() => {
     const opener = openerProp || /** @type {HTMLElement | null} */ (document.activeElement);
     document.body.classList.add('viewer-open');
     requestAnimationFrame(() => /** @type {HTMLElement | null} */ (root.current?.querySelector('.viewer-close'))?.focus({ preventScroll: true }));
-    let pushed = false;
-    try {
-      history.pushState({ ...(history.state || {}), photoViewer: true }, '', location.href);
-      pushed = true;
-    } catch {
-      /* ignore */
-    }
-    let closedByBack = false;
-    const onPop = () => {
-      closedByBack = true;
-      closeRef.current();
-    };
-    window.addEventListener('popstate', onPop);
     return () => {
-      window.removeEventListener('popstate', onPop);
       document.body.classList.remove('viewer-open');
-      if (pushed && !closedByBack && history.state?.photoViewer) history.back();
       opener?.focus?.({ preventScroll: true });
     };
   }, []);
@@ -89,7 +81,7 @@ export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, o
   /** @param {KeyboardEvent} e */
   const onKeyDown = (e) => {
     // A sheet opened above the viewer handles its own keys.
-    if (document.querySelector('.sheet-layer')) return;
+    if (!overSheet && document.querySelector('.sheet-layer')) return;
     if (e.key === 'Escape') {
       e.stopPropagation();
       onClose();
@@ -100,18 +92,21 @@ export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, o
       if (!items.length) return;
       const first = items[0];
       const last = items[items.length - 1];
+      // Keep a sheet underneath from trapping focus too.
+      e.stopPropagation();
       if (e.shiftKey && document.activeElement === first) {
         e.preventDefault();
         last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
+      } else if (!e.shiftKey && (document.activeElement === last || !root.current?.contains(document.activeElement))) {
         e.preventDefault();
         first.focus();
       }
     }
   };
+  // Capture phase, so a sheet underneath does not also close on Escape.
   useEffect(() => {
-    document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', onKeyDown, true);
+    return () => document.removeEventListener('keydown', onKeyDown, true);
   });
 
   // ---- Gestures (pointer events: pinch, pan, double tap, swipe) ----
@@ -215,18 +210,18 @@ export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, o
   if (!photo) return null;
   const zoomed = zoom.scale > 1.01;
   return html`<div
-    class="viewer"
+    class=${`viewer${overSheet ? ' viewer-over-sheet' : ''}`}
     role="dialog"
     aria-modal="true"
-    aria-label=${label || t('profile.viewer.title')}
+    aria-label=${label || t('common.viewer.title')}
     ref=${root}
     data-testid="photo-viewer"
   >
     <div class="viewer-top">
-      <${IconButton} icon="close" class="viewer-close" label=${t('profile.viewer.close')} onClick=${onClose} data-testid="viewer-close" />
-      ${count > 1 ? html`<span class="viewer-count" aria-live="polite">${t('profile.viewer.count', { n: i + 1, total: count })}</span>` : html`<span></span>`}
+      <${IconButton} icon="close" class="viewer-close" label=${t('common.viewer.close')} onClick=${onClose} data-testid="viewer-close" />
+      ${count > 1 ? html`<span class="viewer-count" aria-live="polite">${t('common.viewer.count', { n: i + 1, total: count })}</span>` : html`<span></span>`}
       <span class="viewer-top-end">
-        ${zoomed ? html`<${IconButton} icon="minus" label=${t('profile.viewer.resetZoom')} onClick=${() => setZoom({ scale: 1, x: 0, y: 0 })} data-testid="viewer-reset" />` : null}
+        ${zoomed ? html`<${IconButton} icon="minus" label=${t('common.viewer.resetZoom')} onClick=${() => setZoom({ scale: 1, x: 0, y: 0 })} data-testid="viewer-reset" />` : null}
       </span>
     </div>
     <div
@@ -248,13 +243,13 @@ export function PhotoViewer({ photos, index, onIndex, onClose, actions, label, o
       />
     </div>
     ${count > 1
-      ? html`<${IconButton} icon="chevron-left" class="viewer-nav viewer-prev" label=${t('profile.viewer.previous')} onClick=${() => go(-1)} />
-          <${IconButton} icon="chevron-right" class="viewer-nav viewer-next" label=${t('profile.viewer.next')} onClick=${() => go(1)} />`
+      ? html`<${IconButton} icon="chevron-left" class="viewer-nav viewer-prev" label=${t('common.viewer.previous')} onClick=${() => go(-1)} />
+          <${IconButton} icon="chevron-right" class="viewer-nav viewer-next" label=${t('common.viewer.next')} onClick=${() => go(1)} />`
       : null}
     <div class="viewer-bottom">
       ${photo.caption ? html`<p class="viewer-caption pre-line">${photo.caption}</p>` : null}
       ${photo.date ? html`<p class="viewer-date">${formatDate(photo.date, 'long')}</p>` : null}
-      <p class="viewer-hint">${t('profile.viewer.hint')}</p>
+      <p class="viewer-hint">${t('common.viewer.hint')}</p>
       ${actions ? html`<div class="viewer-actions">${actions(photo)}</div>` : null}
     </div>
   </div>`;

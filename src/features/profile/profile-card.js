@@ -3,13 +3,12 @@ import { html, useState, useRef } from '../../../vendor/preact.js';
 import { t, formatDate } from '../../lib/i18n.js';
 import { EditorOnly, useIsEditor } from '../../lib/auth.js';
 import { toast } from '../../lib/toast.js';
-import { Card, List, ListRow, Button, Sheet, TextInput, DateInput, TextArea, Segmented, Skeleton, Icon, Spinner } from '../../lib/ui/index.js';
+import { Card, List, ListRow, Button, Sheet, TextInput, DateInput, TextArea, Segmented, Skeleton, Icon, Spinner, PhotoViewer } from '../../lib/ui/index.js';
 import { petProfile, useTimezone } from '../../data/stores.js';
 import { getToday } from '../../data/derived.js';
 import { uploadPhoto, deletePhoto, photoUrl } from '../../data/photos.js';
 import { daysWithUs } from './logic.js';
 import { ageLabel } from './format.js';
-import { PhotoViewer } from './photo-viewer.js';
 
 /** Shown (and opened full-screen) until a profile photo is uploaded: the app icon photo. */
 const FALLBACK_PHOTO = 'assets/icons/icon-512.png';

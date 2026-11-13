@@ -252,9 +252,21 @@ test('vaccine photo uploads and opens full screen', async ({ page }) => {
   expect(sb.calls.some((c) => c.method === 'POST' && c.path.startsWith('/storage/v1/object/photos/vaccines/'))).toBe(true);
   await page.getByTestId('vaccines-row').click();
   await dialog(page).getByRole('button', { name: 'Ver foto en pantalla completa' }).click();
-  await expect(page.getByTestId('photo-viewer')).toBeVisible();
-  await page.getByTestId('photo-viewer').click();
-  await expect(page.getByTestId('photo-viewer')).toHaveCount(0);
+  // The shared viewer opens above the detail sheet, zooms, and closing it keeps the sheet open.
+  const viewer = page.getByTestId('photo-viewer');
+  await expect(viewer).toBeVisible();
+  await expect(page.getByTestId('viewer-close')).toBeFocused();
+  const box = await page.getByTestId('viewer-stage').boundingBox();
+  await page.mouse.dblclick(box.x + box.width / 2, box.y + box.height / 2);
+  await expect(page.getByTestId('viewer-stage')).toHaveAttribute('data-scale', '2.50');
+  await page.keyboard.press('Escape');
+  await expect(viewer).toHaveCount(0);
+  await expect(page.getByTestId('vaccines-detail')).toBeVisible();
+  await dialog(page).getByRole('button', { name: 'Ver foto en pantalla completa' }).click();
+  await page.getByTestId('viewer-close').click();
+  await expect(viewer).toHaveCount(0);
+  await expect(page.getByTestId('vaccines-detail')).toBeVisible();
+  await expect(page).toHaveURL(/#\/health\/vaccines$/);
 });
 
 test('English overview', async ({ page }) => {

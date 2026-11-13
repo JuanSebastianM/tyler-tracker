@@ -4,13 +4,12 @@ import { html, useState } from '../../../vendor/preact.js';
 import { t, formatDate } from '../../lib/i18n.js';
 import { EditorOnly, useIsEditor } from '../../lib/auth.js';
 import { href } from '../../lib/router.js';
-import { Card, Button, IconButton, Fab, Sheet, List, ListRow, EmptyState, Skeleton, Badge, Icon } from '../../lib/ui/index.js';
+import { Card, Button, IconButton, Fab, Sheet, List, ListRow, EmptyState, Skeleton, Badge, Icon, PhotoViewer } from '../../lib/ui/index.js';
 import { milestones, photos, petProfile, useTimezone } from '../../data/stores.js';
 import { photoUrl } from '../../data/photos.js';
 import { DEFAULT_BIRTH_DATE } from '../../config.js';
 import { buildTimeline, groupByMonth, timelinePhotos, photoDate, unusedSuggestions } from './logic.js';
 import { ageLabel, monthLabel, suggestions } from './format.js';
-import { PhotoViewer } from './photo-viewer.js';
 import { MilestoneSheet, AddPhotosSheet, EditPhotoSheet } from './memory-forms.js';
 
 /** @typedef {import('../../data/types').Photo} Photo */
