@@ -1,6 +1,187 @@
 {
-  "factTitle": "Dato del día",
-  "mustKnowTitle": "Lo imprescindible",
-  "emptyTitle": "Más guías en camino",
-  "emptyBody": "Entrenamiento, etapas por edad, salud y preguntas frecuentes."
+  "startHere": "Empieza por aquí",
+  "sectionsTitle": "Secciones",
+  "sample": "Ejemplo",
+  "loadErrorTitle": "No se pudo cargar",
+  "notFoundTitle": "No encontramos este contenido",
+  "notFoundBody": "Puede que el enlace esté mal o que el contenido se haya movido.",
+  "backTo": "Ir a {section}",
+  "emptySectionTitle": "Todavía no hay contenido aquí",
+  "emptySectionBody": "Pronto agregaremos guías a esta sección.",
+  "sections": {
+    "mustKnow": {
+      "title": "Lo imprescindible",
+      "intro": "Lo que no puede faltar",
+      "longIntro": "Lo más importante para cuidar a Tyler, ordenado de lo crítico a lo útil."
+    },
+    "roadmap": {
+      "title": "Etapas por edad",
+      "intro": "Qué esperar semana a semana",
+      "longIntro": "Qué está viviendo Tyler en cada etapa y qué tareas hacer. La etapa actual va abierta."
+    },
+    "training": {
+      "title": "Entrenamiento",
+      "intro": "Guías paso a paso y su progreso",
+      "longIntro": "Sesiones cortas y positivas. Marca cómo va Tyler en cada habilidad."
+    },
+    "health": {
+      "title": "Consejos de salud",
+      "intro": "Vacunas, parásitos, comida y más",
+      "longIntro": "Lo básico para mantener a Tyler sano. Ante cualquier duda, consulta a su veterinario."
+    },
+    "parents": {
+      "title": "Para sus papás",
+      "intro": "Trabajo en equipo y bienestar",
+      "longIntro": "Consejos para ustedes dos: rutinas, acuerdos y cómo cuidarse ustedes también."
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "intro": "Sus preguntas, con respuesta",
+      "longIntro": "Preguntas sobre Tyler con sus respuestas."
+    },
+    "facts": {
+      "title": "Datos curiosos",
+      "intro": "Cosas divertidas de los Golden",
+      "longIntro": "Datos curiosos sobre los Golden Retriever."
+    }
+  },
+  "count": {
+    "articles": {
+      "one": "{count} artículo",
+      "other": "{count} artículos"
+    },
+    "stages": {
+      "one": "{count} etapa",
+      "other": "{count} etapas"
+    },
+    "guides": {
+      "one": "{count} guía",
+      "other": "{count} guías"
+    },
+    "questions": {
+      "one": "{count} pregunta",
+      "other": "{count} preguntas"
+    },
+    "facts": {
+      "one": "{count} dato",
+      "other": "{count} datos"
+    }
+  },
+  "search": {
+    "label": "Buscar en Aprender",
+    "placeholder": "Buscar guías, consejos y preguntas",
+    "results": {
+      "zero": "Sin resultados",
+      "one": "{count} resultado",
+      "other": "{count} resultados"
+    },
+    "emptyTitle": "No encontramos nada",
+    "emptyBody": "Prueba con otra palabra, por ejemplo «vacunas» o «morder»."
+  },
+  "now": {
+    "title": "Ahora: {weeks}",
+    "open": "Ver esta etapa"
+  },
+  "facts": {
+    "today": "Dato del día",
+    "more": "Ver todos",
+    "all": {
+      "one": "{count} dato curioso",
+      "other": "{count} datos curiosos"
+    }
+  },
+  "priority": {
+    "critical": "Crítico",
+    "important": "Importante",
+    "goodToKnow": "Bueno saberlo"
+  },
+  "categories": {
+    "vaccines": "Vacunas",
+    "parasites": "Parásitos",
+    "nutrition": "Alimentación",
+    "dental": "Dientes",
+    "grooming": "Aseo",
+    "emergency": "Urgencias",
+    "exercise": "Ejercicio",
+    "general": "General",
+    "teamwork": "Trabajo en equipo",
+    "routine": "Rutina",
+    "wellbeing": "Bienestar",
+    "home": "Casa",
+    "budget": "Presupuesto",
+    "feeding": "Comida",
+    "health": "Salud",
+    "training": "Entrenamiento",
+    "behaviour": "Comportamiento",
+    "uncategorized": "Otras"
+  },
+  "roadmap": {
+    "weeks": "Semanas {from}–{to}",
+    "timing": {
+      "past": "Ya pasó",
+      "current": "Etapa actual",
+      "future": "Próxima"
+    },
+    "todos": "Tareas de la etapa",
+    "progress": "{done} de {total} hechas",
+    "progressLabel": "Tareas hechas"
+  },
+  "training": {
+    "overview": "Progreso general",
+    "overviewShort": "Entrenamiento: {percent}%",
+    "guides": "Guías",
+    "status": {
+      "notStarted": "Sin empezar",
+      "learning": "Aprendiendo",
+      "reliable": "Confiable",
+      "mastered": "Dominado"
+    },
+    "difficulty": {
+      "easy": "Fácil",
+      "medium": "Media",
+      "hard": "Difícil"
+    },
+    "fromAge": "Desde {age}",
+    "fromAgeWait": "Desde {age} · en {wait}",
+    "readyNow": "Ya tiene la edad",
+    "minutes": {
+      "one": "{count} min por sesión",
+      "other": "{count} min por sesión"
+    },
+    "progressTitle": "Progreso de Tyler",
+    "statusLabel": "Estado",
+    "startedLabel": "Empezó el",
+    "masteredLabel": "Lo dominó el",
+    "startedOn": "Empezó el {date}",
+    "masteredOn": "Lo dominó el {date}",
+    "notesLabel": "Notas",
+    "notesHint": "Qué funciona, qué le cuesta.",
+    "save": "Guardar progreso",
+    "saved": "Progreso guardado",
+    "errors": {
+      "futureDate": "La fecha no puede ser después de hoy.",
+      "masteredBeforeStarted": "La fecha en que lo dominó no puede ser antes de la fecha en que empezó."
+    }
+  },
+  "faq": {
+    "intro": "Preguntas sobre Tyler con sus respuestas. Las nuevas aparecen arriba.",
+    "searchLabel": "Buscar preguntas",
+    "searchPlaceholder": "Buscar en las preguntas",
+    "filterLabel": "Filtrar por tema",
+    "all": "Todas",
+    "clear": "Ver todas las preguntas",
+    "emptyTitle": "Aún no hay preguntas",
+    "emptyBody": "Cuando guarden una respuesta del asistente, aparecerá aquí.",
+    "noMatchTitle": "Ninguna pregunta coincide",
+    "noMatchBody": "Prueba con otra palabra u otro tema.",
+    "fromAssistant": "Del asistente",
+    "savedByShort": "por {name}",
+    "savedBy": "Guardada por {name} el {date}.",
+    "addedOn": "Agregada el {date}.",
+    "delete": "Eliminar pregunta",
+    "deleteTitle": "¿Eliminar esta pregunta?",
+    "deleteBody": "Se quitará de las preguntas frecuentes para todos. No se puede deshacer.",
+    "deleteConfirm": "Eliminar",
+    "deleted": "Pregunta eliminada"
+  }
 }
