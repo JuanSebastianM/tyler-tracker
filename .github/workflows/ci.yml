@@ -63,3 +63,18 @@ jobs:
           path: _site
       - id: deployment
         uses: actions/deploy-pages@v4
+      - name: Smoke test the live site
+        env:
+          URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          short="${GITHUB_SHA:0:7}"
+          for i in $(seq 1 12); do
+            if curl -fsS "${URL}sw.js" | grep -q "\"${short}-"; then break; fi
+            echo "waiting for the new deploy ($i)"; sleep 10
+          done
+          curl -fsS "${URL}sw.js" | grep -q "\"${short}-" || { echo "::error::sw.js on Pages is not stamped with ${short}"; exit 1; }
+          curl -fsS "$URL" | grep -q 'src/main.js'
+          for f in manifest.webmanifest vendor/preact.js vendor/supabase.js src/main.js src/i18n/es.json content/faq.json assets/icons/icon-192.png; do
+            curl -fsS -o /dev/null "${URL}${f}" || { echo "::error::missing ${f}"; exit 1; }
+          done
+          echo "Live site OK: $URL ($short)"

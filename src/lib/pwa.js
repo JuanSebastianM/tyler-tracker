@@ -1,7 +1,7 @@
 // Service worker registration, update flow and install detection.
 //
-// Disable the service worker with '?sw=off' (persists in localStorage; '?sw=on' re-enables).
-// It is always disabled on localhost so the dev server and e2e tests see fresh files.
+// Disable the service worker with '?sw=off' (persists in localStorage). It is disabled on localhost
+// so the dev server and e2e tests see fresh files; '?sw=on' forces it on (persists too).
 import { toast } from './toast.js';
 import { t } from './i18n.js';
 import { readJSON, writeJSON } from './storage.js';
@@ -12,7 +12,9 @@ export function isServiceWorkerDisabled() {
   if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return true;
   const param = new URLSearchParams(location.search).get('sw');
   if (param === 'off' || param === 'on') writeJSON('sw', param);
-  if (readJSON('sw', /** @type {string} */ ('on')) === 'off') return true;
+  const stored = readJSON('sw', /** @type {string | null} */ (null));
+  if (stored === 'off') return true;
+  if (stored === 'on') return false; // '?sw=on' forces it, e.g. to test the built site locally
   return ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname);
 }
 
