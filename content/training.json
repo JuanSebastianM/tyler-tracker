@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "name-response",
+      "sample": true,
+      "min_age_weeks": 7,
+      "difficulty": "easy",
+      "duration_min": 3,
+      "title": { "es": "Responder a su nombre", "en": "Responding to his name" },
+      "summary": {
+        "es": "Que al oír «Tyler» te mire. La base de todo lo demás.",
+        "en": "He looks at you when he hears “Tyler”. The base for everything else."
+      },
+      "body": {
+        "es": "## Pasos\n1. En un lugar tranquilo, di «Tyler» una sola vez con tono alegre.\n2. Cuando te mire, di «¡sí!» y dale un premio.\n3. Repite 5 veces por sesión, varias sesiones al día.\n4. Poco a poco practica con más distracciones.\n\n**Consejo:** nunca uses su nombre para regañarlo.",
+        "en": "## Steps\n1. Somewhere quiet, say “Tyler” once in a happy voice.\n2. When he looks at you, say “yes!” and give a treat.\n3. Repeat 5 times per session, several sessions a day.\n4. Gradually practice with more distractions.\n\n**Tip:** never use his name to scold him."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "sit",
+      "sample": true,
+      "min_age_weeks": 8,
+      "difficulty": "easy",
+      "duration_min": 5,
+      "title": { "es": "Sentado", "en": "Sit" },
+      "summary": {
+        "es": "Su primera señal: sentarse para pedir las cosas.",
+        "en": "His first cue: sitting to ask for things."
+      },
+      "body": {
+        "es": "## Pasos\n1. Pon un premio frente a su nariz.\n2. Súbelo despacio por encima de su cabeza: su cola bajará sola.\n3. Cuando se siente, di «¡sí!» y dale el premio.\n4. Cuando lo haga fácil, añade la palabra «sentado» justo antes.",
+        "en": "## Steps\n1. Hold a treat in front of his nose.\n2. Slowly move it up over his head: his bottom will drop on its own.\n3. When he sits, say “yes!” and give the treat.\n4. Once it is easy, add the word “sit” just before."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    }
+  ]
+}

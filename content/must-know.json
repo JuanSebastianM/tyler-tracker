@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "toxic-foods",
+      "sample": true,
+      "priority": "critical",
+      "title": { "es": "Alimentos tóxicos", "en": "Toxic foods" },
+      "summary": {
+        "es": "Chocolate, uvas, pasas, cebolla, ajo y xilitol nunca.",
+        "en": "Never chocolate, grapes, raisins, onion, garlic or xylitol."
+      },
+      "body": {
+        "es": "Algunos alimentos comunes son peligrosos para los perros:\n\n- **Chocolate** y café\n- **Uvas y uvas pasas**\n- **Cebolla y ajo**, crudos o cocinados\n- **Xilitol** (chicles y productos sin azúcar)\n- Nueces de macadamia\n\nSi Tyler come algo de esta lista, llama al veterinario de inmediato.",
+        "en": "Some common foods are dangerous for dogs:\n\n- **Chocolate** and coffee\n- **Grapes and raisins**\n- **Onion and garlic**, raw or cooked\n- **Xylitol** (gum and sugar-free products)\n- Macadamia nuts\n\nIf Tyler eats anything on this list, call the vet right away."
+      },
+      "sources": [{ "title": "ASPCA: People foods to avoid feeding your pets", "url": "https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "sleep-needs",
+      "sample": true,
+      "priority": "important",
+      "title": { "es": "Necesita dormir mucho", "en": "He needs lots of sleep" },
+      "summary": {
+        "es": "Un cachorro duerme 18–20 horas al día; el cansancio lo pone mordelón.",
+        "en": "A puppy sleeps 18–20 hours a day; overtired puppies bite more."
+      },
+      "body": {
+        "es": "Si Tyler está muy mordelón o acelerado, probablemente necesita una siesta. Llévalo a su lugar tranquilo después de jugar.",
+        "en": "If Tyler is very bitey or wound up, he probably needs a nap. Take him to his quiet spot after play."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    }
+  ]
+}

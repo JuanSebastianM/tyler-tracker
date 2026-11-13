@@ -55,14 +55,17 @@ manifest.webmanifest       PWA manifest (start_url and scope "./")
 sw.js                      Service worker (version + file list stamped at deploy)
 assets/icons/              PWA and apple-touch icons (generated from assets/source/)
 assets/source/             Source images (icon photo)
-vendor/                    Vendored ESM bundles + versions.json (do not edit by hand)
+vendor/                    Vendored ESM bundles + versions.json (do not edit by hand) + hand-written .d.ts
 src/
   main.js                  Boot
   app.js                   Shell: header, route outlet, bottom tab bar, toasts
   config.js                Supabase URL/key, app constants
   lib/                     Framework-level helpers shared by all features
-    supabase.js  auth.js  router.js  i18n.js  store.js  dates.js  markdown.js  content.js  ui/
-  data/                    One store per table + derived selectors (due items, age...)
+    supabase.js  auth.js  router.js  i18n.js  store.js  dates.js  markdown.js  content.js
+    storage.js (safe localStorage)  toast.js  pwa.js (service worker, install detection)
+    ui/                    UI kit (index.js re-exports everything); kitchen-sink.js = #/dev/ui
+  data/                    table-store.js (generic store), stores.js (one per table),
+                           derived.js (age, today, due items), photos.js, types.d.ts (row types)
   features/
     registry.js            Imports every feature and exposes routes + tabs
     today/ log/ health/ learn/ profile/
@@ -73,9 +76,9 @@ src/
   styles/                  tokens.css, base.css, components.css
 content/                   Bilingual reading content (see docs/CONTENT.md)
 supabase/migrations/       SQL, applied to the project by the orchestrator only
-tests/unit/ tests/e2e/     Tests
+tests/unit/ tests/e2e/     Tests (e2e: helpers.js, fixtures.js, supabase-mock.js are shared)
 scripts/                   Dev server, deploy stamping, vendor build, checks
-docs/                      This file, CONTENT.md, PLAN.md
+docs/                      This file, CONTENT.md, FEATURE_GUIDE.md, PLAN.md
 .github/workflows/         ci.yml (checks + deploy), vendor.yml, nightly.yml
 ```
 
@@ -97,7 +100,9 @@ Hash routing (`#/today`), so GitHub Pages needs no rewrite rules. Route ids are 
 | profile  | Tyler         | `#/profile`  | Profile, photos and milestones, settings (language, meals), sign-in, export |
 
 Sub-routes are owned by the feature (`#/health/vaccines`, `#/learn/faq`, `#/learn/guide/<id>`...).
-Unknown routes redirect to `#/today`.
+Unknown routes redirect to `#/today`. The shell also owns `#/dev/ui` (UI kit reference page, not in
+the tab bar). Each feature's stylesheet `src/features/<id>/<id>.css` is linked statically from
+`index.html` (no flash of unstyled content); a feature may `@import` more files from its folder.
 
 ## 5. Data model (Supabase)
 
@@ -129,12 +134,16 @@ Reading content lives in `/content` as JSON with bilingual fields `{ "es": "..."
 Markdown-lite bodies (paragraphs, `##`/`###` headings, bullet and numbered lists, bold, italic, links).
 Schemas are defined in `docs/CONTENT.md`. Content is fetched network-first so new FAQ entries show up
 without an app update. FAQ entries are appended to `content/faq.json` by the orchestrator when Juan
-approves an answer in chat.
+approves an answer in chat. Every list file uses a top-level `items` array. Entries flagged
+`"sample": true` are placeholders: shown on localhost (and with `?samples=1`), hidden on the live
+site.
 
 ## 7. Offline and PWA behaviour
 
 - App shell and vendored libraries are precached by the service worker and served cache-first; a new
-  deploy activates on next launch and shows an "updated" toast.
+  deploy activates on next launch and shows an "updated" toast. If an update arrives while the app
+  is open, a toast offers "Update". `scripts/build-site.mjs` stamps the version and precache list.
+  The worker is never registered on localhost; `?sw=off` disables (and unregisters) it on any host.
 - Content JSON: network-first with cache fallback. Supabase requests are never cached by the service
   worker; each data store keeps its last successful result in `localStorage` and renders it immediately
   (stale-while-revalidate), refreshing on launch, on tab focus and after writes.

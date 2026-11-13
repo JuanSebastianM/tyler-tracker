@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "sample": true,
+  "placeholder_note": {
+    "es": "Valores de ejemplo, aún sin verificar. No los uses para decisiones de salud.",
+    "en": "Sample values, not verified yet. Do not use them for health decisions."
+  },
+  "breed": "golden_retriever",
+  "sex": "male",
+  "unit": "kg",
+  "points": [
+    { "age_weeks": 8, "min_kg": 5, "max_kg": 7 },
+    { "age_weeks": 12, "min_kg": 8, "max_kg": 11 },
+    { "age_weeks": 16, "min_kg": 12, "max_kg": 16 },
+    { "age_weeks": 24, "min_kg": 19, "max_kg": 24 },
+    { "age_weeks": 52, "min_kg": 29, "max_kg": 34 }
+  ],
+  "sources": [{ "title": "Placeholder: replace with a verified growth reference", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+  "reviewed_on": "2026-11-13"
+}

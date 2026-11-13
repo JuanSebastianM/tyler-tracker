@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "new-home",
+      "sample": true,
+      "from_weeks": 6,
+      "to_weeks": 10,
+      "title": { "es": "Llegada a casa", "en": "Settling in" },
+      "summary": {
+        "es": "Todo es nuevo: rutinas, olores y personas. Duerme mucho y aprende rápido.",
+        "en": "Everything is new: routines, smells and people. He sleeps a lot and learns fast."
+      },
+      "body": {
+        "es": "## Qué está pasando\nTyler se está separando de su camada y aprendiendo que su nueva casa es segura. Duerme entre **18 y 20 horas** al día y necesita salir a hacer sus necesidades al despertar, después de comer y después de jugar.\n\n## En qué enfocarse\n- Rutina fija de comidas, sueño y salidas.\n- Un lugar tranquilo para dormir.\n- Experiencias nuevas cortas y positivas.",
+        "en": "## What is happening\nTyler is leaving his litter and learning that his new home is safe. He sleeps **18 to 20 hours** a day and needs a potty break after waking up, after eating and after playing.\n\n## What to focus on\n- A fixed routine for meals, sleep and potty breaks.\n- A quiet place to sleep.\n- Short, positive new experiences."
+      },
+      "todos": [
+        { "key": "new-home.first-vet-visit", "text": { "es": "Primera visita al veterinario", "en": "First vet visit" } },
+        { "key": "new-home.crate-setup", "text": { "es": "Preparar su cama o guacal", "en": "Set up his bed or crate" } },
+        { "key": "new-home.potty-spot", "text": { "es": "Elegir su lugar para hacer necesidades", "en": "Choose his potty spot" } }
+      ],
+      "sources": [{ "title": "AVSAB: Position statements", "url": "https://avsab.org/resources/position-statements/" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "socialization",
+      "sample": true,
+      "from_weeks": 10,
+      "to_weeks": 16,
+      "title": { "es": "Ventana de socialización", "en": "Socialization window" },
+      "summary": {
+        "es": "Lo que conozca ahora con calma le servirá toda la vida.",
+        "en": "What he meets calmly now will help him for life."
+      },
+      "body": {
+        "es": "## Qué está pasando\nEs la etapa en la que más fácil acepta personas, sonidos, superficies y otros animales.\n\n## En qué enfocarse\n- Muchas experiencias nuevas, cortas y con premios.\n- Manipular orejas, patas y boca con suavidad.\n- Seguir el esquema de vacunas.",
+        "en": "## What is happening\nThis is when he most easily accepts people, sounds, surfaces and other animals.\n\n## What to focus on\n- Many short new experiences with treats.\n- Gently handle his ears, paws and mouth.\n- Keep up with his vaccine schedule."
+      },
+      "todos": [
+        { "key": "socialization.handling", "text": { "es": "Practicar tocar patas y orejas a diario", "en": "Practice touching paws and ears daily" } },
+        { "key": "socialization.car-ride", "text": { "es": "Primer paseo corto en carro", "en": "First short car ride" } }
+      ],
+      "sources": [{ "title": "AVSAB: Position statements", "url": "https://avsab.org/resources/position-statements/" }],
+      "reviewed_on": "2026-11-13"
+    }
+  ]
+}

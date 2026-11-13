@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "same-rules",
+      "sample": true,
+      "category": "teamwork",
+      "title": { "es": "Las mismas reglas para los dos", "en": "Same rules for both of you" },
+      "summary": {
+        "es": "Pónganse de acuerdo en palabras, límites y horarios.",
+        "en": "Agree on cue words, limits and schedules."
+      },
+      "body": {
+        "es": "Tyler aprende más rápido si los dos usan **las mismas palabras** y **los mismos límites**.\n\n- Escriban la lista de señales («sentado», «ven», «suelta»).\n- Decidan si puede subirse al sofá antes de que lo intente.\n- Registren cada comida y salida en la app para no duplicar.",
+        "en": "Tyler learns faster when you both use **the same words** and **the same limits**.\n\n- Write down your cue list (“sit”, “come”, “drop”).\n- Decide whether he may use the sofa before he tries.\n- Log every meal and potty break in the app so nobody doubles up."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "night-shifts",
+      "sample": true,
+      "category": "routine",
+      "title": { "es": "Turnos de noche", "en": "Night shifts" },
+      "summary": {
+        "es": "Las primeras semanas necesitará salir de noche: túrnense.",
+        "en": "In the first weeks he will need to go out at night: take turns."
+      },
+      "body": {
+        "es": "Un cachorro pequeño aguanta pocas horas sin orinar. Alternen quién se levanta para que ambos descansen.",
+        "en": "A young puppy can only hold it for a few hours. Alternate who gets up so you both rest."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    }
+  ]
+}

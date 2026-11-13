@@ -1,7 +1,8 @@
 # Tyler Tracker
 
 PWA to track Tyler, a Golden Retriever puppy. Read `docs/ARCHITECTURE.md` before changing anything: it is
-the contract for stack, layout, data model and conventions. Content schemas are in `docs/CONTENT.md`.
+the contract for stack, layout, data model and conventions. Content schemas are in `docs/CONTENT.md`;
+how to build a feature (UI kit, stores, i18n, tests) is in `docs/FEATURE_GUIDE.md`.
 
 Rules that are easy to get wrong:
 

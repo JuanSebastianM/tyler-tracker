@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "vaccine-basics",
+      "sample": true,
+      "category": "vaccines",
+      "title": { "es": "Cómo funcionan sus vacunas", "en": "How his vaccines work" },
+      "summary": {
+        "es": "Varias dosis cada 2–4 semanas hasta las 16 semanas o más.",
+        "en": "Several doses every 2–4 weeks until 16 weeks or later."
+      },
+      "body": {
+        "es": "Las vacunas esenciales protegen contra **moquillo, parvovirus y hepatitis** (adenovirus), y la **rabia** según la ley local. Se aplican en varias dosis porque los anticuerpos de la mamá pueden bloquear las primeras.\n\nEl veterinario decide el calendario exacto según su edad y su historia.",
+        "en": "Core vaccines protect against **distemper, parvovirus and hepatitis** (adenovirus), plus **rabies** as local law requires. They come in several doses because his mother's antibodies can block the early ones.\n\nThe vet decides the exact schedule based on his age and history."
+      },
+      "sources": [{ "title": "WSAVA vaccination guidelines", "url": "https://wsava.org/global-guidelines/vaccination-guidelines/" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "emergency-signs",
+      "sample": true,
+      "category": "emergency",
+      "title": { "es": "Señales de urgencia", "en": "Emergency signs" },
+      "summary": {
+        "es": "Vómito o diarrea con sangre, decaimiento o no comer: al veterinario ya.",
+        "en": "Bloody vomit or diarrhea, lethargy or not eating: see the vet now."
+      },
+      "body": {
+        "es": "Llama al veterinario de inmediato si notas:\n\n- Vómito o diarrea repetidos, sobre todo con sangre\n- Decaimiento, encías pálidas o dificultad para respirar\n- No come en más de 12 horas\n- Abdomen hinchado y duro",
+        "en": "Call the vet right away if you notice:\n\n- Repeated vomiting or diarrhea, especially with blood\n- Lethargy, pale gums or trouble breathing\n- Not eating for more than 12 hours\n- A swollen, hard belly"
+      },
+      "sources": [{ "title": "WSAVA vaccination guidelines", "url": "https://wsava.org/global-guidelines/vaccination-guidelines/" }],
+      "reviewed_on": "2026-11-13"
+    }
+  ]
+}

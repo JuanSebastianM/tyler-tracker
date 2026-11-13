@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "scottish-origin",
+      "sample": true,
+      "text": {
+        "es": "Los Golden Retriever nacieron en **Escocia** en el siglo XIX, en la finca Guisachan de Lord Tweedmouth, para recoger aves en terrenos húmedos.",
+        "en": "Golden Retrievers were developed in **Scotland** in the 19th century, at Lord Tweedmouth's Guisachan estate, to retrieve birds on wet ground."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "soft-mouth",
+      "sample": true,
+      "text": {
+        "es": "Tienen **boca blanda**: fueron criados para cargar presas sin dañarlas. Por eso a Tyler le encanta llevar cosas en la boca.",
+        "en": "They have a **soft mouth**: they were bred to carry game without damaging it. That is why Tyler loves carrying things around."
+      },
+      "sources": [{ "title": "Golden Retriever Club of America", "url": "https://www.grca.org/" }],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "baby-teeth",
+      "sample": true,
+      "text": {
+        "es": "Un cachorro tiene **28 dientes de leche**; un perro adulto tiene **42**. El cambio pasa más o menos entre los 3 y los 6 meses.",
+        "en": "A puppy has **28 baby teeth**; an adult dog has **42**. They change roughly between 3 and 6 months of age."
+      },
+      "sources": [{ "title": "AKC: Golden Retriever", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+      "reviewed_on": "2026-11-13"
+    }
+  ]
+}

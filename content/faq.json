@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "meals-per-day",
+      "sample": true,
+      "category": "feeding",
+      "question": {
+        "es": "¿Cuántas veces al día debe comer Tyler?",
+        "en": "How many times a day should Tyler eat?"
+      },
+      "answer": {
+        "es": "Mientras es cachorro, lo normal es repartir la ración diaria en **3 o 4 comidas** a horas fijas. Hacia los 6 meses se suele pasar a **2 comidas**.\n\n- Usa la cantidad que indica la bolsa de su comida como punto de partida.\n- Ajusta según su peso y su silueta: debes poder sentir las costillas sin verlas.\n- Retira el plato a los 15–20 minutos para mantener horarios regulares.",
+        "en": "While he is a puppy, split the daily amount into **3 or 4 meals** at fixed times. Around 6 months most puppies move to **2 meals**.\n\n- Start with the amount on his food bag.\n- Adjust to his weight and shape: you should feel his ribs without seeing them.\n- Pick the bowl up after 15–20 minutes to keep a regular schedule."
+      },
+      "sources": [{ "title": "AKC: Puppy Feeding Fundamentals", "url": "https://www.akc.org/expert-advice/nutrition/puppy-feeding-fundamentals/" }],
+      "reviewed_on": "2026-11-13",
+      "added_on": "2026-11-13"
+    },
+    {
+      "id": "when-can-he-go-outside",
+      "sample": true,
+      "category": "health",
+      "question": {
+        "es": "¿Cuándo puede salir a pasear a la calle?",
+        "en": "When can he go for walks outside?"
+      },
+      "answer": {
+        "es": "Hasta que el veterinario confirme que su esquema de vacunas está completo, evita el suelo de parques y andenes, donde puede contagiarse de parvovirus.\n\nMientras tanto **sí puede socializar**: cárgalo para que vea y escuche la calle, invita a perros vacunados y sanos a casa y deja que conozca personas, ruidos y superficies limpias.",
+        "en": "Until the vet confirms his vaccine series is complete, keep him off the ground in parks and sidewalks, where he could catch parvovirus.\n\nIn the meantime he **can still socialize**: carry him so he sees and hears the street, invite healthy vaccinated dogs over, and let him meet people, sounds and clean surfaces."
+      },
+      "sources": [{ "title": "AVSAB: Position statements", "url": "https://avsab.org/resources/position-statements/" }],
+      "reviewed_on": "2026-11-13",
+      "added_on": "2026-11-13"
+    }
+  ]
+}
