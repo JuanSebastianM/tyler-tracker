@@ -71,8 +71,14 @@ export function PhotoViewer({ photos, index = 0, onIndex, onClose, actions, labe
   useEffect(() => {
     const opener = openerProp || /** @type {HTMLElement | null} */ (document.activeElement);
     document.body.classList.add('viewer-open');
-    requestAnimationFrame(() => /** @type {HTMLElement | null} */ (root.current?.querySelector('.viewer-close'))?.focus({ preventScroll: true }));
+    // Next frame, unless the person already focused a control in the viewer (or it closed first).
+    const frame = requestAnimationFrame(() => {
+      const el = root.current;
+      if (!el?.isConnected || el.contains(document.activeElement)) return;
+      /** @type {HTMLElement | null} */ (el.querySelector('.viewer-close'))?.focus({ preventScroll: true });
+    });
     return () => {
+      cancelAnimationFrame(frame);
       document.body.classList.remove('viewer-open');
       opener?.focus?.({ preventScroll: true });
     };

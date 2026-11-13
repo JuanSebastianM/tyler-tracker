@@ -136,6 +136,32 @@ test('editor sees and edits the private visit cost', async ({ page }) => {
   await expect(toastWith(page, 'Visita guardada')).toBeVisible();
   await expect.poll(() => sb.db.vet_visit_private[0].cost).toBe(90000);
   expect(sb.restCalls('vet_visit_private', 'POST').length).toBeGreaterThan(0);
+  expect(sb.db.vet_visits[0].reason).toBe('Chequeo general'); // the cost was not typed into the first field
+});
+
+test('a field focused right after a sheet opens keeps the focus (the sheet does not steal it)', async ({ page }) => {
+  // Launch-day flake: the sheet focused its first field one frame after opening, so a fast tap on
+  // another field (or Playwright's fill) sent the text to the first field. Reproduce it within one
+  // frame: open the edit form, focus Costo before the next frame, then let two frames pass.
+  await openApp(page, '/health/visits', { mode: 'asEditor', fixtures: visitFixtures });
+  await page.getByTestId('visits-row').click();
+  const editButton = dialog(page).getByRole('button', { name: 'Editar' });
+  await expect(editButton).toBeVisible();
+  const focused = await editButton.evaluate(async (btn) => {
+    btn.click();
+    for (let i = 0; i < 5; i++) await Promise.resolve(); // Preact renders in a microtask
+    const cost = /** @type {HTMLInputElement | null} */ (document.querySelector('[data-testid="visits-form"] [data-field="cost"] input'));
+    if (!cost) return 'no cost field';
+    cost.focus();
+    await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+    return document.activeElement === cost ? 'cost' : document.activeElement?.closest('[data-field]')?.getAttribute('data-field') || document.activeElement?.tagName;
+  });
+  expect(focused).toBe('cost');
+  // Without a competing tap the first field still gets the focus.
+  await page.keyboard.press('Escape');
+  await page.getByTestId('visits-row').click();
+  await dialog(page).getByRole('button', { name: 'Editar' }).click();
+  await expect(page.getByTestId('visits-form').getByLabel('Motivo')).toBeFocused();
 });
 
 test('follow-up date shows in due items with an Add to Calendar file', async ({ page }) => {

@@ -26,8 +26,13 @@ export function Sheet({ open, onClose, title, children, footer, initialFocus, di
     const target = /** @type {HTMLElement | null} */ (
       (initialFocus && el?.querySelector(initialFocus)) || el?.querySelector('input, select, textarea') || el
     );
-    // Do not pop the iOS keyboard for sheets without inputs.
-    requestAnimationFrame(() => target?.focus({ preventScroll: true }));
+    // Do not pop the iOS keyboard for sheets without inputs. Focus on the next frame, but never take
+    // it from a field the person already tapped or typed into meanwhile (their text would go to the
+    // first field instead), and not at all if the sheet closed first.
+    const frame = requestAnimationFrame(() => {
+      if (!el?.isConnected || el.contains(document.activeElement)) return;
+      target?.focus({ preventScroll: true });
+    });
     /** @param {KeyboardEvent} e */
     const onKey = (e) => {
       if (e.key === 'Escape' && dismissible) {
@@ -49,6 +54,7 @@ export function Sheet({ open, onClose, title, children, footer, initialFocus, di
     };
     document.addEventListener('keydown', onKey);
     return () => {
+      cancelAnimationFrame(frame);
       document.removeEventListener('keydown', onKey);
       openCount--;
       if (openCount <= 0) document.body.classList.remove('sheet-open');
