@@ -192,5 +192,15 @@
       "friend": "Primer amigo perruno",
       "toy": "Su juguete favorito"
     }
+  },
+  "theme": {
+    "title": "Tema",
+    "color": "Color",
+    "mode": "Modo",
+    "savedDevice": "Solo cambia la app para ti, en este dispositivo.",
+    "savedAccount": "Solo cambia la app para ti y se guarda en tu cuenta.",
+    "autoHint": "Automático sigue el modo claro u oscuro de tu dispositivo.",
+    "names": { "default": "Predeterminado", "rose": "Rosa", "lavender": "Lavanda", "mint": "Menta", "sky": "Cielo" },
+    "modes": { "auto": "Automático", "light": "Claro", "dark": "Oscuro" }
   }
 }

@@ -132,3 +132,36 @@
 @media (prefers-reduced-motion: reduce) {
   .profile .upload-bar span { transition: none; }
 }
+
+/* ---- Theme picker (theme-picker.js). Previews use the real tokens of each theme. ---- */
+.profile .theme-settings .profile-note { margin-top: calc(var(--sp-1) * -1); }
+.profile .theme-swatches { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-2); }
+.profile .theme-swatch {
+  display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+  padding: 6px 6px var(--sp-2); min-height: var(--tap); min-width: 0;
+  background: transparent; border: 1.5px solid var(--c-line); border-radius: var(--r-control);
+  color: var(--c-ink); font-size: var(--fs-sm); font-weight: 650; text-align: center;
+}
+.profile .theme-swatch[aria-checked='true'] { border-color: var(--c-gold-ink); box-shadow: 0 0 0 1.5px var(--c-gold-ink) inset; }
+.profile .theme-preview {
+  position: relative; display: flex; flex-direction: column; gap: 6px;
+  height: 64px; padding: 8px; border-radius: 10px;
+  background: var(--c-bg); border: 1px solid var(--c-line);
+}
+.profile .tp-card {
+  display: flex; align-items: center; gap: 6px; flex: 1; min-height: 0;
+  padding: 0 6px; border-radius: 7px; background: var(--c-surface);
+}
+.profile .tp-dot { flex: none; width: 14px; height: 14px; border-radius: 50%; background: var(--c-gold-soft); box-shadow: 0 0 0 2px var(--c-gold) inset; }
+.profile .tp-lines { flex: 1; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.profile .tp-line { display: block; height: 3px; border-radius: 2px; background: var(--c-ink-2); opacity: 0.55; }
+.profile .tp-line-short { width: 60%; }
+.profile .tp-pill { display: block; height: 12px; width: 55%; border-radius: var(--r-chip); background: var(--c-gold); }
+.profile .tp-check {
+  position: absolute; top: -7px; right: -7px; width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--c-gold); color: var(--c-on-gold);
+  box-shadow: 0 0 0 2px var(--c-surface);
+}
+.profile .theme-name { overflow-wrap: anywhere; line-height: 1.2; }
+.profile .theme-mode { margin-top: var(--sp-4); }
+.profile .theme-mode-hint { margin-top: 6px; }
