@@ -12,6 +12,7 @@ import { mockSupabase } from './supabase-mock.js';
 
 export { mockSupabase };
 export * from './fixtures.js';
+export * from './content-fixtures.js';
 
 /**
  * Mock Supabase, optionally set the locale, open a route and wait for the shell.

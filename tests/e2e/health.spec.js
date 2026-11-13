@@ -97,8 +97,7 @@ test('invalid weight is rejected', async ({ page }) => {
 });
 
 test('chart renders without a reference file', async ({ page }) => {
-  await page.route('**/content/growth.json', (r) => r.fulfill({ status: 404, body: '' }));
-  await openApp(page, '/health/weight');
+  await openApp(page, '/health/weight', { content: { growth: null } });
   await expect(page.getByTestId('growth-chart').locator('svg[role="img"]')).toHaveAttribute('data-points', '1');
   await expect(page.getByTestId('growth-no-reference')).toBeVisible();
   await expect(page.getByTestId('growth-band')).toHaveCount(0);

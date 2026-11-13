@@ -1,14 +1,12 @@
 // Review screenshots for the Learn tab (not part of `npm run check`).
 //   SCREENSHOT_DIR=../review/learn E2E_PORT=4183 npm run test:e2e -- tests/e2e/learn-screenshots.spec.js
 import { test, expect } from 'playwright/test';
-import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { openApp, EDITOR_USER } from './helpers.js';
+import { openApp, EDITOR_USER, contentItems } from './helpers.js';
 
 const dir = process.env.SCREENSHOT_DIR;
 test.skip(!dir, 'set SCREENSHOT_DIR to take review screenshots');
-const root = resolve(import.meta.dirname, '../..');
-const content = (name) => JSON.parse(readFileSync(resolve(root, 'content', `${name}.json`), 'utf8')).items;
+const content = contentItems;
 const shot = (page, name, fullPage = false) =>
   page.screenshot({ path: resolve(dir || '.', `${name}.png`), fullPage, style: fullPage ? '.tabbar { display: none !important; }' : undefined });
 const settle = (page) => page.waitForTimeout(400);
@@ -118,8 +116,7 @@ test('training guide as visitor', async ({ page }) => {
 });
 
 test('faq empty, saved entry article as editor, delete confirm', async ({ page }) => {
-  await page.route('**/content/faq.json', (route) => route.fulfill({ json: { version: 1, items: [] } }));
-  await openApp(page, '/learn/faq');
+  await openApp(page, '/learn/faq', { content: { faq: { version: 1, items: [] } } });
   await expect(page.getByText('Aún no hay preguntas')).toBeVisible();
   await settle(page);
   await shot(page, 'faq-empty');

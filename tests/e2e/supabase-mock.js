@@ -13,9 +13,12 @@
 //   now: ISO string for the page clock (default FIXED_NOW); pass null to use the real clock
 //   failWrites: true -> every insert/update/delete returns HTTP 500 (test rollback + toast)
 //   password: the password that signs in successfully via the sign-in sheet (default 'correct-password')
+//   content: { name: json | null } overrides of the fake reading content (content-fixtures.js) that
+//     is served for every content/*.json request (null = HTTP 404); 'real' serves the repo files
 //   chat: behaviour of the `chat` Edge Function mock (see mockChatFunction below):
 //     { reply, sources, refuse: '<error code>', streamError: true, draft, draftError: '<code>', budget }
 import { defaultFixtures, EDITOR_USER, FIXED_NOW, PRIVATE_TABLES } from './fixtures.js';
+import { CONTENT_FIXTURES } from './content-fixtures.js';
 
 export const SUPABASE_URL = 'https://kegtfxoiijbytprfwqrl.supabase.co';
 export const AUTH_STORAGE_KEY = 'tt-auth';
@@ -89,7 +92,8 @@ function applyOrder(rows, order) {
 /**
  * @param {import('playwright/test').Page} page
  * @param {{ mode?: 'signedOut' | 'asEditor', fixtures?: Record<string, any[]>, now?: string | null,
- *   failWrites?: boolean, password?: string }} [opts]
+ *   failWrites?: boolean, password?: string, chat?: any,
+ *   content?: 'real' | Record<string, any> }} [opts]
  */
 export async function mockSupabase(page, opts = {}) {
   const mode = opts.mode || 'signedOut';
@@ -115,6 +119,17 @@ export async function mockSupabase(page, opts = {}) {
       headers: { 'access-control-allow-origin': '*', 'access-control-expose-headers': '*', ...headers },
       body: body === undefined ? '' : JSON.stringify(body),
     });
+
+  // Reading content: tests never depend on the real /content files.
+  if (opts.content !== 'real') {
+    const content = { ...CONTENT_FIXTURES, ...(opts.content || {}) };
+    await page.route(/\/content\/[a-z-]+\.json(\?.*)?$/, (route) => {
+      const name = /\/content\/([a-z-]+)\.json/.exec(route.request().url())?.[1] || '';
+      const data = content[name];
+      if (data == null) return route.fulfill({ status: 404, body: '' });
+      return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(data) });
+    });
+  }
 
   await page.route(`${SUPABASE_URL}/**`, async (route) => {
     const req = route.request();

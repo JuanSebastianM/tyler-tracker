@@ -1,13 +1,10 @@
 // Learn tab: content sections, search, roadmap to-dos, training progress and the merged FAQ.
-// Content comes from the local /content files (ids are read from disk, never hard-coded); store rows
-// come from fixtures.
+// Content comes from the fake content in content-fixtures.js (served by mockSupabase), never from
+// /content; store rows come from fixtures.
 import { test, expect } from 'playwright/test';
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { openApp, toastWith, tab, EDITOR_USER } from './helpers.js';
+import { openApp, toastWith, tab, EDITOR_USER, contentItems } from './helpers.js';
 
-const root = resolve(import.meta.dirname, '../..');
-const content = (name) => JSON.parse(readFileSync(resolve(root, 'content', `${name}.json`), 'utf8')).items;
+const content = contentItems;
 
 // Tyler is 7 weeks old at FIXED_NOW (2026-11-13). Same rule as currentStage().
 const AGE_WEEKS = 7;
@@ -263,8 +260,7 @@ test.describe('faq', () => {
   });
 
   test('empty FAQ shows a helpful empty state', async ({ page }) => {
-    await page.route('**/content/faq.json', (route) => route.fulfill({ json: { version: 1, items: [] } }));
-    await openApp(page, '/learn/faq');
+    await openApp(page, '/learn/faq', { content: { faq: { version: 1, items: [] } } });
     await expect(page.getByText('Aún no hay preguntas')).toBeVisible();
     await page.goto('./#/learn/faq/saved-unknown');
     await expect(page.getByTestId('learn-not-found')).toBeVisible();

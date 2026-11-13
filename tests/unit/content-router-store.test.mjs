@@ -1,6 +1,5 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
 import { currentStage, factOfTheDay, findById, loadContent, withoutSamples, hash32 } from '../../src/lib/content.js';
 import { parseHash, matchPath, resolveRoute } from '../../src/lib/router.js';
 import { createStore } from '../../src/lib/store.js';
@@ -46,7 +45,7 @@ test('findById and sample filtering', () => {
 });
 
 test('loadContent is network-first and falls back to the last copy', async () => {
-  const faq = JSON.parse(readFileSync(new URL('../../content/faq.json', import.meta.url), 'utf8'));
+  const faq = { version: 1, items: [{ id: 'fake-a' }, { id: 'fake-b' }] };
   let calls = 0;
   const ok = async () => (calls++, { ok: true, json: async () => faq });
   const data = await loadContent('faq', { fetchImpl: /** @type {any} */ (ok) });

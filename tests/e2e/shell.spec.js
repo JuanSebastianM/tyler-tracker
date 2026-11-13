@@ -1,6 +1,6 @@
 // Foundation smoke tests: shell, navigation, i18n, auth gating.
 import { test, expect } from 'playwright/test';
-import { openApp, tab, toastWith, EDITOR_NAME } from './helpers.js';
+import { openApp, tab, toastWith, EDITOR_NAME, contentItems } from './helpers.js';
 
 const TABS = [
   ['today', 'Hoy', 'Today'],
@@ -104,10 +104,11 @@ test('sign out hides editor controls again', async ({ page }) => {
   await expect(page.getByTestId('header-sign-in')).toBeVisible();
 });
 
-test('learn tab renders content from /content (fact of the day)', async ({ page }) => {
+test('learn tab renders served content (fact of the day)', async ({ page }) => {
   await openApp(page, '/learn');
   await expect(page.getByTestId('fact-of-the-day')).toBeVisible();
-  await expect(page.getByText('Alimentos tóxicos')).toBeVisible();
+  const critical = contentItems('must-know').find((i) => i.priority === 'critical');
+  await expect(page.getByText(critical.title.es, { exact: true })).toBeVisible();
 });
 
 test('kitchen sink renders and the sheet traps Escape', async ({ page }) => {
