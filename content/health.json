@@ -2,35 +2,334 @@
   "version": 1,
   "items": [
     {
-      "id": "vaccine-basics",
-      "sample": true,
+      "id": "core-vaccines",
       "category": "vaccines",
-      "title": { "es": "Cómo funcionan sus vacunas", "en": "How his vaccines work" },
+      "title": {
+        "es": "Vacunas básicas: qué previene cada una",
+        "en": "Core vaccines: what each one prevents"
+      },
       "summary": {
-        "es": "Varias dosis cada 2–4 semanas hasta las 16 semanas o más.",
-        "en": "Several doses every 2–4 weeks until 16 weeks or later."
+        "es": "Moquillo, parvovirus, hepatitis y rabia, y cómo funciona el esquema.",
+        "en": "Distemper, parvovirus, hepatitis and rabies, and how the series works."
       },
       "body": {
-        "es": "Las vacunas esenciales protegen contra **moquillo, parvovirus y hepatitis** (adenovirus), y la **rabia** según la ley local. Se aplican en varias dosis porque los anticuerpos de la mamá pueden bloquear las primeras.\n\nEl veterinario decide el calendario exacto según su edad y su historia.",
-        "en": "Core vaccines protect against **distemper, parvovirus and hepatitis** (adenovirus), plus **rabies** as local law requires. They come in several doses because his mother's antibodies can block the early ones.\n\nThe vet decides the exact schedule based on his age and history."
+        "es": "Mantén al día las vacunas que indique el veterinario. Esto es lo que previene cada una.\n\n## Las básicas, para todos los perros\nLas guías de la WSAVA (Asociación Mundial de Veterinarios de Pequeños Animales) consideran básicas en todo el mundo estas tres. Suelen venir juntas en una sola inyección, la \"polivalente\":\n- **Parvovirus:** ataca el intestino. Causa decaimiento, falta de apetito, vómito, diarrea a menudo con sangre, dolor de barriga y fiebre o temperatura baja. Resiste mucho tiempo en el ambiente y se contagia por el popó de perros infectados.\n- **Moquillo:** puede afectar la respiración, la digestión y el sistema nervioso. Empieza con fiebre, secreción en ojos y nariz, cansancio y falta de apetito, y puede terminar en temblores, parálisis o convulsiones. Se contagia sobre todo al respirar las gotitas de un perro infectado.\n- **Hepatitis infecciosa canina** (adenovirus): una infección viral que afecta sobre todo el hígado.\n\n## Rabia\nLa rabia pasa a las personas por mordedura. La WSAVA considera esencial vacunar donde la enfermedad existe, y en Colombia la vacunación es obligatoria por ley (Decreto 780 de 2016). En Sabaneta se aplica desde los 3 meses y se repite cada año.\n\n## Según la zona y el estilo de vida\n- **Leptospirosis:** la WSAVA la recomienda para todos los perros donde la enfermedad está presente y hay vacunas adecuadas. Pregúntale al veterinario si aplica para Sabaneta.\n- **Tos de las perreras y otras:** dependen de si va a guarderías, peluquerías, clases o viajes.\n\n## Cómo funciona el esquema\n- Dosis cada 2 a 4 semanas, con la última a las 16 semanas de edad o después.\n- Un refuerzo a las 26 semanas o después, en lugar de esperar al año, para cubrir a los cachorros en los que las defensas de la mamá bloquearon las primeras dosis.\n- De adulto, las vacunas básicas no deben aplicarse con más frecuencia de la necesaria: muchas protegen por varios años. Algunas clínicas miden los anticuerpos en sangre para decidir.\n- Los esquemas cambian según el país, la vacuna disponible y el veterinario. No hay uno solo \"correcto\": sigue el del tuyo.",
+        "en": "Keep up with the vaccines your vet recommends. This is what each one prevents.\n\n## The core vaccines, for every dog\nThe WSAVA (World Small Animal Veterinary Association) guidelines consider these three core worldwide. They usually come together in a single combined shot:\n- **Parvovirus:** attacks the gut. It causes lethargy, loss of appetite, vomiting, diarrhoea that is often bloody, belly pain and fever or a low temperature. It survives a long time in the environment and spreads through the faeces of infected dogs.\n- **Distemper:** can affect breathing, digestion and the nervous system. It starts with fever, eye and nose discharge, tiredness and loss of appetite, and can progress to twitching, paralysis or seizures. It spreads mainly by breathing in droplets from an infected dog.\n- **Infectious canine hepatitis** (adenovirus): a viral infection that mainly affects the liver.\n\n## Rabies\nRabies passes to people through bites. WSAVA considers vaccination essential wherever the disease exists, and in Colombia it is required by law (Decreto 780 de 2016). In Sabaneta it is given from 3 months of age and repeated every year.\n\n## Depending on area and lifestyle\n- **Leptospirosis:** WSAVA recommends it for all dogs where the disease is present and suitable vaccines exist. Ask the vet whether it applies in Sabaneta.\n- **Kennel cough and others:** depend on whether he goes to daycare, groomers, classes or travels.\n\n## How the series works\n- Doses every 2 to 4 weeks, with the last one at 16 weeks of age or later.\n- A booster at 26 weeks or later, instead of waiting a year, to cover puppies whose mother's antibodies blocked the earlier doses.\n- In adulthood, core vaccines should not be given more often than needed: many protect for several years. Some clinics measure antibodies in the blood to decide.\n- Schedules vary by country, available vaccine and vet. There is no single \"correct\" one: follow your vet's."
       },
-      "sources": [{ "title": "WSAVA vaccination guidelines", "url": "https://wsava.org/global-guidelines/vaccination-guidelines/" }],
+      "sources": [
+        {
+          "title": "WSAVA: 2024 guidelines for the vaccination of dogs and cats",
+          "url": "https://wsava.org/wp-content/uploads/2024/05/2024-Guidelines-for-the-Vaccination-of-Dogs-and-Cats.pdf"
+        },
+        {
+          "title": "AVMA: Canine parvovirus",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/canine-parvovirus"
+        },
+        {
+          "title": "Merck Veterinary Manual (dog owners): Canine distemper (hardpad disease)",
+          "url": "https://merckvetmanual.com/dog-owners/disorders-affecting-multiple-body-systems-of-dogs/canine-distemper-hardpad-disease"
+        },
+        {
+          "title": "Decreto 780 de 2016, Ministerio de Salud y Protección Social (arts. 2.8.5.2.19, 2.8.5.2.32 y 2.8.5.2.41)",
+          "url": "https://normativa.colpensiones.gov.co/colpens/docs/decreto_0780_2016_pr042.htm"
+        },
+        {
+          "title": "Alcaldía de Sabaneta, Secretaría de Salud: Vacunación antirrábica (hoja de vida del trámite)",
+          "url": "https://sabaneta.gov.co/files/tramites/hv/17744723967777.pdf"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     },
     {
-      "id": "emergency-signs",
-      "sample": true,
-      "category": "emergency",
-      "title": { "es": "Señales de urgencia", "en": "Emergency signs" },
+      "id": "parasites",
+      "category": "parasites",
+      "title": {
+        "es": "Parásitos internos y externos",
+        "en": "Internal and external parasites"
+      },
       "summary": {
-        "es": "Vómito o diarrea con sangre, decaimiento o no comer: al veterinario ya.",
-        "en": "Bloody vomit or diarrhea, lethargy or not eating: see the vet now."
+        "es": "Lombrices, pulgas, garrapatas y gusano del corazón: cómo prevenirlos.",
+        "en": "Worms, fleas, ticks and heartworm: how to prevent them."
       },
       "body": {
-        "es": "Llama al veterinario de inmediato si notas:\n\n- Vómito o diarrea repetidos, sobre todo con sangre\n- Decaimiento, encías pálidas o dificultad para respirar\n- No come en más de 12 horas\n- Abdomen hinchado y duro",
-        "en": "Call the vet right away if you notice:\n\n- Repeated vomiting or diarrhea, especially with blood\n- Lethargy, pale gums or trouble breathing\n- Not eating for more than 12 hours\n- A swollen, hard belly"
+        "es": "Sigue sin pausas el plan de desparasitación y de prevención de pulgas y garrapatas que te dé el veterinario.\n\n## Lombrices intestinales\n- Los cachorros se desparasitan seguido porque se infectan desde muy pequeños. La guía europea ESCCAP propone tratar cada 2 semanas hasta 2 semanas después del destete y, si hay riesgo extra, cada mes hasta los 6 meses.\n- De adulto, la frecuencia va desde una o dos veces al año hasta cada mes, según si sale a la calle, come caracoles, babosas o carne cruda, o caza. Otra opción es hacer exámenes de popó y tratar según el resultado. Los veterinarios difieren: sigue al tuyo.\n- Algunas lombrices del perro, como los áscaris y los anquilostomas, pueden pasar a las personas. Recojan el popó siempre y lávense las manos después de tocarlo, aunque usen bolsa.\n\n## Garrapatas y pulgas\n- En Medellín, un estudio en 300 perros encontró la bacteria *Ehrlichia canis* en cerca de 1 de cada 6 perros. La transmite la garrapata café del perro, que fue de lejos la más común en esos perros.\n- La prevención es todo el año, con collar, pipeta o tableta. El veterinario escoge el producto según su edad y peso; lee siempre la etiqueta.\n- Nunca uses productos para perros en gatos ni al revés.\n- Revísale la piel, las orejas y entre los dedos después de paseos por pasto.\n- Las pulgas, además de picar, pueden desencadenar alergias y heridas húmedas en la piel (\"hot spots\").\n\n## Gusano del corazón\n- Lo transmiten los mosquitos; un perro no se lo pega directamente a otro, y un perro de apartamento también puede picarse.\n- En estudios publicados en Colombia la frecuencia ha sido baja: 0 % en perros estudiados en Medellín y en Pereira, y 2 a 3 % en Barranquilla y Cartagena.\n- Pregúntale al veterinario si recomienda prevención, sobre todo si van a viajar con Tyler a la costa o a tierra caliente. La prevención funciona casi siempre, pero solo si se da a tiempo.",
+        "en": "Follow your vet's deworming and flea and tick prevention plan without gaps.\n\n## Intestinal worms\n- Puppies are dewormed often because they pick up worms very young. The European ESCCAP guideline suggests treating every 2 weeks until 2 weeks after weaning and, if there is extra risk, monthly until 6 months.\n- In adults, frequency ranges from once or twice a year to monthly, depending on whether he goes outdoors, eats snails, slugs or raw meat, or hunts. Another option is to test his poop and treat according to the result. Vets differ: follow yours.\n- Some dog worms, such as roundworms and hookworms, can pass to people. Always pick up the poop and wash your hands after touching it, even if you use a bag.\n\n## Ticks and fleas\n- In Medellín, a study of 300 dogs found the bacterium *Ehrlichia canis* in about 1 in 6 dogs. It is carried by the brown dog tick, which was by far the most common tick on those dogs.\n- Prevention is year-round, with a collar, spot-on or tablet. The vet chooses the product for his age and weight; always read the label.\n- Never use dog products on cats or the other way round.\n- Check his skin, ears and between his toes after walks through grass.\n- Besides biting, fleas can trigger allergies and moist skin sores (\"hot spots\").\n\n## Heartworm\n- It is spread by mosquitoes; a dog cannot catch it directly from another dog, and an apartment dog can still be bitten.\n- Published studies in Colombia have found low rates: 0 % in dogs tested in Medellín and Pereira, and 2 to 3 % in Barranquilla and Cartagena.\n- Ask the vet whether they recommend prevention, especially if you will travel with Tyler to the coast or to hot lowland areas. Prevention almost always works, but only if it is given on time."
       },
-      "sources": [{ "title": "WSAVA vaccination guidelines", "url": "https://wsava.org/global-guidelines/vaccination-guidelines/" }],
+      "sources": [
+        {
+          "title": "ESCCAP: Scheme for individual worm management in dogs",
+          "url": "https://www.esccap.org/uploads/docs/k37pvjys_0778_ESCCAP_GL1__Worm_Management_Scheme_Fact_Sheet__Dogs_v8.pdf"
+        },
+        {
+          "title": "CDC Healthy Pets, Healthy People: Dogs",
+          "url": "https://www.cdc.gov/healthy-pets/about/dogs.html"
+        },
+        {
+          "title": "Revista Brasileira de Parasitologia Veterinária (2020): Detection of tick-borne rickettsial pathogens in naturally infected dogs and dog-associated ticks in Medellín, Colombia",
+          "url": "https://researchexperts.utmb.edu/en/publications/detec%C3%A7%C3%A3o-de-pat%C3%B3genos-rickettsiais-transmitidos-por-carrapatos-em/"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: Flea and tick prevention",
+          "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/health-info/flea-and-tick-prevention"
+        },
+        {
+          "title": "VCA Animal Hospitals: Hot spots in dogs",
+          "url": "https://www.vcahospitals.com/know-your-pet/hot-spots-in-dogs"
+        },
+        {
+          "title": "AVMA: Heartworm disease",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/heartworm-disease"
+        },
+        {
+          "title": "McCown et al. (2014), Journal of Special Operations Medicine: Surveillance for Ehrlichia canis, Anaplasma phagocytophilum, Borrelia burgdorferi and Dirofilaria immitis in dogs from three cities in Colombia",
+          "url": "https://www.jsomonline.com/Flipbook/Journals/1401-Spring/files/basic-html/page94.html"
+        },
+        {
+          "title": "Parasite Epidemiology and Control (2022): Seroprevalence canine survey for selected vector-borne pathogens in metropolitan Pereira, Colombia, 2020",
+          "url": "https://rcastoragev2.blob.core.windows.net/50e9d03e9b586004deadb9ac34a39a65/PMC9048108.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "golden-retriever-risks",
+      "category": "general",
+      "title": {
+        "es": "Riesgos de salud propios del Golden",
+        "en": "Golden Retriever health risks"
+      },
+      "summary": {
+        "es": "Caderas, piel, oídos, peso, corazón, ojos y cáncer: qué puedes hacer tú.",
+        "en": "Hips, skin, ears, weight, heart, eyes and cancer: what you can actually do."
+      },
+      "body": {
+        "es": "Lo que más pesa en la salud de Tyler a largo plazo y está en tus manos: mantenerlo delgado, cuidar el ritmo de su crecimiento, revisarle piel y oídos cada semana y llevarlo a controles al menos una vez al año.\n\n## Caderas y codos (displasia)\nEl club de la raza en Estados Unidos (GRCA) recomienda evaluar caderas y codos en los perros que se usan para cría, porque la displasia es hereditaria. En un perro predispuesto, el crecimiento muy rápido y el sobrepeso la empeoran.\n- Aliméntalo con comida de cachorro de raza grande, sin suplementos de calcio ni vitamina D.\n- Mantenlo delgado, con ejercicio suave y regular, como caminar o nadar.\n- Señales: le cuesta levantarse, corre con \"saltos de conejo\", cojea, evita saltar o pierde músculo en las patas traseras.\n- Si tienes contacto con el criador, pregunta si los papás tenían evaluaciones de caderas, codos, ojos y corazón. Pregúntale al veterinario si recomienda una evaluación temprana de caderas; algunas se hacen antes de las 20 semanas.\n\n## Piel, alergias y oídos\nEl Golden está entre las razas predispuestas a la dermatitis atópica (alergia ambiental), que suele aparecer entre los 6 meses y los 3 años.\n- Señales: se lame o muerde las patas, se frota la cara, se rasca, tiene enrojecimiento o infecciones de piel u oído que se repiten.\n- Hot spots: zonas húmedas, rojas y dolorosas en la piel. Las favorecen las pulgas, las alergias y el pelo enredado o húmedo que no seca.\n- Revisa sus oídos cada semana y sécaselos después de bañarlo o de que se meta al agua.\n- Usa prevención de pulgas todo el año y consulta pronto: estos problemas se manejan mejor temprano.\n\n## Sobrepeso\nEl sobrepeso agrava los problemas de articulaciones.\n- Pesa la comida y cuenta los premios dentro de la ración diaria.\n- Pésalo con regularidad y regístralo en la app.\n\n## Corazón\nLa estenosis subaórtica es un problema cardíaco hereditario descrito en el Golden. Puede llevar a falla cardíaca o muerte súbita. Pide que le ausculten bien el corazón en cada control; si el veterinario oye algo, puede remitirlo a un cardiólogo.\n\n## Ojos\nEl GRCA incluye las enfermedades hereditarias de los ojos entre las que se evalúan en la raza. Si notas ojos rojos, turbios, que entrecierra o que lagrimean mucho, consulta.\n\n## Cáncer\nEl Golden tiene una frecuencia alta de cáncer; la Fundación Morris, que lleva un estudio de por vida en la raza, lo estima en hasta 60 %. No hay una forma segura de prevenirlo, pero sí de detectarlo antes:\n- Cuando lo cepilles, palpa su cuerpo y consulta por bultos nuevos o que crecen.\n- Llévalo a sus controles anuales y consulta ante cualquier cambio que te preocupe.",
+        "en": "What matters most for Tyler's long-term health, and is in your hands: keeping him lean, managing his growth rate, checking his skin and ears every week, and taking him for check-ups at least once a year.\n\n## Hips and elbows (dysplasia)\nThe US breed club (GRCA) recommends hip and elbow screening for dogs used for breeding, because dysplasia is inherited. In a predisposed dog, very fast growth and excess weight make it worse.\n- Feed a large-breed puppy food, with no calcium or vitamin D supplements.\n- Keep him lean, with gentle, regular exercise such as walking or swimming.\n- Signs: trouble getting up, \"bunny hopping\" when running, limping, avoiding jumps or losing muscle in the back legs.\n- If you are in touch with the breeder, ask whether the parents had hip, elbow, eye and heart evaluations. Ask the vet whether they recommend early hip screening; some is done before 20 weeks.\n\n## Skin, allergies and ears\nGoldens are among the breeds predisposed to atopic dermatitis (environmental allergy), which usually appears between 6 months and 3 years.\n- Signs: licking or chewing his paws, rubbing his face, scratching, redness, or skin or ear infections that keep coming back.\n- Hot spots: moist, red, painful patches of skin. Fleas, allergies and matted or damp coat that does not dry all contribute.\n- Check his ears every week and dry them after a bath or a swim.\n- Use flea prevention all year and see the vet early: these problems are easier to manage when caught early.\n\n## Excess weight\nExcess weight makes joint problems worse.\n- Weigh his food and count treats as part of the daily ration.\n- Weigh him regularly and log it in the app.\n\n## Heart\nSubaortic stenosis is an inherited heart problem reported in Goldens. It can lead to heart failure or sudden death. Ask the vet to listen carefully to his heart at every check-up; if they hear something, they may refer him to a cardiologist.\n\n## Eyes\nThe GRCA lists inherited eye disease among the conditions screened in the breed. If you notice red or cloudy eyes, squinting or heavy tearing, see the vet.\n\n## Cancer\nGoldens have a high rate of cancer; the Morris Animal Foundation, which runs a lifetime study of the breed, estimates it at up to 60 %. There is no sure way to prevent it, but there are ways to catch it earlier:\n- When you brush him, feel his body and see the vet about any new or growing lump.\n- Keep up his yearly check-ups and see the vet about any change that worries you."
+      },
+      "sources": [
+        {
+          "title": "Golden Retriever Club of America: Health statement (2020)",
+          "url": "https://www.akc.org/wp-content/uploads/2020/10/Golden-Retriever-Health-Statement-Revised.pdf"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: Canine hip dysplasia (CHD)",
+          "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/canine-hip-dysplasia-chd"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: Atopic dermatitis (atopy)",
+          "url": "https://www.vet.cornell.edu/departments/riney-canine-health-center/canine-health-information/atopic-dermatitis-atopy"
+        },
+        {
+          "title": "VCA Animal Hospitals: Hot spots in dogs",
+          "url": "https://www.vcahospitals.com/know-your-pet/hot-spots-in-dogs"
+        },
+        {
+          "title": "AKC: How to groom a Golden Retriever",
+          "url": "https://www.akc.org/expert-advice/health/how-to-groom-golden-retriever/"
+        },
+        {
+          "title": "VCA Animal Hospitals: Nutritional requirements of large and giant breed puppies",
+          "url": "https://vcahospitals.com/all-creatures-ca/know-your-pet/nutritional-requirements-of-large-and-giant-breed-puppies"
+        },
+        {
+          "title": "AKC Canine Health Foundation: Genetic markers for familial subvalvular aortic stenosis in Golden Retrievers",
+          "url": "https://www.akcchf.org/research/research-portfolio/2521-MOU.html"
+        },
+        {
+          "title": "Morris Animal Foundation: Golden Retriever Lifetime Study report 2018",
+          "url": "https://www.morrisanimalfoundation.org/sites/default/files/files/2018-12/GRLSReport_2018.pdf"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "large-breed-nutrition",
+      "category": "nutrition",
+      "title": {
+        "es": "Nutrición y ritmo de crecimiento",
+        "en": "Nutrition and growth rate"
+      },
+      "summary": {
+        "es": "Crecer despacio y delgado protege sus huesos y articulaciones.",
+        "en": "Growing slowly and lean protects his bones and joints."
+      },
+      "body": {
+        "es": "Busca que Tyler crezca de forma constante y delgado, no lo más rápido posible. Un Golden puede tardar hasta 2 años en llegar a su peso adulto, y ese ritmo es sano.\n\n## Por qué importa en un perro grande\n- Crecer demasiado rápido somete a los huesos y articulaciones en desarrollo a un estrés que puede dejar malformaciones.\n- En perros predispuestos, el exceso de comida y el crecimiento acelerado empeoran la displasia de cadera.\n- Los cachorros absorben el calcio de más en lugar de eliminarlo como los adultos, y el exceso también daña los huesos.\n\n## Qué hacer\n- **Alimento formulado para cachorros de raza grande.** Tiene un nivel de calcio y fósforo, y una proporción entre ellos, pensados para este crecimiento. Agility Gold Grandes Cachorros es de este tipo; revisa la etiqueta de cualquier alimento.\n- **Sin suplementos de calcio, vitamina D ni otros** si el veterinario no los indica. Un alimento completo ya trae lo necesario.\n- **Ración pesada en gramos**, a horas fijas, sin dejar comida servida todo el día.\n- **Premios dentro de la cuenta:** menos del 10 % de lo que come al día.\n- **Alimento de cachorro hasta los 12 a 14 meses**, o lo que diga el veterinario.\n\n## Cómo saber si va bien\n- Pésalo cada semana o cada dos semanas y regístralo en la app. La gráfica de crecimiento te muestra un rango de referencia aproximado.\n- Más que un número exacto, importa que siga su propia curva sin saltos bruscos y que tenga buen músculo, energía, popó firme y pelo brillante.\n- Pídele al veterinario que evalúe su condición corporal en cada control y ajusta los gramos con él. Si sube muy rápido, la solución es ajustar la ración, no cambiar a alimento de adulto por tu cuenta.",
+        "en": "Aim for Tyler to grow steadily and lean, not as fast as possible. A Golden can take up to 2 years to reach adult weight, and that pace is healthy.\n\n## Why it matters in a large dog\n- Growing too fast puts developing bones and joints under stress that can lead to malformations.\n- In predisposed dogs, overfeeding and rapid growth make hip dysplasia worse.\n- Puppies absorb extra calcium instead of getting rid of it as adults do, and the excess also harms bones.\n\n## What to do\n- **A food formulated for large-breed puppies.** Its calcium and phosphorus levels, and the ratio between them, are designed for this kind of growth. Agility Gold Grandes Cachorros is this type; check the label of any food.\n- **No calcium, vitamin D or other supplements** unless the vet prescribes them. A complete food already has what he needs.\n- **Portions weighed in grams**, at set times, with no food left out all day.\n- **Treats count:** under 10 % of what he eats in a day.\n- **Puppy food until 12 to 14 months**, or whatever the vet advises.\n\n## How to tell it is going well\n- Weigh him every week or two and log it in the app. The growth chart shows an approximate reference range.\n- More than an exact number, what matters is that he follows his own curve without sudden jumps, and has good muscle, energy, firm poop and a shiny coat.\n- Ask the vet to assess his body condition at every check-up and adjust the grams with them. If he gains too fast, the fix is to adjust the portion, not to switch to adult food on your own."
+      },
+      "sources": [
+        {
+          "title": "VCA Animal Hospitals: Nutritional requirements of large and giant breed puppies",
+          "url": "https://vcahospitals.com/all-creatures-ca/know-your-pet/nutritional-requirements-of-large-and-giant-breed-puppies"
+        },
+        {
+          "title": "Cornell Riney Canine Health Center: Canine hip dysplasia (CHD)",
+          "url": "https://www.vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/canine-health-information/canine-hip-dysplasia-chd"
+        },
+        {
+          "title": "AKC: Puppy feeding fundamentals",
+          "url": "https://www.akc.org/expert-advice/nutrition/puppy-feeding-fundamentals/"
+        },
+        {
+          "title": "Salt et al. (2017), PLOS ONE: Growth standard charts for monitoring bodyweight in dogs of different sizes",
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5584974/"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "neutering-decision",
+      "category": "general",
+      "title": {
+        "es": "Castración: una decisión para tomar con el veterinario",
+        "en": "Neutering: a decision to make with your vet"
+      },
+      "summary": {
+        "es": "No hay una edad única; en Golden machos hay estudios a favor de esperar.",
+        "en": "There is no single right age; studies in male Goldens favour waiting."
+      },
+      "body": {
+        "es": "Habla del tema con el veterinario cuando Tyler tenga unos meses, antes de que alguien te proponga una fecha. Esta es la información para llegar a esa conversación.\n\n## Lo que dice la AVMA\nLa Asociación Médica Veterinaria Americana dice que en perros no hay una recomendación única: la edad se decide con el veterinario según la raza, la edad, el sexo, la personalidad, el entorno y la salud de cada perro.\n\n## Posibles beneficios\n- Elimina el riesgo de cáncer de testículo y reduce el de agrandamiento de la próstata.\n- Suele disminuir el instinto de reproducción: menos escapadas y menos marcaje con orina.\n- En promedio, los perros castrados viven más, según algunos estudios.\n\n## Posibles riesgos\n- Los propios de cualquier cirugía y anestesia, que suelen ser bajos.\n- Más tendencia a subir de peso.\n- En algunos perros, más riesgo de ciertos cánceres y enfermedades de las articulaciones.\n\n## El debate en Golden machos\nUn estudio de la Universidad de California en Davis (2020) revisó historias clínicas de 35 razas. En Golden machos:\n- Los no castrados tuvieron problemas de articulaciones en el 5 % de los casos. Los castrados antes de los 6 meses, en el 25 %, y entre los 6 y 11 meses, en el 11 %.\n- Los cánceres pasaron del 15 % en los no castrados al 19 % y 16 % en los castrados antes de los 6 meses y entre los 6 y 11 meses.\n- Los autores sugieren esperar a que el macho tenga más de un año.\n\nHay que leerlo con cuidado: son datos de un solo hospital universitario, muestran asociaciones y no causas, y otros estudios pueden llegar a conclusiones distintas. Muchos veterinarios ya tienen esto en cuenta, pero no todos recomiendan lo mismo.\n\n## Preguntas para el veterinario\n1. ¿Qué edad recomienda para un Golden macho y por qué?\n2. ¿Cómo pesan los riesgos de articulaciones y cáncer frente a los beneficios en su caso?\n3. ¿Qué haríamos para manejar su comportamiento y evitar camadas si esperamos?\n4. ¿Cómo ajustamos la comida después para que no suba de peso?",
+        "en": "Talk about it with the vet when Tyler is a few months old, before anyone proposes a date. This is the background for that conversation.\n\n## What the AVMA says\nThe American Veterinary Medical Association says there is no one-size-fits-all recommendation for dogs: the age is decided with the vet based on each dog's breed, age, sex, personality, environment and health.\n\n## Possible benefits\n- It removes the risk of testicular cancer and lowers the risk of an enlarged prostate.\n- It usually reduces the breeding drive: less roaming and less urine marking.\n- On average, neutered dogs live longer, according to some studies.\n\n## Possible risks\n- Those of any surgery and anaesthesia, which are usually low.\n- A greater tendency to gain weight.\n- In some dogs, a higher risk of certain cancers and joint disease.\n\n## The debate for male Goldens\nA 2020 University of California, Davis study reviewed hospital records for 35 breeds. In male Goldens:\n- Intact males had joint disorders in 5 % of cases. Those neutered before 6 months had them in 25 %, and those neutered between 6 and 11 months in 11 %.\n- Cancers went from 15 % in intact males to 19 % and 16 % in those neutered before 6 months and between 6 and 11 months.\n- The authors suggest waiting until a male is over one year old.\n\nRead it with care: the data come from a single teaching hospital, show associations rather than causes, and other studies may reach different conclusions. Many vets already take this into account, but not all of them recommend the same thing.\n\n## Questions for the vet\n1. What age do you recommend for a male Golden, and why?\n2. How do the joint and cancer risks weigh against the benefits in his case?\n3. How would we manage his behaviour and prevent litters if we wait?\n4. How do we adjust his food afterwards so he does not gain weight?"
+      },
+      "sources": [
+        {
+          "title": "AVMA: Spaying and neutering",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/spaying-and-neutering"
+        },
+        {
+          "title": "Hart et al. (2020), Frontiers in Veterinary Science: Assisting decision-making on age of neutering for 35 breeds of dogs",
+          "url": "https://www.frontiersin.org/articles/10.3389/fvets.2020.00388"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "teeth-and-teething",
+      "category": "dental",
+      "title": {
+        "es": "Dientes y dentición",
+        "en": "Teeth and teething"
+      },
+      "summary": {
+        "es": "Cambia los dientes entre los 3 y 7 meses; revísale la boca y cepíllalo.",
+        "en": "He changes teeth between 3 and 7 months; check his mouth and brush."
+      },
+      "body": {
+        "es": "Revisa la boca de Tyler una vez por semana hasta los 7 u 8 meses, y empieza ya a acostumbrarlo al cepillo.\n\n## El calendario de los dientes\n- Los 28 dientes de leche salen entre las 3 y las 6 semanas de vida.\n- Los dientes definitivos empiezan a reemplazarlos hacia los 3 meses y medio o 4 meses.\n- A los 6 o 7 meses ya suele tener sus 42 dientes de adulto.\n\n## Dientes de leche que no se caen\nSi ves un diente de leche y uno definitivo ocupando el mismo espacio, pide cita pronto. Los dientes de leche que no se caen se deben sacar a tiempo para que el definitivo quede en su sitio; si se espera, puede necesitar ortodoncia o un especialista.\n\n## Mientras le cambian los dientes\nEs normal que quiera morder todo. Para ayudarlo:\n- Ofrécele juguetes de caucho para la dentición; algunos se pueden meter al congelador.\n- Vigílalo mientras muerde y bota los juguetes que se rompen.\n- Evita los huesos: pueden lastimar o atascarse en el intestino.\n\n## Cepillado\n- El cepillado es lo más efectivo que puedes hacer en casa. Lo ideal es a diario; varias veces por semana también ayuda.\n- Empieza con sesiones muy cortas y premios, primero tocándole la boca y luego con el cepillo.\n- Usa una crema dental para perros que te recomiende el veterinario; nunca productos con xilitol.\n\n## Señales de problema\nMal aliento fuerte, dientes rotos o flojos, sarro, sangrado, babeo, dificultad para masticar, menos apetito o hinchazón alrededor de la boca. El veterinario debería revisarle los dientes al menos una vez al año.",
+        "en": "Check Tyler's mouth once a week until 7 or 8 months, and start getting him used to a toothbrush now.\n\n## The tooth timeline\n- The 28 baby teeth come in between 3 and 6 weeks of age.\n- Adult teeth start replacing them at around 3 and a half to 4 months.\n- By 6 or 7 months he usually has all 42 adult teeth.\n\n## Baby teeth that do not fall out\nIf you see a baby tooth and an adult tooth in the same spot, book a visit soon. Retained baby teeth need to be removed promptly so the adult tooth settles in place; if you wait, he may need orthodontic work or a specialist.\n\n## While his teeth are changing\nIt is normal for him to want to chew everything. To help:\n- Offer rubber teething toys; some can go in the freezer.\n- Supervise him while he chews and throw away toys that break.\n- Avoid bones: they can injure or get stuck in the gut.\n\n## Brushing\n- Brushing is the most effective thing you can do at home. Daily is ideal; several times a week still helps.\n- Start with very short sessions and treats, first touching his mouth and then using the brush.\n- Use a dog toothpaste your vet recommends; never products with xylitol.\n\n## Signs of trouble\nStrong bad breath, broken or loose teeth, tartar, bleeding, drooling, trouble chewing, less appetite or swelling around the mouth. The vet should check his teeth at least once a year."
+      },
+      "sources": [
+        {
+          "title": "VCA Animal Hospitals: Persistent deciduous teeth (baby teeth) in dogs",
+          "url": "https://vcahospitals.com/valley-vet/know-your-pet/retained-deciduous-teeth-baby-teeth-in-dogs"
+        },
+        {
+          "title": "AVMA: Pet dental care",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/pet-dental-care"
+        },
+        {
+          "title": "AKC: Puppy teething and nipping: a survival guide",
+          "url": "https://www.akc.org/expert-advice/puppy/puppy-teething-and-nipping/"
+        },
+        {
+          "title": "AKC: How to groom a Golden Retriever",
+          "url": "https://www.akc.org/expert-advice/health/how-to-groom-golden-retriever/"
+        },
+        {
+          "title": "ASPCA: People foods to avoid feeding your pets",
+          "url": "https://www.aspca.org/pet-care/animal-poison-control/people-foods-avoid-feeding-your-pets"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "grooming-and-coat",
+      "category": "grooming",
+      "title": {
+        "es": "Aseo, baño y pelaje",
+        "en": "Grooming, bathing and coat"
+      },
+      "summary": {
+        "es": "Cepillado semanal, baño mensual bien secado, oídos y uñas al día.",
+        "en": "Weekly brushing, a monthly bath dried well, ears and nails kept up."
+      },
+      "body": {
+        "es": "Cepilla a Tyler cada semana, báñalo más o menos una vez al mes y sécalo muy bien. Empiecen ya con sesiones cortas y premios, para que crezca disfrutando que lo manipulen.\n\n## Cepillado\n- Una vez por semana; a diario en las épocas en que bota mucho pelo.\n- El Golden bota pelo moderadamente todo el año y mucho una o dos veces al año.\n- Usa un cepillo de púas (de alfileres); los de cerdas no llegan a través de su pelaje doble.\n\n## Baño\n- Más o menos una vez al mes para un perro de casa.\n- Cepíllalo antes del baño y enjuágalo dos veces: el pelaje doble retiene el champú.\n- Sécalo muy bien, con toalla y luego secador para perros o en frío. La piel que queda húmeda bajo un pelaje grueso favorece los hot spots.\n\n## Oídos\nRevísalos cada semana y límpialos si hace falta. Sécalos después del baño o de nadar, porque la humedad aumenta el riesgo de infección.\n\n## Uñas\nCórtalas más o menos una vez al mes. Si no sabes hasta dónde cortar, pídele al veterinario o al peluquero que te muestre.\n\n## No lo rapes\nNo se recomienda rapar ni recortar el pelaje del Golden, incluido el de las patas, la barriga y la cola.\n\n## Peluquería\nMientras no tenga el esquema de vacunas completo, evita las peluquerías caninas: son lugares donde se reúnen muchos perros. Por ahora, el aseo es en casa.",
+        "en": "Brush Tyler every week, bathe him about once a month and dry him very well. Start now with short sessions and treats, so he grows up enjoying being handled.\n\n## Brushing\n- Once a week; daily during heavy shedding seasons.\n- Goldens shed moderately all year and heavily once or twice a year.\n- Use a pin brush; bristle brushes do not get through his double coat.\n\n## Bathing\n- About once a month for a family dog.\n- Brush him before the bath and rinse twice: the double coat holds on to shampoo.\n- Dry him thoroughly, with a towel and then a dog dryer or a cool setting. Skin left damp under a thick coat makes hot spots more likely.\n\n## Ears\nCheck them every week and clean them if needed. Dry them after a bath or a swim, because moisture raises the risk of infection.\n\n## Nails\nTrim them about once a month. If you are unsure how far to cut, ask the vet or groomer to show you.\n\n## Do not shave him\nShaving or clipping a Golden's coat, including the feathering on the legs, belly and tail, is not recommended.\n\n## Groomers\nUntil his vaccine series is complete, avoid dog groomers: they are places where many dogs gather. For now, grooming happens at home."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to groom a Golden Retriever",
+          "url": "https://www.akc.org/expert-advice/health/how-to-groom-golden-retriever/"
+        },
+        {
+          "title": "VCA Animal Hospitals: Hot spots in dogs",
+          "url": "https://www.vcahospitals.com/know-your-pet/hot-spots-in-dogs"
+        },
+        {
+          "title": "AVMA: Canine parvovirus",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/canine-parvovirus"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "poop-and-vomit",
+      "category": "emergency",
+      "title": {
+        "es": "Popó, vómito y cuándo preocuparse",
+        "en": "Poop, vomit and when to worry"
+      },
+      "summary": {
+        "es": "En un cachorro, más de uno o dos episodios ya justifican llamar al veterinario.",
+        "en": "In a puppy, more than one or two episodes already justify calling the vet."
+      },
+      "body": {
+        "es": "Registra su popó en la app y llama al veterinario si Tyler vomita o tiene diarrea más de una o dos veces. En un cachorro, y más sin las vacunas completas, no conviene esperar.\n\n## Lo normal\nUn popó firme, con forma y fácil de recoger, con un color parecido de un día a otro. Un cambio de alimento puede ablandarlo unos días; por eso el cambio se hace poco a poco.\n\n## Llama al veterinario ese mismo día si\n- Vomita o tiene diarrea más de una o dos veces.\n- Tiene cualquier vómito o diarrea y aún no completa sus vacunas: el parvovirus puede ser mortal en un día sin tratamiento.\n- Ves sangre en el vómito o en el popó, o el popó es negro y pegajoso.\n- No quiere comer ni tomar agua.\n- Está decaído o sin energía.\n- Sabes o sospechas que se tragó algo.\n- Tiene vómito y diarrea al mismo tiempo.\n- Los síntomas siguen después de 24 horas, aunque parezca estar bien.\n\n## Mientras hablas con el veterinario\n- Déjale agua fresca disponible.\n- No le des medicamentos de personas para la diarrea o el estómago.\n- No le quites la comida ni le des una dieta casera sin consultarlo primero: los consejos para perros adultos no siempre sirven para un cachorro tan pequeño.\n- Toma una foto del popó o del vómito y anota cuántas veces ha pasado y a qué horas.\n\n## Por qué la prisa\nEl vómito y la diarrea pueden deshidratar peligrosamente, y un cachorro pequeño tiene menos reservas que un adulto.",
+        "en": "Log his poop in the app and call the vet if Tyler vomits or has diarrhoea more than once or twice. In a puppy, especially one who is not fully vaccinated, it is not worth waiting.\n\n## What is normal\nFirm, formed poop that is easy to pick up, with a similar colour from day to day. A change of food can soften it for a few days; that is why the switch is made gradually.\n\n## Call the vet the same day if\n- He vomits or has diarrhoea more than once or twice.\n- He has any vomiting or diarrhoea and has not finished his vaccines: parvovirus can be fatal within a day without treatment.\n- You see blood in the vomit or poop, or the poop is black and tarry.\n- He will not eat or drink.\n- He is lethargic or low on energy.\n- You know or suspect he swallowed something.\n- He has vomiting and diarrhoea at the same time.\n- Signs continue after 24 hours, even if he seems fine.\n\n## While you talk to the vet\n- Keep fresh water available.\n- Do not give him human medicines for diarrhoea or upset stomach.\n- Do not withhold food or start a home-made diet without asking first: advice for adult dogs does not always suit a puppy this young.\n- Take a photo of the poop or vomit and note how many times it has happened and when.\n\n## Why the hurry\nVomiting and diarrhoea can cause dangerous dehydration, and a small puppy has fewer reserves than an adult."
+      },
+      "sources": [
+        {
+          "title": "Texas A&M Veterinary Medicine: When to see a veterinarian for a dog's stomach ache",
+          "url": "https://vetmed.tamu.edu/news/pet-talk/dogs-stomach-ache"
+        },
+        {
+          "title": "Cornell University College of Veterinary Medicine: Diarrhea",
+          "url": "https://vet.cornell.edu/departments-centers-and-institutes/riney-canine-health-center/health-info/diarrhea"
+        },
+        {
+          "title": "AVMA: Canine parvovirus",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/canine-parvovirus"
+        }
+      ],
+      "reviewed_on": "2026-11-13"
+    },
+    {
+      "id": "sleep-needs",
+      "category": "general",
+      "title": {
+        "es": "Cuánto duerme un cachorro",
+        "en": "How much a puppy sleeps"
+      },
+      "summary": {
+        "es": "Entre 18 y 20 horas al día: protege sus siestas y una rutina de noche.",
+        "en": "18 to 20 hours a day: protect his naps and a night-time routine."
+      },
+      "body": {
+        "es": "Protege las siestas de Tyler: un cachorro duerme entre 18 y 20 horas al día, y dormir bien lo ayuda a crecer y a portarse mejor.\n\n## Rutina del día\n- Alterna ratos de actividad con ratos de calma: después de jugar o pasear, una siesta.\n- Que duerma en un lugar fijo, seguro y tranquilo, como su guacal o su cama, más que en los brazos de alguien.\n- Si está muy mordelón, acelerado o \"loco\", casi siempre es cansancio. Llévalo a su lugar para que se calme y duerma.\n- Pidan a las visitas y a los niños que lo dejen dormir.\n\n## Rutina de la noche\n- Dale la última comida y el agua unas horas antes de dormir, según lo que acuerden con el veterinario.\n- Antes de acostarse: un rato de juego, mimos y una salida a hacer sus necesidades.\n- Un lugar oscuro y silencioso.\n- Es normal que todavía necesite salir de noche: llévalo, sin juego, y de vuelta a dormir.\n\n## Por edad\nEl AKC no da cifras exactas por mes, y no encontramos una fuente veterinaria confiable que las dé. Con los meses, Tyler irá durmiendo menos y aguantando más tiempo despierto y de noche.\n\n## Cuándo consultar\nSi duerme mucho más de lo normal para él, le cuesta despertarse o está decaído cuando está despierto, llama al veterinario: el decaimiento es una de las primeras señales de enfermedades como el parvovirus.",
+        "en": "Protect Tyler's naps: a puppy sleeps 18 to 20 hours a day, and good sleep helps him grow and behave better.\n\n## Daytime routine\n- Alternate active time with quiet time: after play or a walk, a nap.\n- Have him sleep in a fixed, safe, quiet spot, such as his crate or bed, rather than in someone's arms.\n- If he is very bitey, wound up or \"crazy\", it is almost always tiredness. Take him to his spot so he can settle and sleep.\n- Ask visitors and children to let him sleep.\n\n## Night-time routine\n- Give the last meal and water a few hours before bed, as agreed with the vet.\n- Before bed: some play, cuddles and a trip outside to relieve himself.\n- A dark, quiet place.\n- It is normal for him to still need to go out at night: take him, without play, and back to sleep.\n\n## By age\nThe AKC does not give exact figures by month, and we did not find a reliable veterinary source that does. Over the months, Tyler will sleep less and stay awake, and hold on at night, for longer.\n\n## When to see the vet\nIf he sleeps much more than is normal for him, is hard to wake, or is listless when awake, call the vet: lethargy is one of the first signs of illnesses such as parvovirus."
+      },
+      "sources": [
+        {
+          "title": "AKC: How to make sure your puppy gets enough sleep",
+          "url": "https://www.akc.org/expert-advice/health/how-much-do-puppies-sleep/"
+        },
+        {
+          "title": "AVMA: Canine parvovirus",
+          "url": "https://www.avma.org/resources-tools/pet-owners/petcare/canine-parvovirus"
+        }
+      ],
       "reviewed_on": "2026-11-13"
     }
   ]
