@@ -1,20 +1,56 @@
 {
   "version": 1,
-  "sample": true,
-  "placeholder_note": {
-    "es": "Valores de ejemplo, aún sin verificar. No los uses para decisiones de salud.",
-    "en": "Sample values, not verified yet. Do not use them for health decisions."
+  "note": {
+    "es": "Rango aproximado, no una norma. De 4 a 12 meses es el promedio ± 1 desviación estándar de 17 Golden Retriever (machos y hembras juntos, así que los machos suelen quedar en la mitad alta) de un estudio austriaco publicado en 2022. De 18 a 24 meses es el peso de un macho adulto según el estándar de la raza del AKC (65 a 75 libras), que coincide con el promedio de 32,2 kg medido en más de 5.000 Golden machos suecos de 12 a 24 meses. No encontramos una fuente veterinaria abierta con pesos de Golden entre las 8 y las 16 semanas, por eso el rango empieza a los 4 meses. Las curvas de crecimiento WALTHAM ubican al Golden en la categoría de 30 a 40 kg de peso adulto, y el veterinario puede usarlas para seguirlo. Lo importante es que Tyler siga su propia curva sin saltos bruscos y que el veterinario confirme que está en buena condición corporal.",
+    "en": "Approximate range, not a norm. From 4 to 12 months it is the mean ± 1 standard deviation of 17 Golden Retrievers (males and females together, so males tend to sit in the upper half) from an Austrian study published in 2022. From 18 to 24 months it is the adult male weight in the AKC breed standard (65 to 75 pounds), which matches the 32.2 kg average measured in more than 5,000 Swedish male Goldens aged 12 to 24 months. We did not find an open veterinary source with Golden weights between 8 and 16 weeks, so the range starts at 4 months. The WALTHAM growth charts place the Golden in the 30 to 40 kg adult-weight category, and the vet can use them to follow him. What matters is that Tyler follows his own curve without sudden jumps and that the vet confirms he is in good body condition."
   },
   "breed": "golden_retriever",
   "sex": "male",
   "unit": "kg",
   "points": [
-    { "age_weeks": 8, "min_kg": 5, "max_kg": 7 },
-    { "age_weeks": 12, "min_kg": 8, "max_kg": 11 },
-    { "age_weeks": 16, "min_kg": 12, "max_kg": 16 },
-    { "age_weeks": 24, "min_kg": 19, "max_kg": 24 },
-    { "age_weeks": 52, "min_kg": 29, "max_kg": 34 }
+    {
+      "age_weeks": 17,
+      "min_kg": 12.7,
+      "max_kg": 20.4
+    },
+    {
+      "age_weeks": 35,
+      "min_kg": 22.4,
+      "max_kg": 32.9
+    },
+    {
+      "age_weeks": 52,
+      "min_kg": 23.8,
+      "max_kg": 34.4
+    },
+    {
+      "age_weeks": 78,
+      "min_kg": 29.5,
+      "max_kg": 34.0
+    },
+    {
+      "age_weeks": 104,
+      "min_kg": 29.5,
+      "max_kg": 34.0
+    }
   ],
-  "sources": [{ "title": "Placeholder: replace with a verified growth reference", "url": "https://www.akc.org/dog-breeds/golden-retriever/" }],
+  "sources": [
+    {
+      "title": "Virag et al. (2022), Frontiers in Veterinary Science: Center of pressure and ground reaction forces in Labrador and Golden Retrievers with and without hip dysplasia at 4, 8, and 12 months of age",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9814507"
+    },
+    {
+      "title": "AKC: Official standard of the Golden Retriever",
+      "url": "https://images.akc.org/pdf/breeds/standards/GoldenRetriever.pdf"
+    },
+    {
+      "title": "Andersson et al. (2023), Scientific Reports: Exploration of body weight in 115 000 young adult dogs of 72 breeds",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9829868/"
+    },
+    {
+      "title": "Salt et al. (2017), PLOS ONE: Growth standard charts for monitoring bodyweight in dogs of different sizes",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5584974/"
+    }
+  ],
   "reviewed_on": "2026-11-13"
 }
