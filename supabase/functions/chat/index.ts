@@ -257,6 +257,9 @@ function upstreamResponse(ctx: Ctx, reason: UpstreamReason, spend: number, today
 async function upstreamErrorType(res: Response): Promise<string> {
   try {
     const j = await res.json();
+    // Anthropic's error text names the rejected parameter; it is needed to diagnose 4xx responses.
+    // Truncated, and never the request body.
+    log('warn', 'claude error detail', { message: String(j?.error?.message || '').slice(0, 300) });
     return String(j?.error?.type || '');
   } catch {
     return '';
