@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { currentStage, factOfTheDay, findById, loadContent, withoutSamples, hash32 } from '../../src/lib/content.js';
-import { parseHash, matchPath, resolveRoute } from '../../src/lib/router.js';
+import { parseHash, matchPath, resolveRoute, parentPath } from '../../src/lib/router.js';
 import { createStore } from '../../src/lib/store.js';
 import { addDays } from '../../src/lib/dates.js';
 
@@ -57,6 +57,14 @@ test('loadContent is network-first and falls back to the last copy', async () =>
   const again = await loadContent('faq', { fetchImpl: /** @type {any} */ (down) });
   assert.equal(calls, 2);
   assert.equal(again.items.length, faq.items.length);
+});
+
+test('parentPath finds the closest ancestor route', () => {
+  const routes = [{ path: '/learn' }, { path: '/learn/faq' }, { path: '/learn/faq/:id' }, { path: '/health' }, { path: '/health/visit/:id' }];
+  assert.equal(parentPath(routes, '/learn/faq/abc'), '/learn/faq');
+  assert.equal(parentPath(routes, '/learn/faq'), '/learn');
+  assert.equal(parentPath(routes, '/health/visit/1'), '/health', 'skips segments that are not routes');
+  assert.equal(parentPath(routes, '/nope/x'), '/nope');
 });
 
 test('router parsing and matching', () => {

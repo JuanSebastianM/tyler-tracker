@@ -118,3 +118,23 @@ test('kitchen sink renders and the sheet traps Escape', async ({ page }) => {
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toBeHidden();
 });
+
+test('header back on a deep link goes to the parent route instead of leaving the app', async ({ page }) => {
+  await openApp(page, '/learn/faq/test-faq-newer');
+  await page.locator('.header-back').click();
+  await expect(page).toHaveURL(/#\/learn\/faq$/);
+  await page.locator('.header-back').click();
+  await expect(page).toHaveURL(/#\/learn$/);
+  await expect(page.locator('.header-back')).toHaveCount(0);
+});
+
+test('header back after navigating inside the app goes back in history', async ({ page }) => {
+  await openApp(page, '/health');
+  await page.goto('./#/learn/faq');
+  await page.goto('./#/learn/faq/test-faq-older');
+  await page.locator('.header-back').click();
+  await expect(page).toHaveURL(/#\/learn\/faq$/);
+  await page.locator('.header-back').click();
+  // The entry before /learn/faq was /health: real history, not the fallback.
+  await expect(page).toHaveURL(/#\/health$/);
+});

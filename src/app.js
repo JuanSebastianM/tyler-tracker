@@ -1,7 +1,7 @@
 // App shell: header, route outlet, bottom tab bar, toasts, sign-in sheet, install hint.
 import { html, useEffect, useRef } from '../vendor/preact.js';
 import { t, useLocale } from './lib/i18n.js';
-import { useLocation, resolveRoute, navigate, goBack, href } from './lib/router.js';
+import { useLocation, resolveRoute, navigate, goBack, href, parentPath } from './lib/router.js';
 import { useAuth, openSignIn } from './lib/auth.js';
 import { routes as featureRoutes, tabs } from './features/registry.js';
 import { Icon, IconButton, Toaster, SignInSheet } from './lib/ui/index.js';
@@ -84,7 +84,7 @@ export function App() {
   if (!match) return null;
   const { route, params } = match;
   const isSubRoute = route.path.split('/').filter(Boolean).length > 1;
-  const backTo = route.back || (isSubRoute ? `/${route.featureId}` : null);
+  const backTo = route.back || (isSubRoute ? parentPath(allRoutes, loc.path) : null);
   const title = t(route.titleKey || `nav.${route.featureId}`);
   const Screen = route.component;
 

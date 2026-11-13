@@ -58,9 +58,35 @@ const initial = typeof location !== 'undefined' ? parseHash(location.hash) : { p
 /** @type {import('./store.js').Store<Location>} */
 export const locationStore = createStore(initial);
 
-if (typeof window !== 'undefined') {
-  window.addEventListener('hashchange', () => locationStore.set(parseHash(location.hash)));
+// In-app history depth. Every history entry the app creates is stamped with `ttIdx` (0 for the
+// entry the app was opened on), so "back" can tell whether the previous entry is still the app.
+let currentIdx = 0;
+
+/** Stamp the current entry with its depth (new entries get previous depth + 1). */
+function stampEntry(isNewEntry = true) {
+  const idx = history.state?.ttIdx;
+  if (typeof idx === 'number') {
+    currentIdx = idx;
+    return;
+  }
+  currentIdx = isNewEntry ? currentIdx + 1 : 0;
+  try {
+    history.replaceState({ ...(history.state || {}), ttIdx: currentIdx }, '');
+  } catch {
+    /* ignore */
+  }
 }
+
+if (typeof window !== 'undefined') {
+  stampEntry(false);
+  window.addEventListener('hashchange', () => {
+    stampEntry(true);
+    locationStore.set(parseHash(location.hash));
+  });
+}
+
+/** Depth of the current entry inside the app (0 = the page the app was opened on). */
+export const historyDepth = () => (typeof history !== 'undefined' && typeof history.state?.ttIdx === 'number' ? history.state.ttIdx : 0);
 
 /**
  * Navigate to an app path ('/health/vaccines'). With replace, no history entry is added.
@@ -77,18 +103,28 @@ export function navigate(path, opts = {}) {
   }
 }
 
-/** Go back if the previous entry is inside the app, else to `fallback`. @param {string} fallback */
+/**
+ * Go back when the previous history entry belongs to the app; otherwise (a deep link opened
+ * directly, e.g. from a shared link or the home screen) replace the current entry with `fallback`.
+ * Never navigates out of the app.
+ * @param {string} fallback app path, usually the route's parent
+ */
 export function goBack(fallback) {
-  if (history.state?.ttDepth > 0 || history.length > 1) {
-    const before = location.hash;
-    history.back();
-    // If back() left the app or did nothing, fall back.
-    setTimeout(() => {
-      if (location.hash === before) navigate(fallback, { replace: true });
-    }, 150);
-  } else {
-    navigate(fallback, { replace: true });
+  if (historyDepth() > 0) history.back();
+  else navigate(fallback, { replace: true });
+}
+
+/**
+ * Closest ancestor of `path` that is a route ('/learn/faq/x' -> '/learn/faq'), else '/<first segment>'.
+ * @param {Array<{ path: string }>} routes @param {string} path
+ */
+export function parentPath(routes, path) {
+  const parts = path.split('/').filter(Boolean);
+  for (let n = parts.length - 1; n >= 1; n--) {
+    const candidate = '/' + parts.slice(0, n).join('/');
+    if (resolveRoute(routes, candidate)) return candidate;
   }
+  return '/' + (parts[0] || '');
 }
 
 /** @returns {Location} */
