@@ -417,7 +417,6 @@ The FAQ screen (`#/learn/faq`) merges two sources, newest first:
 - **The FAQ file is empty** and fills up over time as described above.
 - **Not verified by automated tests:** behaviour on a real iPhone (the e2e suite uses Chromium at
   iPhone size) and the live Edge Function (tests use a mock).
-- `docs/ARCHITECTURE.md` mentions a `docs/PLAN.md` that is not in the repository.
 
 ## How it was built
 

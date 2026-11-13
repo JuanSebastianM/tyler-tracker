@@ -80,7 +80,7 @@ content/                   Bilingual reading content (see docs/CONTENT.md)
 supabase/migrations/       SQL, applied to the project by the orchestrator only
 tests/unit/ tests/e2e/     Tests (e2e shared: helpers.js, fixtures.js, content-fixtures.js, supabase-mock.js)
 scripts/                   Dev server, deploy stamping, vendor build, checks
-docs/                      This file, CONTENT.md, FEATURE_GUIDE.md, PLAN.md
+docs/                      This file, CONTENT.md, FEATURE_GUIDE.md
 .github/workflows/         ci.yml (checks + deploy), vendor.yml, nightly.yml
 ```
 
