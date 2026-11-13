@@ -73,7 +73,10 @@ import { Card, ListRow, List, Button, IconButton, Fab, Sheet, ConfirmDialog, Tex
 - `Card` (`title`, `action`, `tone="gold|quiet"`), `List` + `ListRow` (`icon`, `iconTone`, `title`,
   `subtitle`, `meta`, `trailing`, `href` or `onClick`).
 - Inputs always take `label` and report `onValue(string)`; `error` shows an inline message.
-  `DateInput` is `YYYY-MM-DD`, `TimeInput` is `HH:MM`, `NumberInput` takes `unit="kg"` (accepts `,`).
+  `DateInput` is `YYYY-MM-DD` and spells the chosen date out in the app language under the field (the
+  native picker follows the device region, which the page cannot change), `TimeInput` is `HH:MM`,
+  `NumberInput` takes `unit="kg"` (accepts `,`). Displayed dates always go through `formatDate`;
+  lists and due items use `medium` (with the year), `short` only for chart axes.
 - `Sheet` is the bottom modal for every add/edit form (`open`, `onClose`, `title`, `footer`).
   `ConfirmDialog` before deletes (`danger`).
 - `Fab` is the one floating add button per screen; always inside `EditorOnly`.

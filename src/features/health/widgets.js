@@ -31,8 +31,8 @@ export function formatAge(age) {
   return age.days ? `${t('age.weeks', { count: age.weeks })} · ${t('age.days', { count: age.days })}` : t('age.weeks', { count: age.weeks });
 }
 
-/** Due date with optional time: "29 nov, 8:00 a. m." @param {string} date @param {string | null} [time] @param {'short' | 'medium'} [style] */
-export function formatDue(date, time, style = 'short') {
+/** Due date with optional time, with the year like every other screen: "29 nov 2026, 8:00 a. m." @param {string} date @param {string | null} [time] @param {'short' | 'medium'} [style] */
+export function formatDue(date, time, style = 'medium') {
   return time ? `${formatDate(date, style)}, ${formatClock(time)}` : formatDate(date, style);
 }
 

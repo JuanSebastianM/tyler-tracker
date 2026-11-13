@@ -23,7 +23,8 @@ export default defineConfig({
     isMobile: true,
     hasTouch: true,
     locale: 'es-CO',
-    timezoneId: 'America/Bogota',
+    // E2E_TZ runs the suite with the device in another timezone: the app must not care.
+    timezoneId: process.env.E2E_TZ || 'America/Bogota',
     colorScheme: 'light',
     serviceWorkers: 'block',
     trace: 'retain-on-failure',

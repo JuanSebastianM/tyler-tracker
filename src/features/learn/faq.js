@@ -62,7 +62,7 @@ export function FaqScreen() {
                     icon="question"
                     iconTone=${i.origin === 'saved' ? 'gold' : 'blue'}
                     title=${i.question[locale]}
-                    subtitle=${html`${categoryLabel(i.category)}${i.addedOn ? ` · ${formatDate(i.addedOn, 'short')}` : ''}${i.addedBy ? ` · ${t('learn.faq.savedByShort', { name: i.addedBy })}` : ''}`}
+                    subtitle=${html`${categoryLabel(i.category)}${i.addedOn ? ` · ${formatDate(i.addedOn, 'medium')}` : ''}${i.addedBy ? ` · ${t('learn.faq.savedByShort', { name: i.addedBy })}` : ''}`}
                     trailing=${i.sample ? html`<${SampleBadge} sample=${true} />` : null}
                     href=${href(`/learn/faq/${encodeURIComponent(i.id)}`)}
                     data-origin=${i.origin}

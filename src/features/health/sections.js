@@ -307,8 +307,8 @@ export const medicationsConfig = {
   view: (row, ctx) => {
     const finished = row.end_on && row.end_on < ctx.today;
     const period = row.end_on
-      ? t('health.medications.period', { start: formatDate(row.start_on, 'short'), end: formatDate(row.end_on, 'short') })
-      : t('health.medications.since', { start: formatDate(row.start_on, 'short') });
+      ? t('health.medications.period', { start: formatDate(row.start_on, 'medium'), end: formatDate(row.end_on, 'medium') })
+      : t('health.medications.since', { start: formatDate(row.start_on, 'medium') });
     return {
       title: row.name,
       subtitle: [row.dose, row.frequency, period].filter(Boolean).join(' · '),

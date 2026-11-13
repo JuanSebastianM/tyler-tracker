@@ -3,6 +3,7 @@
 // through to the <input>.
 import { html, useId, useRef } from '../../../vendor/preact.js';
 import { Icon } from './icons.js';
+import { formatDate, getLocale } from '../i18n.js';
 
 /**
  * @typedef {object} FieldProps
@@ -57,9 +58,17 @@ export function NumberInput({ unit, ...props }) {
   </div>`;
 }
 
-/** Native date picker. Value is 'YYYY-MM-DD'. */
-export function DateInput(props) {
-  return html`<${TextInput} type="date" ...${props} />`;
+/**
+ * Native date picker. Value is 'YYYY-MM-DD'. The picker's own format follows the device's region
+ * (an iPhone set to Colombia shows dd/mm/aaaa; a browser in US English shows mm/dd/yyyy) and cannot
+ * be forced by the page, so the chosen date is also spelled out in the app's language under the
+ * field ("jueves, 13 de noviembre de 2026"). `lang` helps engines that honour it.
+ */
+export function DateInput({ hint, value, ...props }) {
+  const valid = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
+  const spelled = valid ? formatDate(value, 'full') : '';
+  const fullHint = spelled ? (hint ? `${spelled} · ${hint}` : spelled) : hint;
+  return html`<${TextInput} type="date" lang=${getLocale() === 'es' ? 'es-CO' : 'en'} value=${value} hint=${fullHint} ...${props} />`;
 }
 
 /** Native time picker. Value is 'HH:MM'. */
