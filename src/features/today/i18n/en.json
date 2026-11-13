@@ -1,10 +1,84 @@
 {
   "hello": "Hi, I am {name}",
-  "monthsOld": { "one": "{count} month old", "other": "{count} months old" },
+  "monthsOld": {
+    "one": "{count} month old",
+    "other": "{count} months old"
+  },
   "dueTitle": "Coming up",
-  "dueCount": { "one": "{count} item due soon", "other": "{count} items due soon" },
   "nothingDue": "Nothing due this week.",
-  "emptyTitle": "Tyler’s day will show up here",
-  "emptyBody": "Today’s meals, walks and potty breaks, one tap away.",
-  "quickAdd": "Log something"
+  "seeHealth": "See health",
+  "quickAdd": "Log something",
+  "ago": "{duration} ago",
+  "undone": "Change undone",
+  "fact": "Fact of the day",
+  "meals": {
+    "title": "Today’s meals",
+    "progress": "{done} of {total} meals",
+    "noSlots": "No meal times yet. Set them in Tyler › Settings.",
+    "logged": "Meal {n} logged",
+    "ateAt": "Ate at {time}",
+    "state": {
+      "done": "Done",
+      "next": "Next",
+      "late": "Late"
+    },
+    "log": "Fed",
+    "logLabel": "Log meal {n}",
+    "editLabel": "Edit meal {n}",
+    "adjustLabel": "Log meal {n} with details",
+    "editExtra": "Edit extra meal",
+    "addExtra": "Add an extra meal"
+  },
+  "quick": {
+    "title": "Quick log",
+    "logged": {
+      "pee": {
+        "outside": "Pee outside logged",
+        "inside": "Pee accident logged"
+      },
+      "poop": {
+        "outside": "Poop outside logged",
+        "inside": "Poop accident logged"
+      }
+    },
+    "started": {
+      "sleep": "Nap started",
+      "walk": "Walk started",
+      "play": "Play started"
+    },
+    "stopped": {
+      "sleep": "Nap ended: {duration}",
+      "walk": "Walk ended: {duration}",
+      "play": "Play ended: {duration}"
+    },
+    "stop": {
+      "sleep": "Woke up",
+      "walk": "End walk",
+      "play": "End play"
+    },
+    "where": {
+      "pee": "Where did he pee?",
+      "poop": "Where did he poop?"
+    },
+    "insideAccident": "Inside (accident)",
+    "how": {
+      "sleep": "Is he falling asleep now, or already awake?",
+      "walk": "Heading out now, or already back?",
+      "play": "Starting now, or already done?"
+    },
+    "startNow": "Start now",
+    "withDuration": "Already done"
+  },
+  "last": {
+    "title": "Latest",
+    "none": "Nothing logged",
+    "meal": "Meal",
+    "asleep": "Asleep",
+    "since": "Since {time} · {duration}",
+    "awake": "Awake",
+    "wokeUp": "Woke up {ago}"
+  },
+  "week": {
+    "title": "This week"
+  }
 }

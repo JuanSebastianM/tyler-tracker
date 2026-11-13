@@ -1,10 +1,84 @@
 {
   "hello": "Hola, soy {name}",
-  "monthsOld": { "one": "{count} mes de vida", "other": "{count} meses de vida" },
+  "monthsOld": {
+    "one": "{count} mes de vida",
+    "other": "{count} meses de vida"
+  },
   "dueTitle": "Pendientes",
-  "dueCount": { "one": "{count} pendiente cerca", "other": "{count} pendientes cerca" },
   "nothingDue": "Nada pendiente esta semana.",
-  "emptyTitle": "Aquí verás el día de Tyler",
-  "emptyBody": "Comidas, paseos y pipís de hoy, a un toque de distancia.",
-  "quickAdd": "Registrar algo"
+  "seeHealth": "Ver salud",
+  "quickAdd": "Registrar algo",
+  "ago": "hace {duration}",
+  "undone": "Cambio deshecho",
+  "fact": "Dato del día",
+  "meals": {
+    "title": "Comidas de hoy",
+    "progress": "{done} de {total} comidas",
+    "noSlots": "Aún no hay horarios de comida. Configúralos en Tyler › Ajustes.",
+    "logged": "Comida {n} registrada",
+    "ateAt": "Comió a las {time}",
+    "state": {
+      "done": "Hecha",
+      "next": "Siguiente",
+      "late": "Atrasada"
+    },
+    "log": "Ya comió",
+    "logLabel": "Registrar comida {n}",
+    "editLabel": "Editar comida {n}",
+    "adjustLabel": "Registrar comida {n} con detalles",
+    "editExtra": "Editar comida extra",
+    "addExtra": "Agregar comida extra"
+  },
+  "quick": {
+    "title": "Registro rápido",
+    "logged": {
+      "pee": {
+        "outside": "Pipí afuera registrado",
+        "inside": "Accidente de pipí registrado"
+      },
+      "poop": {
+        "outside": "Popó afuera registrado",
+        "inside": "Accidente de popó registrado"
+      }
+    },
+    "started": {
+      "sleep": "Siesta iniciada",
+      "walk": "Paseo iniciado",
+      "play": "Juego iniciado"
+    },
+    "stopped": {
+      "sleep": "Siesta terminada: {duration}",
+      "walk": "Paseo terminado: {duration}",
+      "play": "Juego terminado: {duration}"
+    },
+    "stop": {
+      "sleep": "Despertó",
+      "walk": "Terminar paseo",
+      "play": "Terminar juego"
+    },
+    "where": {
+      "pee": "¿Dónde hizo pipí?",
+      "poop": "¿Dónde hizo popó?"
+    },
+    "insideAccident": "Adentro (accidente)",
+    "how": {
+      "sleep": "¿Se está durmiendo ahora o ya despertó?",
+      "walk": "¿Salen ahora o ya volvieron?",
+      "play": "¿Empiezan ahora o ya terminaron?"
+    },
+    "startNow": "Empezar ahora",
+    "withDuration": "Ya terminó"
+  },
+  "last": {
+    "title": "Últimos",
+    "none": "Sin registros",
+    "meal": "Comida",
+    "asleep": "Durmiendo",
+    "since": "Desde las {time} · {duration}",
+    "awake": "Despierto",
+    "wokeUp": "Despertó {ago}"
+  },
+  "week": {
+    "title": "Esta semana"
+  }
 }

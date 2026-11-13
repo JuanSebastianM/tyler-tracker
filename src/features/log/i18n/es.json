@@ -1,5 +1,160 @@
 {
-  "emptyTitle": "El diario está vacío",
-  "emptyBody": "Cada comida y cada salida quedará aquí, día por día.",
-  "add": "Agregar al diario"
+  "add": "Agregar al diario",
+  "undo": "Deshacer",
+  "added": "Agregado al diario",
+  "accident": "Accidente",
+  "ongoing": "En curso",
+  "ongoingFor": "Lleva {duration}",
+  "mealN": "Comida {n}",
+  "extraMeal": "Comida extra",
+  "slotOption": "Comida {n} · {time}",
+  "grams": "{g} g",
+  "duration": {
+    "min": "{m} min",
+    "h": "{h} h",
+    "hm": "{h} h {m} min"
+  },
+  "kind": {
+    "meal": "Comida",
+    "pee": "Pipí",
+    "poop": "Popó",
+    "sleep": "Sueño",
+    "walk": "Paseo",
+    "play": "Juego"
+  },
+  "kindPlural": {
+    "meal": "Comidas",
+    "pee": "Pipís",
+    "poop": "Popós",
+    "sleep": "Sueño",
+    "walk": "Paseos",
+    "play": "Juego"
+  },
+  "potty": {
+    "pee": {
+      "outside": "Pipí afuera",
+      "inside": "Pipí adentro"
+    },
+    "poop": {
+      "outside": "Popó afuera",
+      "inside": "Popó adentro"
+    }
+  },
+  "where": {
+    "outside": "Afuera",
+    "inside": "Adentro"
+  },
+  "appetite": {
+    "all": "Se lo comió todo",
+    "most": "Comió casi todo",
+    "some": "Comió un poco",
+    "none": "No comió"
+  },
+  "appetiteShort": {
+    "all": "Todo",
+    "most": "Casi todo",
+    "some": "Algo",
+    "none": "Nada"
+  },
+  "sheet": {
+    "add": "Agregar al diario",
+    "addExtraMeal": "Agregar comida extra",
+    "edit": "Editar registro",
+    "save": "Guardar",
+    "kind": "Tipo",
+    "date": "Fecha",
+    "time": "Hora",
+    "startTime": "Hora de inicio",
+    "slot": "Comida",
+    "appetite": "Apetito",
+    "amountG": "Cantidad",
+    "amountNote": "Medida",
+    "amountNotePlaceholder": "Ej.: 1 taza",
+    "where": "¿Dónde?",
+    "accident": "Fue un accidente",
+    "accidentHint": "Lo hizo adentro sin querer.",
+    "ongoing": "Todavía en curso",
+    "duration": "Duración",
+    "notes": "Notas"
+  },
+  "errors": {
+    "required": "Este campo es obligatorio.",
+    "future": "La hora no puede estar en el futuro.",
+    "amount": "Escribe un número, por ejemplo 80.",
+    "duration": "Escribe los minutos, por ejemplo 30."
+  },
+  "confirmDelete": {
+    "title": "¿Eliminar este registro?",
+    "body": "Se eliminará «{what}» del diario.",
+    "confirm": "Eliminar registro"
+  },
+  "prevDay": "Día anterior",
+  "nextDay": "Día siguiente",
+  "pickDay": "Elegir día",
+  "goToday": "Ir a hoy",
+  "filterLabel": "Filtrar por tipo",
+  "clearFilters": "Quitar filtros",
+  "editEntry": "Editar {what} de las {time}",
+  "summary": {
+    "meals": {
+      "one": "{count} comida",
+      "other": "{count} comidas"
+    },
+    "pee": {
+      "one": "{count} pipí",
+      "other": "{count} pipís"
+    },
+    "poop": {
+      "one": "{count} popó",
+      "other": "{count} popós"
+    },
+    "accidents": {
+      "one": "{count} accidente",
+      "other": "{count} accidentes"
+    }
+  },
+  "emptyTodayTitle": "Todavía no hay registros hoy",
+  "emptyDayTitle": "No hay registros este día",
+  "emptyFiltered": "Nada con estos filtros",
+  "emptyFilteredBody": "Quita algún filtro para ver más.",
+  "emptyBody": "Aquí aparecerá cada comida, pipí y siesta de Tyler.",
+  "emptyBodyEditor": "Usa el botón + para agregar comidas, pipís o siestas.",
+  "stats": {
+    "open": "Ver resumen",
+    "title": "Resumen",
+    "range": "Periodo",
+    "day": "Día",
+    "days": {
+      "one": "Último día",
+      "other": "Últimos {count} días"
+    },
+    "emptyTitle": "Aún no hay datos para el resumen",
+    "emptyBody": "Registra comidas, pipís y siestas y aquí verás cómo va Tyler.",
+    "accidentsTotal": {
+      "one": "accidente",
+      "other": "accidentes"
+    },
+    "mealToPoop": "de la comida al popó",
+    "mealsLogged": "comidas registradas",
+    "hoursShort": "{h} h",
+    "sleepAvg": "de sueño al día (promedio)",
+    "accidentsTitle": "Accidentes por día",
+    "accidents": "Accidentes",
+    "noAccidents": "Ningún accidente en este periodo. ¡Bien hecho!",
+    "pottyTitle": "Pipís y popós por día",
+    "pottyTotals": "{pee} pipís y {poop} popós en total.",
+    "hoursTitle": "Horas habituales",
+    "usualTimes": "Suele hacer sus necesidades cerca de las {times}",
+    "noPotty": "Aún no hay pipís ni popós registrados.",
+    "mealToPoopTitle": "De la comida al popó",
+    "mealToPoopBody": {
+      "one": "En promedio hace popó {duration} después de comer (según {count} comida).",
+      "other": "En promedio hace popó {duration} después de comer (según {count} comidas)."
+    },
+    "mealToPoopNone": "Aún no hay datos suficientes. Registra comidas y popós para verlo.",
+    "mealsTitle": "Comidas registradas",
+    "mealsBody": "{logged} de {expected} comidas esperadas.",
+    "sleepTitle": "Sueño por día",
+    "sleepNote": "Suma las siestas registradas; si una sigue en curso, cuenta hasta ahora."
+  }
 }
