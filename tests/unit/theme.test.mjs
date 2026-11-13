@@ -102,6 +102,11 @@ const PAIRS = [
   ['--c-on-red', '--c-red', TEXT, 'danger button, error toast'],
   ['--c-blue', '--c-blue-soft', TEXT, 'info badge, disclaimer'],
   ['--c-blue', '--c-surface', TEXT, 'info icons'],
+  ['--c-on-warn-soft', '--c-warn-soft', TEXT, 'warning badges, row icons, next-meal row'],
+  ['--c-warn', '--c-surface', TEXT, 'warning text in cards'],
+  ['--c-warn', '--c-bg', TEXT, 'warning text on the page'],
+  ['--c-warn-fill', '--c-surface-2', UI, 'budget meter nearly used'],
+  ['--c-warn-fill', '--c-surface', UI, 'warning fill in cards'],
   ['--c-focus', '--c-bg', UI, 'focus ring on the page'],
   ['--c-focus', '--c-surface', UI, 'focus ring in cards'],
   ['--c-gold-ink', '--c-surface', UI, 'selected theme swatch border'],
@@ -153,13 +158,39 @@ test('every theme defines the same accent and neutral tokens in light and dark; 
     for (const scheme of ['light', 'dark']) {
       const d = declsFor(`[data-theme='${theme}'][data-scheme='${scheme}']`);
       for (const k of required) assert.ok(k in d, `${theme} ${scheme} defines ${k}`);
-      for (const k of ['--c-red', '--c-red-soft', '--c-green', '--c-green-soft', '--c-blue', '--c-blue-soft', '--c-on-red']) {
+      for (const k of ['--c-red', '--c-red-soft', '--c-green', '--c-green-soft', '--c-blue', '--c-blue-soft', '--c-on-red',
+        '--c-warn', '--c-warn-fill', '--c-warn-soft', '--c-on-warn-soft']) {
         assert.ok(!(k in d), `${theme} ${scheme} must not override semantic ${k}`);
       }
     }
   }
   const themed = new Set([...THEMES_CSS.matchAll(/\[data-theme='([a-z]+)'\]/g)].map((m) => m[1]));
   assert.deepEqual([...themed].sort(), THEMES.filter((x) => x !== 'default').sort());
+});
+
+/** Hue in degrees (0-360) of a #rrggbb colour. */
+function hue(color) {
+  const [r, g, b] = rgb(color).map((c) => c / 255);
+  const max = Math.max(r, g, b);
+  const d = max - Math.min(r, g, b);
+  if (!d) return 0;
+  const h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+  return (h * 60 + 360) % 360;
+}
+
+test('the warning tone is amber and identical in every theme (it never follows the accent)', () => {
+  const WARN = ['--c-warn', '--c-warn-fill', '--c-warn-soft', '--c-on-warn-soft'];
+  for (const scheme of ['light', 'dark']) {
+    const base = tokens('default', scheme);
+    for (const k of WARN) {
+      const h = hue(base[k]);
+      assert.ok(h >= 30 && h <= 50, `${scheme} ${k} ${base[k]} is amber (hue ${h.toFixed(0)})`);
+    }
+    for (const theme of THEMES) {
+      const t = tokens(theme, scheme);
+      for (const k of WARN) assert.equal(t[k], base[k], `${theme} ${scheme} ${k}`);
+    }
+  }
 });
 
 test('theme-boot.js knows the same themes and modes as theme.js', () => {

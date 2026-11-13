@@ -21,7 +21,7 @@ import { mealSlotStatus, extraMeals, lastSeen, ongoing, todoProgress } from './t
 
 const STATE_BADGE = {
   done: { tone: 'green', icon: 'check' },
-  next: { tone: 'gold', icon: 'clock' },
+  next: { tone: 'warn', icon: 'clock' },
   late: { tone: 'red', icon: 'alert' },
 };
 
@@ -234,7 +234,7 @@ function LastSeenCard({ tz, now }) {
 }
 
 const DUE_ICON = { vaccination: 'syringe', deworming: 'pill', vet_follow_up: 'stethoscope', reminder: 'bell' };
-const DUE_TONE = { overdue: 'red', today: 'gold', soon: 'blue', upcoming: 'neutral' };
+const DUE_TONE = { overdue: 'red', today: 'warn', soon: 'warn', upcoming: 'neutral' };
 
 function DueCard({ today }) {
   const due = getDueItems(

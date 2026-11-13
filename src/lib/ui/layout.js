@@ -15,7 +15,7 @@ export function Card({ title, action, tone = 'default', class: cls = '', childre
 /**
  * A row in a list: leading icon, title + subtitle, trailing meta. Becomes a link with `href` or a
  * button with `onClick` (with a chevron), otherwise static.
- * @param {{ icon?: string, iconTone?: 'gold' | 'green' | 'red' | 'blue' | 'neutral', title: any, subtitle?: any,
+ * @param {{ icon?: string, iconTone?: 'gold' | 'warn' | 'green' | 'red' | 'blue' | 'neutral', title: any, subtitle?: any,
  *   meta?: any, trailing?: any, href?: string, onClick?: () => void, [k: string]: any }} props
  */
 export function ListRow({ icon, iconTone = 'neutral', title, subtitle, meta, trailing, href, onClick, ...rest }) {

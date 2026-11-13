@@ -110,7 +110,7 @@
 }
 .assistant .budget-meter { flex: none; width: 44px; height: 6px; border-radius: var(--r-chip); background: var(--c-surface-2); overflow: hidden; }
 .assistant .budget-fill { display: block; height: 100%; background: var(--c-green); border-radius: inherit; }
-.assistant .budget-high .budget-fill { background: var(--c-gold-strong); }
+.assistant .budget-high .budget-fill { background: var(--c-warn-fill); }
 .assistant .budget-out .budget-fill { background: var(--c-red); }
 .assistant .budget-out { color: var(--c-red); font-weight: 700; }
 

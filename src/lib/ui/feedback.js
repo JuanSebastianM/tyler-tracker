@@ -29,7 +29,7 @@ export function EmptyState({ icon = 'paw', title, body, action }) {
 
 /**
  * Small status pill.
- * @param {{ tone?: 'neutral' | 'gold' | 'green' | 'red' | 'blue', icon?: string, children?: any }} props
+ * @param {{ tone?: 'neutral' | 'gold' | 'warn' | 'green' | 'red' | 'blue', icon?: string, children?: any }} props
  */
 export function Badge({ tone = 'neutral', icon, children }) {
   return html`<span class=${`badge badge-${tone}`}>${icon ? html`<${Icon} name=${icon} size=${14} strokeWidth=${2.4} />` : null}${children}</span>`;

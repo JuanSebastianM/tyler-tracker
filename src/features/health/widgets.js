@@ -37,7 +37,7 @@ export function formatDue(date, time, style = 'medium') {
 }
 
 /** @param {import('../../data/derived.js').DueStatus} status */
-export const statusTone = (status) => (status === 'overdue' ? 'red' : status === 'today' || status === 'soon' ? 'gold' : 'blue');
+export const statusTone = (status) => (status === 'overdue' ? 'red' : status === 'today' || status === 'soon' ? 'warn' : 'blue');
 
 /**
  * Badge for a due item: "Atrasado · hace 2 días", "Pronto · en 3 días".

@@ -84,6 +84,7 @@
 .tone-green { background: var(--c-green-soft); color: var(--c-green); }
 .tone-red { background: var(--c-red-soft); color: var(--c-red); }
 .tone-blue { background: var(--c-blue-soft); color: var(--c-blue); }
+.tone-warn { background: var(--c-warn-soft); color: var(--c-on-warn-soft); }
 .row-text { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 .row-title { font-weight: 600; }
 .row-subtitle { color: var(--c-ink-2); font-size: var(--fs-sm); }
@@ -161,6 +162,7 @@ input[type='date']::-webkit-date-and-time-value, input[type='time']::-webkit-dat
 .badge-green { background: var(--c-green-soft); color: var(--c-green); }
 .badge-red { background: var(--c-red-soft); color: var(--c-red); }
 .badge-blue { background: var(--c-blue-soft); color: var(--c-blue); }
+.badge-warn { background: var(--c-warn-soft); color: var(--c-on-warn-soft); }
 
 .spinner {
   display: inline-block; flex: none; border-radius: 50%;

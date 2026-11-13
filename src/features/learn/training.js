@@ -91,7 +91,7 @@ export function TrainingGuide({ params }) {
   const meta = html`
     <${Badge} tone="blue">${difficultyLabel(guide.difficulty)}</${Badge}>
     ${guide.duration_min ? html`<${Badge} tone="neutral" icon="clock">${t('learn.training.minutes', { count: guide.duration_min })}</${Badge}>` : null}
-    <${Badge} tone=${ok ? 'green' : 'gold'} icon=${ok ? 'check' : 'calendar'}>${ok ? t('learn.training.readyNow') : ageLine(guide, weeks)}</${Badge}>`;
+    <${Badge} tone=${ok ? 'green' : 'warn'} icon=${ok ? 'check' : 'calendar'}>${ok ? t('learn.training.readyNow') : ageLine(guide, weeks)}</${Badge}>`;
   return html`<div class="learn stack">
     <${ArticleView} item=${guide} health meta=${meta} before=${html`<${Progress} guide=${guide} />`} />
   </div>`;

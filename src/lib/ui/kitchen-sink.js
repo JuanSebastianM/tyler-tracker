@@ -67,7 +67,7 @@ export function KitchenSink() {
     <${Card} title=${t('kitchen.badges')}>
       <div class="button-row wrap">
         <${Badge}>${t('due.status.upcoming')}</${Badge}>
-        <${Badge} tone="gold" icon="clock">${t('due.status.soon')}</${Badge}>
+        <${Badge} tone="warn" icon="clock">${t('due.status.soon')}</${Badge}>
         <${Badge} tone="green" icon="check">${t('common.saved')}</${Badge}>
         <${Badge} tone="red" icon="alert">${t('due.status.overdue')}</${Badge}>
         <${Badge} tone="blue">${t('due.status.today')}</${Badge}>

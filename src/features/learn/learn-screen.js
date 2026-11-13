@@ -111,7 +111,7 @@ export function LearnScreen({ query }) {
             ? html`<${Card} title=${t('learn.startHere')} data-testid="must-know-preview"
                 action=${html`<a class="card-link" href=${href('/learn/must-know')}>${t('learn.facts.more')}</a>`}>
                 <${List}>${topMustKnow.map(
-                  (i) => html`<${ListRow} icon="star" iconTone=${i.priority === 'critical' ? 'red' : 'gold'} title=${pick(i.title)}
+                  (i) => html`<${ListRow} icon="star" iconTone=${i.priority === 'critical' ? 'red' : 'warn'} title=${pick(i.title)}
                     subtitle=${pick(i.summary)} href=${href(`/learn/must-know/${encodeURIComponent(i.id)}`)} />`,
                 )}</${List}>
               </${Card}>`

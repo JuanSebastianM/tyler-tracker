@@ -10,7 +10,7 @@ import { ArticleView, Loading, LoadError, NotFound, SampleBadge, categoryLabel }
 /** @typedef {'must-know' | 'health' | 'parents'} ArticleSection */
 
 /** Tone of a must-know priority badge. */
-const PRIORITY_TONE = /** @type {Record<string, 'red' | 'gold' | 'neutral'>} */ ({ critical: 'red', important: 'gold', 'good-to-know': 'neutral' });
+const PRIORITY_TONE = /** @type {Record<string, 'red' | 'warn' | 'neutral'>} */ ({ critical: 'red', important: 'warn', 'good-to-know': 'neutral' });
 const PRIORITY_KEY = /** @type {Record<string, string>} */ ({ critical: 'critical', important: 'important', 'good-to-know': 'goodToKnow' });
 
 /** @param {string} p */

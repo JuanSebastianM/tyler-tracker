@@ -9,7 +9,8 @@
    Colour tokens are declared on :root and on any [data-theme] element, so a subtree (the
    theme picker swatches) can preview another theme. Feature CSS uses tokens only and never
    queries prefers-color-scheme itself: scheme differences are tokens too (--border-raised...).
-   The --c-gold* tokens are the theme's accent (gold in the default theme). */
+   The --c-gold* tokens are the theme's accent (gold in the default theme); --c-warn* is the
+   semantic warning tone and stays amber in every theme. */
 :root {
   color-scheme: light dark;
 
@@ -77,6 +78,12 @@
   --c-on-red: #ffffff;        /* text on --c-red (danger button, error toast) */
   --c-blue: #2c5d86;
   --c-blue-soft: #e0ebf5;
+  /* Warning ("soon", "today", next meal, budget nearly used): amber in every theme, unlike the
+     accent. Themes never override these. */
+  --c-warn: #8a5700;          /* warning text/icons on surfaces */
+  --c-warn-fill: #b07210;     /* warning fills without text (meters), 3:1 on surfaces */
+  --c-warn-soft: #fbedcf;
+  --c-on-warn-soft: #5a3b00;
   --c-focus: #1f6fd1;
   --c-backdrop: rgb(16 24 19 / 0.45);
   --c-segment-on: var(--c-surface);       /* selected segment */
@@ -112,6 +119,10 @@
   --c-on-red: #2a0d07;
   --c-blue: #8fbbe3;
   --c-blue-soft: #1d2d3c;
+  --c-warn: #f3c46c;
+  --c-warn-fill: #f6c56a;
+  --c-warn-soft: #3b2e13;
+  --c-on-warn-soft: #f7d9a0;
   --c-focus: #7db4ff;
   --c-backdrop: rgb(0 0 0 / 0.6);
   --c-segment-on: var(--c-gold);

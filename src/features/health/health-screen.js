@@ -49,7 +49,7 @@ export function HealthScreen() {
         ? html`<${List}>
             ${due.map(
               (d) => html`<div class="health-row" key=${d.id} data-testid="due-item">
-                <${ListRow} icon=${KIND_ICON[d.kind]} iconTone=${d.status === 'overdue' ? 'red' : 'gold'}
+                <${ListRow} icon=${KIND_ICON[d.kind]} iconTone=${d.status === 'overdue' ? 'red' : d.status === 'today' || d.status === 'soon' ? 'warn' : 'neutral'}
                   title=${d.title || t(`due.kind.${d.kind}`)}
                   subtitle=${html`<span class="health-sub">${d.title ? `${t(`due.kind.${d.kind}`)} · ` : ''}${formatDue(d.dueOn, d.dueTime)}</span>
                     <span class="health-due-line"><${DueBadge} item=${d} today=${ctx.today} /></span>`}

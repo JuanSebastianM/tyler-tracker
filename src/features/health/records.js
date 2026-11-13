@@ -34,7 +34,7 @@ import { CalendarButton, DueBadge } from './widgets.js';
  * @property {string} id               i18n namespace under 'health.' and test id prefix
  * @property {any} store
  * @property {string} icon
- * @property {'gold' | 'green' | 'red' | 'blue' | 'neutral'} [iconTone]
+ * @property {'gold' | 'warn' | 'green' | 'red' | 'blue' | 'neutral'} [iconTone]
  * @property {Array<FieldDef | FieldDef[]>} fields   arrays render side by side
  * @property {(row: any | null, ctx: Ctx) => Record<string, any>} toForm
  * @property {(values: Record<string, any>) => Record<string, string>} [check]  extra validation (field -> i18n key)
