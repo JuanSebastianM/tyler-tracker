@@ -58,11 +58,14 @@ export const faqEntries = make({ table: 'faq_entries', orderBy: { column: 'creat
 // ai_settings is read by the `chat` Edge Function, which reports usage to the app.
 export const chatThreads = make({ table: 'chat_threads', orderBy: { column: 'updated_at' }, private: true });
 
+// Per-person preferences (theme). RLS returns only the signed-in user's own row.
+export const userSettings = make({ table: 'user_settings', key: 'user_id', keyKind: 'text', private: true });
+
 export const publicStores = [
   petProfile, settings, feedings, routineEvents, weights, vaccinations, dewormings, vetVisits,
   medications, reminders, trainingSkills, checklistDone, milestones, photos, faqEntries,
 ];
-export const privateStores = [petPrivate, vetVisitPrivate, chatThreads];
+export const privateStores = [petPrivate, vetVisitPrivate, chatThreads, userSettings];
 export const allStores = [...publicStores, ...privateStores];
 
 /** Timezone from settings, or the default until settings load. */
