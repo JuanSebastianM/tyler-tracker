@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "node scripts/serve.mjs",
-    "typecheck": "node scripts/bin.mjs tsc -p tsconfig.json",
+    "typecheck": "node scripts/bin.mjs tsc -p tsconfig.json && node scripts/bin.mjs tsc -p supabase/tsconfig.functions.json",
     "test": "node --test \"tests/unit/**/*.test.mjs\"",
     "test:e2e": "node scripts/bin.mjs playwright test",
     "check:i18n": "node scripts/check-i18n.mjs",
