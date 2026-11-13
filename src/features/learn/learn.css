@@ -9,7 +9,9 @@
 .learn .card-link:hover { text-decoration: underline; }
 
 /* Search */
-.learn .learn-search .input { padding-left: var(--sp-4); }
+.learn .learn-search { position: relative; }
+.learn .learn-search-icon { position: absolute; left: var(--sp-3); top: 50%; transform: translateY(-50%); color: var(--c-ink-2); pointer-events: none; z-index: 1; }
+.learn .learn-search .input { padding-left: calc(var(--sp-3) + 28px); }
 .learn .learn-search input::-webkit-search-cancel-button { cursor: pointer; }
 .learn .result-section { font-weight: 650; color: var(--c-ink); }
 

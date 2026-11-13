@@ -3,7 +3,7 @@ import { html, useMemo, useState } from '../../../vendor/preact.js';
 import { t, pick, useLocale } from '../../lib/i18n.js';
 import { href } from '../../lib/router.js';
 import { useContent, currentStage, factOfTheDay } from '../../lib/content.js';
-import { Card, List, ListRow, Markdown, Button, EmptyState, TextInput, Badge } from '../../lib/ui/index.js';
+import { Card, List, ListRow, Markdown, Button, EmptyState, TextInput, Badge, Icon } from '../../lib/ui/index.js';
 import { checklistDone, trainingSkills } from '../../data/stores.js';
 import { SECTIONS, sortByPriority, stageProgress, trainingOverview, buildSearchDocs, searchDocs, sectionById } from './logic.js';
 import { SECTION_KEY, sectionTitle, useAge, weeksText } from './components.js';
@@ -58,6 +58,7 @@ export function LearnScreen({ query }) {
 
   return html`<div class="learn stack">
     <div class="learn-search" role="search">
+      <${Icon} name="search" size=${20} class="learn-search-icon" />
       <${TextInput}
         type="search"
         label=${t('learn.search.label')}

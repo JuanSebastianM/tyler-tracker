@@ -26,6 +26,8 @@ const PATHS = {
   'chevron-left': ['M15 5l-7 7 7 7'],
   'chevron-right': ['M9 5l7 7-7 7'],
   'chevron-down': ['M5 9l7 7 7-7'],
+  'chevron-up': ['M5 15l7-7 7 7'],
+  search: [['circle', { cx: 11, cy: 11, r: 7 }], 'M20 20l-4-4'],
   edit: ['M4 20h4L19 9l-4-4L4 16z', 'M13.5 6.5l4 4'],
   trash: ['M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3'],
   user: [['circle', { cx: 12, cy: 8, r: 4 }], 'M4 21a8 8 0 0 1 16 0'],

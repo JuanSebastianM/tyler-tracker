@@ -5,7 +5,7 @@ import { href, navigate } from '../../lib/router.js';
 import { useContent } from '../../lib/content.js';
 import { useIsEditor } from '../../lib/auth.js';
 import { toast } from '../../lib/toast.js';
-import { Badge, Button, Card, ConfirmDialog, EmptyState, List, ListRow, TextInput } from '../../lib/ui/index.js';
+import { Badge, Button, Card, ConfirmDialog, EmptyState, List, ListRow, TextInput, Icon } from '../../lib/ui/index.js';
 import { faqEntries, useTimezone } from '../../data/stores.js';
 import { todayIn } from '../../lib/dates.js';
 import { mergeFaq, faqCategories, filterFaq } from './logic.js';
@@ -42,6 +42,7 @@ export function FaqScreen() {
     ${items.length
       ? html`
           <div class="learn-search" role="search">
+            <${Icon} name="search" size=${20} class="learn-search-icon" />
             <${TextInput} type="search" label=${t('learn.faq.searchLabel')} hideLabel placeholder=${t('learn.faq.searchPlaceholder')}
               value=${q} onValue=${setQ} data-testid="faq-search" />
           </div>

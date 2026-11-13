@@ -51,7 +51,6 @@
 .profile .meal-edit-num { font-weight: 700; }
 .profile .meal-edit-actions { display: inline-flex; }
 .profile .meal-edit-actions .icon-btn:disabled { opacity: 0.35; }
-.profile .meal-up .icon { transform: rotate(180deg); }
 
 /* ---- Memories teaser ---- */
 .profile .teaser-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp-1); margin-bottom: var(--sp-3); border-radius: var(--r-control); overflow: hidden; }

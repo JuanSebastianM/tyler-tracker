@@ -86,7 +86,7 @@ function MealSheet({ row, onClose }) {
             <div class="meal-edit-head">
               <span class="meal-edit-num">${t('profile.meals.slot', { n: i + 1 })}</span>
               <span class="meal-edit-actions">
-                <${IconButton} icon="chevron-down" class="meal-up" label=${t('profile.meals.moveUp', { n: i + 1 })} disabled=${i === 0} onClick=${() => change((d) => moveSlot(d, i, -1))} />
+                <${IconButton} icon="chevron-up" class="meal-up" label=${t('profile.meals.moveUp', { n: i + 1 })} disabled=${i === 0} onClick=${() => change((d) => moveSlot(d, i, -1))} />
                 <${IconButton} icon="chevron-down" label=${t('profile.meals.moveDown', { n: i + 1 })} disabled=${i === draft.length - 1} onClick=${() => change((d) => moveSlot(d, i, 1))} />
                 <${IconButton} icon="trash" label=${t('profile.meals.remove', { n: i + 1 })} onClick=${() => change((d) => removeSlot(d, i))} />
               </span>
