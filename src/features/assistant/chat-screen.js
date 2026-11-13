@@ -6,8 +6,8 @@ import { Button, IconButton, Markdown, Sources, Spinner, Skeleton, EmptyState, I
 import { chatThreads, petProfile, useTimezone } from '../../data/stores.js';
 import { getAge, getToday } from '../../data/derived.js';
 import { DEFAULT_BIRTH_DATE } from '../../config.js';
-import { ask, clearError, loadThreadMessages, refreshUsage, stopAnswer, useSession, useThreadMessages } from './session.js';
-import { canDraftFaq, cleanQuestion, MAX_QUESTION_CHARS, starterKeys, visibleMessages } from './logic.js';
+import { ask, clearError, getDraft, session, loadThreadMessages, refreshUsage, resumeInterrupted, setDraft, stopAnswer, useSession, useThreadMessages } from './session.js';
+import { canDraftFaq, cleanQuestion, draftKey, MAX_QUESTION_CHARS, starterKeys, visibleMessages } from './logic.js';
 import { BudgetIndicator, EditorGate, ErrorNotice, GlyphSend, GlyphStop } from './parts.js';
 import { FaqSheet } from './faq-sheet.js';
 
@@ -16,11 +16,16 @@ export function ChatScreen({ query }) {
   return html`<${EditorGate}><${Chat} threadId=${query.t || null} /></${EditorGate}>`;
 }
 
-/** Scroll to the end of the page if the reader is already near it (or when forced). */
-function scrollToEnd(force = false) {
+/** Distance in px from the bottom of the viewport to the end of the page. */
+function distanceToEnd() {
   const el = document.scrollingElement || document.documentElement;
-  const near = el.scrollHeight - (el.scrollTop + window.innerHeight) < 240;
-  if (force || near) window.scrollTo({ top: el.scrollHeight, behavior: 'auto' });
+  return el.scrollHeight - (el.scrollTop + window.innerHeight);
+}
+
+/** Scroll to the end of the page if the reader is already near it (or when forced). */
+function scrollToEnd(force = false, slack = 0) {
+  const el = document.scrollingElement || document.documentElement;
+  if (force || distanceToEnd() < 240 + slack) window.scrollTo({ top: el.scrollHeight, behavior: 'auto' });
 }
 
 /** @param {{ threadId: string | null }} props */
@@ -32,14 +37,38 @@ function Chat({ threadId }) {
   const thread = threadId ? threads.find((r) => r.id === threadId) : null;
   const msgs = useThreadMessages(threadId || '');
   const [faqOpen, setFaqOpen] = useState(false);
+  // Composer text, saved per conversation as it is typed (a reload or relaunch keeps it).
+  const key = draftKey(threadId);
+  const [text, setTextState] = useState(() => getDraft(key));
+  const keyRef = useRef(key);
+  const setText = (/** @type {string} */ v) => {
+    setTextState(v);
+    setDraft(keyRef.current, v);
+  };
+  // Space at the end of the page for the fixed composer, whatever its height (see Composer).
+  const [composerSpace, setComposerSpace] = useState(0);
 
   useEffect(() => {
     refreshUsage();
     if (!threadsState.loadedAt) chatThreads.load();
+    resumeInterrupted();
   }, []);
   useEffect(() => {
     if (threadId) loadThreadMessages(threadId);
   }, [threadId]);
+  // Another conversation: show its draft. A new conversation that just got its id keeps the text.
+  useEffect(() => {
+    const prev = keyRef.current;
+    keyRef.current = key;
+    if (prev === key) return;
+    const stored = getDraft(key);
+    const startedHere = prev === 'new' && session.get().pending?.threadId === key;
+    if (stored || !startedHere) setTextState(stored);
+    else if (text) {
+      setDraft(key, text);
+      setDraft(prev, '');
+    }
+  }, [key]);
 
   const rows = visibleMessages(msgs?.rows || []);
   const pending = s.pending && s.pending.threadId === threadId ? s.pending : null;
@@ -48,14 +77,32 @@ function Chat({ threadId }) {
   const loading = !!threadId && (!msgs || msgs.status === 'loading') && !rows.length && !pending;
   const missing = !!threadId && msgs?.status === 'ready' && !rows.length && !pending && threadsState.status === 'ready' && !thread;
 
+  // A failed question comes back to the composer (unless something else was typed meanwhile).
+  useEffect(() => {
+    if (error?.question && !text.trim()) setText(error.question);
+  }, [error?.question, error?.code]);
+
   useEffect(() => {
     scrollToEnd(true);
-  }, [threadId, rows.length, !!error]);
+  }, [threadId, rows.length, !!error, error?.code]);
   useEffect(() => {
     scrollToEnd(false);
   }, [pending?.text, pending?.status]);
+  // The composer grew (more lines, keyboard): keep the newest item above it if the reader was there.
+  const prevSpace = useRef(0);
+  useEffect(() => {
+    const delta = composerSpace - prevSpace.current;
+    prevSpace.current = composerSpace;
+    if (delta > 0) scrollToEnd(false, delta);
+  }, [composerSpace]);
 
-  const send = (/** @type {string} */ q) => ask(threadId, q);
+  /** @param {string} q */
+  const send = (q) => {
+    // Resending the question that failed reuses its request id: never answered (and billed) twice.
+    const requestId = error && error.question === q ? error.requestId : null;
+    if (text.trim() === q.trim()) setText('');
+    ask(threadId, q, { requestId });
+  };
   const title = thread?.title || (threadId ? '' : t('assistant.actions.newThread'));
 
   return html`<div class="assistant chat" data-testid="assistant-chat">
@@ -88,7 +135,8 @@ function Chat({ threadId }) {
       ? html`<${ErrorNotice} code=${error.code} usage=${s.usage} onRetry=${() => send(error.question)} onDismiss=${clearError} />`
       : null}
 
-    <${Composer} busy=${busy} onSend=${send} usage=${s.usage} restore=${error?.question || ''} />
+    <div class="chat-end" aria-hidden="true" style=${{ height: `${composerSpace}px` }}></div>
+    <${Composer} busy=${busy} onSend=${send} usage=${s.usage} text=${text} setText=${setText} onSpace=${setComposerSpace} />
     ${threadId ? html`<${FaqSheet} open=${faqOpen} threadId=${threadId} onClose=${() => setFaqOpen(false)} />` : null}
   </div>`;
 }
@@ -149,49 +197,67 @@ function PendingMessages({ p, tz }) {
       <div class="bubble bubble-assistant" aria-busy="true">
         ${p.text
           ? html`<${Markdown} source=${p.text} />`
-          : html`<p class="chat-thinking"><${Spinner} size=${18} /> ${t(p.status === 'searching' ? 'assistant.status.searching' : 'assistant.status.sending')}</p>`}
+          : html`<p class="chat-thinking"><${Spinner} size=${18} /> ${t(`assistant.status.${p.status === 'streaming' ? 'sending' : p.status}`)}</p>`}
       </div>
     </li>`;
 }
 
 /**
- * Composer fixed above the tab bar, or above the iOS keyboard while it is open.
- * @param {{ busy: boolean, onSend: (q: string) => void, usage: any, restore: string }} props
+ * Composer fixed above the tab bar, or above the iOS keyboard while it is open. Reports through
+ * `onSpace` how much of the page end it covers beyond the shell's bottom padding, so the chat can
+ * reserve that space and the newest message or error is never hidden behind it. It also sets
+ * `--composer-space` on the root so toasts sit above it.
+ * @param {{ busy: boolean, onSend: (q: string) => void, usage: any, text: string, setText: (v: string) => void,
+ *   onSpace: (px: number) => void }} props
  */
-function Composer({ busy, onSend, usage, restore }) {
-  const [text, setText] = useState('');
+function Composer({ busy, onSend, usage, text, setText, onSpace }) {
   const box = useRef(/** @type {HTMLFormElement | null} */ (null));
   const input = useRef(/** @type {HTMLTextAreaElement | null} */ (null));
   const tooLong = text.trim().length > MAX_QUESTION_CHARS;
 
-  // Put a failed question back in the box so it can be edited and resent.
-  useEffect(() => {
-    if (restore && !text) setText(restore);
-  }, [restore]);
-
-  // Grow with the text (up to ~6 lines).
+  // Grow with the text up to the CSS max-height, then scroll inside the box.
   useEffect(() => {
     const el = input.current;
     if (!el) return;
     el.style.height = 'auto';
-    el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+    const max = parseFloat(getComputedStyle(el).maxHeight) || 160;
+    el.style.height = `${Math.min(el.scrollHeight + 2, max)}px`;
   }, [text]);
 
   // iOS: fixed elements do not move with the keyboard; follow the visual viewport instead.
+  // Measure what the composer covers whenever its size or position changes.
   useEffect(() => {
+    const form = box.current;
+    if (!form) return;
+    const measure = () => {
+      const main = form.closest('.app-main');
+      const mainPad = main ? parseFloat(getComputedStyle(main).paddingBottom) || 0 : 0;
+      const covered = form.offsetHeight + (parseFloat(getComputedStyle(form).bottom) || 0);
+      const extra = Math.max(0, Math.ceil(covered - mainPad + 16));
+      onSpace(extra);
+      document.documentElement.style.setProperty('--composer-space', `${Math.ceil(form.offsetHeight)}px`);
+    };
     const vv = window.visualViewport;
-    if (!vv) return;
     const update = () => {
-      const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
-      box.current?.style.setProperty('--kb', kb > 80 ? `${Math.round(kb)}px` : '0px');
-      box.current?.classList.toggle('composer-kb', kb > 80);
+      if (vv) {
+        const kb = Math.max(0, window.innerHeight - vv.height - vv.offsetTop);
+        form.style.setProperty('--kb', kb > 80 ? `${Math.round(kb)}px` : '0px');
+        form.classList.toggle('composer-kb', kb > 80);
+      }
+      measure();
     };
     update();
-    vv.addEventListener('resize', update);
-    vv.addEventListener('scroll', update);
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(measure) : null;
+    ro?.observe(form);
+    vv?.addEventListener('resize', update);
+    vv?.addEventListener('scroll', update);
+    window.addEventListener('resize', update);
     return () => {
-      vv.removeEventListener('resize', update);
-      vv.removeEventListener('scroll', update);
+      ro?.disconnect();
+      vv?.removeEventListener('resize', update);
+      vv?.removeEventListener('scroll', update);
+      window.removeEventListener('resize', update);
+      document.documentElement.style.removeProperty('--composer-space');
     };
   }, []);
 
@@ -200,7 +266,6 @@ function Composer({ busy, onSend, usage, restore }) {
     if (busy) return;
     const q = cleanQuestion(text);
     if (!q) return;
-    setText('');
     onSend(q);
   };
 

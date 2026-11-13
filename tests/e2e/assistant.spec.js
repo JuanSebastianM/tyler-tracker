@@ -56,7 +56,10 @@ test.describe('editor', () => {
     await expect(page).toHaveURL(/#\/assistant\?t=/);
     await expect(page.getByTestId('assistant-streaming')).toHaveCount(0);
 
-    expect(chatCalls(sb, 'send')[0].body).toEqual({ action: 'send', thread_id: null, message: '¿Cuántas veces al día come?' });
+    const first = chatCalls(sb, 'send')[0].body;
+    expect(first).toEqual({ action: 'send', thread_id: null, message: '¿Cuántas veces al día come?', request_id: expect.any(String) });
+    // The request id becomes the saved question's id (idempotent retries).
+    expect(sb.db.chat_messages[0].id).toBe(first.request_id);
     expect(sb.db.chat_messages.map((m) => m.role)).toEqual(['user', 'assistant']);
     await expect(page.getByTestId('assistant-budget')).toContainText('1,22');
 

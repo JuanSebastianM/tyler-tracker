@@ -27,7 +27,8 @@
   "assistantName": "Asistente",
   "status": {
     "sending": "Pensando…",
-    "searching": "Buscando en internet…"
+    "searching": "Buscando en internet…",
+    "checking": "Comprobando si la respuesta se guardó…"
   },
   "stopped": "Respuesta detenida.",
   "budget": "{used} de {total} usados este mes",
@@ -93,8 +94,8 @@
       "body": "No se pudo completar la pregunta. Inténtalo de nuevo en un momento."
     },
     "unauthorized": {
-      "title": "Tu sesión expiró",
-      "body": "Inicia sesión de nuevo para seguir preguntando."
+      "title": "Tu sesión terminó",
+      "body": "Inicia sesión de nuevo para seguir preguntando. Tu pregunta queda guardada en el cuadro de texto."
     },
     "bad_request": {
       "title": "No se pudo enviar la pregunta",
@@ -105,8 +106,28 @@
       "body": "Puede que la hayan eliminado. Empieza una conversación nueva."
     },
     "network": {
-      "title": "Sin conexión",
-      "body": "No hay conexión con el servidor. Revisa tu internet e inténtalo de nuevo."
+      "title": "No hay conexión con el servidor",
+      "body": "No se pudo conectar. Tu sesión sigue activa y tu pregunta quedó en el cuadro de texto. Revisa tu internet e inténtalo de nuevo."
+    },
+    "offline": {
+      "title": "Estás sin conexión",
+      "body": "Tu teléfono no tiene internet. Tu pregunta quedó en el cuadro de texto: envíala cuando vuelvas a tener conexión."
+    },
+    "timeout": {
+      "title": "La respuesta dejó de llegar",
+      "body": "El servidor dejó de responder y no quedó ninguna respuesta guardada. Tu pregunta quedó en el cuadro de texto; si reintentas, no se pregunta dos veces."
+    },
+    "interrupted": {
+      "title": "La respuesta se interrumpió",
+      "body": "La app se cerró o se recargó mientras respondía y no quedó una respuesta guardada. Tu pregunta está en el cuadro de texto para enviarla de nuevo."
+    },
+    "in_progress": {
+      "title": "El asistente sigue respondiendo",
+      "body": "Esta pregunta todavía se está respondiendo. Espera un momento e inténtalo de nuevo; no se pregunta dos veces."
+    },
+    "update_pending": {
+      "title": "Hay una versión nueva de la app",
+      "body": "La pregunta no se pudo completar con esta versión. Actualiza la app y vuelve a intentarlo; tu pregunta queda guardada."
     }
   },
   "faq": {

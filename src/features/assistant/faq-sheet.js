@@ -8,8 +8,10 @@ import { Button, Sheet, Select, TextInput, TextArea, Spinner } from '../../lib/u
 import { faqEntries } from '../../data/stores.js';
 import { safeHref } from '../../lib/markdown.js';
 import { draftFaq } from './api.js';
+import { beginBusy } from '../../lib/busy.js';
+import { updateStore } from '../../lib/pwa.js';
 import { session } from './session.js';
-import { FAQ_CATEGORIES, faqRowFromDraft, validateDraft } from './logic.js';
+import { FAQ_CATEGORIES, faqRowFromDraft, validateDraft, withUpdateHint } from './logic.js';
 import { ErrorNotice } from './parts.js';
 
 /** @param {{ open: boolean, threadId: string, onClose: () => void }} props */
@@ -23,13 +25,14 @@ export function FaqSheet({ open, threadId, onClose }) {
   const run = async () => {
     setPhase('drafting');
     setErrors({});
-    const r = await draftFaq(threadId);
+    const done = beginBusy('faq-draft'); // a billed request: no update reload while it runs
+    const r = await draftFaq(threadId).finally(done);
     if (r.ok) {
       setDraft(r.data.draft);
       setPhase('ready');
       if (r.data.budget) session.set((s) => ({ ...s, usage: { budget: r.data.budget, daily: r.data.daily, enabled: r.data.enabled } }));
     } else {
-      setCode(r.code);
+      setCode(withUpdateHint(r.code || 'server_error', updateStore.get().ready));
       setPhase('error');
       if (r.usage) session.set((s) => ({ ...s, usage: { ...s.usage, ...r.usage } }));
     }

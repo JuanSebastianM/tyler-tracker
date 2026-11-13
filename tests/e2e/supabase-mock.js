@@ -16,7 +16,17 @@
 //   content: { name: json | null } overrides of the fake reading content (content-fixtures.js) that
 //     is served for every content/*.json request (null = HTTP 404); 'real' serves the repo files
 //   chat: behaviour of the `chat` Edge Function mock (see mockChatFunction below):
-//     { reply, sources, refuse: '<error code>', streamError: true, draft, draftError: '<code>', budget }
+//     { reply, sources, refuse: '<error code>', streamError: true, draft, draftError: '<code>', budget,
+//       unauthorizedOnce: true (the first call gets the gateway's 401, like an expired JWT),
+//       stall: 'before-save' | 'after-save' (the response never arrives; 'after-save' saves the answer
+//       first, like a function that finished while the connection to the phone was dead),
+//       inProgress: true (answers 409 in_progress), delayMs: the answer arrives after this long,
+//       waitFor: a promise; the answer arrives once it resolves }
+//     sb.setChat(patch) changes it during a test.
+//   refresh: 'ok' (default) | 'network' (the refresh request fails) | 'invalid' (refresh token rejected)
+//   jwtExpiredOnce: true -> the first REST/Storage write answers 401 "JWT expired" (the app refreshes
+//     the session and retries)
+// Every call records its Authorization token (`calls[i].token`).
 import { defaultFixtures, EDITOR_USER, FIXED_NOW, PRIVATE_TABLES } from './fixtures.js';
 import { CONTENT_FIXTURES } from './content-fixtures.js';
 
@@ -28,9 +38,10 @@ const keyOf = (table) => KEYS[table] || 'id';
 
 const b64url = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64url');
 
-/** A session object as supabase-js stores it. @param {number} nowMs */
-export function makeSession(nowMs) {
-  const exp = Math.floor(nowMs / 1000) + 3600;
+let sessionCounter = 0;
+/** A session object as supabase-js stores it. @param {number} nowMs @param {number} [lifetimeS] */
+export function makeSession(nowMs, lifetimeS = 3600) {
+  const exp = Math.floor(nowMs / 1000) + lifetimeS;
   const user = {
     id: EDITOR_USER.id,
     aud: 'authenticated',
@@ -40,7 +51,7 @@ export function makeSession(nowMs) {
     user_metadata: {},
     created_at: '2026-11-10T00:00:00Z',
   };
-  const jwt = `${b64url({ alg: 'HS256', typ: 'JWT' })}.${b64url({ sub: user.id, role: 'authenticated', aud: 'authenticated', exp, email: user.email })}.c2ln`;
+  const jwt = `${b64url({ alg: 'HS256', typ: 'JWT' })}.${b64url({ sub: user.id, role: 'authenticated', aud: 'authenticated', exp, email: user.email, n: ++sessionCounter })}.c2ln`;
   return { access_token: jwt, token_type: 'bearer', expires_in: 3600, expires_at: exp, refresh_token: 'mock-refresh-token', user };
 }
 
@@ -100,7 +111,7 @@ export async function mockSupabase(page, opts = {}) {
   const now = opts.now === undefined ? FIXED_NOW : opts.now;
   const nowMs = now ? Date.parse(now) : Date.now();
   const db = structuredClone({ ...defaultFixtures(), ...(opts.fixtures || {}) });
-  const state = { signedIn: mode === 'asEditor', failWrites: !!opts.failWrites };
+  const state = { signedIn: mode === 'asEditor', failWrites: !!opts.failWrites, jwtExpiredOnce: !!opts.jwtExpiredOnce, refresh: opts.refresh || 'ok', chat: { ...(opts.chat || {}) } };
   /** @type {Array<{ method: string, path: string, search: string, body: any }>} */
   const calls = [];
 
@@ -131,6 +142,21 @@ export async function mockSupabase(page, opts = {}) {
     });
   }
 
+  /**
+   * Never answer this request (a stalled stream), but release it when the page gives up on it, so
+   * the browser does not keep it open (an open request would also hold back a service worker update).
+   */
+  const hold = (route) =>
+    new Promise((resolve) => {
+      const onFailed = (req) => {
+        if (req !== route.request()) return;
+        page.off('requestfailed', onFailed);
+        route.abort().catch(() => {});
+        resolve();
+      };
+      page.on('requestfailed', onFailed);
+    });
+
   await page.route(`${SUPABASE_URL}/**`, async (route) => {
     const req = route.request();
     const method = req.method();
@@ -147,7 +173,8 @@ export async function mockSupabase(page, opts = {}) {
     } catch {
       body = req.postData();
     }
-    calls.push({ method, path: url.pathname, search: url.search, body });
+    const token = (req.headers()['authorization'] || '').replace(/^Bearer\s+/i, '');
+    calls.push({ method, path: url.pathname, search: url.search, body, token });
 
     // ---- Auth ----
     if (url.pathname.startsWith('/auth/v1/')) {
@@ -159,7 +186,15 @@ export async function mockSupabase(page, opts = {}) {
         }
         return json(route, 400, { code: 400, error_code: 'invalid_credentials', msg: 'Invalid login credentials' });
       }
-      if (ep === 'token') return json(route, 200, makeSession(Date.now())); // refresh
+      if (ep === 'token') {
+        // refresh
+        if (state.refresh === 'network') return route.abort('internetdisconnected');
+        if (state.refresh === 'invalid') {
+          state.signedIn = false;
+          return json(route, 400, { code: 400, error_code: 'refresh_token_not_found', msg: 'Invalid Refresh Token: Refresh Token Not Found' });
+        }
+        return json(route, 200, makeSession(Math.max(Date.now(), nowMs)));
+      }
       if (ep === 'logout') {
         state.signedIn = false;
         return json(route, 204);
@@ -176,13 +211,17 @@ export async function mockSupabase(page, opts = {}) {
 
     // ---- Storage ----
     if (url.pathname.startsWith('/storage/v1/')) {
+      if (state.jwtExpiredOnce && method !== 'GET') {
+        state.jwtExpiredOnce = false;
+        return json(route, 401, { statusCode: '401', error: 'Unauthorized', message: 'jwt expired' });
+      }
       if (!state.signedIn) return json(route, 403, { statusCode: '403', error: 'Unauthorized', message: 'new row violates row-level security policy' });
       if (state.failWrites) return json(route, 500, { message: 'mock failure' });
       return json(route, 200, method === 'DELETE' ? [] : { Key: url.pathname.split('/object/')[1] || '', Id: 'mock' });
     }
 
     // ---- Edge Function: chat ----
-    if (url.pathname === '/functions/v1/chat') return mockChatFunction(route, { body, db, state, nowMs, chat: opts.chat || {} });
+    if (url.pathname === '/functions/v1/chat') return mockChatFunction(route, { body, db, state, nowMs, chat: state.chat, hold: () => hold(route) });
 
     // ---- REST ----
     const m = /^\/rest\/v1\/([a-z_]+)$/.exec(url.pathname);
@@ -212,6 +251,10 @@ export async function mockSupabase(page, opts = {}) {
     }
 
     // Writes
+    if (state.jwtExpiredOnce) {
+      state.jwtExpiredOnce = false;
+      return json(route, 401, { code: 'PGRST303', message: 'JWT expired' });
+    }
     if (!state.signedIn) return json(route, 401, { code: '42501', message: `new row violates row-level security policy for table "${table}"` });
     if (state.failWrites) return json(route, 500, { code: 'XX000', message: 'mock failure' });
     const stamp = () => ({ updated_at: new Date(nowMs).toISOString() });
@@ -255,6 +298,18 @@ export async function mockSupabase(page, opts = {}) {
     setFailWrites(v) {
       state.failWrites = v;
     },
+    /** Change the chat function mock's behaviour (merged). */
+    setChat(patch) {
+      Object.assign(state.chat, patch);
+    },
+    /** Change how session refreshes answer: 'ok' | 'network' | 'invalid'. */
+    setRefresh(mode) {
+      state.refresh = mode;
+    },
+    /** Calls to the auth refresh endpoint. */
+    refreshCalls() {
+      return calls.filter((c) => c.path === '/auth/v1/token' && c.search.includes('refresh_token'));
+    },
     /** REST calls for a table, optionally by method. */
     restCalls(table, method) {
       return calls.filter((c) => c.path === `/rest/v1/${table}` && (!method || c.method === method));
@@ -282,7 +337,7 @@ const CHAT_STATUS = { budget_exhausted: 402, daily_limit: 429, disabled: 403, no
 
 let chatClock = 0;
 
-async function mockChatFunction(route, { body, db, state, nowMs, chat }) {
+async function mockChatFunction(route, { body, db, state, nowMs, chat, hold }) {
   const used = chat.budget?.used_usd ?? 1.2;
   const total = chat.budget?.budget_usd ?? 25;
   const usage = (extra = 0, todayExtra = 0) => ({
@@ -293,6 +348,11 @@ async function mockChatFunction(route, { body, db, state, nowMs, chat }) {
   const headers = { 'access-control-allow-origin': '*' };
   const json = (status, payload) => route.fulfill({ status, contentType: 'application/json', headers, body: JSON.stringify(payload) });
   if (!state.signedIn) return json(401, { error: 'unauthorized' });
+  if (chat.unauthorizedOnce) {
+    chat.unauthorizedOnce = false;
+    // What the gateway answers for an expired JWT (verify_jwt): not the function's own body.
+    return json(401, { code: 401, message: 'Invalid JWT' });
+  }
   const action = body?.action;
   if (action === 'status') return json(200, usage());
   if (action === 'draft_faq') {
@@ -301,13 +361,27 @@ async function mockChatFunction(route, { body, db, state, nowMs, chat }) {
   }
   if (action !== 'send' || !body.message) return json(400, { error: 'bad_request' });
   if (chat.refuse) return json(CHAT_STATUS[chat.refuse] || 500, { error: chat.refuse, ...usage() });
+  const sse = (event, data) => `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
+  // Idempotency (like the real function): a request id that was answered is replayed.
+  const prior = body.request_id && db.chat_messages.find((m) => m.id === body.request_id && m.role === 'user');
+  if (prior) {
+    const answer = db.chat_messages.find((m) => m.thread_id === prior.thread_id && m.role === 'assistant' && m.created_at >= prior.created_at);
+    if (answer) {
+      chat.replays = (chat.replays || 0) + 1;
+      const out = sse('meta', { thread_id: prior.thread_id, title: null, new_thread: false, replayed: true }) + sse('done', { thread_id: prior.thread_id, stopped: false, stop_reason: 'replayed', replayed: true, user_message: prior, message: answer, ...usage() });
+      return route.fulfill({ status: 200, contentType: 'text/event-stream', headers, body: out });
+    }
+  }
+  if (chat.inProgress) return json(409, { error: 'in_progress' });
 
+  if (chat.stall === 'before-save') return hold(); // nothing arrives, nothing saved
+  if (chat.delayMs) await new Promise((r) => setTimeout(r, chat.delayMs)); // a slow answer
+  if (chat.waitFor) await chat.waitFor; // the answer arrives when the test resolves this promise
   const reply = chat.reply ?? DEFAULT_CHAT_REPLY;
   const sources = chat.sources ?? DEFAULT_CHAT_SOURCES;
   const isNew = !body.thread_id;
   const threadId = body.thread_id || crypto.randomUUID();
   const title = isNew ? body.message.slice(0, 60) : null;
-  const sse = (event, data) => `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
   let out = sse('meta', { thread_id: threadId, title, new_thread: isNew });
   if (sources.length) out += sse('status', { state: 'searching', query: 'puppy feeding' });
   const parts = [reply.slice(0, 12), reply.slice(12, 40), reply.slice(40)].filter(Boolean);
@@ -319,11 +393,12 @@ async function mockChatFunction(route, { body, db, state, nowMs, chat }) {
   const at = () => new Date(nowMs + ++chatClock * 1000).toISOString();
   const by = { created_by: EDITOR_USER.id, created_by_name: db.editors[0]?.display_name || null };
   if (isNew) db.chat_threads.push({ id: threadId, title, created_at: at(), updated_at: at(), ...by });
-  const userRow = { id: crypto.randomUUID(), thread_id: threadId, role: 'user', content: body.message, sources: [], model: null, input_tokens: 0, output_tokens: 0, web_searches: 0, cost_usd: 0, created_at: at(), updated_at: at(), ...by };
+  const userRow = { id: body.request_id || crypto.randomUUID(), thread_id: threadId, role: 'user', content: body.message, sources: [], model: null, input_tokens: 0, output_tokens: 0, web_searches: 0, cost_usd: 0, created_at: at(), updated_at: at(), ...by };
   const assistantRow = { id: crypto.randomUUID(), thread_id: threadId, role: 'assistant', content: reply, sources, model: 'claude-sonnet-5-5', input_tokens: 2400, output_tokens: 120, web_searches: sources.length ? 1 : 0, cost_usd: 0.0172, created_at: at(), updated_at: at(), ...by };
   db.chat_messages.push(userRow, assistantRow);
   const thread = db.chat_threads.find((t) => t.id === threadId);
   if (thread) thread.updated_at = at();
   out += sse('done', { thread_id: threadId, title, stopped: false, stop_reason: 'end_turn', user_message: userRow, message: assistantRow, ...usage(0.0172, 0) });
+  if (chat.stall === 'after-save') return hold(); // saved, but the phone never hears back
   return route.fulfill({ status: 200, contentType: 'text/event-stream', headers, body: out });
 }

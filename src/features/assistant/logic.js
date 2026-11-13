@@ -22,11 +22,53 @@ export const ERROR_CODES = [
   'unauthorized',
   'bad_request',
   'not_found',
-  'network',
+  'in_progress',
+  // Client-side only:
+  'network', // the server could not be reached (the session is fine)
+  'offline', // the device reports no connection
+  'timeout', // the answer stopped arriving; we checked that nothing was saved
+  'interrupted', // the app was closed or reloaded while answering; nothing was saved
+  'update_pending', // a request failed while a new version of the app is waiting
 ];
 
 /** Codes where trying again can help. */
-export const RETRYABLE = new Set(['upstream_error', 'upstream_busy', 'server_error', 'network']);
+export const RETRYABLE = new Set(['upstream_error', 'upstream_busy', 'server_error', 'network', 'offline', 'timeout', 'interrupted', 'in_progress']);
+
+/**
+ * Error code for a missing token (see getAccessToken in src/lib/auth.js): only a session the auth
+ * server rejected is "signed out"; an unreachable server is a connection problem.
+ * @param {string | null | undefined} tokenError
+ */
+export function tokenErrorCode(tokenError) {
+  return tokenError === 'network' ? 'network' : 'unauthorized';
+}
+
+/**
+ * Codes that may come from running an old version against a changed server; with a new version
+ * waiting they become 'update_pending' (update and try again).
+ */
+const UPDATE_SENSITIVE = new Set(['bad_request', 'server_error']);
+/** @param {string} code @param {boolean} updateReady */
+export function withUpdateHint(code, updateReady) {
+  return updateReady && UPDATE_SENSITIVE.has(code) ? 'update_pending' : code;
+}
+
+/** Composer draft key: the thread id, or 'new' for a conversation not started yet. @param {string | null} threadId */
+export const draftKey = (threadId) => threadId || 'new';
+
+/**
+ * The saved answer to the question whose user message id is `requestId` (the function uses the
+ * client's request id as the id of the saved question), or null if it was not saved.
+ * @param {any[]} rows chat_messages of the thread
+ * @param {string} requestId
+ * @returns {{ question: any, answer: any } | null}
+ */
+export function answerFor(rows, requestId) {
+  const question = rows.find((m) => m.id === requestId && m.role === 'user');
+  if (!question) return null;
+  const answer = visibleMessages(rows).find((m) => m.role === 'assistant' && m.created_at >= question.created_at && m.id !== question.id);
+  return answer ? { question, answer } : null;
+}
 
 /**
  * Map any error string to a known code (unknown → server_error). An `upstream_error` with the
@@ -36,6 +78,7 @@ export const RETRYABLE = new Set(['upstream_error', 'upstream_busy', 'server_err
  */
 export function normalizeError(code, reason) {
   if (code === 'upstream_error' && (reason === 'config' || reason === 'busy')) return `upstream_${reason}`;
+  if (code === 'forbidden_origin') return 'server_error';
   return typeof code === 'string' && ERROR_CODES.includes(code) ? code : 'server_error';
 }
 

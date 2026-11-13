@@ -2,6 +2,7 @@
 import { html } from '../../../vendor/preact.js';
 import { t, formatNumber } from '../../lib/i18n.js';
 import { useAuth, openSignIn } from '../../lib/auth.js';
+import { applyUpdate } from '../../lib/pwa.js';
 import { Button, EmptyState, Skeleton, Icon } from '../../lib/ui/index.js';
 import { budgetLevel, RETRYABLE } from './logic.js';
 
@@ -37,12 +38,13 @@ export function BudgetIndicator({ usage }) {
 export function ErrorNotice({ code, usage, onRetry, onDismiss }) {
   const vars = { limit: usage?.daily?.limit ?? 40 };
   return html`<div class="chat-error" role="alert" data-testid="assistant-error" data-code=${code}>
-    <span class="chat-error-icon"><${Icon} name=${code === 'network' ? 'globe' : 'alert'} size=${20} /></span>
+    <span class="chat-error-icon"><${Icon} name=${code === 'network' || code === 'offline' ? 'globe' : 'alert'} size=${20} /></span>
     <div class="chat-error-text">
       <p class="chat-error-title">${t(`assistant.errors.${code}.title`)}</p>
       <p class="chat-error-body">${t(`assistant.errors.${code}.body`, vars)}</p>
       <div class="button-row">
         ${code === 'unauthorized' ? html`<${Button} size="sm" variant="secondary" icon="lock" onClick=${openSignIn}>${t('auth.signIn')}</${Button}>` : null}
+        ${code === 'update_pending' ? html`<${Button} size="sm" variant="secondary" icon="refresh" onClick=${applyUpdate}>${t('pwa.reload')}</${Button}>` : null}
         ${onRetry && RETRYABLE.has(code) ? html`<${Button} size="sm" variant="secondary" icon="refresh" onClick=${onRetry}>${t('common.retry')}</${Button}>` : null}
         ${onDismiss ? html`<${Button} size="sm" variant="ghost" onClick=${onDismiss}>${t('common.dismiss')}</${Button}>` : null}
       </div>

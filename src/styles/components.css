@@ -217,7 +217,8 @@ input[type='date']::-webkit-date-and-time-value, input[type='time']::-webkit-dat
 /* ---- Toasts ---- */
 .toaster {
   position: fixed; z-index: 60; left: 0; right: 0;
-  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--sp-3));
+  /* --composer-space: height of the assistant's fixed composer while it is on screen. */
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--sp-3) + var(--composer-space, 0px));
   display: flex; flex-direction: column; align-items: center; gap: var(--sp-2);
   padding: 0 var(--sp-4); pointer-events: none;
 }

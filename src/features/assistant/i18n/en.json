@@ -27,7 +27,8 @@
   "assistantName": "Assistant",
   "status": {
     "sending": "Thinking…",
-    "searching": "Searching the web…"
+    "searching": "Searching the web…",
+    "checking": "Checking whether the answer was saved…"
   },
   "stopped": "Answer stopped.",
   "budget": "{used} of {total} used this month",
@@ -93,8 +94,8 @@
       "body": "The question could not be completed. Try again in a moment."
     },
     "unauthorized": {
-      "title": "Your session expired",
-      "body": "Sign in again to keep asking."
+      "title": "Your session ended",
+      "body": "Sign in again to keep asking. Your question stays in the text box."
     },
     "bad_request": {
       "title": "The question could not be sent",
@@ -105,8 +106,28 @@
       "body": "It may have been deleted. Start a new conversation."
     },
     "network": {
-      "title": "No connection",
-      "body": "Cannot reach the server. Check your internet and try again."
+      "title": "Can’t reach the server",
+      "body": "The connection failed. You are still signed in and your question is in the text box. Check your internet and try again."
+    },
+    "offline": {
+      "title": "You’re offline",
+      "body": "Your phone has no internet. Your question is in the text box: send it when you are back online."
+    },
+    "timeout": {
+      "title": "The answer stopped arriving",
+      "body": "The server stopped responding and no answer was saved. Your question is in the text box; trying again never asks twice."
+    },
+    "interrupted": {
+      "title": "The answer was interrupted",
+      "body": "The app was closed or reloaded while answering and no answer was saved. Your question is in the text box so you can send it again."
+    },
+    "in_progress": {
+      "title": "The assistant is still answering",
+      "body": "This question is still being answered. Wait a moment and try again; it is never asked twice."
+    },
+    "update_pending": {
+      "title": "A new version of the app is ready",
+      "body": "The question could not be completed with this version. Update the app and try again; your question is kept."
     }
   },
   "faq": {

@@ -13,7 +13,9 @@
 }
 .assistant .chat-toolbar .icon-btn:disabled { opacity: 0.4; cursor: default; background: transparent; }
 
-/* The shell's .app-main bottom padding (tab bar + 96 px) already clears the fixed composer. */
+/* The shell's .app-main bottom padding (tab bar + 96 px) clears a one-line composer; .chat-end is
+   sized by the Composer (chat-screen.js) to cover the rest: more lines, the keyboard, the budget line. */
+.assistant .chat-end { flex: none; margin-top: calc(-1 * var(--sp-4)); }
 
 /* ---- Intro and starters ---- */
 .assistant .chat-intro-head { display: flex; gap: var(--sp-3); align-items: flex-start; }
@@ -86,7 +88,9 @@
 }
 .assistant .composer-row { display: flex; align-items: flex-end; gap: var(--sp-2); }
 .assistant .composer-input {
-  flex: 1; min-height: var(--tap); max-height: 160px; resize: none;
+  flex: 1; min-height: var(--tap); resize: none; overflow-y: auto;
+  /* About 6 lines, less on short screens (keyboard open): the box scrolls beyond that. */
+  max-height: min(160px, 28dvh);
   padding-top: 10px; padding-bottom: 10px; line-height: 1.35;
   /* 16 px or more stops iOS from zooming into the field */
   font-size: max(16px, var(--fs-md));
