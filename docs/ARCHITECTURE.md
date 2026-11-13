@@ -166,6 +166,13 @@ Editors can ask questions inside the app. Feature id `assistant` (no tab; route 
   trigger on `chat_messages` and is never deleted with a thread. The monthly budget is the sum of
   `ai_usage.cost_usd` since the start of the month in the settings timezone, so deleting
   conversations cannot lower the measured spend.
+- **Spend reservations.** Before calling Claude the function inserts an `ai_usage` row with the
+  worst-case cost (`model = 'reservation:send|faq'`) and re-checks the budget and daily limit with
+  every reservation counted, so parallel requests cannot overshoot. It is deleted when the answer is
+  saved, or settled to the billed cost when a call was billed but not saved
+  (`supabase/functions/chat/lib/budget.ts`).
+- **Location** for the prompt and web search comes from `ai_settings.location` (editors-only;
+  migration 0005, proposed), never from the public source.
 - **Loading messages.** `chat_threads` is a normal private store (`chatThreads`). Messages are not a
   table store: `src/features/assistant/session.js` loads one thread's `chat_messages` on demand
   (`loadThreadMessages`), keeps them in memory only (never in `localStorage`), and clears everything
@@ -187,9 +194,18 @@ site.
 
 ## 7. Offline and PWA behaviour
 
-- App shell and vendored libraries are precached by the service worker and served cache-first; a new
-  deploy activates on next launch and shows an "updated" toast. If an update arrives while the app
-  is open, a toast offers "Update". `scripts/build-site.mjs` stamps the version and precache list.
+- App shell and vendored libraries are precached by the service worker and served cache-first, only
+  from the cache of the running version. **Precache never trusts HTTP or CDN caches**: GitHub Pages
+  caches files ~10 minutes, so each file is fetched with `?v=<version>` and `cache: 'reload'` and
+  stored under its clean URL, and the install fails (to be retried at the next update check) unless
+  the fetched `src/version.js` carries the worker's own version. The worker is registered with
+  `updateViaCache: 'none'`.
+- **Updates.** A new version that finishes installing within 15 s of launch, or of the app coming
+  back to the foreground (iOS resumes home-screen apps), is applied at once if nobody has touched the
+  app, no sheet is open and no text is typed; otherwise a toast offers "Update". A waiting version is
+  always applied before render on the next launch. Any page reloads when a new worker takes control
+  (also when another tab applied it), so old modules never run against the new cache. "Updated"
+  toast after the reload. `scripts/build-site.mjs` stamps the version and precache list.
   The worker is never registered on localhost; `?sw=off` disables (and unregisters) it on any host.
 - **Version.** `src/version.js` exports `APP_VERSION` (`'<short sha>-<UTC yyyymmddThhmm>'`), stamped
   by `scripts/build-site.mjs` with the same value as the service worker cache; `'dev'` locally. Use

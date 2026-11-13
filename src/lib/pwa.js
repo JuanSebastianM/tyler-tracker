@@ -7,6 +7,12 @@ import { t } from './i18n.js';
 import { readJSON, writeJSON } from './storage.js';
 
 const UPDATED_FLAG = 'tt.updated';
+/**
+ * A new version that finishes installing within this time after launch (or after the app comes back
+ * to the foreground) is applied right away if the person has not touched the app yet, so a deploy
+ * shows up on the first open instead of the second. Otherwise a toast offers "Update".
+ */
+const AUTO_APPLY_MS = 15_000;
 
 export function isServiceWorkerDisabled() {
   if (typeof navigator === 'undefined' || !('serviceWorker' in navigator)) return true;
@@ -26,10 +32,41 @@ export async function applyWaitingUpdate() {
   if (isServiceWorkerDisabled()) return false;
   const reg = await navigator.serviceWorker.getRegistration();
   if (!reg?.waiting || !navigator.serviceWorker.controller) return false;
-  sessionStorage.setItem(UPDATED_FLAG, '1');
-  navigator.serviceWorker.addEventListener('controllerchange', () => location.reload(), { once: true });
-  reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+  activate(reg.waiting);
   return true;
+}
+
+let reloading = false;
+/** Activate a waiting worker; the page reloads on controllerchange (see watchController). */
+function activate(/** @type {ServiceWorker} */ worker) {
+  sessionStorage.setItem(UPDATED_FLAG, '1');
+  watchController();
+  worker.postMessage({ type: 'SKIP_WAITING' });
+}
+
+let watching = false;
+/**
+ * Reload whenever a NEW worker takes control of an already-controlled page (an update applied here
+ * or in another tab), so a page never keeps running old modules against the new version's cache.
+ * The very first install (no controller before) does not reload.
+ */
+function watchController() {
+  if (watching) return;
+  watching = true;
+  const hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloading) return;
+    reloading = true;
+    location.reload();
+  });
+}
+
+/** An open sheet/dialog or typed text anywhere: never reload under the person's feet. */
+function hasUnsavedWork() {
+  if (document.querySelector('[role="dialog"]')) return true;
+  return [...document.querySelectorAll('textarea, input[type="text"], input:not([type])')].some(
+    (el) => !!(/** @type {HTMLInputElement} */ (el).value || '').trim(),
+  );
 }
 
 export async function registerServiceWorker() {
@@ -44,29 +81,47 @@ export async function registerServiceWorker() {
     sessionStorage.removeItem(UPDATED_FLAG);
     toast(t('pwa.updated'), { tone: 'success' });
   }
-  const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+  watchController();
+  // updateViaCache 'none': update checks never use the HTTP cache for sw.js (Pages caches ~10 min).
+  const reg = await navigator.serviceWorker.register('./sw.js', { scope: './', updateViaCache: 'none' });
+
+  // Has the person interacted since launch / since the app came back to the foreground?
+  let windowStart = Date.now();
+  let touched = false;
+  const markTouched = () => {
+    touched = true;
+  };
+  for (const type of ['pointerdown', 'keydown', 'input']) document.addEventListener(type, markTouched, { capture: true, passive: true });
+
+  let offered = false;
   const offerUpdate = (/** @type {ServiceWorker} */ worker) => {
+    if (!touched && Date.now() - windowStart < AUTO_APPLY_MS && !hasUnsavedWork()) {
+      activate(worker);
+      return;
+    }
+    if (offered) return;
+    offered = true;
     toast(t('pwa.updateReady'), {
       duration: 0,
-      action: {
-        label: t('pwa.reload'),
-        onClick: () => {
-          sessionStorage.setItem(UPDATED_FLAG, '1');
-          navigator.serviceWorker.addEventListener('controllerchange', () => location.reload(), { once: true });
-          worker.postMessage({ type: 'SKIP_WAITING' });
-        },
-      },
+      action: { label: t('pwa.reload'), onClick: () => activate(worker) },
     });
   };
-  if (reg.waiting && navigator.serviceWorker.controller) offerUpdate(reg.waiting);
-  reg.addEventListener('updatefound', () => {
-    const worker = reg.installing;
+  const track = (/** @type {ServiceWorker | null} */ worker) => {
     worker?.addEventListener('statechange', () => {
       if (worker.state === 'installed' && navigator.serviceWorker.controller) offerUpdate(worker);
     });
-  });
+  };
+  if (reg.waiting && navigator.serviceWorker.controller) offerUpdate(reg.waiting);
+  // The update check started by register() may already be installing when it resolves.
+  else track(reg.installing);
+  reg.addEventListener('updatefound', () => track(reg.installing));
   document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') reg.update().catch(() => {});
+    if (document.visibilityState !== 'visible') return;
+    // iOS resumes a home-screen app instead of relaunching it: treat coming back as a launch.
+    windowStart = Date.now();
+    touched = false;
+    if (reg.waiting && navigator.serviceWorker.controller) offerUpdate(reg.waiting);
+    else reg.update().catch(() => {});
   });
 }
 
