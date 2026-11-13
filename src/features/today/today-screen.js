@@ -10,7 +10,7 @@ import { Card, Fab, Skeleton, Badge, Button, Icon, Markdown, List, ListRow } fro
 import {
   petProfile, settings, feedings, routineEvents, vaccinations, dewormings, vetVisits, reminders, checklistDone, useTimezone,
 } from '../../data/stores.js';
-import { getAge, getDueItems, getToday } from '../../data/derived.js';
+import { getAge, getDueItems, getToday, DUE_KIND_PATH } from '../../data/derived.js';
 import { DEFAULT_BIRTH_DATE, SOON_DAYS } from '../../config.js';
 import { KIND_ICON, minutesBetween } from '../log/log-logic.js';
 import { EntrySheet, formatMinutes } from '../log/entry-ui.js';
@@ -253,7 +253,7 @@ function DueCard({ today }) {
               title=${d.title ? `${t(`due.kind.${d.kind}`)}: ${d.title}` : t(`due.kind.${d.kind}`)}
               subtitle=${`${formatDate(d.dueOn, 'medium')} · ${formatRelativeDay(d.dueOn, today)}`}
               trailing=${html`<${Badge} tone=${DUE_TONE[d.status]}>${t(`due.status.${d.status}`)}</${Badge}>`}
-              href=${href('/health')}
+              href=${href(DUE_KIND_PATH[d.kind] || '/health')}
             />`,
           )}
         </${List}>`

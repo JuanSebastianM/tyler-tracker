@@ -66,7 +66,7 @@ export function GrowthChart({ rows, birthDate, today }) {
     ${!series.length ? html`<p class="muted">${t('health.weight.chartEmpty')}</p>` : null}
     ${!band && status !== 'loading' ? html`<p class="muted" data-testid="growth-no-reference">${t('health.weight.noReference')}</p>` : null}
     ${m.bandStatus === 'later' && m.bandRange
-      ? html`<p class="muted" data-testid="growth-band-later">${t('health.weight.bandStartsLater', { weeks: formatNumber(m.bandRange[0]) })}</p>`
+      ? html`<p class="health-note" data-testid="growth-band-later">${t('health.weight.bandStartsLater', { weeks: formatNumber(m.bandRange[0]) })}</p>`
       : null}
     ${band && growth?.note ? html`<p class="health-note muted" data-testid="growth-note">${pick(growth.note)}</p>` : null}
     ${band && growth?.sample

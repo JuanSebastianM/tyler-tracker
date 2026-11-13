@@ -5,6 +5,7 @@ import { EditorOnly } from '../../lib/auth.js';
 import { href, navigate } from '../../lib/router.js';
 import { Card, List, ListRow, Fab, Sheet, Button, HealthDisclaimer } from '../../lib/ui/index.js';
 import { vaccinations, dewormings, vetVisits, medications, reminders, weights } from '../../data/stores.js';
+import { DUE_KIND_PATH } from '../../data/derived.js';
 import { useHealthCtx } from './sections.js';
 import { LatestWeight, useBirthDate } from './weight-screen.js';
 import { splitMedications, splitReminders } from './logic.js';
@@ -21,7 +22,6 @@ export const SECTIONS = [
 ];
 
 /** Section route for a due item kind. */
-const KIND_ROUTE = { vaccination: 'vaccines', deworming: 'deworming', vet_follow_up: 'visits', reminder: 'reminders' };
 const KIND_ICON = { vaccination: 'syringe', deworming: 'pill', vet_follow_up: 'stethoscope', reminder: 'bell' };
 /** Due items shown on the overview. */
 const MAX_DUE = 5;
@@ -51,9 +51,9 @@ export function HealthScreen() {
               (d) => html`<div class="health-row" key=${d.id} data-testid="due-item">
                 <${ListRow} icon=${KIND_ICON[d.kind]} iconTone=${d.status === 'overdue' ? 'red' : 'gold'}
                   title=${d.title || t(`due.kind.${d.kind}`)}
-                  subtitle=${html`<span class="health-sub">${t(`due.kind.${d.kind}`)} · ${formatDue(d.dueOn, d.dueTime)}</span>
+                  subtitle=${html`<span class="health-sub">${d.title ? `${t(`due.kind.${d.kind}`)} · ` : ''}${formatDue(d.dueOn, d.dueTime)}</span>
                     <span class="health-due-line"><${DueBadge} item=${d} today=${ctx.today} /></span>`}
-                  href=${href(`/health/${KIND_ROUTE[d.kind]}`)} />
+                  href=${href(DUE_KIND_PATH[d.kind])} />
                 <${CalendarButton} compact tz=${ctx.tz}
                   item=${{ kind: d.kind, rowId: d.row.id, dueOn: d.dueOn, dueTime: d.dueTime, title: d.title, notes: d.row.notes }} />
               </div>`,

@@ -93,6 +93,14 @@ export function getDueItems(data, today, opts = {}) {
   );
 }
 
+/** Health screen where each kind of due item lives (`#/health/<route>`). */
+export const DUE_KIND_PATH = /** @type {const} */ ({
+  vaccination: '/health/vaccines',
+  deworming: '/health/deworming',
+  vet_follow_up: '/health/visits',
+  reminder: '/health/reminders',
+});
+
 /**
  * Today's calendar date and its [start, end) instants in a timezone.
  * @param {string} tz

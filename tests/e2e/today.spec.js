@@ -134,3 +134,13 @@ for (const mode of ['signedOut', 'asEditor']) {
     }
   });
 }
+
+test('Today links to the health section of a due item and to the current roadmap stage', async ({ page }) => {
+  await openApp(page, '/today');
+  await page.getByTestId('due-card').getByRole('link', { name: /Desparasitación/ }).click();
+  await expect(page).toHaveURL(/#\/health\/deworming$/);
+  await page.goto('./#/today');
+  await page.getByTestId('week-card').locator('a.week-stage').click();
+  await expect(page).toHaveURL(/#\/learn\/roadmap\/stage-early$/);
+  await expect(page.locator('.stage[data-stage="stage-early"] .stage-head')).toHaveAttribute('aria-expanded', 'true');
+});
