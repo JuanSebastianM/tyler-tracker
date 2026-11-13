@@ -58,8 +58,16 @@ Screens receive `{ params, query }`. Navigate with links (`href('/health/vaccine
 `src/lib/router.js` gives `#/health/vaccines`) or `navigate(path)`. Wrap the screen in a root element
 with your feature class (`<div class="health stack">`) and scope all CSS under it in `<id>.css`
 (already linked from `index.html`; `@import` more files from your folder if needed). Use tokens
-(`var(--c-gold)`, `var(--sp-4)`, `var(--r-card)`...) from `src/styles/tokens.css`; never hard-code
-colours, and check both light and dark.
+(`var(--c-gold)`, `var(--sp-4)`, `var(--r-card)`...) from `src/styles/tokens.css`.
+
+**Colours are tokens only.** Each person picks a colour theme and light/dark mode (ARCHITECTURE.md,
+"Theming"), and only tokens follow it. So: no hex/rgb colours in feature CSS or inline SVG (use
+`fill: var(--c-gold)` etc.), and no `@media (prefers-color-scheme: dark)` — the person's mode would be
+ignored; if something must differ between light and dark, use or add a scheme token in
+`tokens.css` (`--border-raised` for raised surfaces, `--c-raised-edge`, `--c-segment-on`...). The
+`--c-gold*` tokens are the accent (rose, lavender... in other themes); for meaning use the semantic
+tokens (`--c-red`, `--c-green`, `--c-blue`), which no theme changes. Check your screens in at least
+`rose` light and dark (Ajustes → Tema, or `localStorage['tt.theme.active'] = '{"theme":"rose","mode":"dark"}'`).
 
 ## 3. UI kit (`src/lib/ui/index.js`)
 
@@ -123,7 +131,8 @@ Colombian Spanish (tú), sentence case, plain verbs, a button says what happens 
 
 Stores (`src/data/stores.js`), one per table: `petProfile`, `settings`, `petPrivate`, `feedings`,
 `routineEvents`, `weights`, `vaccinations`, `dewormings`, `vetVisits`, `vetVisitPrivate`,
-`medications`, `reminders`, `trainingSkills`, `checklistDone`, `milestones`, `photos`. Row types
+`medications`, `reminders`, `trainingSkills`, `checklistDone`, `milestones`, `photos`, `faqEntries`,
+`chatThreads`, `userSettings` (own row; use `setThemeChoice` from `src/lib/theme.js`, not the store). Row types
 are in `src/data/types.d.ts`.
 
 Read (hooks re-render on change; cached rows render instantly):
@@ -222,5 +231,6 @@ only closes it.
 
 ## 9. Before you hand off
 
-- `npm run check` green; screenshots of your screens at 390×844 in light and dark, es and en.
+- `npm run check` green; screenshots of your screens at 390×844 in light and dark, es and en, plus one
+  other theme (`tests/e2e/theme-screenshots.spec.js` shows how to set it).
 - Hand-off notes: what you built, shared-file changes you need, new migrations (never apply them).

@@ -35,7 +35,8 @@ change.
 - Backend: Supabase (Postgres + Auth + Storage) through `@supabase/supabase-js` v2.
 - Runtime libraries are **vendored** as single ESM files in `/vendor` (pinned in `vendor/versions.json`,
   produced by the `vendor` GitHub workflow). The app never loads code from a CDN.
-- Styling: plain CSS with custom properties (`src/styles/`), light and dark via `prefers-color-scheme`.
+- Styling: plain CSS with custom properties (`src/styles/`). Colour comes only from tokens; each person
+  picks a colour theme and light/dark mode (see "Theming" in section 8).
 - Tests: `node --test` for unit tests, Playwright (Chromium, iPhone-sized viewport) for smoke tests against a
   local static server with Supabase requests mocked.
 
@@ -75,7 +76,7 @@ src/
       i18n/es.json en.json Feature-local strings (merged at boot under the feature id namespace)
       *.js *.css           Components and styles for that feature only
   i18n/es.json en.json     Shared strings (common.*, nav.*, errors.*)
-  styles/                  tokens.css, base.css, components.css
+  styles/                  tokens.css, themes.css, base.css, components.css
 content/                   Bilingual reading content (see docs/CONTENT.md)
 supabase/migrations/       SQL, applied to the project by the orchestrator only
 tests/unit/ tests/e2e/     Tests (e2e shared: helpers.js, fixtures.js, content-fixtures.js, supabase-mock.js)
@@ -122,6 +123,8 @@ Source of truth: `supabase/migrations/*.sql`. Summary:
   `weights`, `vaccinations`, `dewormings`, `vet_visits`, `medications`, `reminders`, `training_skills`
   (pk `skill_key` = training guide id), `checklist_done` (pk `item_key` = roadmap to-do key),
   `milestones`, `photos`.
+- Own row only: `user_settings` (migration 0006: `user_id` pk, `theme`, `color_mode`); each signed-in
+  user reads and writes only their own row. Store `userSettings` (private, keyed by `user_id`).
 - Editors only: `pet_private` (single row: microchip, vet contact, insurance), `vet_visit_private`
   (cost per visit), `editors` (a signed-in user can read only their own row; the app uses that to know
   whether the session is an editor and what their display name is).
@@ -233,6 +236,30 @@ site.
 - **Due items** link to their Health screen with `DUE_KIND_PATH[kind]` (`src/data/derived.js`).
 - Icons include `search` (search fields) and `chevron-up`; add icons to `src/lib/ui/icons.js`
   instead of rotating others.
+
+- **Theming (per person).** Themes `default` (the golden original), `rose`, `lavender`, `mint`, `sky`,
+  each with a light and a dark version; mode `auto` (follows the device), `light` or `dark`. Picked in
+  Ajustes → Tema (`src/features/profile/theme-picker.js`), logic in `src/lib/theme.js`.
+  - A choice applies only to the person who made it. Editors: upserted to their `user_settings` row
+    and cached on the device per user (`tt.theme.user.<id>`); loaded after sign-in. Visitors (and
+    anyone after sign-out): `tt.theme.device`. A signed-in user with no row gets `default`. Unknown
+    values fall back to `default` / `auto`.
+  - Whatever is applied is written to `tt.theme.active`; `src/lib/theme-boot.js`, a classic script
+    linked in `index.html` after the stylesheets (CSP-safe, no inline script), applies it before first
+    paint. It sets `data-theme`, `data-mode` and the resolved `data-scheme` (`light|dark`) on `<html>`
+    and copies `--c-bg` into the `theme-color` metas; `theme.js` keeps them in sync afterwards
+    (including device dark-mode changes while in `auto`).
+  - CSS: `tokens.css` declares the default colour tokens on `:root, [data-theme]` and the dark ones on
+    `[data-scheme='dark']`; `themes.css` overrides them per `[data-theme='x'][data-scheme='light|dark']`.
+    Because tokens are declared on any `[data-theme]` element, a subtree can preview another theme (the
+    swatches do). Themes change the accent (`--c-gold*` = "accent", gold in the default theme), tinted
+    neutrals, focus ring and shadows; semantic colours (`--c-red`, `--c-green`, `--c-blue`) never change.
+  - **Features use tokens only**: no hex/rgb colours (photo-viewer chrome and photo overlays may stay
+    neutral black/white), no `@media (prefers-color-scheme)` (the person's mode would be ignored). A
+    difference between light and dark is a token (`--border-raised`, `--c-raised-edge`,
+    `--c-segment-on`, `--c-on-red`, `--c-progress-track`, `--c-toast-action`, `--shadow-fab`...).
+  - `tests/unit/theme.test.mjs` computes WCAG AA contrast for every text token pair in every theme and
+    mode from the CSS, and pins the default theme's token values; add new text pairs there.
 
 ## 9. Quality bar
 
