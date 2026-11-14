@@ -25,6 +25,10 @@ const expireStoredToken = (page, nowMs) =>
 test.describe('session', () => {
   test('a 401 from the gateway refreshes the session and retries once: no "signed out"', async ({ page }) => {
     const sb = await openApp(page, '/assistant', { mode: 'asEditor' });
+    // The chat asks for its usage (`status`) when it opens. The one-time 401 is meant for the
+    // question: arm it only after that call was answered, or it can hit `status` instead (then the
+    // question goes out once, with the already refreshed token).
+    await expect(page.getByTestId('assistant-budget')).toContainText('usados este mes');
     sb.setChat({ unauthorizedOnce: true });
     await ask(page, '¿Cuánta agua?');
     await expect(page.locator('.msg-assistant').last()).toContainText('4 veces al día');
