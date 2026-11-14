@@ -18,6 +18,13 @@ const ask = async (page, q) => {
 /** Shorten the app's stall timeout (45 s in production). */
 const fastStall = (page, ms = 1500) =>
   page.evaluate((v) => import('/src/features/assistant/api.js').then((m) => m.configureChat({ stallMs: v })), ms);
+/**
+ * The chat asks for its usage (`status`) when it opens. Tests that then change how the session or
+ * the function answer (expired token, rejected refresh, one-time 401) must wait for that call to be
+ * answered first, or the change can hit `status` instead of the question: a rejected refresh then
+ * signs the editor out before the question is typed (CI flake), a one-time 401 is used up early.
+ */
+const usageLoaded = (page) => expect(page.getByTestId('assistant-budget')).toContainText('usados este mes');
 /** Put an expired session in storage, as when iOS kept the app suspended past the token's expiry. */
 const expireStoredToken = (page, nowMs) =>
   page.evaluate(([k, v]) => localStorage.setItem(k, JSON.stringify(v)), [AUTH_STORAGE_KEY, makeSession(nowMs - 3700_000)]);
@@ -25,10 +32,7 @@ const expireStoredToken = (page, nowMs) =>
 test.describe('session', () => {
   test('a 401 from the gateway refreshes the session and retries once: no "signed out"', async ({ page }) => {
     const sb = await openApp(page, '/assistant', { mode: 'asEditor' });
-    // The chat asks for its usage (`status`) when it opens. The one-time 401 is meant for the
-    // question: arm it only after that call was answered, or it can hit `status` instead (then the
-    // question goes out once, with the already refreshed token).
-    await expect(page.getByTestId('assistant-budget')).toContainText('usados este mes');
+    await usageLoaded(page); // else the one-time 401 can hit `status` and the question goes out once
     sb.setChat({ unauthorizedOnce: true });
     await ask(page, '¿Cuánta agua?');
     await expect(page.locator('.msg-assistant').last()).toContainText('4 veces al día');
@@ -42,6 +46,7 @@ test.describe('session', () => {
 
   test('a token that expired while the app was suspended is refreshed before the question is sent', async ({ page }) => {
     const sb = await openApp(page, '/assistant', { mode: 'asEditor' });
+    await usageLoaded(page);
     await expireStoredToken(page, Date.parse(FIXED_NOW));
     const before = sb.refreshCalls().length;
     await ask(page, '¿Puede salir?');
@@ -54,7 +59,7 @@ test.describe('session', () => {
   test('refresh impossible for lack of network: "no connection", still signed in, question kept', async ({ page }) => {
     // Real clock: supabase-js gives up retrying a refresh after ~30 s of real time.
     const sb = await openApp(page, '/assistant', { mode: 'asEditor', now: null, refresh: 'network' });
-    await expect(page.getByTestId('assistant-chat')).toBeVisible();
+    await usageLoaded(page);
     await expireStoredToken(page, Date.now());
     await ask(page, '¿Cuándo le toca la vacuna?');
     const err = page.getByTestId('assistant-error');
@@ -83,6 +88,7 @@ test.describe('session', () => {
 
   test('a rejected refresh token ends the session: told once, sign in returns to the question', async ({ page }) => {
     const sb = await openApp(page, '/assistant', { mode: 'asEditor' });
+    await usageLoaded(page); // else `status` can meet the rejected refresh before the question is typed
     sb.setRefresh('invalid');
     await expireStoredToken(page, Date.parse(FIXED_NOW));
     await ask(page, '¿Cuántas horas duerme?');
