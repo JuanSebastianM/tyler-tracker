@@ -188,6 +188,8 @@
       "serverBody": "We'll try again in a moment. Your changes are still saved on this phone.",
       "signInTitle": "Sign in to sync",
       "signInBody": "Your session ended. Your changes are still saved on this phone and are sent when you sign in again.",
+      "reviewTitle": "Nothing left to send",
+      "reviewBody": "Review below the changes that could not be saved.",
       "syncedTitle": "Everything is synced",
       "syncedBody": "No changes are waiting on this phone."
     },

@@ -194,7 +194,7 @@ test('a change the server refuses lands in "could not be saved" with its data; r
   const items = sheet.getByTestId('rejected-item');
   await expect(items).toHaveCount(2);
   await expect(items.nth(0)).toContainText('Peso');
-  await expect(items.nth(0)).toContainText('5.1');
+  await expect(items.nth(0)).toContainText('5,1');
   await expect(items.nth(1)).toContainText('Después de comer');
   await expect(items.nth(0)).toContainText('algún dato no es válido');
 

@@ -15,7 +15,7 @@
   color: var(--c-ink-2); font-variant-numeric: tabular-nums;
 }
 .today .card-link { color: var(--c-gold-ink); font-weight: 700; font-size: var(--fs-sm); text-decoration: none; padding: var(--sp-2) 0; }
-.today .is-pending { opacity: 0.6; }
+.today .is-pending { opacity: 0.85; }
 
 /* Meals */
 .today .meals { list-style: none; margin: 0 calc(var(--sp-2) * -1); padding: 0; }
