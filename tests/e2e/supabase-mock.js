@@ -126,7 +126,7 @@ export async function mockSupabase(page, opts = {}) {
   const now = opts.now === undefined ? FIXED_NOW : opts.now;
   const nowMs = now ? Date.parse(now) : Date.now();
   const db = structuredClone({ ...defaultFixtures(), ...(opts.fixtures || {}) });
-  const state = { signedIn: mode === 'asEditor', failWrites: !!opts.failWrites, jwtExpiredOnce: !!opts.jwtExpiredOnce, refresh: opts.refresh || 'ok', chat: { ...(opts.chat || {}) } };
+  const state = { offline: false, reject: null, loseResponse: false, signedIn: mode === 'asEditor', failWrites: !!opts.failWrites, jwtExpiredOnce: !!opts.jwtExpiredOnce, refresh: opts.refresh || 'ok', chat: { ...(opts.chat || {}) } };
   /** @type {Array<{ method: string, path: string, search: string, body: any }>} */
   const calls = [];
 
@@ -181,6 +181,7 @@ export async function mockSupabase(page, opts = {}) {
         headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' },
       });
     }
+    if (state.offline) return route.abort('internetdisconnected');
     const url = new URL(req.url());
     let body = null;
     try {
@@ -272,6 +273,18 @@ export async function mockSupabase(page, opts = {}) {
     }
     if (!state.signedIn) return json(route, 401, { code: '42501', message: `new row violates row-level security policy for table "${table}"` });
     if (state.failWrites) return json(route, 500, { code: 'XX000', message: 'mock failure' });
+    if (state.reject && state.reject(table, method, body)) {
+      return json(route, 400, { code: '23514', message: `new row for relation "${table}" violates check constraint`, details: null, hint: null });
+    }
+    if (state.loseResponse) {
+      // Apply the write, then drop the answer (the response below is replaced by a reset).
+      state.loseResponse = false;
+      const real = route.fulfill.bind(route);
+      route.fulfill = async () => {
+        route.fulfill = real;
+        return route.abort('connectionreset');
+      };
+    }
     if (OWN_ROW_TABLES.includes(table)) {
       const items = Array.isArray(body) ? body : [body];
       if (method !== 'DELETE' && items.some((it) => it && it.user_id != null && it.user_id !== account.id)) {
@@ -316,6 +329,18 @@ export async function mockSupabase(page, opts = {}) {
   return {
     db,
     calls,
+    /** Every Supabase request fails at the network level (true) or works again (false). */
+    setOffline(v) {
+      state.offline = !!v;
+    },
+    /** Refuse writes for good (HTTP 400) when fn(table, method, body) is true; null stops. */
+    setReject(fn) {
+      state.reject = fn;
+    },
+    /** The next write is applied but its answer never arrives. */
+    loseNextWriteResponse() {
+      state.loseResponse = true;
+    },
     /** Make subsequent writes fail (true) or succeed (false). */
     setFailWrites(v) {
       state.failWrites = v;
