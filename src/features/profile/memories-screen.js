@@ -4,7 +4,7 @@ import { html, useState } from '../../../vendor/preact.js';
 import { t, formatDate } from '../../lib/i18n.js';
 import { EditorOnly, useIsEditor } from '../../lib/auth.js';
 import { href } from '../../lib/router.js';
-import { Card, Button, IconButton, Fab, Sheet, List, ListRow, EmptyState, Skeleton, Badge, Icon, PhotoViewer } from '../../lib/ui/index.js';
+import { Card, Button, IconButton, Fab, Sheet, List, ListRow, EmptyState, Skeleton, Badge, Icon, PhotoViewer, PendingMark } from '../../lib/ui/index.js';
 import { milestones, photos, petProfile, useTimezone } from '../../data/stores.js';
 import { photoUrl } from '../../data/photos.js';
 import { DEFAULT_BIRTH_DATE } from '../../config.js';
@@ -124,7 +124,7 @@ function TimelineEntry({ item, birth, onPhoto, onEdit }) {
     return html`<article class=${`card entry entry-milestone${m._pending ? ' is-pending' : ''}`} data-testid="milestone-entry">
       <span class="entry-dot" aria-hidden="true"><${Icon} name="star" size=${14} strokeWidth=${2.4} /></span>
       <div class="entry-head">
-        <div>${head}<h3 class="entry-title">${m.title}</h3></div>
+        <div>${head}<h3 class="entry-title">${m.title}${m._pending ? html` <${PendingMark} row=${m} />` : null}</h3></div>
         ${onEdit ? html`<${IconButton} icon="edit" label=${t('profile.memories.editNamed', { title: m.title })} onClick=${onEdit} data-testid="edit-milestone" />` : null}
       </div>
       ${m.story ? html`<p class="entry-story pre-line">${m.story}</p>` : null}

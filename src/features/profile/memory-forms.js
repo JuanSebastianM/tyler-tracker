@@ -3,10 +3,11 @@
 import { html, useState, useRef, useEffect } from '../../../vendor/preact.js';
 import { t } from '../../lib/i18n.js';
 import { toast } from '../../lib/toast.js';
-import { Button, IconButton, Sheet, ConfirmDialog, TextInput, DateInput, TextArea, Icon, Spinner } from '../../lib/ui/index.js';
+import { Button, IconButton, Sheet, ConfirmDialog, TextInput, DateInput, TextArea, Icon, Spinner, OfflineNote } from '../../lib/ui/index.js';
 import { milestones, photos, useTimezone } from '../../data/stores.js';
 import { getToday } from '../../data/derived.js';
 import { uploadPhoto, deletePhoto, photoUrl } from '../../data/photos.js';
+import { isOnline } from '../../lib/connectivity.js';
 import { unusedSuggestions } from './logic.js';
 import { suggestions } from './format.js';
 
@@ -115,6 +116,7 @@ function PhotoPicker({ pending, busy, label }) {
           )}
         </ul>`
       : html`<p class="field-hint">${t('profile.memories.photosHint')}</p>`}
+    <${OfflineNote} text=${t('sync.photoNeedsConnection')} testid="photo-offline-note" />
   </div>`;
 }
 
@@ -184,6 +186,13 @@ export function MilestoneSheet({ milestone, existingPhotos = [], onClose, initia
       if (!res.error && p) deletePhoto(p.storage_path);
     }
     setRemoveIds([]);
+    if (!isOnline() && pending.get().some((i) => i.status !== 'done')) {
+      // Photos need a connection: the milestone is saved (queued); photos are added later.
+      setBusy(false);
+      toast(t('sync.savedWithoutPhoto'));
+      onClose();
+      return;
+    }
     const fails = await uploadPending(pending, { milestone_id: id, taken_on: values.happened_on }, (done, total) => setProgress({ done, total }));
     setBusy(false);
     setProgress(null);

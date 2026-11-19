@@ -3,7 +3,8 @@ import { html, useEffect, useState } from '../../../vendor/preact.js';
 import { t, formatDate, formatTime, formatRelativeDay } from '../../lib/i18n.js';
 import { useIsEditor, EditorOnly } from '../../lib/auth.js';
 import { navigate, href } from '../../lib/router.js';
-import { Card, EmptyState, Fab, IconButton, Button, Icon, DateInput, Spinner, Badge } from '../../lib/ui/index.js';
+import { useOnline } from '../../lib/connectivity.js';
+import { Card, EmptyState, Fab, IconButton, Button, Icon, DateInput, Spinner, Badge, PendingMark } from '../../lib/ui/index.js';
 import { feedings, routineEvents, useTimezone } from '../../data/stores.js';
 import { getToday } from '../../data/derived.js';
 import { addDays, dayRange, daysRange } from '../../lib/dates.js';
@@ -32,6 +33,10 @@ export function LogScreen({ query }) {
   feedings.useRows();
   routineEvents.useRows();
   const [loading, setLoading] = useState(false);
+  // The day is outside the loaded window and could not be fetched (offline): say so instead of
+  // showing it as empty.
+  const online = useOnline(); // back online: fetch the missing day again
+  const [missingDay, setMissingDay] = useState(/** @type {string | null} */ (null));
   const [filter, setFilter] = useState(/** @type {Set<EntryKind>} */ (new Set()));
   const [target, setTarget] = useState(/** @type {import('./entry-ui.js').SheetTarget | null} */ (null));
 
@@ -41,13 +46,17 @@ export function LogScreen({ query }) {
     let alive = true;
     setLoading(true);
     Promise.all([feedings.loadRange(start, end), routineEvents.loadRange(start, end)]).then((res) => {
-      if (res.every((r) => !r.error)) loadedDays.add(day);
-      if (alive) setLoading(false);
+      const ok = res.every((r) => !r.error);
+      if (ok) loadedDays.add(day);
+      if (alive) {
+        setLoading(false);
+        setMissingDay(ok ? null : day);
+      }
     });
     return () => {
       alive = false;
     };
-  }, [day, tz]);
+  }, [day, tz, online]);
 
   const all = buildTimeline(feedings.inRange(start, end), routineEvents.inRange(start, end));
   const entries = filter.size ? all.filter((e) => filter.has(e.kind)) : all;
@@ -100,7 +109,12 @@ export function LogScreen({ query }) {
     </div>
 
     <${Card} class="log-day-card">
-      ${loading && !all.length
+      ${missingDay === day && !loadedDays.has(day)
+        ? html`<p class="offline-note log-day-missing" data-testid="day-needs-connection"><${Icon} name="cloud-off" size=${18} />${t('sync.dayNeedsConnection')}</p>`
+        : null}
+      ${missingDay === day && !loadedDays.has(day) && !all.length
+        ? null
+        : loading && !all.length
         ? html`<div class="log-loading"><${Spinner} label=${t('common.loading')} /></div>`
         : entries.length
           ? html`<ol class="timeline" data-testid="timeline">
@@ -111,7 +125,7 @@ export function LogScreen({ query }) {
                   <span class="tl-time">${formatTime(e.at, tz)}</span>
                   <span class=${`tl-icon row-icon tone-${accident ? 'red' : KIND_TONE[e.kind]}`}><${Icon} name=${KIND_ICON[e.kind]} size=${20} /></span>
                   <span class="tl-text">
-                    <span class="tl-title">${entryTitle(e.kind, e.row)}${accident ? html` <${Badge} tone="red" icon="alert">${t('log.accident')}</${Badge}>` : null}${e.kind !== 'meal' && !e.row.ended_at && ['sleep', 'walk', 'play'].includes(e.kind) ? html` <${Badge} tone="blue">${t('log.ongoing')}</${Badge}>` : null}</span>
+                    <span class="tl-title">${entryTitle(e.kind, e.row)}${accident ? html` <${Badge} tone="red" icon="alert">${t('log.accident')}</${Badge}>` : null}${e.kind !== 'meal' && !e.row.ended_at && ['sleep', 'walk', 'play'].includes(e.kind) ? html` <${Badge} tone="blue">${t('log.ongoing')}</${Badge}>` : null}${e.row._pending ? html` <${PendingMark} row=${e.row} />` : null}</span>
                     ${details.length ? html`<span class="tl-details">${details.join(' · ')}</span>` : null}
                     ${e.row.created_by_name ? html`<span class="tl-by">${t('common.loggedBy', { name: e.row.created_by_name })}</span>` : null}
                   </span>`;

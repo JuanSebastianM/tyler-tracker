@@ -90,7 +90,7 @@ function ProfilePhoto({ profile }) {
         toast(t('profile.photoSaved'), { tone: 'success' });
       }
     } catch (err) {
-      toast(/** @type {any} */ (err)?.code === 'offline' ? t('errors.offline') : t('errors.photoFailed'), { tone: 'error' });
+      toast(/** @type {any} */ (err)?.code === 'offline' ? t('errors.photoOffline') : t('errors.photoFailed'), { tone: 'error' });
     } finally {
       setBusy(false);
     }

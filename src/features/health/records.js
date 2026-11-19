@@ -7,7 +7,7 @@ import { toast } from '../../lib/toast.js';
 import { navigate } from '../../lib/router.js';
 import {
   Card, List, ListRow, Button, Fab, Sheet, ConfirmDialog, EmptyState, Skeleton, TextInput, NumberInput, DateInput,
-  TimeInput, TextArea, Segmented, PhotoViewer,
+  TimeInput, TextArea, Segmented, PhotoViewer, PendingMark, OfflineNote,
 } from '../../lib/ui/index.js';
 import { photoUrl } from '../../data/photos.js';
 import { validate } from './logic.js';
@@ -147,7 +147,7 @@ function RecordRow({ config, row, ctx, onOpen }) {
   const side = ctx.isEditor && config.sideAction ? config.sideAction(row, ctx) : null;
   return html`<div class=${`health-row${row._pending ? ' is-pending' : ''}${v.dim ? ' is-dim' : ''}`}>
     <${ListRow} icon=${v.icon || config.icon} iconTone=${v.iconTone || config.iconTone || 'gold'} title=${v.title}
-      subtitle=${subtitle} meta=${v.meta} onClick=${onOpen} data-testid=${`${config.id}-row`} />
+      subtitle=${subtitle} meta=${row._pending ? html`${v.meta || null}<${PendingMark} row=${row} />` : v.meta} onClick=${onOpen} data-testid=${`${config.id}-row`} />
     ${side}
   </div>`;
 }
@@ -307,5 +307,6 @@ function PhotoField({ label, hint, value, onValue }) {
         : null}
     </div>
     ${hint ? html`<p class="field-hint">${hint}</p>` : null}
+    ${v.file ? html`<${OfflineNote} text=${t('sync.photoNeedsConnection')} testid="photo-offline-note" />` : null}
   </div>`;
 }
