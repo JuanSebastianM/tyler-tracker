@@ -255,14 +255,14 @@ export function onBeforeSignOut(/** @type {() => Promise<unknown>} */ fn) {
 }
 
 export async function signOut() {
-  if (beforeSignOutHooks.size) {
-    const hooks = [...beforeSignOutHooks].map((fn) => Promise.resolve().then(fn).catch(() => {}));
-    await withTimeout(Promise.all(hooks), BEFORE_SIGN_OUT_MS).catch(() => {});
-  }
   const id = authStore.get().user?.id;
   if (id) removeKey(`editor.${id}`);
   signingOut = true;
   for (const fn of signOutHooks) fn();
+  if (beforeSignOutHooks.size) {
+    const hooks = [...beforeSignOutHooks].map((fn) => Promise.resolve().then(fn).catch(() => {}));
+    await withTimeout(Promise.all(hooks), BEFORE_SIGN_OUT_MS).catch(() => {});
+  }
   try {
     await getSupabase().auth.signOut({ scope: 'local' });
   } finally {
