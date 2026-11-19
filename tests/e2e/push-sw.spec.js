@@ -90,7 +90,12 @@ async function openWithWorker(page) {
   const worker = page.context().serviceWorkers().find((w) => w.url().startsWith(BASE));
   worker?.on('console', (m) => console.log(`[sw] ${m.text()}`));
   // Test-only listener: says in the output whether the browser delivered the push at all.
-  await worker?.evaluate(() => self.addEventListener('push', () => console.log('push event received')));
+  await worker?.evaluate(() => {
+    self.addEventListener('push', () => console.log('push event received'));
+    self.addEventListener('notificationclose', (e) => console.log('CLOSED ' + e.notification.tag));
+    const orig = self.registration.showNotification.bind(self.registration);
+    self.registration.showNotification = (t, o) => orig(t, o).then((r) => (console.log('SHOWN ' + o.tag), r), (e) => (console.log('SHOWFAIL ' + e), Promise.reject(e)));
+  });
   /** @param {any} payload */
   const deliver = (payload) => cdp.send('ServiceWorker.deliverPushMessage', { origin: BASE.slice(0, -1), registrationId, data: typeof payload === 'string' ? payload : JSON.stringify(payload) });
   const notifications = () => page.evaluate(async () => (await (await navigator.serviceWorker.ready).getNotifications()).map((n) => ({ title: n.title, body: n.body, tag: n.tag, data: n.data })));
@@ -100,11 +105,11 @@ async function openWithWorker(page) {
 test('a push shows a notification, even an unreadable one; the same tag replaces it', async ({ page }) => {
   const { deliver, notifications } = await openWithWorker(page);
   await deliver({ title: 'Comida 2 de Tyler · 11:30 a. m.', body: 'Aún no está registrada. Toca para registrarla.', path: '/today', tag: 'meal-2026-11-20-2' });
-  await expect.poll(notifications).toEqual([{ title: 'Comida 2 de Tyler · 11:30 a. m.', body: 'Aún no está registrada. Toca para registrarla.', tag: 'meal-2026-11-20-2', data: { path: '/today' } }]);
+  await expect.poll(notifications).toEqual([{ title: 'Comida 2 de Tyler · 11:30 a. m.', body: 'Aún no está registrada. Toca para registrarla.', tag: 'meal-2026-11-20-2', data: { path: '/today' } }]).catch(async (e) => { console.log('LIST1', JSON.stringify(await notifications())); throw e; });
   await deliver({ title: 'Tyler sigue esperando la comida 2', body: 'Era a las 11:30 a. m.', path: '/today', tag: 'meal-2026-11-20-2' });
   await expect.poll(async () => (await notifications()).map((n) => n.title)).toEqual(['Tyler sigue esperando la comida 2']);
   await deliver('this is not json');
-  await expect.poll(async () => (await notifications()).length).toBe(2);
+  await expect.poll(async () => (await notifications()).length).toBe(2).catch(async (e) => { console.log('LIST', JSON.stringify(await notifications())); throw e; });
   expect((await notifications()).find((n) => n.tag === 'tt').title).toBe('Tyler');
 });
 
