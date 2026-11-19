@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "types": []
   },
-  "files": ["deno-shim.d.ts", "functions/chat/index.ts"]
+  "files": ["deno-shim.d.ts", "functions/chat/index.ts", "functions/push/index.ts"]
 }
