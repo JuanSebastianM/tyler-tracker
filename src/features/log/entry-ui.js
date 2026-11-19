@@ -3,7 +3,7 @@ import { html, useEffect, useState } from '../../../vendor/preact.js';
 import { t, formatClock } from '../../lib/i18n.js';
 import { toast } from '../../lib/toast.js';
 import {
-  Sheet, ConfirmDialog, Button, DateInput, TimeInput, NumberInput, TextInput, TextArea, Select, Segmented, Switch,
+  Sheet, ConfirmDialog, Button, DateInput, TimeInput, NumberInput, TextArea, Select, Segmented, Switch,
 } from '../../lib/ui/index.js';
 import { feedings, routineEvents, settings } from '../../data/stores.js';
 import { DURATION_KINDS, ENTRY_KINDS, minutesBetween, splitMinutes } from './log-logic.js';
@@ -177,7 +177,7 @@ export function EntrySheet({ target, onClose, tz, now, onSaved }) {
             />
             <div class="grid-2">
               <${NumberInput} label=${t('log.sheet.amountG')} unit="g" value=${form.amountG} onValue=${(v) => set({ amountG: v })} error=${err('amountG')} />
-              <${TextInput} label=${t('log.sheet.amountNote')} value=${form.amountNote} onValue=${(v) => set({ amountNote: v })} placeholder=${t('log.sheet.amountNotePlaceholder')} />
+              <${TextArea} label=${t('log.sheet.amountNote')} value=${form.amountNote} onValue=${(v) => set({ amountNote: v })} placeholder=${t('log.sheet.amountNotePlaceholder')} rows=${2} />
             </div>`
         : null}
       ${kind === 'pee' || kind === 'poop'

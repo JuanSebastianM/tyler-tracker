@@ -91,8 +91,9 @@ function MealsCard({ tz, today, now, openSheet }) {
       : html`<ul class="meals">
           ${status.map((s) => {
             const badge = STATE_BADGE[s.state];
-            // Keep "80 g" and "1 taza" from breaking across lines.
-            const amount = [s.grams != null ? t('log.grams', { g: s.grams }) : null, note || null].filter(Boolean).map((x) => x.replace(/ /g, '\u00a0')).join(' · ');
+            // Keep "80 g" together; the portion note is free text and wraps like any text (a note
+            // whose spaces were all non-breaking ran off the card on a phone).
+            const amount = [s.grams != null ? t('log.grams', { g: s.grams }).replace(/ /g, '\u00a0') : null, note || null].filter(Boolean).join(' · ');
             const subtitle = s.feeding
               ? [t('today.meals.ateAt', { time: formatTime(s.feeding.fed_at, tz) }), s.feeding.created_by_name ? t('common.loggedBy', { name: s.feeding.created_by_name }) : null]
                   .filter(Boolean)
