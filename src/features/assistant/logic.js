@@ -3,6 +3,16 @@
 /** Marks the accounting row the function writes for an FAQ draft (see supabase/functions/chat/lib/prompt.ts). */
 export const FAQ_DRAFT_TAG = '<!--faq-draft-->';
 
+/**
+ * Marks the hidden row the function saves when an answer was cut (or came back empty): its content
+ * is this tag + `{ question_id, answer_id, reason }`; its `sources` column holds the API turn to
+ * resume from (the app never loads that column). See supabase/functions/chat/lib/turn.ts.
+ */
+export const CONTINUATION_TAG = '<!--continuation-->';
+
+/** @param {any} m */
+const isHidden = (m) => m.role === 'assistant' && ((m.content || '').startsWith(FAQ_DRAFT_TAG) || (m.content || '').startsWith(CONTINUATION_TAG));
+
 /** Same limit as the function (MAX_QUESTION_CHARS). */
 export const MAX_QUESTION_CHARS = 2000;
 
@@ -23,7 +33,9 @@ export const ERROR_CODES = [
   'bad_request',
   'not_found',
   'in_progress',
+  'upstream_empty', // the answer came back with no text (billed); Retry continues it
   // Client-side only:
+  'stopped', // the person pressed stop before any text arrived
   'network', // the server could not be reached (the session is fine)
   'offline', // the device reports no connection
   'timeout', // the answer stopped arriving; we checked that nothing was saved
@@ -32,7 +44,7 @@ export const ERROR_CODES = [
 ];
 
 /** Codes where trying again can help. */
-export const RETRYABLE = new Set(['upstream_error', 'upstream_busy', 'server_error', 'network', 'offline', 'timeout', 'interrupted', 'in_progress']);
+export const RETRYABLE = new Set(['upstream_error', 'upstream_busy', 'upstream_empty', 'server_error', 'network', 'offline', 'timeout', 'interrupted', 'in_progress', 'stopped']);
 
 /**
  * Error code for a missing token (see getAccessToken in src/lib/auth.js): only a session the auth
@@ -66,7 +78,7 @@ export const draftKey = (threadId) => threadId || 'new';
 export function answerFor(rows, requestId) {
   const question = rows.find((m) => m.id === requestId && m.role === 'user');
   if (!question) return null;
-  const answer = visibleMessages(rows).find((m) => m.role === 'assistant' && m.created_at >= question.created_at && m.id !== question.id);
+  const answer = visibleMessages(rows).find((m) => m.role === 'assistant' && (m.content || '').trim() && m.created_at >= question.created_at && m.id !== question.id);
   return answer ? { question, answer } : null;
 }
 
@@ -74,11 +86,13 @@ export function answerFor(rows, requestId) {
  * Is the answer being streamed already in the thread? Then the chat shows the saved rows instead of
  * the streaming bubble. Either signal may come first: the 'done' event (`savedId`) or a thread load
  * that already includes the saved question (id = request id) and its answer.
- * @param {{ savedId?: string, requestId?: string } | null} pending
+ * @param {{ savedId?: string, requestId?: string, continues?: any } | null} pending
  * @param {any[]} rows visible chat_messages of the thread
  */
 export function pendingIsSaved(pending, rows) {
   if (!pending) return false;
+  // Continuing a cut answer: the row exists before and after; the thread reload ends the bubble.
+  if (pending.continues) return false;
   if (pending.savedId && rows.some((m) => m.id === pending.savedId)) return true;
   return !!pending.requestId && !!answerFor(rows, pending.requestId);
 }
@@ -90,21 +104,74 @@ export function pendingIsSaved(pending, rows) {
  * @param {unknown} code @param {unknown} [reason]
  */
 export function normalizeError(code, reason) {
-  if (code === 'upstream_error' && (reason === 'config' || reason === 'busy')) return `upstream_${reason}`;
+  if (code === 'upstream_error' && (reason === 'config' || reason === 'busy' || reason === 'empty')) return `upstream_${reason}`;
   if (code === 'forbidden_origin') return 'server_error';
   return typeof code === 'string' && ERROR_CODES.includes(code) ? code : 'server_error';
 }
 
 /**
- * Messages of one thread to show, oldest first: hides the FAQ accounting rows.
+ * Messages of one thread to show, oldest first: hides the FAQ accounting and continuation rows.
  * @param {any[]} rows rows of chat_messages
  * @returns {any[]}
  */
 export function visibleMessages(rows) {
   return rows
-    .filter((m) => !(m.role === 'assistant' && (m.content || '').startsWith(FAQ_DRAFT_TAG)))
+    .filter((m) => !isHidden(m))
     .slice()
     .sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0));
+}
+
+/**
+ * Answers that can be continued, from the thread's continuation rows: by answer id (a cut answer)
+ * and by question id (a question whose answer came back empty).
+ * @param {any[]} rows rows of chat_messages
+ * @returns {{ byAnswer: Map<string, { questionId: string, reason: string }>, byQuestion: Map<string, { answerId: string | null, reason: string }> }}
+ */
+export function continuations(rows) {
+  const byAnswer = new Map();
+  const byQuestion = new Map();
+  for (const m of rows) {
+    if (m.role !== 'assistant' || !(m.content || '').startsWith(CONTINUATION_TAG)) continue;
+    try {
+      const meta = JSON.parse(m.content.slice(CONTINUATION_TAG.length));
+      if (typeof meta?.question_id !== 'string') continue;
+      const reason = typeof meta.reason === 'string' ? meta.reason : 'length';
+      byQuestion.set(meta.question_id, { answerId: typeof meta.answer_id === 'string' ? meta.answer_id : null, reason });
+      if (typeof meta.answer_id === 'string') byAnswer.set(meta.answer_id, { questionId: meta.question_id, reason });
+    } catch {
+      // unreadable: ignore
+    }
+  }
+  return { byAnswer, byQuestion };
+}
+
+/**
+ * How to show each visible message: an assistant row with no text is a failed answer (never
+ * "stopped": a stop before any text saves nothing); a cut answer can be continued; a question whose
+ * answer came back empty gets a failed placeholder that can be continued.
+ * @param {any[]} rows rows of chat_messages
+ * @returns {Array<{ m: any, kind: 'user' | 'answer' | 'failed', continueQuestionId: string | null }>}
+ */
+export function thread(rows) {
+  const visible = visibleMessages(rows);
+  const { byAnswer, byQuestion } = continuations(rows);
+  /** @type {Array<{ m: any, kind: 'user' | 'answer' | 'failed', continueQuestionId: string | null, placeholder?: boolean }>} */
+  const out = [];
+  visible.forEach((m, i) => {
+    if (m.role === 'user') {
+      out.push({ m, kind: 'user', continueQuestionId: null });
+      const next = visible[i + 1];
+      const pending = byQuestion.get(m.id);
+      // The answer came back empty: no assistant row, but it can be continued.
+      if (pending && !pending.answerId && (!next || next.role === 'user')) {
+        out.push({ m: { id: `failed-${m.id}`, role: 'assistant', content: '', created_at: m.created_at }, kind: 'failed', continueQuestionId: m.id, placeholder: true });
+      }
+      return;
+    }
+    const text = (m.content || '').trim();
+    out.push({ m, kind: text ? 'answer' : 'failed', continueQuestionId: text ? byAnswer.get(m.id)?.questionId || null : null });
+  });
+  return out;
 }
 
 /** True when a thread has at least one non-empty answer (it can be saved to the FAQ). @param {any[]} rows */

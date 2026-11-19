@@ -7,7 +7,7 @@ import { chatThreads, petProfile, useTimezone } from '../../data/stores.js';
 import { getAge, getToday } from '../../data/derived.js';
 import { DEFAULT_BIRTH_DATE } from '../../config.js';
 import { ask, clearError, getDraft, session, loadThreadMessages, refreshUsage, resumeInterrupted, setDraft, stopAnswer, useSession, useThreadMessages } from './session.js';
-import { canDraftFaq, cleanQuestion, draftKey, MAX_QUESTION_CHARS, pendingIsSaved, starterKeys, visibleMessages } from './logic.js';
+import { canDraftFaq, cleanQuestion, draftKey, MAX_QUESTION_CHARS, pendingIsSaved, starterKeys, thread as threadItems, visibleMessages } from './logic.js';
 import { BudgetIndicator, EditorGate, ErrorNotice, GlyphSend, GlyphStop } from './parts.js';
 import { FaqSheet } from './faq-sheet.js';
 
@@ -71,7 +71,9 @@ function Chat({ threadId }) {
   }, [key]);
 
   const rows = visibleMessages(msgs?.rows || []);
+  const items = threadItems(msgs?.rows || []);
   const pending = s.pending && s.pending.threadId === threadId ? s.pending : null;
+  const continuing = pending?.continues || null;
   // The streaming bubble gives way to the saved answer as soon as the thread holds it. Opening the
   // new thread's URL (at 'meta') loads its messages, and that load can arrive before 'done': without
   // this the answer and the question were shown twice for a moment.
@@ -82,8 +84,9 @@ function Chat({ threadId }) {
   const missing = !!threadId && msgs?.status === 'ready' && !rows.length && !pending && threadsState.status === 'ready' && !thread;
 
   // A failed question comes back to the composer (unless something else was typed meanwhile).
+  // (Not when the answer can be continued: the question is already saved in the thread.)
   useEffect(() => {
-    if (error?.question && !text.trim()) setText(error.question);
+    if (error?.question && !error.continues && !text.trim()) setText(error.question);
   }, [error?.question, error?.code]);
 
   useEffect(() => {
@@ -109,6 +112,15 @@ function Chat({ threadId }) {
     if (text.trim() === q.trim()) setText('');
     ask(threadId, q, { requestId });
   };
+  /** Continue a cut (or empty) answer: the function goes on from the saved turn, no new searches. */
+  const resume = (/** @type {string} */ questionId) => {
+    const all = msgs?.rows || [];
+    const q = all.find((m) => m.id === questionId);
+    const item = items.find((i) => i.continueQuestionId === questionId && i.m.role === 'assistant');
+    if (!q || !item) return;
+    ask(threadId, q.content, { continues: { questionId, answerId: item.m.id.startsWith('failed-') ? null : item.m.id, baseText: item.kind === 'answer' ? item.m.content || '' : '' } });
+  };
+  const retry = () => (error?.continues ? ask(threadId, error.question, { continues: error.continues }) : send(error?.question || ''));
   const title = thread?.title || (threadId ? '' : t('assistant.actions.newThread'));
 
   return html`<div class="assistant chat" data-testid="assistant-chat">
@@ -125,8 +137,19 @@ function Chat({ threadId }) {
         : !rows.length && !pending
           ? html`<${Intro} onPick=${send} disabled=${busy} />`
           : html`<ol class="chat-log" aria-live="polite" aria-relevant="additions">
-              ${rows.map((m) => html`<${Message} key=${m.id} m=${m} tz=${tz} />`)}
-              ${pending && !answered
+              ${items.map((it) =>
+                continuing && it.m.role === 'assistant' && (it.m.id === continuing.answerId || it.m.id === `failed-${continuing.questionId}`)
+                  ? html`<${PendingAnswer} key=${it.m.id} p=${pending} />`
+                  : html`<${Message}
+                      key=${it.m.id}
+                      m=${it.m}
+                      kind=${it.kind}
+                      tz=${tz}
+                      canContinue=${!!it.continueQuestionId}
+                      onContinue=${it.continueQuestionId && !busy && error?.continues?.questionId !== it.continueQuestionId ? () => resume(/** @type {string} */ (it.continueQuestionId)) : null}
+                    />`,
+              )}
+              ${pending && !answered && !continuing
                 ? html`<${PendingMessages} p=${pending} tz=${tz} />`
                 : null}
             </ol>`}
@@ -138,7 +161,7 @@ function Chat({ threadId }) {
       : null}
 
     ${error
-      ? html`<${ErrorNotice} code=${error.code} usage=${s.usage} onRetry=${() => send(error.question)} onDismiss=${clearError} />`
+      ? html`<${ErrorNotice} code=${error.code} usage=${s.usage} onRetry=${retry} onDismiss=${clearError} />`
       : null}
 
     <div class="chat-end" aria-hidden="true" style=${{ height: `${composerSpace}px` }}></div>
@@ -173,8 +196,14 @@ function Intro({ onPick, disabled }) {
   </div>`;
 }
 
-/** @param {{ m: any, tz: string }} props */
-function Message({ m, tz }) {
+/**
+ * A saved message. An answer with no text is shown as failed (a stop before any text saves
+ * nothing, so an empty row is never a stopped answer). `onContinue`: the answer was cut, or came
+ * back empty, and can be continued.
+ * `canContinue` without `onContinue`: the error notice below offers the retry instead.
+ * @param {{ m: any, kind?: 'user' | 'answer' | 'failed', tz: string, canContinue?: boolean, onContinue?: (() => void) | null }} props
+ */
+function Message({ m, kind, tz, canContinue, onContinue }) {
   if (m.role === 'user') {
     return html`<li class="msg msg-user">
       <p class="msg-meta">${t('assistant.askedBy', { name: m.created_by_name || t('assistant.you') })} · ${formatDateTime(m.created_at, tz)}</p>
@@ -182,11 +211,30 @@ function Message({ m, tz }) {
     </li>`;
   }
   const text = (m.content || '').trim();
-  return html`<li class="msg msg-assistant">
+  const failed = kind === 'failed' || !text;
+  return html`<li class="msg msg-assistant" data-testid=${failed ? 'assistant-failed' : canContinue ? 'assistant-cut' : null}>
     <p class="msg-meta"><${Icon} name="sparkle" size=${14} /> ${t('assistant.assistantName')}</p>
-    <div class="bubble bubble-assistant">
-      ${text ? html`<${Markdown} source=${text} />` : html`<p class="muted">${t('assistant.stopped')}</p>`}
+    <div class=${`bubble bubble-assistant${failed ? ' bubble-failed' : ''}`}>
+      ${failed
+        ? html`<p class="msg-failed"><${Icon} name="alert" size=${16} /><span>${t(canContinue ? 'assistant.failedContinue' : 'assistant.failed')}</span></p>`
+        : html`<${Markdown} source=${text} />`}
+      ${!failed && canContinue ? html`<p class="msg-cut">${t('assistant.cut')}</p>` : null}
+      ${onContinue
+        ? html`<div class="msg-actions"><${Button} size="sm" variant="secondary" icon="refresh" onClick=${onContinue} data-testid="assistant-continue">${t('assistant.actions.continue')}</${Button}></div>`
+        : null}
       ${m.sources?.length ? html`<${Sources} sources=${m.sources} />` : null}
+    </div>
+  </li>`;
+}
+
+/** A cut answer being continued: what was saved, then the new text as it streams. */
+function PendingAnswer({ p }) {
+  const text = (p.continues?.baseText || '') + p.text;
+  return html`<li class="msg msg-assistant" data-testid="assistant-streaming">
+    <p class="msg-meta"><${Icon} name="sparkle" size=${14} /> ${t('assistant.assistantName')}</p>
+    <div class="bubble bubble-assistant" aria-busy="true">
+      ${text.trim() ? html`<${Markdown} source=${text} />` : null}
+      ${p.text ? null : html`<p class="chat-thinking"><${Spinner} size=${18} /> ${t(`assistant.status.${p.status === 'streaming' ? 'sending' : p.status === 'sending' ? 'continuing' : p.status}`)}</p>`}
     </div>
   </li>`;
 }

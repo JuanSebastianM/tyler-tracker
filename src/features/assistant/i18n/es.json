@@ -28,15 +28,19 @@
   "status": {
     "sending": "Pensando…",
     "searching": "Buscando en internet…",
-    "checking": "Comprobando si la respuesta se guardó…"
+    "checking": "Comprobando si la respuesta se guardó…",
+    "continuing": "Continuando la respuesta…"
   },
-  "stopped": "Respuesta detenida.",
+  "failed": "No llegó la respuesta. Vuelve a preguntar.",
+  "failedContinue": "La respuesta llegó vacía. Puedes continuarla sin repetir las búsquedas.",
+  "cut": "La respuesta se cortó por longitud.",
   "budget": "{used} de {total} usados este mes",
   "budgetLabel": "Presupuesto del asistente",
   "actions": {
     "threads": "Ver conversaciones",
     "newThread": "Nueva conversación",
-    "saveFaq": "Guardar en FAQ"
+    "saveFaq": "Guardar en FAQ",
+    "continue": "Continuar"
   },
   "threads": {
     "empty": "Aún no hay conversaciones",
@@ -128,6 +132,14 @@
     "update_pending": {
       "title": "Hay una versión nueva de la app",
       "body": "La pregunta no se pudo completar con esta versión. Actualiza la app y vuelve a intentarlo; tu pregunta queda guardada."
+    },
+    "upstream_empty": {
+      "title": "La respuesta llegó vacía",
+      "body": "Claude no alcanzó a escribir el texto. Lo que se cobró quedó registrado en el presupuesto. Reintentar continúa desde las búsquedas que ya hizo, sin repetirlas."
+    },
+    "stopped": {
+      "title": "Respuesta detenida",
+      "body": "La detuviste antes de que llegara el texto, así que no se guardó. Tu pregunta quedó en el cuadro de texto."
     }
   },
   "faq": {

@@ -20,7 +20,7 @@ import { withTimeout } from '../../lib/auth-logic.js';
 import { updateStore } from '../../lib/pwa.js';
 import { chatThreads } from '../../data/stores.js';
 import { fetchStatus, streamAnswer } from './api.js';
-import { answerFor, draftKey, normalizeError, withUpdateHint } from './logic.js';
+import { answerFor, CONTINUATION_TAG, draftKey, normalizeError, withUpdateHint } from './logic.js';
 
 const DRAFTS_KEY = 'assistant.drafts';
 const INFLIGHT_KEY = 'assistant.inflight';
@@ -38,8 +38,12 @@ const MAYBE_SAVED = new Set(['timeout', 'network', 'offline', 'upstream_error'])
  * @property {string} [requestId] the question's request id (= the saved question's id)
  * @property {string} [savedId] id of the saved assistant message (from the 'done' event); once the
  *   reloaded thread contains it, the chat shows the saved row instead of this bubble
+ * @property {Continues} [continues] set when this continues a cut (or empty) answer
  *
- * @typedef {{ code: string, question: string, threadId: string | null, requestId: string | null }} ChatError
+ * @typedef {{ questionId: string, answerId: string | null, baseText: string }} Continues  the
+ *   question being continued, its cut answer (null: it came back empty) and that answer's text
+ *
+ * @typedef {{ code: string, question: string, threadId: string | null, requestId: string | null, continues?: Continues }} ChatError
  *
  * @typedef {object} SessionState
  * @property {Pending | null} pending
@@ -106,13 +110,23 @@ function restoreDraft(/** @type {string} */ key, /** @type {string} */ question)
 
 // ---- Threads ----
 
-/** Load (or reload) one thread's messages. @param {string} threadId */
+/**
+ * Load (or reload) one thread's messages. Continuation rows are read without their `sources`
+ * column, which holds a whole API turn (search results included) the app has no use for.
+ * @param {string} threadId
+ */
 export async function loadThreadMessages(threadId) {
   threadMessages.set((s) => ({ ...s, [threadId]: { rows: s[threadId]?.rows || [], status: s[threadId]?.rows?.length ? 'ready' : 'loading' } }));
   try {
-    const { data, error } = await getSupabase().from('chat_messages').select('*').eq('thread_id', threadId).order('created_at', { ascending: true });
-    if (error) throw error;
-    threadMessages.set((s) => ({ ...s, [threadId]: { rows: data || [], status: 'ready' } }));
+    const sb = getSupabase();
+    const like = `${CONTINUATION_TAG}*`;
+    const [rows, conts] = await Promise.all([
+      sb.from('chat_messages').select('*').eq('thread_id', threadId).not('content', 'like', like).order('created_at', { ascending: true }),
+      sb.from('chat_messages').select('id,thread_id,role,content,created_at').eq('thread_id', threadId).like('content', like).order('created_at', { ascending: true }),
+    ]);
+    if (rows.error) throw rows.error;
+    const data = [...(rows.data || []), ...(conts.error ? [] : conts.data || [])];
+    threadMessages.set((s) => ({ ...s, [threadId]: { rows: data, status: 'ready' } }));
     return true;
   } catch {
     threadMessages.set((s) => ({ ...s, [threadId]: { rows: s[threadId]?.rows || [], status: 'error' } }));
@@ -182,27 +196,31 @@ const sleep = (/** @type {number} */ ms) => new Promise((r) => setTimeout(r, ms)
 
 /**
  * Ask a question in a thread (null = new conversation). One question at a time.
- * Pass the `requestId` of a failed attempt to retry it without risking a second answer.
+ * Pass the `requestId` of a failed attempt to retry it without risking a second answer. With
+ * `continues`, the request id is the saved question's id and the function goes on with its cut
+ * answer (reusing the searches already made) instead of answering again.
  * @param {string | null} threadId
  * @param {string} question
- * @param {{ requestId?: string | null }} [opts]
+ * @param {{ requestId?: string | null, continues?: Continues | null }} [opts]
  */
 export async function ask(threadId, question, opts = {}) {
   if (session.get().pending) return;
-  const requestId = opts.requestId || crypto.randomUUID();
+  const continues = opts.continues || null;
+  const requestId = continues ? continues.questionId : opts.requestId || crypto.randomUUID();
   const ctrl = new AbortController();
   controller = ctrl;
   const endBusy = beginBusy('assistant'); // no update reload while this runs
   /** @type {Inflight} */
   const inflight = { key: draftKey(threadId), threadId, question, requestId, startedAt: new Date().toISOString() };
-  writeJSON(INFLIGHT_KEY, inflight);
+  // A continuation needs no recovery after a reload: the thread already holds the question.
+  if (!continues) writeJSON(INFLIGHT_KEY, inflight);
   /** @type {string | null} */
   let currentThread = threadId;
   let finished = false;
   session.set((s) => ({
     ...s,
     error: null,
-    pending: { threadId, question, askedBy: editorName(), text: '', status: 'sending', startedAt: inflight.startedAt, requestId },
+    pending: { threadId, question, askedBy: editorName(), text: '', status: 'sending', startedAt: inflight.startedAt, requestId, ...(continues ? { continues } : {}) },
   }));
   /** @param {(p: Pending) => Pending} fn */
   const patch = (fn) => session.set((s) => (s.pending ? { ...s, pending: fn(s.pending) } : s));
@@ -218,9 +236,23 @@ export async function ask(threadId, question, opts = {}) {
    * Show an error, after checking (when the answer may exist) that nothing was saved meanwhile.
    * @param {string} code @param {any} usage @param {boolean} [sent] false: the request never left
    */
-  const fail = async (code, usage, sent = true) => {
+  const fail = async (code, usage, sent = true, continuable = false) => {
     finished = true;
     code = normalizeError(code);
+    // The answer came back empty but the function saved the question and the turn: stay in the
+    // thread, and Retry continues the turn (no second question, no new searches).
+    const resumable = continues || (continuable && currentThread ? { questionId: requestId, answerId: null, baseText: '' } : null);
+    if (resumable) {
+      removeKey(INFLIGHT_KEY);
+      if (currentThread) await Promise.all([loadThreadMessages(currentThread), continues ? null : chatThreads.load()]);
+      session.set((s) => ({
+        ...s,
+        pending: null,
+        error: { code: withUpdateHint(code, updateStore.get().ready), question, threadId: currentThread, requestId, continues: resumable },
+        usage: usage ? { ...s.usage, ...usage } : s.usage,
+      }));
+      return;
+    }
     if (sent && (MAYBE_SAVED.has(code) || code === 'in_progress')) {
       patch((p) => ({ ...p, status: 'checking' }));
       // The function saves what it had when the connection dropped; give it a moment. While it is
@@ -254,7 +286,7 @@ export async function ask(threadId, question, opts = {}) {
   };
 
   try {
-    /** @type {{ code: string, usage: any } | null} */
+    /** @type {{ code: string, usage: any, continuable: boolean } | null} */
     let streamError = null;
     const refused = await streamAnswer({
       threadId,
@@ -282,19 +314,43 @@ export async function ask(threadId, question, opts = {}) {
             usage: { budget: data.budget, daily: data.daily, enabled: data.enabled },
           }));
         } else if (event === 'error') {
-          streamError = { code: normalizeError(data?.error, data?.reason), usage: data?.budget ? data : null };
+          streamError = { code: normalizeError(data?.error, data?.reason), usage: data?.budget ? data : null, continuable: !!data?.continuable };
         }
       },
     });
     if (refused && !refused.ok) return await fail(refused.code || 'server_error', refused.usage, !refused.unsent);
-    if (streamError) return await fail(/** @type {any} */ (streamError).code, /** @type {any} */ (streamError).usage);
+    if (streamError) {
+      const se = /** @type {any} */ (streamError);
+      return await fail(se.code, se.usage, true, se.continuable);
+    }
     if (!finished) return await fail('upstream_error', null); // the stream ended without an answer
     await settle();
   } catch (e) {
     if (ctrl.signal.aborted) {
-      // Stopped: the function saves the partial answer; give it a moment, then reload the thread.
-      await sleep(1200);
-      await settle();
+      // Stopped: the function saves the partial answer if any text had arrived; give it a moment.
+      // With no text nothing is saved: say so, and put the question back in the composer.
+      const hadText = !!session.get().pending?.text;
+      if (continues || hadText) {
+        // Text arrived, so the function saves it: wait for it (a few tries), then show the thread.
+        for (let i = 0; i < 3; i++) {
+          await sleep(1200);
+          if (continues) break;
+          const saved = await findSavedAnswer(requestId);
+          if (saved) {
+            currentThread = saved;
+            break;
+          }
+        }
+        await settle();
+      } else {
+        removeKey(INFLIGHT_KEY);
+        if (!threadId) {
+          abandonNewThread(currentThread || undefined);
+          currentThread = null;
+        }
+        restoreDraft(draftKey(currentThread), question);
+        session.set((s) => ({ ...s, pending: null, error: { code: 'stopped', question, threadId: currentThread, requestId } }));
+      }
       refreshUsage();
     } else {
       await fail('network', null);

@@ -97,3 +97,37 @@ test('signed out', async ({ page }) => {
   await settle(page);
   await shot(page, 'chat-signed-out-es-light');
 });
+
+// Cut, empty and stopped answers (fix-empty-answers review).
+for (const scheme of ['light', 'dark']) {
+  test(`cut answer with Continuar (${scheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    await openApp(page, '/assistant', { mode: 'asEditor', chat: { cut: true } });
+    await page.getByLabel('Tu pregunta').fill('¿Cuánto debe comer?');
+    await page.getByTestId('assistant-send').click();
+    await expect(page.getByTestId('assistant-continue')).toBeVisible();
+    await settle(page);
+    await shot(page, `chat-cut-es-${scheme}`);
+  });
+
+  test(`empty answer error (${scheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    await openApp(page, '/assistant', { mode: 'asEditor', chat: { empty: true } });
+    await page.getByLabel('Tu pregunta').fill('¿Puede comer arroz?');
+    await page.getByTestId('assistant-send').click();
+    await expect(page.getByTestId('assistant-error')).toBeVisible();
+    await settle(page);
+    await shot(page, `chat-empty-answer-es-${scheme}`);
+  });
+
+  test(`stopped before text (${scheme})`, async ({ page }) => {
+    await page.emulateMedia({ colorScheme: scheme });
+    await openApp(page, '/assistant', { mode: 'asEditor', chat: { waitFor: new Promise(() => {}) } });
+    await page.getByLabel('Tu pregunta').fill('¿Cuándo lo vacuno?');
+    await page.getByTestId('assistant-send').click();
+    await page.getByTestId('assistant-stop').click();
+    await expect(page.getByTestId('assistant-error')).toBeVisible();
+    await settle(page);
+    await shot(page, `chat-stopped-es-${scheme}`);
+  });
+}

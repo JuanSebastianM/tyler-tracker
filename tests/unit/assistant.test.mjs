@@ -109,3 +109,61 @@ test('pendingIsSaved: the streaming bubble gives way to the saved answer, whiche
   assert.equal(pendingIsSaved({ requestId: 'req-1' }, [older, q]), false);
   assert.equal(pendingIsSaved({ requestId: 'req-2' }, [older, q, a]), false);
 });
+
+// ---------------------------------------------------------------------------
+import { thread, continuations, answerFor, CONTINUATION_TAG } from '../../src/features/assistant/logic.js';
+import { CONTINUATION_TAG as FN_CONT_TAG } from '../../supabase/functions/chat/lib/prompt.ts';
+
+const cont = (id, meta, at) => ({ id, thread_id: 't', role: 'assistant', content: CONTINUATION_TAG + JSON.stringify(meta), created_at: at });
+const msg = (id, role, content, at) => ({ id, thread_id: 't', role, content, created_at: at });
+
+test('continuation tag matches the function', () => {
+  assert.equal(CONTINUATION_TAG, FN_CONT_TAG);
+});
+
+test('thread: cut answers can be continued, empty answers are failed (never stopped), hidden rows hidden', () => {
+  const rows = [
+    msg('q1', 'user', '¿Uno?', '2026-11-18T10:00:00Z'),
+    msg('a1', 'assistant', 'Parte de la respuesta', '2026-11-18T10:00:05Z'),
+    cont('c1', { question_id: 'q1', answer_id: 'a1', reason: 'length' }, '2026-11-18T10:00:06Z'),
+    msg('q2', 'user', '¿Dos?', '2026-11-18T10:01:00Z'),
+    msg('a2', 'assistant', '', '2026-11-18T10:01:05Z'), // an old empty row
+    msg('q3', 'user', '¿Tres?', '2026-11-18T10:02:00Z'),
+    cont('c3', { question_id: 'q3', answer_id: null, reason: 'empty' }, '2026-11-18T10:02:09Z'),
+    cont('bad', 'not json', '2026-11-18T10:03:00Z'),
+  ];
+  rows[7].content = CONTINUATION_TAG + '{oops';
+  const items = thread(rows);
+  assert.deepEqual(
+    items.map((i) => [i.m.id, i.kind, i.continueQuestionId]),
+    [
+      ['q1', 'user', null],
+      ['a1', 'answer', 'q1'],
+      ['q2', 'user', null],
+      ['a2', 'failed', null],
+      ['q3', 'user', null],
+      ['failed-q3', 'failed', 'q3'],
+    ],
+  );
+  const c = continuations(rows);
+  assert.equal(c.byAnswer.get('a1').questionId, 'q1');
+  assert.equal(c.byQuestion.get('q3').answerId, null);
+  assert.equal(visibleMessages(rows).length, 5);
+  // An empty row is not "the answer" of its question (a retry asks again).
+  assert.equal(answerFor(rows, 'q2'), null);
+  assert.equal(answerFor(rows, 'q1').answer.id, 'a1');
+  assert.equal(canDraftFaq([msg('q', 'user', 'x', 'a'), msg('a', 'assistant', '  ', 'b')]), false);
+});
+
+test('errors: an empty answer and a stop are their own retryable codes', () => {
+  assert.equal(normalizeError('upstream_error', 'empty'), 'upstream_empty');
+  assert.ok(RETRYABLE.has('upstream_empty'));
+  assert.ok(RETRYABLE.has('stopped'));
+  assert.equal(normalizeError('stopped'), 'stopped');
+});
+
+test('a continuation in progress never counts as saved before the thread reloads', () => {
+  const rows = [msg('q1', 'user', 'x', 'a'), msg('a1', 'assistant', 'Parte', 'b')];
+  assert.equal(pendingIsSaved({ requestId: 'q1', savedId: 'a1', continues: { questionId: 'q1', answerId: 'a1', baseText: 'Parte' } }, rows), false);
+  assert.equal(pendingIsSaved({ requestId: 'q1' }, rows), true);
+});

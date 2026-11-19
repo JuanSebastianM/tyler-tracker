@@ -24,7 +24,13 @@
 //       stall: 'before-save' | 'after-save' (the response never arrives; 'after-save' saves the answer
 //       first, like a function that finished while the connection to the phone was dead),
 //       inProgress: true (answers 409 in_progress), delayMs: the answer arrives after this long,
-//       waitFor: a promise; the answer arrives once it resolves }
+//       waitFor: a promise; the answer arrives once it resolves,
+//       cut: true (the answer is cut for length: the partial text is saved with a continuation row,
+//         like the function after its own continuations ran out), empty: true (no text at all: the
+//         question and a continuation row are saved, the stream ends with error reason 'empty'),
+//       rest: text a resumed answer adds (default DEFAULT_CHAT_REST) }
+//     Resuming (a send whose request id has a continuation row) is counted in `chat.resumes` and
+//     never "searches" again (`chat.searches` counts the sends that did).
 //     sb.setChat(patch) changes it during a test.
 //   refresh: 'ok' (default) | 'network' (the refresh request fails) | 'invalid' (refresh token rejected)
 //   jwtExpiredOnce: true -> the first REST/Storage write answers 401 "JWT expired" (the app refreshes
@@ -314,6 +320,10 @@ export async function mockSupabase(page, opts = {}) {
     setFailWrites(v) {
       state.failWrites = v;
     },
+    /** The chat function mock's live state (counters: searches, resumes, replays). */
+    get chat() {
+      return state.chat;
+    },
     /** Change the chat function mock's behaviour (merged). */
     setChat(patch) {
       Object.assign(state.chat, patch);
@@ -349,6 +359,9 @@ export const DEFAULT_FAQ_DRAFT = {
   answer_en: 'Four meals a day while he is a puppy.',
   sources: DEFAULT_CHAT_SOURCES,
 };
+export const DEFAULT_CHAT_REST = ' Divide la porción en partes iguales.';
+const CONTINUATION_TAG = '<!--continuation-->';
+const isHiddenRow = (m) => m.role === 'assistant' && ((m.content || '').startsWith(CONTINUATION_TAG) || (m.content || '').startsWith('<!--faq-draft-->'));
 const CHAT_STATUS = { budget_exhausted: 402, daily_limit: 429, disabled: 403, not_editor: 403, upstream_error: 502, server_error: 500 };
 
 let chatClock = 0;
@@ -380,8 +393,32 @@ async function mockChatFunction(route, { body, db, state, nowMs, chat, hold }) {
   const sse = (event, data) => `event: ${event}\ndata: ${JSON.stringify(data)}\n\n`;
   // Idempotency (like the real function): a request id that was answered is replayed.
   const prior = body.request_id && db.chat_messages.find((m) => m.id === body.request_id && m.role === 'user');
+  const at = () => new Date(nowMs + ++chatClock * 1000).toISOString();
+  const by = { created_by: EDITOR_USER.id, created_by_name: db.editors[0]?.display_name || null };
+  const row = (o) => ({ sources: [], model: 'claude-sonnet-5-5', input_tokens: 0, output_tokens: 0, web_searches: 0, cost_usd: 0, created_at: at(), updated_at: at(), ...by, ...o });
+  const contRow = (threadId, meta) => row({ id: crypto.randomUUID(), thread_id: threadId, role: 'assistant', content: CONTINUATION_TAG + JSON.stringify(meta), sources: { v: 1, messages: [{ role: 'user', content: 'x' }] } });
+  // Resume a cut or empty answer (like the real function): no new search, the text grows in place.
+  const cont = prior && db.chat_messages.find((m) => m.thread_id === prior.thread_id && (m.content || '').startsWith(CONTINUATION_TAG) && JSON.parse(m.content.slice(CONTINUATION_TAG.length)).question_id === prior.id);
+  if (cont) {
+    chat.resumes = (chat.resumes || 0) + 1;
+    const meta = JSON.parse(cont.content.slice(CONTINUATION_TAG.length));
+    db.chat_messages = db.chat_messages.filter((m) => m !== cont);
+    if (chat.waitFor) await chat.waitFor;
+    const rest = chat.rest ?? DEFAULT_CHAT_REST;
+    let saved = meta.answer_id && db.chat_messages.find((m) => m.id === meta.answer_id);
+    if (saved) Object.assign(saved, { content: saved.content + rest, output_tokens: saved.output_tokens + 40, cost_usd: +(saved.cost_usd + 0.004).toFixed(6), updated_at: at() });
+    else {
+      saved = row({ id: crypto.randomUUID(), thread_id: prior.thread_id, role: 'assistant', content: rest.trim(), sources: chat.sources ?? DEFAULT_CHAT_SOURCES, output_tokens: 60, cost_usd: 0.006 });
+      db.chat_messages.push(saved);
+    }
+    const out =
+      sse('meta', { thread_id: prior.thread_id, title: null, new_thread: false, continued: true }) +
+      sse('delta', { text: meta.answer_id ? rest : rest.trim() }) +
+      sse('done', { thread_id: prior.thread_id, stopped: false, stop_reason: 'end_turn', cut: false, continued: true, user_message: prior, message: saved, ...usage(0.004) });
+    return route.fulfill({ status: 200, contentType: 'text/event-stream', headers, body: out });
+  }
   if (prior) {
-    const answer = db.chat_messages.find((m) => m.thread_id === prior.thread_id && m.role === 'assistant' && m.created_at >= prior.created_at);
+    const answer = db.chat_messages.find((m) => m.thread_id === prior.thread_id && m.role === 'assistant' && !isHiddenRow(m) && (m.content || '').trim() && m.created_at >= prior.created_at);
     if (answer) {
       chat.replays = (chat.replays || 0) + 1;
       const out = sse('meta', { thread_id: prior.thread_id, title: null, new_thread: false, replayed: true }) + sse('done', { thread_id: prior.thread_id, stopped: false, stop_reason: 'replayed', replayed: true, user_message: prior, message: answer, ...usage() });
@@ -391,6 +428,7 @@ async function mockChatFunction(route, { body, db, state, nowMs, chat, hold }) {
   if (chat.inProgress) return json(409, { error: 'in_progress' });
 
   if (chat.stall === 'before-save') return hold(); // nothing arrives, nothing saved
+  chat.searches = (chat.searches || 0) + 1;
   if (chat.delayMs) await new Promise((r) => setTimeout(r, chat.delayMs)); // a slow answer
   if (chat.waitFor) await chat.waitFor; // the answer arrives when the test resolves this promise
   const reply = chat.reply ?? DEFAULT_CHAT_REPLY;
@@ -405,16 +443,29 @@ async function mockChatFunction(route, { body, db, state, nowMs, chat, hold }) {
     out += sse('delta', { text: parts[0] }) + sse('error', { error: 'upstream_error', ...usage() });
     return route.fulfill({ status: 200, contentType: 'text/event-stream', headers, body: out });
   }
-  for (const p of parts) out += sse('delta', { text: p });
-  const at = () => new Date(nowMs + ++chatClock * 1000).toISOString();
-  const by = { created_by: EDITOR_USER.id, created_by_name: db.editors[0]?.display_name || null };
-  if (isNew) db.chat_threads.push({ id: threadId, title, created_at: at(), updated_at: at(), ...by });
-  const userRow = { id: body.request_id || crypto.randomUUID(), thread_id: threadId, role: 'user', content: body.message, sources: [], model: null, input_tokens: 0, output_tokens: 0, web_searches: 0, cost_usd: 0, created_at: at(), updated_at: at(), ...by };
-  const assistantRow = { id: crypto.randomUUID(), thread_id: threadId, role: 'assistant', content: reply, sources, model: 'claude-sonnet-5-5', input_tokens: 2400, output_tokens: 120, web_searches: sources.length ? 1 : 0, cost_usd: 0.0172, created_at: at(), updated_at: at(), ...by };
-  db.chat_messages.push(userRow, assistantRow);
+  const saveQuestion = () => {
+    if (prior) return prior;
+    if (isNew) db.chat_threads.push({ id: threadId, title, created_at: at(), updated_at: at(), ...by });
+    const q = row({ id: body.request_id || crypto.randomUUID(), thread_id: threadId, role: 'user', content: body.message, model: null });
+    db.chat_messages.push(q);
+    return q;
+  };
+  if (chat.empty) {
+    // No text came back: billed, nothing shown; the question and the resume point are saved.
+    const q = saveQuestion();
+    db.chat_messages.push(contRow(threadId, { question_id: q.id, answer_id: null, reason: 'empty' }));
+    out += sse('error', { error: 'upstream_error', reason: 'empty', continuable: true, ...usage(0.08, 0) });
+    return route.fulfill({ status: 200, contentType: 'text/event-stream', headers, body: out });
+  }
+  const text = chat.cut ? reply.slice(0, 40) : reply;
+  for (const p of chat.cut ? [text] : parts) out += sse('delta', { text: p });
+  const userRow = saveQuestion();
+  const assistantRow = row({ id: crypto.randomUUID(), thread_id: threadId, role: 'assistant', content: text, sources, input_tokens: 2400, output_tokens: 120, web_searches: sources.length ? 1 : 0, cost_usd: 0.0172 });
+  db.chat_messages.push(assistantRow);
+  if (chat.cut) db.chat_messages.push(contRow(threadId, { question_id: userRow.id, answer_id: assistantRow.id, reason: 'length' }));
   const thread = db.chat_threads.find((t) => t.id === threadId);
   if (thread) thread.updated_at = at();
-  out += sse('done', { thread_id: threadId, title, stopped: false, stop_reason: 'end_turn', user_message: userRow, message: assistantRow, ...usage(0.0172, 0) });
+  out += sse('done', { thread_id: threadId, title, stopped: false, stop_reason: chat.cut ? 'max_tokens' : 'end_turn', cut: !!chat.cut, user_message: userRow, message: assistantRow, ...usage(0.0172, 0) });
   if (chat.stall === 'after-save') return hold(); // saved, but the phone never hears back
   return route.fulfill({ status: 200, contentType: 'text/event-stream', headers, body: out });
 }

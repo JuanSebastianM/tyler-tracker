@@ -28,15 +28,19 @@
   "status": {
     "sending": "Thinking…",
     "searching": "Searching the web…",
-    "checking": "Checking whether the answer was saved…"
+    "checking": "Checking whether the answer was saved…",
+    "continuing": "Continuing the answer…"
   },
-  "stopped": "Answer stopped.",
+  "failed": "The answer did not arrive. Ask again.",
+  "failedContinue": "The answer came back empty. You can continue it without repeating the searches.",
+  "cut": "The answer was cut for length.",
   "budget": "{used} of {total} used this month",
   "budgetLabel": "Assistant budget",
   "actions": {
     "threads": "View conversations",
     "newThread": "New conversation",
-    "saveFaq": "Save to FAQ"
+    "saveFaq": "Save to FAQ",
+    "continue": "Continue"
   },
   "threads": {
     "empty": "No conversations yet",
@@ -128,6 +132,14 @@
     "update_pending": {
       "title": "A new version of the app is ready",
       "body": "The question could not be completed with this version. Update the app and try again; your question is kept."
+    },
+    "upstream_empty": {
+      "title": "The answer came back empty",
+      "body": "Claude did not get to write the text. What was billed is recorded in the budget. Trying again continues from the searches it already made, without repeating them."
+    },
+    "stopped": {
+      "title": "Answer stopped",
+      "body": "You stopped it before any text arrived, so nothing was saved. Your question is in the text box."
     }
   },
   "faq": {
