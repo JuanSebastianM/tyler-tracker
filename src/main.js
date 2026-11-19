@@ -5,6 +5,7 @@ import { authStore, initAuth } from './lib/auth.js';
 import { startDataSync, userSettings } from './data/stores.js';
 import { initTheme } from './lib/theme.js';
 import { applyWaitingUpdate, registerServiceWorker } from './lib/pwa.js';
+import { startPush } from './lib/push.js';
 import { features } from './features/registry.js';
 import { App } from './app.js';
 
@@ -19,6 +20,7 @@ async function boot() {
   root.textContent = '';
   render(html`<${App} />`, root);
   registerServiceWorker().catch((e) => console.warn('Service worker registration failed', e));
+  startPush(); // push notifications: re-validate this device, route notification taps
 }
 
 boot().catch((err) => {

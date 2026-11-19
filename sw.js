@@ -6,6 +6,8 @@ const VERSION = '__SW_VERSION__';
 const PRECACHE = [/* __PRECACHE__ */];
 const SHELL_CACHE = `tt-shell-${VERSION}`;
 const CONTENT_CACHE = 'tt-content';
+// Push notifications (src/lib/sw-push.js). `v` gets past the CDN cache of the previous deploy.
+importScripts(`./src/lib/sw-push.js?v=${encodeURIComponent(VERSION)}`);
 
 /**
  * Fetch every file of this version into a fresh cache, bypassing every HTTP cache on the way.

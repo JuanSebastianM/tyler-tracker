@@ -4,11 +4,17 @@
   "born": "Nació",
   "cameHome": "Llegó a casa",
   "sexLabel": "Sexo",
-  "sex": { "male": "Macho", "female": "Hembra" },
+  "sex": {
+    "male": "Macho",
+    "female": "Hembra"
+  },
   "food": "Comida",
   "aboutHim": "Sobre él",
   "editProfile": "Editar perfil",
-  "daysWithUs": { "one": "{count} día con nosotros", "other": "{count} días con nosotros" },
+  "daysWithUs": {
+    "one": "{count} día con nosotros",
+    "other": "{count} días con nosotros"
+  },
   "firstDayWithUs": "Hoy es su primer día con nosotros",
   "photoAlt": "Foto de {name}",
   "openPhoto": "Ver la foto de {name} en grande",
@@ -67,7 +73,10 @@
     "remove": "Quitar comida {n}",
     "add": "Agregar comida",
     "sort": "Ordenar por hora",
-    "max": { "one": "Máximo {count} comida al día.", "other": "Máximo {count} comidas al día." },
+    "max": {
+      "one": "Máximo {count} comida al día.",
+      "other": "Máximo {count} comidas al día."
+    },
     "note": "Nota sobre la cantidad",
     "noteHint": "Por ejemplo, lo que indica el empaque o el veterinario.",
     "save": "Guardar horario",
@@ -86,7 +95,10 @@
     "json": "Descargar todo (JSON)",
     "csvTitle": "Descargar una tabla en CSV",
     "csvIntro": "Cada tabla se descarga como un archivo CSV que abre en Excel o Google Sheets.",
-    "rows": { "one": "{n} fila", "other": "{n} filas" },
+    "rows": {
+      "one": "{n} fila",
+      "other": "{n} filas"
+    },
     "done": "Descarga lista",
     "failed": "No se pudieron cargar todos los datos. Revisa tu conexión e inténtalo de nuevo.",
     "tables": {
@@ -128,8 +140,14 @@
     "title": "Recuerdos",
     "seeAll": "Ver recuerdos",
     "summary": "{milestones} · {photos}",
-    "milestoneCount": { "one": "{count} momento", "other": "{count} momentos" },
-    "photoCount": { "one": "{count} foto", "other": "{count} fotos" },
+    "milestoneCount": {
+      "one": "{count} momento",
+      "other": "{count} momentos"
+    },
+    "photoCount": {
+      "one": "{count} foto",
+      "other": "{count} fotos"
+    },
     "teaserEmpty": "Guarda sus primeras veces y fotos para recordarlas siempre.",
     "latest": "Lo último: {title}, {date}",
     "emptyTitle": "Aún no hay recuerdos",
@@ -157,7 +175,10 @@
     "uploaded": "Subida",
     "uploadFailedOne": "No se subió",
     "uploadProgress": "Subiendo foto {done} de {total}…",
-    "uploadFailed": { "one": "{count} foto no se pudo subir. Toca «Reintentar».", "other": "{count} fotos no se pudieron subir. Toca «Reintentar»." },
+    "uploadFailed": {
+      "one": "{count} foto no se pudo subir. Toca «Reintentar».",
+      "other": "{count} fotos no se pudieron subir. Toca «Reintentar»."
+    },
     "retry": "Reintentar",
     "saveMilestone": "Guardar momento",
     "savePhotos": "Guardar fotos",
@@ -166,12 +187,18 @@
     "milestoneDeleted": "Momento eliminado",
     "deleteMilestone": "Eliminar momento",
     "deleteMilestoneTitle": "¿Eliminar este momento?",
-    "deleteMilestoneBody": { "one": "También se borrará su foto. No se puede deshacer.", "other": "También se borrarán sus {count} fotos. No se puede deshacer." },
+    "deleteMilestoneBody": {
+      "one": "También se borrará su foto. No se puede deshacer.",
+      "other": "También se borrarán sus {count} fotos. No se puede deshacer."
+    },
     "caption": "Descripción",
     "captionHint": "Se usa para todas las fotos que elijas.",
     "takenOn": "Fecha de la foto",
     "pickAtLeastOne": "Elige al menos una foto.",
-    "photosSaved": { "one": "Foto guardada", "other": "{count} fotos guardadas" },
+    "photosSaved": {
+      "one": "Foto guardada",
+      "other": "{count} fotos guardadas"
+    },
     "editPhoto": "Editar foto",
     "photoUpdated": "Foto actualizada",
     "deletePhoto": "Eliminar foto",
@@ -200,7 +227,69 @@
     "savedDevice": "Solo cambia la app para ti, en este dispositivo.",
     "savedAccount": "Solo cambia la app para ti y se guarda en tu cuenta.",
     "autoHint": "Automático sigue el modo claro u oscuro de tu dispositivo.",
-    "names": { "default": "Predeterminado", "rose": "Rosa", "lavender": "Lavanda", "mint": "Menta", "sky": "Cielo" },
-    "modes": { "auto": "Automático", "light": "Claro", "dark": "Oscuro" }
+    "names": {
+      "default": "Predeterminado",
+      "rose": "Rosa",
+      "lavender": "Lavanda",
+      "mint": "Menta",
+      "sky": "Cielo"
+    },
+    "modes": {
+      "auto": "Automático",
+      "light": "Claro",
+      "dark": "Oscuro"
+    }
+  },
+  "push": {
+    "title": "Notificaciones",
+    "intro": "Avisos en este teléfono si una comida no se ha registrado a su hora, y el día antes y el día de vacunas, desparasitaciones, controles y recordatorios.",
+    "onBadge": "Activas",
+    "checking": "Revisando este teléfono…",
+    "enable": "Activar en este teléfono",
+    "reenable": "Volver a activar",
+    "enabled": "Notificaciones activadas en este teléfono",
+    "disable": "Desactivar en este teléfono",
+    "disabled": "Notificaciones desactivadas en este teléfono",
+    "meals": "Comidas",
+    "mealsHint": "A la hora de cada comida sin registrar, y otra vez 30 minutos después.",
+    "due": "Vencimientos",
+    "dueHint": "A las 8:00 a. m. del día antes y del día; los recordatorios con hora, también a esa hora.",
+    "test": "Enviar notificación de prueba",
+    "testSent": "Prueba enviada. Debería llegar en unos segundos.",
+    "checkFailed": "No se pudo revisar el estado de las notificaciones. Revisa la conexión.",
+    "install": {
+      "title": "Primero instala la app en tu iPhone",
+      "step1": "En Safari, toca Compartir (el cuadro con la flecha).",
+      "step2": "Elige «Agregar a inicio» y luego «Agregar».",
+      "step3": "Abre Tyler desde el ícono en tu pantalla de inicio y vuelve a esta sección.",
+      "version": "En iPhone las notificaciones solo funcionan con la app instalada y iOS 16.4 o posterior."
+    },
+    "unsupported": {
+      "title": "Este navegador no puede recibir notificaciones",
+      "body": "Usa la app instalada en la pantalla de inicio de tu iPhone (iOS 16.4 o posterior), o Chrome, Edge o Firefox en un computador o Android."
+    },
+    "denied": {
+      "title": "Las notificaciones están bloqueadas",
+      "body": "Bloqueaste los avisos para esta app. Para activarlos de nuevo:",
+      "step1": "Abre Ajustes en tu iPhone y toca Notificaciones.",
+      "step2": "Busca «Tyler» y activa «Permitir notificaciones».",
+      "step3": "Vuelve a la app; esta sección se actualiza sola."
+    },
+    "lost": {
+      "title": "Este teléfono dejó de recibir avisos",
+      "body": "El permiso sigue, pero la suscripción se perdió (iOS a veces la cancela). Toca el botón para activarla de nuevo."
+    },
+    "errors": {
+      "offline": "Estás sin conexión. Conéctate e inténtalo de nuevo.",
+      "network": "No hay conexión con el servidor. Inténtalo de nuevo.",
+      "unauthorized": "Tu sesión terminó. Inicia sesión de nuevo.",
+      "not_found": "Este teléfono ya no está registrado. Actívalo de nuevo.",
+      "gone": "Este teléfono ya no recibe avisos. Actívalo de nuevo.",
+      "too_many": "Espera unos segundos antes de enviar otra prueba.",
+      "push_failed": "El servicio de notificaciones no aceptó el aviso. Inténtalo de nuevo más tarde.",
+      "denied": "Sin permiso no podemos enviarte avisos.",
+      "unsupported": "Este navegador no puede recibir notificaciones.",
+      "server_error": "Algo falló en el servidor. Inténtalo de nuevo en un momento."
+    }
   }
 }

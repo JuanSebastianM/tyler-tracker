@@ -162,3 +162,26 @@
 }
 .profile .theme-mode { margin-top: var(--sp-4); }
 .profile .theme-mode-hint { margin-top: 6px; }
+
+/* Ajustes → Notificaciones (push-settings.js) */
+.profile .push-settings { margin-top: var(--sp-5); }
+.profile .push-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.profile .push-checking { display: flex; align-items: center; gap: var(--sp-2); margin: 0; }
+.profile .push-on .switch-row + .switch-row { margin-top: var(--sp-2); }
+.profile .push-actions { margin-top: var(--sp-3); flex-wrap: wrap; }
+.profile .push-off { display: flex; flex-direction: column; gap: var(--sp-3); }
+.profile .push-off .field-hint { margin: 0; }
+.profile .push-notice {
+  display: flex; gap: var(--sp-3); align-items: flex-start;
+  padding: var(--sp-3); border-radius: var(--r-card);
+  background: var(--c-surface-2); border: 1px solid var(--c-line);
+}
+.profile .push-notice-warn { background: var(--c-warn-soft); border-color: transparent; color: var(--c-on-warn-soft); }
+.profile .push-notice-icon { flex: none; margin-top: 1px; color: var(--c-ink-2); }
+.profile .push-notice-warn .push-notice-icon { color: var(--c-on-warn-soft); }
+.profile .push-notice-text { min-width: 0; font-size: var(--fs-sm); line-height: 1.45; }
+.profile .push-notice-text p { margin: 0; }
+.profile .push-notice-text p + * { margin-top: var(--sp-2); }
+.profile .push-notice-title { font-weight: 650; }
+.profile .push-steps { margin: var(--sp-2) 0 0; padding-left: 1.25em; }
+.profile .push-steps li + li { margin-top: 4px; }

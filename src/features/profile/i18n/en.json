@@ -4,11 +4,17 @@
   "born": "Born",
   "cameHome": "Came home",
   "sexLabel": "Sex",
-  "sex": { "male": "Male", "female": "Female" },
+  "sex": {
+    "male": "Male",
+    "female": "Female"
+  },
   "food": "Food",
   "aboutHim": "About him",
   "editProfile": "Edit profile",
-  "daysWithUs": { "one": "{count} day with us", "other": "{count} days with us" },
+  "daysWithUs": {
+    "one": "{count} day with us",
+    "other": "{count} days with us"
+  },
   "firstDayWithUs": "Today is his first day with us",
   "photoAlt": "Photo of {name}",
   "openPhoto": "View {name}'s photo full size",
@@ -67,7 +73,10 @@
     "remove": "Remove meal {n}",
     "add": "Add meal",
     "sort": "Sort by time",
-    "max": { "one": "At most {count} meal a day.", "other": "At most {count} meals a day." },
+    "max": {
+      "one": "At most {count} meal a day.",
+      "other": "At most {count} meals a day."
+    },
     "note": "Note about the amount",
     "noteHint": "For example, what the bag or the vet recommends.",
     "save": "Save schedule",
@@ -86,7 +95,10 @@
     "json": "Download everything (JSON)",
     "csvTitle": "Download one table as CSV",
     "csvIntro": "Each table downloads as a CSV file that opens in Excel or Google Sheets.",
-    "rows": { "one": "{n} row", "other": "{n} rows" },
+    "rows": {
+      "one": "{n} row",
+      "other": "{n} rows"
+    },
     "done": "Download ready",
     "failed": "Couldn't load all the data. Check your connection and try again.",
     "tables": {
@@ -128,8 +140,14 @@
     "title": "Memories",
     "seeAll": "See memories",
     "summary": "{milestones} · {photos}",
-    "milestoneCount": { "one": "{count} moment", "other": "{count} moments" },
-    "photoCount": { "one": "{count} photo", "other": "{count} photos" },
+    "milestoneCount": {
+      "one": "{count} moment",
+      "other": "{count} moments"
+    },
+    "photoCount": {
+      "one": "{count} photo",
+      "other": "{count} photos"
+    },
     "teaserEmpty": "Save his first times and photos to remember them forever.",
     "latest": "Latest: {title}, {date}",
     "emptyTitle": "No memories yet",
@@ -157,7 +175,10 @@
     "uploaded": "Uploaded",
     "uploadFailedOne": "Not uploaded",
     "uploadProgress": "Uploading photo {done} of {total}…",
-    "uploadFailed": { "one": "{count} photo couldn't be uploaded. Tap \"Retry\".", "other": "{count} photos couldn't be uploaded. Tap \"Retry\"." },
+    "uploadFailed": {
+      "one": "{count} photo couldn't be uploaded. Tap \"Retry\".",
+      "other": "{count} photos couldn't be uploaded. Tap \"Retry\"."
+    },
     "retry": "Retry",
     "saveMilestone": "Save moment",
     "savePhotos": "Save photos",
@@ -166,12 +187,18 @@
     "milestoneDeleted": "Moment deleted",
     "deleteMilestone": "Delete moment",
     "deleteMilestoneTitle": "Delete this moment?",
-    "deleteMilestoneBody": { "one": "Its photo will be deleted too. This can't be undone.", "other": "Its {count} photos will be deleted too. This can't be undone." },
+    "deleteMilestoneBody": {
+      "one": "Its photo will be deleted too. This can't be undone.",
+      "other": "Its {count} photos will be deleted too. This can't be undone."
+    },
     "caption": "Caption",
     "captionHint": "Used for all the photos you pick.",
     "takenOn": "Photo date",
     "pickAtLeastOne": "Pick at least one photo.",
-    "photosSaved": { "one": "Photo saved", "other": "{count} photos saved" },
+    "photosSaved": {
+      "one": "Photo saved",
+      "other": "{count} photos saved"
+    },
     "editPhoto": "Edit photo",
     "photoUpdated": "Photo updated",
     "deletePhoto": "Delete photo",
@@ -200,7 +227,69 @@
     "savedDevice": "Only changes the app for you, on this device.",
     "savedAccount": "Only changes the app for you and is saved to your account.",
     "autoHint": "Automatic follows your device's light or dark mode.",
-    "names": { "default": "Default", "rose": "Rose", "lavender": "Lavender", "mint": "Mint", "sky": "Sky" },
-    "modes": { "auto": "Automatic", "light": "Light", "dark": "Dark" }
+    "names": {
+      "default": "Default",
+      "rose": "Rose",
+      "lavender": "Lavender",
+      "mint": "Mint",
+      "sky": "Sky"
+    },
+    "modes": {
+      "auto": "Automatic",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
+  "push": {
+    "title": "Notifications",
+    "intro": "Alerts on this phone when a meal isn't logged on time, and the day before and the day of vaccines, dewormings, vet follow-ups and reminders.",
+    "onBadge": "On",
+    "checking": "Checking this phone…",
+    "enable": "Turn on for this phone",
+    "reenable": "Turn back on",
+    "enabled": "Notifications turned on for this phone",
+    "disable": "Turn off for this phone",
+    "disabled": "Notifications turned off for this phone",
+    "meals": "Meals",
+    "mealsHint": "At each meal time that isn't logged, and again 30 minutes later.",
+    "due": "Due dates",
+    "dueHint": "At 8:00 AM the day before and on the day; reminders with a time, also at that time.",
+    "test": "Send a test notification",
+    "testSent": "Test sent. It should arrive in a few seconds.",
+    "checkFailed": "Couldn't check the notification status. Check your connection.",
+    "install": {
+      "title": "First, install the app on your iPhone",
+      "step1": "In Safari, tap Share (the square with the arrow).",
+      "step2": "Choose “Add to Home Screen”, then “Add”.",
+      "step3": "Open Tyler from the icon on your Home Screen and come back here.",
+      "version": "On iPhone, notifications only work in the installed app on iOS 16.4 or later."
+    },
+    "unsupported": {
+      "title": "This browser can't receive notifications",
+      "body": "Use the app installed on your iPhone's Home Screen (iOS 16.4 or later), or Chrome, Edge or Firefox on a computer or Android."
+    },
+    "denied": {
+      "title": "Notifications are blocked",
+      "body": "You blocked alerts for this app. To turn them back on:",
+      "step1": "Open Settings on your iPhone and tap Notifications.",
+      "step2": "Find “Tyler” and turn on “Allow Notifications”.",
+      "step3": "Come back to the app; this section updates by itself."
+    },
+    "lost": {
+      "title": "This phone stopped getting alerts",
+      "body": "Permission is still on, but the subscription was lost (iOS sometimes cancels it). Tap the button to turn it back on."
+    },
+    "errors": {
+      "offline": "You're offline. Connect and try again.",
+      "network": "Can't reach the server. Try again.",
+      "unauthorized": "Your session ended. Sign in again.",
+      "not_found": "This phone is no longer registered. Turn it back on.",
+      "gone": "This phone no longer gets alerts. Turn it back on.",
+      "too_many": "Wait a few seconds before sending another test.",
+      "push_failed": "The notification service didn't accept the alert. Try again later.",
+      "denied": "Without permission we can't send you alerts.",
+      "unsupported": "This browser can't receive notifications.",
+      "server_error": "Something went wrong on the server. Try again in a moment."
+    }
   }
 }

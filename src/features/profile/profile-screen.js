@@ -1,5 +1,5 @@
 // #/profile (tab "Tyler"): profile, private details, memories, settings (language, theme, meals,
-// timezone), export, account, about.
+// notifications, timezone), export, account, about.
 import { html } from '../../../vendor/preact.js';
 import { t } from '../../lib/i18n.js';
 import { EditorOnly } from '../../lib/auth.js';
@@ -12,6 +12,7 @@ import { MealSchedule } from './meals.js';
 import { ExportCard } from './export-card.js';
 import { AboutCard } from './about-card.js';
 import { ThemeSettings } from './theme-picker.js';
+import { PushSettings } from './push-settings.js';
 
 export function ProfileScreen() {
   const tz = useTimezone();
@@ -23,6 +24,7 @@ export function ProfileScreen() {
       <${LanguageSwitch} />
       <${ThemeSettings} />
       <${MealSchedule} />
+      <${EditorOnly}><${PushSettings} /></${EditorOnly}>
       <h3 class="profile-subhead">${t('profile.settings.timezone')}</h3>
       <${List}>
         <${ListRow} icon="globe" title=${tz} subtitle=${t('profile.settings.timezoneBody')} data-testid="timezone" />
