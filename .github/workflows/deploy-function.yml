@@ -1,7 +1,8 @@
-# Deploys the `chat` Edge Function to Supabase from the exact source in this repo.
-# Needs the repository secret SUPABASE_ACCESS_TOKEN (a Supabase personal access token).
-# The function's own secret (ANTHROPIC_API_KEY) lives in Supabase, never here.
-name: Deploy chat function
+# Deploys the Edge Functions (`chat`, `push`) to Supabase from the exact source in this repo, then
+# smoke-tests each one. Needs the repository secret SUPABASE_ACCESS_TOKEN (a Supabase personal access
+# token). Function secrets (ANTHROPIC_API_KEY for chat) live in Supabase, never here; `push` needs
+# none (its VAPID keys and scheduler secret are generated into the push_config table on first use).
+name: Deploy functions
 
 on:
   push:
@@ -21,9 +22,16 @@ concurrency:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        function: [chat, push]
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       PROJECT_REF: kegtfxoiijbytprfwqrl
+      # Public by design (docs/ARCHITECTURE.md); the gateway's verify_jwt accepts it, the function decides.
+      PUBLISHABLE_KEY: sb_publishable_XgyzQcRWDyyCnFfdRKla0g_YZvHs3YX
+      FN: ${{ matrix.function }}
     steps:
       - name: Check the access token is configured
         id: token
@@ -45,19 +53,32 @@ jobs:
         with:
           version: latest
 
+      # Both functions keep verify_jwt on (the default): `push` checks the scheduler secret itself.
       - name: Deploy
         if: steps.token.outputs.present == 'true'
-        run: supabase functions deploy chat --remote="$PROJECT_REF" --yes
+        run: supabase functions deploy "$FN" --remote="$PROJECT_REF" --yes
 
-      - name: Smoke test (a request without a session must be rejected)
+      - name: Smoke test (requests without a session or secret must be rejected)
         if: steps.token.outputs.present == 'true'
         run: |
           sleep 5
-          code=$(curl -s -o /tmp/body -w '%{http_code}' -X POST \
-            "https://$PROJECT_REF.supabase.co/functions/v1/chat" \
-            -H 'Content-Type: application/json' -d '{"action":"status"}')
-          echo "HTTP $code"; head -c 300 /tmp/body; echo
-          if [ "$code" != "401" ] && [ "$code" != "403" ]; then
-            echo "::error::Expected 401 or 403 for an unauthenticated request, got $code"
-            exit 1
+          URL="https://$PROJECT_REF.supabase.co/functions/v1/$FN"
+          # $1 = expected codes (space separated), then curl arguments
+          expect() {
+            want="$1"; shift
+            code=$(curl -s -o /tmp/body -w '%{http_code}' -X POST "$URL" -H 'Content-Type: application/json' "$@")
+            echo "HTTP $code"; head -c 300 /tmp/body; echo
+            case " $want " in *" $code "*) ;; *) echo "::error::$FN: expected $want, got $code"; exit 1 ;; esac
+          }
+          if [ "$FN" = chat ]; then
+            expect "401 403" -d '{"action":"status"}'
+          else
+            # No credentials at all: the gateway refuses.
+            expect "401" -d '{"action":"tick"}'
+            # Past the gateway with the public key but without the scheduler secret: the function refuses.
+            expect "401" -H "apikey: $PUBLISHABLE_KEY" -d '{"action":"tick"}'
+            grep -q '"unauthorized"' /tmp/body || { echo "::error::push: tick without the secret was not refused by the function"; exit 1; }
+            expect "401" -H "apikey: $PUBLISHABLE_KEY" -H 'x-push-secret: wrong' -d '{"action":"tick"}'
+            # Editor actions need a user session.
+            expect "401" -H "apikey: $PUBLISHABLE_KEY" -d '{"action":"config"}'
           fi

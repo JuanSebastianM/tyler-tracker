@@ -246,3 +246,22 @@ export interface UserSettings extends Audit {
   theme: string;
   color_mode: 'auto' | 'light' | 'dark';
 }
+
+/**
+ * Push notification subscription of one phone/browser (migration 0007). Own rows only, editors only;
+ * the app reads and writes it through the `push` Edge Function (src/lib/push.js), never directly.
+ */
+export interface PushSubscriptionRow extends Audit {
+  id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  locale: 'es' | 'en';
+  meals_enabled: boolean;
+  due_enabled: boolean;
+  last_success_at: Instant | null;
+  last_failure_at: Instant | null;
+  last_status: number | null;
+  failure_count: number;
+}
