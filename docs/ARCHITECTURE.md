@@ -182,6 +182,24 @@ Editors can ask questions inside the app. Feature id `assistant` (no tab; route 
     a repeat while the first is still running gets `409 in_progress`; a repeat after a failed
     attempt asks again. So a retry after a stall or a reload never asks (or bills) twice. No schema
     change was needed.
+  - **Whole answers, never empty ones** (`supabase/functions/chat/lib/turn.ts`). Requests set
+    thinking explicitly (Sonnet 5.5: `thinking: {type: 'between_tools'}`, no up-front thinking;
+    Haiku 5.5: `disabled`; `output_config.effort: 'medium'`) and `max_tokens` is never below 2000,
+    because on Claude 5 models thinking is on by default and `max_tokens` covers thinking, search
+    queries and text. A turn that stops on `pause_turn` or `max_tokens` (or ends with no text) is
+    continued by the function itself, up to 2 more calls, by sending the turn back unchanged
+    (search results included, so nothing is searched or paid for twice). If it still cannot finish,
+    the partial answer is saved and the function also saves a hidden **continuation row**
+    (`chat_messages`, content `<!--continuation-->{question_id, answer_id, reason}`, the API turn in
+    `sources`, cost 0); the app shows "La respuesta se cortó por longitud" + **Continuar**, which
+    resends the question's request id: the function finds the row, claims it (deletes it) and goes
+    on from the saved turn (at most 2 times per question). An answer with no text is never saved as
+    a message: the cost Claude billed stays in the ledger, the question and a continuation row are
+    saved, and the stream ends with `error` reason `empty` (`upstream_empty` in the app, Retry
+    continues). The app never loads the continuation rows' `sources`.
+  - "Respuesta detenida" only after the person pressed stop: a stop before any text saves nothing
+    (billed cost in the ledger) and the question goes back to the composer (`stopped`). An assistant
+    row with empty content (older data) is shown as a failed answer.
   - Auth: a token Supabase Auth rejects is `401 unauthorized`; Auth being unreachable is a `500
     server_error` (retryable), never "unauthorized".
   - `draft_faq` `{ thread_id }` → `{ draft }`: a bilingual FAQ entry proposed from the thread. Nothing
@@ -196,10 +214,20 @@ Editors can ask questions inside the app. Feature id `assistant` (no tab; route 
   `ai_usage.cost_usd` since the start of the month in the settings timezone, so deleting
   conversations cannot lower the measured spend.
 - **Spend reservations.** Before calling Claude the function inserts an `ai_usage` row with the
-  worst-case cost (`model = 'reservation:send|faq'`) and re-checks the budget and daily limit with
+  worst-case cost of the whole answer, continuations included (`model = 'reservation:send|faq|continue'`) and re-checks the budget and daily limit with
   every reservation counted, so parallel requests cannot overshoot. It is deleted when the answer is
   saved, or settled to the billed cost when a call was billed but not saved
   (`supabase/functions/chat/lib/budget.ts`).
+- **Context** (`lib/context.ts`, caller's JWT, public tables only; `contextQueries()` lists every
+  read): profile and age, meal plan with each slot's grams and the portion note
+  (`settings.meal_amount_note`), vaccines, dewormings, weights, vet visits, medications, today's and
+  yesterday's summary, training, reminders, and a **records block** with the notes the parents wrote:
+  feedings and routine events of the last 7 days that have a note, a portion note, an appetite other
+  than "all" or an accident; the latest 10 weights, vaccinations, dewormings, vet visits (reason,
+  findings, treatment, follow-up, notes), medications, reminders, training notes and memories. Newest
+  first, each note quoted and cut to 200 characters, the block capped at 5,000 characters (oldest
+  dropped first), and marked as data, never instructions. `pet_private` and `vet_visit_private` are
+  never read.
 - **Location** for the prompt and web search comes from `ai_settings.location` (editors-only;
   migration 0005, proposed), never from the public source.
 - **Loading messages.** `chat_threads` is a normal private store (`chatThreads`). Messages are not a
