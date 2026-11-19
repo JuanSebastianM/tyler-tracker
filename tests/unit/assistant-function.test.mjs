@@ -165,7 +165,10 @@ test('context: missing data is stated, long text is clipped', () => {
   assert.match(c, /Vaccines: none recorded/);
   assert.match(c, /meals 0\/2: none logged/);
   const big = { ...contextData(), vetVisits: Array.from({ length: 10 }, (_, i) => ({ visited_on: `2026-11-0${i % 9 + 1}`, reason: 'x'.repeat(500), findings: 'y'.repeat(500), treatment: null, follow_up_on: null })) };
-  assert.ok(buildContext(big, NOW).length < 4800);
+  // The summary stays compact; the notes section is capped on its own (MAX_NOTES_CHARS).
+  const c2 = buildContext(big, NOW);
+  assert.ok(c2.length < 4800 + 5000, `context too long: ${c2.length}`);
+  assert.doesNotMatch(c2, /x{201}/);
 });
 
 // ---------------------------------------------------------------------------
@@ -193,7 +196,15 @@ test('history: last N, skips FAQ rows and empty answers, alternates, starts with
 test('chat request: cached system blocks, output cap, web search only when enabled', () => {
   const o = { model: 'claude-sonnet-5-5', maxOutputTokens: 1200, context: 'CTX', history: [], question: '¿Hola?', webSearch: { enabled: true, maxUses: 2 }, timezone: 'America/Bogota' };
   const r = buildChatRequest(o);
-  assert.equal(r.max_tokens, 1200);
+  // Never below 2000: the budget also pays for search queries and notes between searches.
+  assert.equal(r.max_tokens, 2000);
+  assert.equal(buildChatRequest({ ...o, maxOutputTokens: 3000 }).max_tokens, 3000);
+  assert.equal(buildChatRequest({ ...o, maxOutputTokens: 9000 }).max_tokens, 4000);
+  // Thinking is set explicitly: no up-front thinking on Sonnet 5.5 ('disabled' is a 400 there).
+  assert.deepEqual(r.thinking, { type: 'between_tools' });
+  assert.deepEqual(r.output_config, { effort: 'medium' });
+  assert.deepEqual(buildChatRequest({ ...o, model: 'claude-haiku-5-5' }).thinking, { type: 'disabled' });
+  assert.equal('thinking' in buildChatRequest({ ...o, model: 'claude-future-9' }), false);
   assert.equal(r.stream, true);
   assert.equal(r.system[0].text, SYSTEM_INSTRUCTIONS);
   assert.deepEqual(r.system[0].cache_control, { type: 'ephemeral' });
@@ -220,6 +231,8 @@ test('FAQ request uses structured output and a bounded token budget', () => {
   const r = buildFaqRequest({ model: 'claude-haiku-5-5', maxOutputTokens: 1200, transcript: 'T' });
   assert.equal(r.max_tokens, 2400);
   assert.equal(r.output_config.format.type, 'json_schema');
+  assert.equal(r.output_config.effort, 'medium');
+  assert.deepEqual(r.thinking, { type: 'disabled' });
   assert.equal(r.stream, undefined);
   assert.equal(buildFaqRequest({ model: 'x', maxOutputTokens: 4000, transcript: 'T' }).max_tokens, 4000);
 });

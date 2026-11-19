@@ -19,7 +19,8 @@ import { RestError, enc } from './rest.ts';
 import { num, type AiSettings, type LimitError } from './limits.ts';
 import { roundUsd } from './pricing.ts';
 
-export type ReservationKind = 'send' | 'faq';
+/** 'continue': resuming a cut answer (not a new question, so not counted against the daily limit). */
+export type ReservationKind = 'send' | 'faq' | 'continue';
 export const RESERVATION_PREFIX = 'reservation:';
 
 export interface ReservationOwner {

@@ -29,26 +29,43 @@ import {
 import { checkReserved, InProgressError, pendingSends, release, reserve, settle, STALE_RESERVATION_MS, type ReservationKind } from './lib/budget.ts';
 import { KEEPALIVE_MS, pickAnswer, SSE_KEEPALIVE, type StoredMessage } from './lib/replay.ts';
 import { budgetInfo, checkLimits, num, sumCosts, type AiSettings } from './lib/limits.ts';
-import { computeCost, estimateMaxCost, estimateTokens, type ApiUsage } from './lib/pricing.ts';
-import { buildContext, type ContextData } from './lib/context.ts';
+import { computeCost, costOfCalls, estimateMaxCost, estimateTokens, estimateTurnCost, roundUsd } from './lib/pricing.ts';
+import { buildContext, contextFromRows, contextQueries } from './lib/context.ts';
 import {
+  answerMaxTokens,
   buildChatRequest,
   buildFaqRequest,
   buildTranscript,
+  CONTINUATION_TAG,
   faqMaxTokens,
   FAQ_DRAFT_TAG,
-  isFaqDraftRow,
+  isHiddenRow,
   makeThreadTitle,
+  modelOptions,
   MAX_FAQ_MESSAGES,
   MAX_HISTORY_MESSAGES,
   SYSTEM_INSTRUCTIONS,
   FAQ_INSTRUCTIONS,
   type HistoryMessage,
+  type WireMessage,
 } from './lib/prompt.ts';
-import { createClaudeAccumulator, createSseParser, formatSse } from './lib/sse.ts';
+import { formatSse, MAX_SOURCES, type Source } from './lib/sse.ts';
+import {
+  continuationSearches,
+  MAX_CONTINUATIONS,
+  MAX_RESUMES,
+  MIN_CONTINUATION_MS,
+  parseContinuationMeta,
+  parseContinuationState,
+  runTurn,
+  type CallOutcome,
+  type ContinuationMeta,
+  type ContinuationState,
+  type TurnResult,
+} from './lib/turn.ts';
 import { parseFaqDraft, threadSources } from './lib/faq.ts';
 import { enc, pickKey, RestError, serviceRest, userRest, verifyUser, type Rest } from './lib/rest.ts';
-import { addDays, periodStarts, startOfLocalDay } from './lib/dates.ts';
+import { periodStarts } from './lib/dates.ts';
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const ANTHROPIC_VERSION = '2026-10-21';
@@ -277,39 +294,10 @@ async function upstreamErrorType(res: Response): Promise<string> {
 const cleanLocation = (v: unknown): string | null => (typeof v === 'string' && v.trim() ? v.trim().slice(0, 160) : null);
 
 async function loadContext(ctx: Ctx): Promise<string> {
-  const tz = ctx.timezone;
-  const { today } = periodStarts(ctx.now, tz);
-  const since = startOfLocalDay(addDays(today, -1), tz).toISOString();
-  const u = ctx.user;
   try {
-    const [profile, settings, vaccinations, dewormings, weights, vetVisits, medications, feedings, routineEvents, trainingSkills, reminders] =
-      await Promise.all([
-        u.select('pet_profile', 'select=name,full_name,breed,sex,birth_date,home_date,food,about&id=eq.1'),
-        u.select('settings', 'select=timezone,meal_slots,meal_amount_note&id=eq.1'),
-        u.select('vaccinations', 'select=vaccine,given_on,next_due_on&order=given_on.desc&limit=4'),
-        u.select('dewormings', 'select=product,kind,given_on,next_due_on&order=given_on.desc&limit=3'),
-        u.select('weights', 'select=measured_on,weight_kg&order=measured_on.desc&limit=4'),
-        u.select('vet_visits', 'select=visited_on,reason,findings,treatment,follow_up_on&order=visited_on.desc&limit=3'),
-        u.select('medications', 'select=name,frequency,start_on,end_on&order=start_on.desc&limit=10'),
-        u.select('feedings', `select=fed_at,meal_slot,amount_g,appetite&fed_at=gte.${enc(since)}&order=fed_at.asc&limit=40`),
-        u.select('routine_events', `select=type,started_at,ended_at,location,accident&started_at=gte.${enc(since)}&order=started_at.asc&limit=120`),
-        u.select('training_skills', 'select=skill_key,status'),
-        u.select('reminders', `select=title,due_on,done_at&done_at=is.null&due_on=gte.${today}&order=due_on.asc&limit=4`),
-      ]);
-    const data: ContextData = {
-      profile: profile[0] || null,
-      settings: settings[0] || null,
-      vaccinations,
-      dewormings,
-      weights,
-      vetVisits,
-      medications,
-      feedings,
-      routineEvents,
-      trainingSkills,
-      reminders,
-    };
-    return buildContext(data, ctx.now, cleanLocation(ctx.settings.location));
+    const queries = contextQueries(ctx.now, ctx.timezone);
+    const results = await Promise.all(queries.map((q) => ctx.user.select(q.table, q.query)));
+    return buildContext(contextFromRows(queries, results), ctx.now, cleanLocation(ctx.settings.location));
   } catch (e) {
     log('warn', 'context failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error' });
     return "Tyler's data could not be loaded right now. Answer in general terms and say that his records were not available.";
@@ -323,9 +311,10 @@ async function loadContext(ctx: Ctx): Promise<string> {
 async function loadThread(ctx: Ctx, threadId: string, limit: number) {
   const threads = await ctx.svc.select<{ id: string; title: string | null }>('chat_threads', `select=id,title&id=eq.${enc(threadId)}`);
   if (!threads.length) return null;
+  // Continuation rows carry whole API turns (search results included): never load them as history.
   const rows = await ctx.svc.select<HistoryMessage & { sources: unknown }>(
     'chat_messages',
-    `select=role,content,sources,created_by_name&thread_id=eq.${enc(threadId)}&order=created_at.desc&limit=${limit}`,
+    `select=role,content,sources,created_by_name&thread_id=eq.${enc(threadId)}&content=not.like.${enc(CONTINUATION_TAG)}*&order=created_at.desc&limit=${limit}`,
   );
   return { thread: threads[0], messages: rows.reverse() };
 }
@@ -344,9 +333,42 @@ async function findRequest(ctx: Ctx, requestId: string): Promise<{ question: Sto
   const question = found[0];
   const rows = await ctx.svc.select<StoredMessage>(
     'chat_messages',
-    `select=*&thread_id=eq.${enc(question.thread_id)}&role=eq.assistant&created_at=gte.${enc(question.created_at)}&order=created_at.asc&limit=5`,
+    `select=*&thread_id=eq.${enc(question.thread_id)}&role=eq.assistant&created_at=gte.${enc(question.created_at)}&content=not.like.${enc(CONTINUATION_TAG)}*&order=created_at.asc&limit=5`,
   );
   return { question, answer: pickAnswer(question, rows) };
+}
+
+interface ContinuationRow {
+  id: string;
+  meta: ContinuationMeta;
+  state: ContinuationState | null;
+}
+
+/** The saved continuation of this question's answer, if its answer was cut (newest first). */
+async function findContinuation(ctx: Ctx, question: StoredMessage): Promise<ContinuationRow | null> {
+  const rows = await ctx.svc.select<{ id: string; content: string; sources: unknown }>(
+    'chat_messages',
+    `select=id,content,sources&thread_id=eq.${enc(question.thread_id)}&role=eq.assistant&content=like.${enc(CONTINUATION_TAG)}*&order=created_at.desc&limit=5`,
+  );
+  for (const r of rows) {
+    const meta = parseContinuationMeta(r.content, CONTINUATION_TAG);
+    if (meta?.question_id === question.id) return { id: r.id, meta, state: parseContinuationState(r.sources) };
+  }
+  return null;
+}
+
+/** Save what is needed to resume a cut answer (a hidden row: no cost, so no ledger row). */
+async function saveContinuation(ctx: Ctx, threadId: string, meta: ContinuationMeta, state: ContinuationState) {
+  await ctx.svc.insert('chat_messages', {
+    thread_id: threadId,
+    role: 'assistant',
+    content: CONTINUATION_TAG + JSON.stringify(meta),
+    sources: state,
+    model: ctx.settings.model,
+    cost_usd: 0,
+    created_by: ctx.editor.id,
+    created_by_name: ctx.editor.name,
+  });
 }
 
 /** Send the saved answer again as a normal stream (no Claude call, nothing billed). */
@@ -373,6 +395,119 @@ async function replayResponse(ctx: Ctx, question: StoredMessage, answer: StoredM
   });
 }
 
+/** The response body of a Claude call, decoded, as an async iterable of text chunks. */
+async function* readChunks(res: Response): AsyncIterable<string> {
+  const reader = res.body!.pipeThrough(new TextDecoderStream()).getReader();
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) return;
+    yield value;
+  }
+}
+
+/** Build and send one Claude call of a turn; non-OK answers are logged and turned into an outcome. */
+async function claudeCall(ctx: Ctx, body: Record<string, unknown>, signal: AbortSignal): Promise<CallOutcome> {
+  let res: Response;
+  try {
+    res = await callClaude(ctx.apiKey, body, signal);
+  } catch (e) {
+    return { ok: false, status: 0, type: String((e as Error)?.name || 'error') };
+  }
+  if (!res.ok || !res.body) {
+    const type = await upstreamErrorType(res);
+    log('warn', 'claude error', { status: res.status, type });
+    return { ok: false, status: res.status, type };
+  }
+  return { ok: true, chunks: readChunks(res) };
+}
+
+/** Log a finished turn: stop reasons and token counts by type, never any text. */
+function logTurn(ctx: Ctx, msg: string, r: TurnResult, cost: { promptTokens: number; outputTokens: number; webSearches: number; usd: number }, extra: Record<string, unknown> = {}) {
+  const thinking = r.calls.reduce((a, c) => a + (c.thinking_tokens || 0), 0);
+  log(r.text.trim() || r.stopped ? 'info' : 'warn', msg, {
+    model: ctx.settings.model,
+    stop_reason: r.stopped ? 'user_stopped' : r.stopReason,
+    complete: r.complete,
+    continuations: r.continuations,
+    calls: r.calls,
+    prompt_tokens: cost.promptTokens,
+    output_tokens: cost.outputTokens,
+    thinking_tokens: r.calls.some((c) => c.thinking_tokens !== null) ? thinking : null,
+    text_chars: r.text.length,
+    web_searches: cost.webSearches,
+    cost_usd: cost.usd,
+    failure: r.failure?.kind || null,
+    ...extra,
+  });
+}
+
+interface TurnStream {
+  stream: ReadableStream<Uint8Array>;
+  send: (event: string, data: unknown) => void;
+  isStopped: () => boolean;
+}
+
+/**
+ * The SSE stream to the app. Closing it (the stop button, or the app went away) aborts the Claude
+ * call so no more tokens are generated or paid for. `job` runs with keep-alives and is kept alive
+ * by the runtime until it has saved everything, even if the app disconnects.
+ */
+function openTurnStream(abort: AbortController, job: (t: TurnStream) => Promise<void>): ReadableStream<Uint8Array> {
+  const encoder = new TextEncoder();
+  let clientOpen = true;
+  let userStopped = false;
+  let controller!: ReadableStreamDefaultController<Uint8Array>;
+  const sendRaw = (text: string) => {
+    if (!clientOpen) return;
+    try {
+      controller.enqueue(encoder.encode(text));
+    } catch {
+      clientOpen = false;
+    }
+  };
+  const stream = new ReadableStream<Uint8Array>({
+    start(c) {
+      controller = c;
+    },
+    cancel() {
+      clientOpen = false;
+      userStopped = true;
+      abort.abort();
+    },
+  });
+  const t: TurnStream = { stream, send: (event, data) => sendRaw(formatSse(event, data)), isStopped: () => userStopped };
+  const run = (async () => {
+    // Web searches and long answers can leave the stream silent for a while: a comment every 15 s
+    // tells the app the connection is alive (it gives up after 45 s of silence).
+    const keepAlive = setInterval(() => sendRaw(SSE_KEEPALIVE), KEEPALIVE_MS);
+    try {
+      await job(t);
+    } catch (e) {
+      log('error', 'turn failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : String((e as Error)?.name || e) });
+      t.send('error', { error: 'server_error' as ErrorCode });
+    } finally {
+      clearInterval(keepAlive);
+    }
+    if (!clientOpen) return;
+    clientOpen = false;
+    try {
+      controller.close();
+    } catch {
+      // already closed
+    }
+  })();
+  runtime?.waitUntil?.(run);
+  return stream;
+}
+
+const sseResponse = (ctx: Ctx, stream: ReadableStream<Uint8Array>) =>
+  new Response(stream, {
+    status: 200,
+    headers: { ...ctx.cors, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-store', 'X-Accel-Buffering': 'no' },
+  });
+
+const turnTokens = (cost: { promptTokens: number; outputTokens: number; webSearches: number }) => ({ input: cost.promptTokens, output: cost.outputTokens, searches: cost.webSearches });
+
 async function handleSend(ctx: Ctx, threadIdIn: string | null, question: string, requestId: string | null): Promise<Response> {
   const { settings, cors } = ctx;
   let threadId = threadIdIn;
@@ -380,10 +515,20 @@ async function handleSend(ctx: Ctx, threadIdIn: string | null, question: string,
   let savedQuestion: StoredMessage | null = null;
   if (requestId) {
     const prior = await findRequest(ctx, requestId);
+    let dropped = false;
+    if (prior) {
+      // The answer was cut (or came back empty): go on from where it stopped, reusing the searches.
+      const cont = await findContinuation(ctx, prior.question);
+      if (cont) {
+        const resumed = await handleResume(ctx, prior.question, prior.answer, cont);
+        if (resumed) return resumed;
+        dropped = true; // the saved turn could not be used: replay what there is, or ask again
+      }
+    }
     if (prior?.answer) return await replayResponse(ctx, prior.question, prior.answer);
     if (prior) {
       // Saved moments ago and the answer is being saved: wait. Older: the save failed half-way.
-      if (ctx.now.getTime() - Date.parse(prior.question.created_at) < STALE_RESERVATION_MS) return errorResponse('in_progress', cors);
+      if (!dropped && ctx.now.getTime() - Date.parse(prior.question.created_at) < STALE_RESERVATION_MS) return errorResponse('in_progress', cors);
       savedQuestion = prior.question;
       threadId = prior.question.thread_id;
     }
@@ -398,31 +543,35 @@ async function handleSend(ctx: Ctx, threadIdIn: string | null, question: string,
   const { spend, todayCount } = await usageNow(ctx);
   const maxSearches = settings.web_search_enabled ? num(settings.max_searches_per_message) : 0;
   const context = await loadContext(ctx);
-  const estimate = estimateMaxCost(settings.model, {
+  if (!Object.keys(modelOptions(settings.model)).length) log('warn', 'model without explicit thinking settings', { model: settings.model });
+  const estimate = estimateTurnCost(settings.model, {
     promptTokens:
       estimateTokens(SYSTEM_INSTRUCTIONS) + estimateTokens(context) + estimateTokens(question) + history.reduce((a, m) => a + estimateTokens(m.content || ''), 0) + 200,
-    maxOutputTokens: num(settings.max_output_tokens),
+    maxOutputTokens: answerMaxTokens(num(settings.max_output_tokens)),
     maxSearches,
+    maxContinuations: MAX_CONTINUATIONS,
+    continuationSearches: maxSearches ? continuationSearches(maxSearches, maxSearches) : 0,
   });
   const limit = checkLimits({ settings, monthSpendUsd: spend, todayUserMessages: todayCount, estimatedCostUsd: estimate, countsAsMessage: true });
   if (limit) return errorResponse(limit, cors, usagePayload(ctx, spend, todayCount));
 
-  const request = buildChatRequest({
+  const chatOptions = {
     model: settings.model,
     maxOutputTokens: num(settings.max_output_tokens),
     context,
     history,
     question,
-    webSearch: { enabled: !!settings.web_search_enabled, maxUses: maxSearches },
     timezone: ctx.timezone,
     location: cleanLocation(settings.location),
-  });
+  };
+  const request = buildChatRequest({ ...chatOptions, webSearch: { enabled: !!settings.web_search_enabled, maxUses: maxSearches } });
 
   const reservation = await reserveSpend(ctx, 'send', estimate, threadId, savedQuestion ? null : requestId);
   if (reservation.refused) return reservation.refused;
   const reservationId = reservation.id;
 
   const abort = new AbortController();
+  const deadline = Date.now() + UPSTREAM_TIMEOUT_MS;
   const timer = setTimeout(() => abort.abort(), UPSTREAM_TIMEOUT_MS);
   let upstream: Response;
   try {
@@ -447,109 +596,69 @@ async function handleSend(ctx: Ctx, threadIdIn: string | null, question: string,
   const isNew = !threadId;
   const id = threadId || crypto.randomUUID();
   const title = isNew ? makeThreadTitle(question) : null;
-  const encoder = new TextEncoder();
-  let clientOpen = true;
-  let controller!: ReadableStreamDefaultController<Uint8Array>;
-  let userStopped = false;
-  const sendRaw = (text: string) => {
-    if (!clientOpen) return;
-    try {
-      controller.enqueue(encoder.encode(text));
-    } catch {
-      clientOpen = false;
-    }
-  };
-  const send = (event: string, data: unknown) => sendRaw(formatSse(event, data));
-  const close = () => {
-    if (!clientOpen) return;
-    clientOpen = false;
-    try {
-      controller.close();
-    } catch {
-      // already closed
-    }
-  };
-  const stream = new ReadableStream<Uint8Array>({
-    start(c) {
-      controller = c;
-    },
-    cancel() {
-      // The app pressed "stop" or went away: stop generating (and paying for) more tokens.
-      clientOpen = false;
-      userStopped = true;
-      abort.abort();
-    },
-  });
+  const by = { created_by: ctx.editor.id, created_by_name: ctx.editor.name };
+  const firstMessages = request.messages as WireMessage[];
 
-  const job = (async () => {
+  const stream = openTurnStream(abort, async ({ send, isStopped }) => {
     send('meta', { thread_id: id, title, new_thread: isNew });
-    // Web searches and long answers can leave the stream silent for a while: a comment every 15 s
-    // tells the app the connection is alive (it gives up after 45 s of silence).
-    const keepAlive = setInterval(() => sendRaw(SSE_KEEPALIVE), KEEPALIVE_MS);
-    try {
-      await answer();
-    } finally {
-      clearInterval(keepAlive);
-    }
-    close();
-  })();
-  async function answer() {
-    const acc = createClaudeAccumulator();
-    const parser = createSseParser((e) => {
-      for (const u of acc.apply(e)) {
-        if (u.type === 'text') send('delta', { text: u.text });
-        else send('status', { state: 'searching', query: u.query || null });
-      }
+    const r = await runTurn({
+      messages: firstMessages,
+      first: readChunks(upstream),
+      call: (messages, used) =>
+        claudeCall(ctx, buildChatRequest({ ...chatOptions, messages, webSearch: { enabled: maxSearches > 0, maxUses: continuationSearches(maxSearches, used) } }), abort.signal),
+      onUpdate: (u) => (u.type === 'text' ? send('delta', { text: u.text }) : send('status', { state: 'searching', query: u.query || null })),
+      stopped: isStopped,
+      canContinue: () => Date.now() < deadline - MIN_CONTINUATION_MS,
     });
-    let readFailed = false;
-    try {
-      const reader = upstream.body!.pipeThrough(new TextDecoderStream()).getReader();
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        parser.push(value);
-        if (acc.error) break;
-      }
-      parser.end();
-    } catch {
-      readFailed = !userStopped;
-    } finally {
-      clearTimeout(timer);
-    }
+    clearTimeout(timer);
+    const cost = costOfCalls(settings.model, r.usages);
+    const hasText = !!r.text.trim();
 
-    const stopped = userStopped && !acc.complete;
-    // Stopped or cut off early: the final usage never arrived, so estimate the output generated so far.
-    const usage: ApiUsage = { ...acc.usage };
-    if (!acc.complete) usage.output_tokens = Math.max(num(usage.output_tokens), estimateTokens(acc.text) + 50);
-    const cost = computeCost(settings.model, usage);
-    const tokens = { input: cost.promptTokens, output: cost.outputTokens, searches: cost.webSearches };
-
-    if (acc.error || readFailed || (!acc.complete && !stopped)) {
-      const type = acc.error?.type || (readFailed ? 'read_failed' : 'incomplete');
-      log('warn', 'claude stream failed', { type, cost_usd: acc.started ? cost.usd : 0 });
-      // What was generated before the failure is billed: record it (nothing if it never started).
-      await chargeQuietly(ctx, reservationId, acc.started ? cost.usd : 0, tokens);
-      const reason = acc.error ? upstreamReason(0, acc.error.type) : 'temporary';
-      send('error', { error: 'upstream_error' as ErrorCode, reason, ...usagePayload(ctx, spend + (acc.started ? cost.usd : 0), todayCount) });
-      return;
-    }
-    if (stopped && !acc.started) {
-      await releaseQuietly(ctx, reservationId);
-      return; // nothing was generated
-    }
-
-    const sources = acc.sources;
-
-    try {
-      const by = { created_by: ctx.editor.id, created_by_name: ctx.editor.name };
+    /** Thread and question rows (once). */
+    let userRow: StoredMessage | null = savedQuestion;
+    const saveQuestion = async () => {
+      if (userRow) return userRow;
       if (isNew) await ctx.svc.insert('chat_threads', { id, title, ...by });
       // The question's id is the client's request id, so a repeat of this request finds it.
-      const userRow = savedQuestion || (await ctx.svc.insert('chat_messages', { ...(requestId ? { id: requestId } : {}), thread_id: id, role: 'user', content: question, ...by }));
+      userRow = await ctx.svc.insert<StoredMessage>('chat_messages', { ...(requestId ? { id: requestId } : {}), thread_id: id, role: 'user', content: question, ...by });
+      return userRow;
+    };
+
+    if (r.stopped && !hasText) {
+      // Stopped before any text: nothing to show. Whatever Claude already billed stays in the ledger.
+      logTurn(ctx, 'stopped before text', r, cost);
+      if (r.started && cost.usd > 0) await chargeQuietly(ctx, reservationId, cost.usd, turnTokens(cost));
+      else await releaseQuietly(ctx, reservationId);
+      return;
+    }
+    if (!hasText || (!r.complete && !r.stopped && !r.next)) {
+      // No visible text (or a broken first call): never saved or shown as an answer. The cost Claude
+      // billed is recorded; if the turn can be resumed, its state is saved so a retry goes on from
+      // here instead of searching (and paying) again.
+      logTurn(ctx, hasText ? 'claude stream failed' : 'empty answer', r, cost);
+      await chargeQuietly(ctx, reservationId, r.started ? cost.usd : 0, turnTokens(cost));
+      let continuable = false;
+      if (!hasText && r.next && requestId) {
+        try {
+          const q = await saveQuestion();
+          await saveContinuation(ctx, id, { question_id: q.id, answer_id: null, reason: 'empty' }, { v: 1, messages: r.next, searches: cost.webSearches, resumes: 0 });
+          continuable = true;
+        } catch (e) {
+          log('error', 'continuation save failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error' });
+        }
+      }
+      const reason: UpstreamReason | 'empty' = !hasText && !r.failure ? 'empty' : r.failure?.kind === 'error' ? upstreamReason(0, r.failure.type) : 'temporary';
+      send('error', { error: 'upstream_error' as ErrorCode, reason, continuable, ...usagePayload(ctx, spend + (r.started ? cost.usd : 0), todayCount + (continuable ? 1 : 0)) });
+      return;
+    }
+
+    try {
+      const q = await saveQuestion();
       const assistantRow = await ctx.svc.insert('chat_messages', {
         thread_id: id,
         role: 'assistant',
-        content: acc.text,
-        sources,
+        content: r.text,
+        sources: r.sources,
         model: settings.model,
         input_tokens: cost.promptTokens,
         output_tokens: cost.outputTokens,
@@ -559,38 +668,214 @@ async function handleSend(ctx: Ctx, threadIdIn: string | null, question: string,
       });
       // The chat_messages trigger wrote the real cost to the ledger: drop the reservation.
       await releaseQuietly(ctx, reservationId);
+      const cut = !r.complete && !r.stopped;
+      if (cut && r.next) {
+        await saveContinuation(ctx, id, { question_id: q.id, answer_id: assistantRow.id, reason: r.failure ? 'error' : 'length' }, { v: 1, messages: r.next, searches: cost.webSearches, resumes: 0 }).catch((e) =>
+          log('error', 'continuation save failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error' }),
+        );
+      }
       if (!isNew) await ctx.svc.patch('chat_threads', `id=eq.${enc(id)}`, { updated_at: new Date().toISOString() });
-      log('info', 'answered', {
-        model: settings.model,
-        prompt_tokens: cost.promptTokens,
-        output_tokens: cost.outputTokens,
-        cache_read: num(usage.cache_read_input_tokens),
-        web_searches: cost.webSearches,
-        cost_usd: cost.usd,
-        stop_reason: stopped ? 'user_stopped' : acc.stopReason,
-      });
+      logTurn(ctx, cut ? 'answered (cut)' : 'answered', r, cost, { cache_read: r.usages.reduce((a, u) => a + num(u.cache_read_input_tokens), 0) });
       send('done', {
         thread_id: id,
         title,
-        stopped,
-        stop_reason: stopped ? 'user_stopped' : acc.stopReason,
-        user_message: userRow,
+        stopped: r.stopped,
+        stop_reason: r.stopped ? 'user_stopped' : r.stopReason,
+        cut,
+        continuations: r.continuations,
+        user_message: q,
         message: assistantRow,
         ...usagePayload(ctx, spend + cost.usd, todayCount + 1),
       });
     } catch (e) {
       log('error', 'persist failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error', cost_usd: cost.usd });
-      await chargeQuietly(ctx, reservationId, cost.usd, tokens);
+      await chargeQuietly(ctx, reservationId, cost.usd, turnTokens(cost));
       send('error', { error: 'server_error' as ErrorCode, ...usagePayload(ctx, spend + cost.usd, todayCount) });
     }
-  }
-  // Keep the worker alive until the answer is saved, even if the app disconnects.
-  runtime?.waitUntil?.(job);
-
-  return new Response(stream, {
-    status: 200,
-    headers: { ...cors, 'Content-Type': 'text/event-stream; charset=utf-8', 'Cache-Control': 'no-cache, no-store', 'X-Accel-Buffering': 'no' },
   });
+  return sseResponse(ctx, stream);
+}
+
+// ---------------------------------------------------------------------------
+// Resume a cut answer: the app resends the question's request id ("Continuar", or Retry after an
+// empty answer) and the saved turn is continued, reusing its search results.
+// ---------------------------------------------------------------------------
+
+/**
+ * Continue a saved turn. Null when the saved state cannot be used (unreadable, resumed too often, or
+ * the API no longer accepts it): the caller then replays the saved answer or asks again.
+ */
+async function handleResume(ctx: Ctx, question: StoredMessage, answer: StoredMessage | null, cont: ContinuationRow): Promise<Response | null> {
+  const { settings, cors } = ctx;
+  const state = cont.state;
+  // Claim the saved state: a second request for the same answer finds nothing and waits.
+  const claimed = await ctx.svc.take('chat_messages', `id=eq.${enc(cont.id)}`);
+  if (!claimed.length) return errorResponse('in_progress', cors);
+  if (!state || state.resumes >= MAX_RESUMES) {
+    log('info', 'continuation dropped', { reason: state ? 'too_many_resumes' : 'unreadable' });
+    return null;
+  }
+  const restore = (s: ContinuationState = state, meta: ContinuationMeta = cont.meta) =>
+    saveContinuation(ctx, question.thread_id, meta, s).catch((e) => log('error', 'continuation save failed', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error' }));
+
+  const threadId = question.thread_id;
+  const { spend, todayCount } = await usageNow(ctx);
+  const maxSearches = settings.web_search_enabled ? num(settings.max_searches_per_message) : 0;
+  const context = await loadContext(ctx);
+  const searchesLeft = maxSearches ? continuationSearches(maxSearches, state.searches) : 0;
+  const estimate = estimateTurnCost(settings.model, {
+    promptTokens: estimateTokens(SYSTEM_INSTRUCTIONS) + estimateTokens(context) + estimateTokens(JSON.stringify(state.messages)) + 200,
+    maxOutputTokens: answerMaxTokens(num(settings.max_output_tokens)),
+    maxSearches: searchesLeft,
+    maxContinuations: MAX_CONTINUATIONS,
+    continuationSearches: searchesLeft,
+  });
+  const limit = checkLimits({ settings, monthSpendUsd: spend, todayUserMessages: todayCount, estimatedCostUsd: estimate, countsAsMessage: false });
+  if (limit) {
+    await restore();
+    return errorResponse(limit, cors, usagePayload(ctx, spend, todayCount));
+  }
+  const chatOptions = {
+    model: settings.model,
+    maxOutputTokens: num(settings.max_output_tokens),
+    context,
+    history: [],
+    question: question.content || '',
+    timezone: ctx.timezone,
+    location: cleanLocation(settings.location),
+  };
+  const bodyFor = (messages: WireMessage[], used: number) =>
+    buildChatRequest({ ...chatOptions, messages, webSearch: { enabled: maxSearches > 0, maxUses: continuationSearches(maxSearches, used) } });
+
+  let reservation: { id: string | null; refused: Response | null };
+  try {
+    reservation = await reserveSpend(ctx, 'continue', estimate, threadId);
+  } catch (e) {
+    await restore();
+    throw e;
+  }
+  if (reservation.refused) {
+    await restore();
+    return reservation.refused;
+  }
+  const reservationId = reservation.id;
+
+  const abort = new AbortController();
+  const deadline = Date.now() + UPSTREAM_TIMEOUT_MS;
+  const timer = setTimeout(() => abort.abort(), UPSTREAM_TIMEOUT_MS);
+  const first = await claudeCall(ctx, bodyFor(state.messages, state.searches), abort.signal);
+  if (!first.ok) {
+    clearTimeout(timer);
+    const timedOut = first.type === 'AbortError';
+    if (timedOut) await chargeQuietly(ctx, reservationId, estimate, { input: 0, output: 0, searches: 0 });
+    else await releaseQuietly(ctx, reservationId);
+    if (first.status === 400) {
+      // The saved turn is no longer accepted: it cannot be continued, so it is dropped.
+      log('warn', 'continuation rejected', { status: first.status, type: first.type });
+      return null;
+    }
+    await restore();
+    return upstreamResponse(ctx, first.status ? upstreamReason(first.status, first.type) : 'temporary', spend, todayCount);
+  }
+
+  const nextState = (messages: WireMessage[], searches: number): ContinuationState => ({ v: 1, messages, searches, resumes: state.resumes + 1 });
+  const stream = openTurnStream(abort, async ({ send, isStopped }) => {
+    send('meta', { thread_id: threadId, title: null, new_thread: false, continued: true });
+    const r = await runTurn({
+      messages: state.messages,
+      first: first.chunks,
+      call: (messages, used) => claudeCall(ctx, bodyFor(messages, state.searches + used), abort.signal),
+      onUpdate: (u) => (u.type === 'text' ? send('delta', { text: u.text }) : send('status', { state: 'searching', query: u.query || null })),
+      stopped: isStopped,
+      canContinue: () => Date.now() < deadline - MIN_CONTINUATION_MS,
+    });
+    clearTimeout(timer);
+    const cost = costOfCalls(settings.model, r.usages);
+    const searches = state.searches + cost.webSearches;
+    const hasText = !!r.text.trim();
+
+    if (!hasText) {
+      logTurn(ctx, r.stopped ? 'resume stopped before text' : 'empty answer (resumed)', r, cost);
+      await chargeQuietly(ctx, reservationId, r.started ? cost.usd : 0, turnTokens(cost));
+      // Keep a way to resume, unless this was the last allowed attempt.
+      const keep = state.resumes + 1 < MAX_RESUMES;
+      if (keep) await restore(nextState(r.next || state.messages, searches));
+      if (r.stopped) return;
+      const reason = !r.failure ? 'empty' : r.failure.kind === 'error' ? upstreamReason(0, r.failure.type) : 'temporary';
+      send('error', { error: 'upstream_error' as ErrorCode, reason, continuable: keep, ...usagePayload(ctx, spend + cost.usd, todayCount) });
+      return;
+    }
+
+    try {
+      let saved: StoredMessage;
+      if (answer) {
+        // The cut answer grows in place; this call's cost goes to the ledger through the reservation
+        // (the ledger trigger only runs on insert).
+        const merged = mergeSources(Array.isArray(answer.sources) ? (answer.sources as Source[]) : [], r.sources);
+        const patch = {
+          content: (answer.content || '') + r.text,
+          sources: merged,
+          input_tokens: num(answer.input_tokens) + cost.promptTokens,
+          output_tokens: num(answer.output_tokens) + cost.outputTokens,
+          web_searches: num(answer.web_searches) + cost.webSearches,
+          cost_usd: roundUsd(num(answer.cost_usd) + cost.usd),
+        };
+        await ctx.svc.patch('chat_messages', `id=eq.${enc(answer.id)}`, patch);
+        await chargeQuietly(ctx, reservationId, cost.usd, turnTokens(cost));
+        saved = { ...answer, ...patch };
+      } else {
+        saved = await ctx.svc.insert<StoredMessage>('chat_messages', {
+          thread_id: threadId,
+          role: 'assistant',
+          content: r.text,
+          sources: r.sources,
+          model: settings.model,
+          input_tokens: cost.promptTokens,
+          output_tokens: cost.outputTokens,
+          web_searches: cost.webSearches,
+          cost_usd: cost.usd,
+          created_by: ctx.editor.id,
+          created_by_name: ctx.editor.name,
+        });
+        await releaseQuietly(ctx, reservationId);
+      }
+      const cut = !r.complete && !r.stopped;
+      if (cut && r.next && state.resumes + 1 < MAX_RESUMES) {
+        await restore(nextState(r.next, searches), { question_id: question.id, answer_id: saved.id, reason: r.failure ? 'error' : 'length' });
+      }
+      await ctx.svc.patch('chat_threads', `id=eq.${enc(threadId)}`, { updated_at: new Date().toISOString() });
+      logTurn(ctx, cut ? 'resumed (cut)' : 'resumed', r, cost, { resumes: state.resumes + 1 });
+      send('done', {
+        thread_id: threadId,
+        title: null,
+        stopped: r.stopped,
+        stop_reason: r.stopped ? 'user_stopped' : r.stopReason,
+        cut,
+        continued: true,
+        continuations: r.continuations,
+        user_message: question,
+        message: saved,
+        ...usagePayload(ctx, spend + cost.usd, todayCount),
+      });
+    } catch (e) {
+      log('error', 'persist failed (resume)', { error: e instanceof RestError ? `${e.status} ${e.code}` : 'error', cost_usd: cost.usd });
+      await chargeQuietly(ctx, reservationId, cost.usd, turnTokens(cost));
+      send('error', { error: 'server_error' as ErrorCode, ...usagePayload(ctx, spend + cost.usd, todayCount) });
+    }
+  });
+  return sseResponse(ctx, stream);
+}
+
+/** Sources of a resumed answer: the old ones first, then new ones, without duplicates. */
+function mergeSources(a: Source[], b: Source[]): Source[] {
+  const seen = new Set<string>();
+  const out: Source[] = [];
+  for (const s of [...a, ...b]) {
+    if (!s?.url || seen.has(s.url)) continue;
+    seen.add(s.url);
+    out.push(s);
+  }
+  return out.slice(0, MAX_SOURCES);
 }
 
 // ---------------------------------------------------------------------------
@@ -601,7 +886,7 @@ async function handleDraftFaq(ctx: Ctx, threadId: string): Promise<Response> {
   const { settings, cors } = ctx;
   const t = await loadThread(ctx, threadId, MAX_FAQ_MESSAGES + 10);
   if (!t) return errorResponse('not_found', cors);
-  const messages = t.messages.filter((m) => !isFaqDraftRow(m));
+  const messages = t.messages.filter((m) => !isHiddenRow(m));
   if (!messages.some((m) => m.role === 'assistant' && m.content?.trim())) return errorResponse('bad_request', cors);
 
   const { spend, todayCount } = await usageNow(ctx);

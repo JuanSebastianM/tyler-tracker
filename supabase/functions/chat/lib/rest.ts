@@ -20,6 +20,8 @@ export interface Rest {
   insert<T = any>(table: string, row: Record<string, unknown>): Promise<T>;
   patch(table: string, query: string, body: Record<string, unknown>): Promise<void>;
   remove(table: string, query: string): Promise<void>;
+  /** Delete and return the deleted rows (claims a row: only one caller gets it). */
+  take<T = any>(table: string, query: string): Promise<T[]>;
 }
 
 function client(baseUrl: string, apikey: string, bearer: string | null): Rest {
@@ -61,6 +63,9 @@ function client(baseUrl: string, apikey: string, bearer: string | null): Rest {
     },
     async remove(table, query) {
       await call('DELETE', `${table}?${query}`, undefined, { Prefer: 'return=minimal' });
+    },
+    async take(table, query) {
+      return (await call('DELETE', `${table}?${query}`, undefined, { Prefer: 'return=representation' })).json();
     },
   };
 }

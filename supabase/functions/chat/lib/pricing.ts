@@ -63,6 +63,11 @@ export interface ApiUsage {
   cache_read_input_tokens?: number | null;
   cache_creation?: { ephemeral_5m_input_tokens?: number | null; ephemeral_1h_input_tokens?: number | null } | null;
   server_tool_use?: { web_search_requests?: number | null } | null;
+  /**
+   * Breakdown of output_tokens when the API reports it (only on the final message_delta of a
+   * stream), e.g. { thinking_tokens }: https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking
+   */
+  output_tokens_details?: Record<string, number | null> | null;
 }
 
 export interface Cost {
@@ -132,5 +137,37 @@ export function estimateMaxCost(model: string, opts: { promptTokens: number; max
   // price (1.25x input): estimate every prompt token at the higher of the two.
   const promptPrice = Math.max(t.input, t.cacheWrite5m);
   const usd = (input * promptPrice + opts.maxOutputTokens * t.output) / 1e6 + searches * WEB_SEARCH_USD_PER_SEARCH;
+  return roundUsd(usd);
+}
+
+/** Sum the costs of the calls of one turn (each call is priced on its own prompt tier). */
+export function costOfCalls(model: string, usages: ApiUsage[]): Cost {
+  const out: Cost = { promptTokens: 0, outputTokens: 0, webSearches: 0, usd: 0 };
+  for (const u of usages) {
+    const c = computeCost(model, u);
+    out.promptTokens += c.promptTokens;
+    out.outputTokens += c.outputTokens;
+    out.webSearches += c.webSearches;
+    out.usd += c.usd;
+  }
+  out.usd = roundUsd(out.usd);
+  return out;
+}
+
+/**
+ * Worst case of a whole answer: the first call (estimateMaxCost) plus up to `maxContinuations`
+ * continuation calls. A continuation re-sends the prompt with every search result and the output
+ * so far, may write `maxOutputTokens` again and may search up to `continuationSearches` times.
+ */
+export function estimateTurnCost(
+  model: string,
+  opts: { promptTokens: number; maxOutputTokens: number; maxSearches: number; maxContinuations: number; continuationSearches: number },
+): number {
+  let usd = estimateMaxCost(model, opts);
+  let prompt = opts.promptTokens + Math.max(0, opts.maxSearches) * ASSUMED_TOKENS_PER_SEARCH + opts.maxOutputTokens;
+  for (let i = 0; i < Math.max(0, opts.maxContinuations); i++) {
+    usd += estimateMaxCost(model, { promptTokens: prompt, maxOutputTokens: opts.maxOutputTokens, maxSearches: opts.continuationSearches });
+    prompt += Math.max(0, opts.continuationSearches) * ASSUMED_TOKENS_PER_SEARCH + opts.maxOutputTokens;
+  }
   return roundUsd(usd);
 }

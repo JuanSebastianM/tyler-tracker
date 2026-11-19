@@ -3,7 +3,7 @@
 // after a stalled stream, the app reloaded mid-answer) finds the saved question and its answer and
 // replays them instead of asking Claude again. See index.ts (handleSend) and budget.ts (the request
 // id on the reservation stops two copies from running at once).
-import { isFaqDraftRow } from './prompt.ts';
+import { isHiddenRow } from './prompt.ts';
 
 export interface StoredMessage {
   id: string;
@@ -16,11 +16,11 @@ export interface StoredMessage {
 
 /**
  * The answer saved for `question`: the first assistant row of its thread saved after it (FAQ
- * accounting rows excluded), or null.
+ * accounting rows, continuation rows and empty (failed) answers excluded), or null.
  */
 export function pickAnswer(question: StoredMessage, rows: StoredMessage[]): StoredMessage | null {
   const after = rows
-    .filter((m) => m.id !== question.id && m.thread_id === question.thread_id && m.role === 'assistant' && !isFaqDraftRow(m) && m.created_at >= question.created_at)
+    .filter((m) => m.id !== question.id && m.thread_id === question.thread_id && m.role === 'assistant' && !isHiddenRow(m) && !!(m.content || '').trim() && m.created_at >= question.created_at)
     .sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0));
   return after[0] || null;
 }
