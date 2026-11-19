@@ -106,7 +106,10 @@ import { Card, ListRow, List, Button, IconButton, Fab, Sheet, ConfirmDialog, Tex
 - Due items: link to `DUE_KIND_PATH[item.kind]` from `src/data/derived.js`.
 - App version: `APP_VERSION` from `src/version.js` (`'dev'` locally).
 - Toasts: `toast(t('common.saved'), { tone: 'success' })` from `src/lib/toast.js`. Store writes
-  already toast on failure; do not toast errors twice.
+  already toast on failure; do not toast errors twice. Toasts never cover the tab bar, the `Fab`
+  (on a screen with one they sit in the column to its left) or the assistant composer; the area
+  around them lets taps through (`tests/e2e/toast-layout.spec.js`). Do not add other fixed controls
+  at the page end without extending that spec.
 
 ## 4. i18n
 

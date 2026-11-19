@@ -54,11 +54,16 @@
 .icon-btn-primary { background: var(--c-gold); color: var(--c-on-gold); }
 .icon-btn-primary:hover { background: var(--c-gold-strong); }
 
+/* Toasts keep out of the FAB's column (see .toaster), so the FAB never moves and is never covered. */
+:root {
+  --fab-size: 60px; --fab-gap: var(--sp-4);
+  --fab-right: max(calc(var(--sp-4) + var(--safe-right)), calc((100vw - var(--content-max)) / 2 + var(--sp-4)));
+}
 .fab {
   position: fixed; z-index: 25;
-  right: max(calc(var(--sp-4) + var(--safe-right)), calc((100vw - var(--content-max)) / 2 + var(--sp-4)));
-  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--sp-4));
-  width: 60px; height: 60px; border-radius: 50%; border: 0;
+  right: var(--fab-right);
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--fab-gap));
+  width: var(--fab-size); height: var(--fab-size); border-radius: 50%; border: 0;
   display: grid; place-items: center;
   background: var(--c-gold); color: var(--c-on-gold);
   box-shadow: var(--shadow-fab), 0 0 0 4px var(--c-bg);
@@ -215,30 +220,47 @@ input[type='date']::-webkit-date-and-time-value, input[type='time']::-webkit-dat
 }
 
 /* ---- Toasts ---- */
+/* Toasts sit low, near the thumb, above the tab bar, and never on top of a control on the page end:
+   above the assistant's fixed composer (--composer-space, its height while it is on screen) and,
+   on screens with a floating add button, in the column to its left, bottom-aligned with it. The
+   add button never moves, so nothing jumps under a finger, and the toasts cover as little of the
+   page as possible. Only the toasts take taps; the area around them passes them through. */
 .toaster {
   position: fixed; z-index: 60; left: 0; right: 0;
-  /* --composer-space: height of the assistant's fixed composer while it is on screen. */
   bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--sp-3) + var(--composer-space, 0px));
   display: flex; flex-direction: column; align-items: center; gap: var(--sp-2);
-  padding: 0 var(--sp-4); pointer-events: none;
+  padding: 0 calc(var(--sp-4) + var(--safe-right)) 0 calc(var(--sp-4) + var(--safe-left));
+  pointer-events: none;
+}
+:root:has(.fab) .toaster {
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom) + var(--fab-gap) + var(--composer-space, 0px));
+  align-items: stretch;
+  /* Left edge with the content column; right edge clear of the FAB and its 4 px ring. */
+  padding-left: max(calc(var(--sp-4) + var(--safe-left)), calc((100vw - var(--content-max)) / 2 + var(--sp-4)));
+  padding-right: calc(var(--fab-right) + var(--fab-size) + 4px + var(--sp-3));
 }
 .toast {
   pointer-events: auto; width: 100%; max-width: calc(var(--content-max) - 32px);
-  display: flex; align-items: center; gap: var(--sp-3);
+  /* Wraps the action onto its own line, right-aligned, when the message would get too narrow. */
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0 var(--sp-3);
   padding: var(--sp-2) var(--sp-2) var(--sp-2) var(--sp-4); min-height: 52px;
   background: var(--c-ink); color: var(--c-bg); border-radius: var(--r-control);
   box-shadow: var(--shadow-2); font-weight: 600; font-size: var(--fs-sm);
-  animation: rise var(--dur-2) var(--ease-out);
+  /* A short rise: a toast must not pass over the tab bar or the add button while it enters. */
+  animation: toast-in var(--dur-2) var(--ease-out);
 }
+@keyframes toast-in { from { transform: translateY(8px); opacity: 0; } to { transform: none; opacity: 1; } }
 .toast-success .icon { color: var(--c-green-soft); }
 .toast-error { background: var(--c-red); color: var(--c-on-red); }
-.toast-msg { flex: 1; }
+.toast-msg { flex: 1 1 6.5em; min-width: 0; overflow-wrap: break-word; padding: var(--sp-1) 0; }
+.toast > .icon { flex: none; }
 .toast-action, .toast-close {
+  flex: none; margin-left: auto;
   min-height: var(--tap); min-width: var(--tap); border: 0; border-radius: 10px;
   background: transparent; color: inherit; font-weight: 800; padding: 0 var(--sp-3);
   display: grid; place-items: center;
 }
-.toast-action { color: var(--c-toast-action); }
+.toast-action { color: var(--c-toast-action); white-space: nowrap; }
 
 /* ---- Install hint ---- */
 .install-hint {
