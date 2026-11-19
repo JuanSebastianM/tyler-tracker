@@ -194,6 +194,7 @@ The source of truth is `supabase/migrations/*.sql`, applied in order:
 | `0004_ai_usage_ledger.sql` | `ai_usage` spend ledger and its trigger |
 | `0005_ai_settings_location.sql` | `ai_settings.location` (where Tyler lives, for the assistant; the value lives only in the database) |
 | `0006_user_settings.sql` | `user_settings`: one row per signed-in user (`theme`, `color_mode`), readable and writable only by that user |
+| `0007_push.sql` | `push_subscriptions` (one row per phone that opted in, own row only), `push_config` and `push_sends` (service role only), `pg_cron` + `pg_net` and the 5-minute scheduler job |
 
 Tables by purpose:
 
