@@ -74,12 +74,13 @@ export async function fakeBrowserPush(page, o = {}) {
  * @param {import('playwright/test').Page} page
  */
 export async function mockPushFunction(page, { known = [], failWrites = false } = {}) {
-  const fn = { calls: [], subs: new Map(known.map((e) => [e, { endpoint: e, locale: 'es', meals: true, due: true }])), failWrites, testStatus: 200 };
+  const fn = { calls: [], subs: new Map(known.map((e) => [e, { endpoint: e, locale: 'es', meals: true, due: true }])), failWrites, testStatus: 200, down: false };
   await page.route(`${SUPABASE_URL}/functions/v1/push`, async (route) => {
     const req = route.request();
     if (req.method() === 'OPTIONS') return route.fulfill({ status: 204, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': '*' } });
     const body = JSON.parse(req.postData() || '{}');
     fn.calls.push(body);
+    if (fn.down) return route.abort('internetdisconnected'); // the function cannot be reached
     const json = (status, b) => route.fulfill({ status, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(b) });
     if (!(req.headers()['authorization'] || '').startsWith('Bearer ')) return json(401, { error: 'unauthorized' });
     if (fn.failWrites && body.action !== 'config') return json(500, { error: 'server_error' });

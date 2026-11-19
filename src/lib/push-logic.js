@@ -79,3 +79,13 @@ export function pushErrorCode(code) {
   const known = ['offline', 'network', 'unauthorized', 'not_editor', 'not_found', 'gone', 'too_many', 'push_failed', 'denied', 'unsupported'];
   return code && known.includes(code) ? code : 'server_error';
 }
+
+/**
+ * Nobody who may receive alerts is signed in on this device: a phone left subscribed (sign-out
+ * without network, a session that ended, an account that is not an editor) unsubscribes locally.
+ * Only definite states count: never while auth is still loading or the editor check is pending.
+ * @param {{ status: 'loading' | 'signedOut' | 'signedIn', editorCheck: 'unknown' | 'yes' | 'no' }} auth
+ */
+export function shouldSilenceDevice(auth) {
+  return auth.status === 'signedOut' || (auth.status === 'signedIn' && auth.editorCheck === 'no');
+}

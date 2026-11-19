@@ -240,7 +240,25 @@ export function onSignOut(/** @type {() => void} */ fn) {
   return () => signOutHooks.delete(fn);
 }
 
+/** @type {Set<() => Promise<unknown>>} */
+const beforeSignOutHooks = new Set();
+/** Longest wait for the before-sign-out hooks: signing out never hangs on the network. */
+export const BEFORE_SIGN_OUT_MS = 3000;
+/**
+ * Run async `fn` while the session is still valid, right before a sign-out the person chose (e.g.
+ * unsubscribe this phone from push notifications). Best effort: errors are ignored and all hooks
+ * together get at most BEFORE_SIGN_OUT_MS.
+ */
+export function onBeforeSignOut(/** @type {() => Promise<unknown>} */ fn) {
+  beforeSignOutHooks.add(fn);
+  return () => beforeSignOutHooks.delete(fn);
+}
+
 export async function signOut() {
+  if (beforeSignOutHooks.size) {
+    const hooks = [...beforeSignOutHooks].map((fn) => Promise.resolve().then(fn).catch(() => {}));
+    await withTimeout(Promise.all(hooks), BEFORE_SIGN_OUT_MS).catch(() => {});
+  }
   const id = authStore.get().user?.id;
   if (id) removeKey(`editor.${id}`);
   signingOut = true;

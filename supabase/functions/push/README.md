@@ -77,6 +77,15 @@ Logs carry counts, subscription row ids and HTTP statuses only: never endpoints,
 Ids: `meal:<date>:<slot>:first|second`, `due:<table>:<row id>:<due date>:before|day|time`,
 `test:<subscription id>:<15 s window>`.
 
+## Sign-out
+
+An explicit sign-out in the app unsubscribes the phone before the session is dropped
+(`src/lib/push.js` `unlinkDevice`, run by `onBeforeSignOut` in `src/lib/auth.js`, 3 s budget): the
+browser subscription is unsubscribed (offline too) and `unsubscribe` removes this row when the
+network allows. If that call could not be made, the row stays until the next notification for it:
+the push service answers 404/410 for an unsubscribed endpoint and the function deletes the row.
+At launch the app also drops any browser subscription left on a device where no editor is signed in.
+
 ## Timing and exactly-once
 
 - pg_cron runs `tick` every 5 minutes (`*/5 * * * *`, at :00, :05, ...). A tick sends every

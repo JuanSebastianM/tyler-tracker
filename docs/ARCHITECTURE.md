@@ -280,7 +280,14 @@ device logic in `src/lib/push.js`); the server is the Edge Function `push`
   the server row (`config` action) and the server key must agree, otherwise it renews and re-saves
   without a tap when the permission is still granted, or shows "Volver a activar". The endpoint this
   person enabled on this device is kept in `tt.push.device.<user id>`. Toggles are optimistic and roll
-  back on failure. Signing out does not unsubscribe the phone (turn it off first).
+  back on failure.
+- **Sign-out silences the phone.** `signOut()` first awaits the `onBeforeSignOut` hooks (session still
+  valid, at most `BEFORE_SIGN_OUT_MS` = 3 s, errors ignored). Push's hook unsubscribes the browser
+  subscription (works offline; the push service then answers 404/410 for that endpoint and the
+  function deletes the server row on its next send), removes the server row when it can, and forgets
+  the device record. At launch, and whenever auth settles on "no editor here" (signed out, session
+  ended, not an editor), a leftover browser subscription is unsubscribed locally. Signing in again
+  shows "off" with the enable button: re-enabling is an explicit tap (iOS rule).
 - **Service worker**: `sw.js` loads `src/lib/sw-push.js` with `importScripts` (`?v=<version>`). It shows
   a notification for every push (Safari revokes the permission otherwise; unreadable payloads get a
   generic one), sets the app badge (cleared when the app comes to the foreground), and on tap posts

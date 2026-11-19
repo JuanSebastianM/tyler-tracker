@@ -4,7 +4,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
-import { detectSupport, isIosDevice, launchAction, sameServerKey, base64UrlToBytes, pushErrorCode } from '../../src/lib/push-logic.js';
+import { detectSupport, isIosDevice, launchAction, sameServerKey, base64UrlToBytes, pushErrorCode, shouldSilenceDevice } from '../../src/lib/push-logic.js';
 
 const env = (o = {}) => ({ hasServiceWorker: true, hasPushManager: true, hasNotification: true, isIos: false, standalone: false, ...o });
 
@@ -48,6 +48,14 @@ test('server key comparison and error codes', () => {
   assert.ok(sameServerKey(null, key));
   assert.equal(pushErrorCode('gone'), 'gone');
   assert.equal(pushErrorCode('weird'), 'server_error');
+});
+
+test('silence the device only when auth has settled on "no editor here"', () => {
+  assert.equal(shouldSilenceDevice({ status: 'signedOut', editorCheck: 'unknown' }), true);
+  assert.equal(shouldSilenceDevice({ status: 'signedIn', editorCheck: 'no' }), true);
+  assert.equal(shouldSilenceDevice({ status: 'loading', editorCheck: 'unknown' }), false);
+  assert.equal(shouldSilenceDevice({ status: 'signedIn', editorCheck: 'unknown' }), false);
+  assert.equal(shouldSilenceDevice({ status: 'signedIn', editorCheck: 'yes' }), false);
 });
 
 // ---------------------------------------------------------------------------

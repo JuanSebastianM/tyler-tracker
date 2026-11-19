@@ -3,7 +3,7 @@
 // (service worker registration, PushManager, Notification permission) is faked in the page, and the
 // `push` Edge Function is mocked (push-fixtures.js); the real service worker is covered by push-sw.spec.js.
 import { test, expect } from 'playwright/test';
-import { toastWith } from './helpers.js';
+import { toastWith, EDITOR_USER } from './helpers.js';
 import { openSettings, IPHONE_UA } from './push-fixtures.js';
 
 const section = (page) => page.getByTestId('push-settings');
@@ -146,4 +146,58 @@ test('changing the app language updates the notification language', async ({ pag
   await page.getByRole('radio', { name: 'English' }).click();
   await expect.poll(() => push.subs.get(endpoint).locale).toBe('en');
   await expect(section(page)).toContainText('Notifications');
+});
+
+// ---- Sign-out: this phone stops getting alerts ----
+const KNOWN = 'https://web.push.apple.com/known';
+const enabled = { browser: { permission: 'granted', existing: KNOWN, record: KNOWN }, fn: { known: [KNOWN] } };
+const recordOf = (page) => page.evaluate((k) => localStorage.getItem(k), `tt.push.device.${EDITOR_USER.id}`);
+
+async function signOutFromProfile(page) {
+  await page.getByRole('button', { name: 'Cerrar sesión' }).click();
+  await expect(toastWith(page, 'Sesión cerrada')).toBeVisible();
+  await expect(page.getByTestId('header-editor')).toHaveCount(0);
+}
+
+test('signing out unsubscribes this phone; signing in again shows notifications off', async ({ page }) => {
+  const { push } = await openSettings(page, enabled);
+  await expect(section(page).getByText('Activas')).toBeVisible();
+  await signOutFromProfile(page);
+  const b = await browserState(page);
+  expect(b.current).toBeNull();
+  expect(b.unsubscribed).toBe(1);
+  expect(push.subs.size).toBe(0);
+  expect(push.calls.at(-1)).toEqual({ action: 'unsubscribe', endpoint: KNOWN });
+  expect(await recordOf(page)).toBeNull();
+  await expect(section(page)).toHaveCount(0);
+
+  await page.getByTestId('header-sign-in').click();
+  const dialog = page.getByRole('dialog', { name: 'Iniciar sesión' });
+  await dialog.getByLabel('Correo').fill('editor@example.test');
+  await dialog.getByLabel('Contraseña').fill('correct-password');
+  await dialog.getByRole('button', { name: 'Iniciar sesión' }).click();
+  await expect(dialog).toBeHidden();
+  // Honest state: off, with the button; nothing re-subscribed without a tap.
+  await expect(page.getByTestId('push-enable')).toHaveText('Activar en este teléfono');
+  expect((await browserState(page)).subscribeCalls).toHaveLength(0);
+  expect(push.calls.some((c) => c.action === 'subscribe')).toBe(false);
+});
+
+test('signing out without a connection to the function still signs out at once and silences the phone', async ({ page }) => {
+  const { push } = await openSettings(page, enabled);
+  await expect(section(page).getByText('Activas')).toBeVisible();
+  push.down = true;
+  const started = Date.now();
+  await signOutFromProfile(page);
+  expect(Date.now() - started).toBeLessThan(4000);
+  const b = await browserState(page);
+  expect(b.current).toBeNull(); // the push service now rejects the endpoint; the server drops its row on the next send
+  expect(push.subs.has(KNOWN)).toBe(true);
+  expect(await recordOf(page)).toBeNull();
+});
+
+test('launch with nobody signed in: a leftover subscription is dropped locally', async ({ page }) => {
+  await openSettings(page, { mode: 'signedOut', browser: { permission: 'granted', existing: KNOWN } });
+  await expect.poll(async () => (await browserState(page)).current).toBeNull();
+  expect((await browserState(page)).unsubscribed).toBe(1);
 });

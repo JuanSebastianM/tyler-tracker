@@ -14,13 +14,13 @@
 //  - Badging (navigator.setAppBadge / clearAppBadge) works for Home Screen web apps on iOS 16.4+.
 import { createStore } from './store.js';
 import { readJSON, writeJSON, removeKey } from './storage.js';
-import { getAccessToken, refreshAccessToken, authStore, onEditorChange } from './auth.js';
+import { getAccessToken, refreshAccessToken, authStore, onEditorChange, onBeforeSignOut } from './auth.js';
 import { isOffline } from './supabase.js';
 import { getLocale, localeStore } from './i18n.js';
 import { navigate } from './router.js';
 import { isStandalone } from './pwa.js';
 import { SUPABASE_KEY, SUPABASE_URL } from '../config.js';
-import { base64UrlToBytes, detectSupport, isIosDevice, launchAction, pushErrorCode, sameServerKey } from './push-logic.js';
+import { base64UrlToBytes, detectSupport, isIosDevice, launchAction, pushErrorCode, sameServerKey, shouldSilenceDevice } from './push-logic.js';
 
 export const PUSH_URL = `${SUPABASE_URL}/functions/v1/push`;
 
@@ -307,6 +307,43 @@ export async function disablePush() {
   }
 }
 
+const IDLE_STATE = /** @type {PushState} */ ({ support: 'unknown', status: 'idle', prefs: { meals: true, due: true }, busy: null, error: null });
+
+/** The registration if it is there within `ms` (sign-out must not wait the full 8 s). @param {number} ms */
+const quickRegistration = (ms) => (registration ? Promise.resolve(registration) : Promise.race([getRegistration(), new Promise((r) => setTimeout(() => r(null), ms))]));
+
+/**
+ * Before an explicit sign-out (session still valid): this phone stops getting alerts. The browser
+ * subscription is unsubscribed first, which works offline and silences the phone at once: the push
+ * service then answers 404/410 for the old endpoint, and the function deletes the server row the
+ * next time it sends to it. The server row is also removed right away when the network allows.
+ * Signing in again shows "off": re-enabling needs a tap (iOS rule).
+ */
+export async function unlinkDevice() {
+  const record = readRecord();
+  removeKey(recordKey());
+  pushStore.set(IDLE_STATE);
+  if (!('serviceWorker' in navigator)) return;
+  const reg = /** @type {ServiceWorkerRegistration | null} */ (await quickRegistration(1000));
+  const sub = await reg?.pushManager.getSubscription().catch(() => null);
+  const endpoint = sub?.endpoint || record?.endpoint || null;
+  await Promise.all([
+    sub ? sub.unsubscribe().catch(() => false) : null,
+    endpoint && authStore.get().editor ? callPush({ action: 'unsubscribe', endpoint }) : null,
+  ]);
+}
+
+/**
+ * No editor signed in here, yet the browser holds a subscription (sign-out hook cut short, session
+ * ended): unsubscribe locally. The server row then goes away on its next send (404/410).
+ */
+async function silenceIfSignedOut() {
+  if (!shouldSilenceDevice(authStore.get()) || !('serviceWorker' in navigator)) return;
+  const reg = await getRegistration();
+  const sub = await reg?.pushManager.getSubscription().catch(() => null);
+  if (sub && shouldSilenceDevice(authStore.get())) await sub.unsubscribe().catch(() => {});
+}
+
 /** The badge counts notifications not yet seen; opening the app clears it. */
 function clearBadge() {
   const nav = /** @type {any} */ (navigator);
@@ -326,9 +363,20 @@ export function startPush() {
   });
   onEditorChange((editor) => {
     if (editor) checkPush();
-    else pushStore.set({ support: 'unknown', status: 'idle', prefs: { meals: true, due: true }, busy: null, error: null });
+    else pushStore.set(IDLE_STATE);
   });
   if (authStore.get().editor) checkPush();
+  onBeforeSignOut(unlinkDevice);
+  // Self-correction: whenever auth settles on "no editor here", a leftover subscription is dropped.
+  let silenced = false;
+  const sweep = () => {
+    if (!shouldSilenceDevice(authStore.get())) return void (silenced = false);
+    if (silenced) return;
+    silenced = true;
+    silenceIfSignedOut();
+  };
+  authStore.subscribe(sweep);
+  sweep();
   let lastCheck = Date.now();
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState !== 'visible') return;
