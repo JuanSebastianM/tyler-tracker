@@ -65,7 +65,7 @@ for (const width of [390, 320]) {
       }
       // Words are not split mid-word: the note's width holds its longest word.
       const narrowest = await sub.evaluate((el) => el.clientWidth);
-      expect(narrowest).toBeGreaterThan(100);
+      expect(narrowest).toBeGreaterThan(120);
 
       // The meal sheet edits the note in a box that wraps.
       await page.getByTestId('meal-3').locator('.meal-main').click();
