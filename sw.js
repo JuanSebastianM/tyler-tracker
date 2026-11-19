@@ -6,6 +6,8 @@ const VERSION = '__SW_VERSION__';
 const PRECACHE = [/* __PRECACHE__ */];
 const SHELL_CACHE = `tt-shell-${VERSION}`;
 const CONTENT_CACHE = 'tt-content';
+/** A content request with no answer after this long is served from the cache (if there is one). */
+const CONTENT_TIMEOUT_MS = 4000;
 // Push notifications (src/lib/sw-push.js). `v` gets past the CDN cache of the previous deploy.
 importScripts(`./src/lib/sw-push.js?v=${encodeURIComponent(VERSION)}`);
 
@@ -71,18 +73,32 @@ self.addEventListener('fetch', (event) => {
   const scope = new URL(self.registration.scope);
   const path = url.pathname.slice(scope.pathname.length);
 
-  // Content JSON: network first, cache fallback.
+  // Content JSON: network first, cache fallback. Every content file is also precached with the
+  // shell, so it is readable offline after the first launch. On a bad signal (no answer within
+  // CONTENT_TIMEOUT_MS) the cached copy is shown and the network answer still refreshes the cache.
   if (path.startsWith('content/') && path.endsWith('.json')) {
     event.respondWith(
       (async () => {
         const cache = await caches.open(CONTENT_CACHE);
-        try {
-          const res = await fetch(req, { cache: 'no-cache' });
-          if (res.ok) cache.put(url.pathname, res.clone());
-          return res;
-        } catch {
+        const cached = async () => {
           const shell = await caches.open(SHELL_CACHE);
-          return (await cache.match(url.pathname)) || (await shell.match(url.href, { ignoreSearch: true })) || Response.error();
+          return (await cache.match(url.pathname)) || (await shell.match(url.href, { ignoreSearch: true }));
+        };
+        const network = fetch(req, { cache: 'no-cache' }).then((res) => {
+          if (res.ok) {
+            const copy = res.clone();
+            event.waitUntil(cache.put(url.pathname, copy));
+          }
+          return res;
+        });
+        event.waitUntil(network.catch(() => {}));
+        /** @type {Promise<Response | undefined>} */
+        const slow = new Promise((resolve) => setTimeout(() => cached().then(resolve), CONTENT_TIMEOUT_MS));
+        try {
+          const first = await Promise.race([network, slow.then((hit) => hit || network)]);
+          return first;
+        } catch {
+          return (await cached()) || Response.error();
         }
       })(),
     );
