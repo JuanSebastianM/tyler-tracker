@@ -6,7 +6,7 @@ import { EditorOnly, useIsEditor } from '../../lib/auth.js';
 import { toast } from '../../lib/toast.js';
 import { href } from '../../lib/router.js';
 import { useContent, currentStage, factOfTheDay } from '../../lib/content.js';
-import { Card, Fab, Skeleton, Badge, Button, Icon, Markdown, List, ListRow } from '../../lib/ui/index.js';
+import { Card, Fab, Skeleton, Badge, Button, Icon, Markdown, List, ListRow, PendingMark } from '../../lib/ui/index.js';
 import {
   petProfile, settings, feedings, routineEvents, vaccinations, dewormings, vetVisits, reminders, checklistDone, useTimezone,
 } from '../../data/stores.js';
@@ -102,7 +102,7 @@ function MealsCard({ tz, today, now, openSheet }) {
             const body = html`
               <span class="meal-time">${formatClock(s.time)}</span>
               <span class="meal-text">
-                <span class="meal-title">${t('log.mealN', { n: s.slot })}${badge ? html` <${Badge} tone=${badge.tone} icon=${badge.icon}>${t(`today.meals.state.${s.state}`)}</${Badge}>` : null}</span>
+                <span class="meal-title">${t('log.mealN', { n: s.slot })}${badge ? html` <${Badge} tone=${badge.tone} icon=${badge.icon}>${t(`today.meals.state.${s.state}`)}</${Badge}>` : null}${s.feeding?._pending ? html` <${PendingMark} row=${s.feeding} />` : null}</span>
                 ${subtitle ? html`<span class="meal-sub">${subtitle}</span>` : null}
               </span>`;
             return html`<li key=${s.slot} class=${`meal meal-${s.state}${s.feeding?._pending ? ' is-pending' : ''}`} data-testid=${`meal-${s.slot}`}>
@@ -116,11 +116,11 @@ function MealsCard({ tz, today, now, openSheet }) {
             </li>`;
           })}
           ${extras.map(
-            (f) => html`<li key=${f.id} class="meal meal-done meal-extra">
+            (f) => html`<li key=${f.id} class=${`meal meal-done meal-extra${f._pending ? ' is-pending' : ''}`}>
               ${isEditor
                 ? html`<button type="button" class="meal-main" onClick=${() => openSheet({ kind: 'meal', row: f, table: 'feedings' })} aria-label=${t('today.meals.editExtra')}>
                     <span class="meal-time">${formatTime(f.fed_at, tz)}</span>
-                    <span class="meal-text"><span class="meal-title">${t('log.extraMeal')}</span><span class="meal-sub">${f.created_by_name ? t('common.loggedBy', { name: f.created_by_name }) : ''}</span></span>
+                    <span class="meal-text"><span class="meal-title">${t('log.extraMeal')}${f._pending ? html` <${PendingMark} row=${f} />` : null}</span><span class="meal-sub">${f.created_by_name ? t('common.loggedBy', { name: f.created_by_name }) : ''}</span></span>
                   </button>`
                 : html`<div class="meal-main"><span class="meal-time">${formatTime(f.fed_at, tz)}</span><span class="meal-text"><span class="meal-title">${t('log.extraMeal')}</span></span></div>`}
             </li>`,

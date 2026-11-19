@@ -4,6 +4,7 @@
 //   await photos.insert({ storage_path: up.path, width: up.width, height: up.height, caption });
 //   photoUrl(row.storage_path)
 import { getSupabase, isOffline } from '../lib/supabase.js';
+import { isOnline } from '../lib/connectivity.js';
 import { PHOTO_BUCKET, PHOTO_MAX_PX, SUPABASE_URL } from '../config.js';
 import { beginBusy } from '../lib/busy.js';
 
@@ -53,7 +54,8 @@ export function photoUrl(path) {
  * @returns {Promise<{ path: string, url: string, width: number, height: number }>}
  */
 export async function uploadPhoto(kind, file) {
-  if (isOffline()) throw Object.assign(new Error('offline'), { code: 'offline' });
+  // Photos are not queued offline (yet): the forms say so and keep the rest of the entry.
+  if (isOffline() || !isOnline()) throw Object.assign(new Error('offline'), { code: 'offline' });
   const done = beginBusy('upload'); // a service worker update waits for the upload
   try {
     const { blob, width, height } = await resizeImage(file);

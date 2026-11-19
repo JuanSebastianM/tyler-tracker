@@ -91,3 +91,4 @@
 /* Entry sheet (opened from Log and Today) */
 .entry-sheet .log-form .segmented-sm .segment { padding: 0 6px; }
 .entry-sheet .sheet-foot .btn-ghost { flex: 0 0 auto; color: var(--c-red); }
+.log .log-day-missing { margin: var(--sp-1) var(--sp-1) var(--sp-2); }

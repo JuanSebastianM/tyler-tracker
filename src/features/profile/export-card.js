@@ -3,6 +3,7 @@
 import { html, useState } from '../../../vendor/preact.js';
 import { t, formatNumber } from '../../lib/i18n.js';
 import { toast } from '../../lib/toast.js';
+import { isOnline } from '../../lib/connectivity.js';
 import { Card, Button, List, ListRow, Icon } from '../../lib/ui/index.js';
 import * as stores from '../../data/stores.js';
 import { getToday } from '../../data/derived.js';
@@ -60,7 +61,7 @@ export function ExportCard() {
     const res = await loadEverything();
     setBusy(null);
     if ('error' in res) {
-      toast(t('profile.export.failed'), { tone: 'error' });
+      toast(isOnline() ? t('profile.export.failed') : t('errors.exportOffline'), { tone: 'error' });
       return;
     }
     setCounts(Object.fromEntries(Object.entries(res.tables).map(([k, v]) => [k, v.length])));

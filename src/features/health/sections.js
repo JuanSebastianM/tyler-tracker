@@ -10,6 +10,7 @@ import {
 } from '../../data/stores.js';
 import { getDueItems, getToday } from '../../data/derived.js';
 import { uploadPhoto, deletePhoto } from '../../data/photos.js';
+import { isOnline } from '../../lib/connectivity.js';
 import { RecordSection } from './records.js';
 import { orNull, parseDecimal, decimalToInput, isValidWeight, splitMedications, splitReminders, hhmm } from './logic.js';
 import { formatKg, formatMoney, formatDue } from './widgets.js';
@@ -75,6 +76,11 @@ export const vaccinesConfig = {
   async beforeSave(values, row) {
     const old = row?.photo_path || null;
     const p = values.photo || {};
+    if (p.file && !isOnline()) {
+      // Photos need a connection: keep the rest of the entry (queued) and the old photo.
+      toast(t('sync.savedWithoutPhoto'));
+      return { extra: {} };
+    }
     if (p.file) {
       try {
         const up = await uploadPhoto('vaccines', p.file);
@@ -87,7 +93,7 @@ export const vaccinesConfig = {
           },
         };
       } catch (e) {
-        toast(t(/** @type {any} */ (e)?.code === 'offline' ? 'errors.offline' : 'errors.photoFailed'), { tone: 'error' });
+        toast(t(/** @type {any} */ (e)?.code === 'offline' ? 'errors.photoOffline' : 'errors.photoFailed'), { tone: 'error' });
         return null;
       }
     }
