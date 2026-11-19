@@ -53,7 +53,13 @@
     keepAlive(
       event,
       (async () => {
-        await sw.registration.showNotification(n.title, n.options);
+        try {
+          await sw.registration.showNotification(n.title, n.options);
+        } catch (e) {
+          // Only without notification permission; nothing else could be shown. Visible in Web Inspector.
+          console.warn('push: showNotification failed', String(e));
+          throw e;
+        }
         if (typeof sw.navigator?.setAppBadge === 'function') {
           const shown = await sw.registration.getNotifications().catch(() => []);
           await sw.navigator.setAppBadge(shown.length || 1).catch(() => {});

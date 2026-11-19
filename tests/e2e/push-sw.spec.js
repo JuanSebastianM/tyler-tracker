@@ -74,6 +74,23 @@ async function openWithWorker(page) {
   await expect.poll(() => registrationId).not.toBeNull();
   // Fail on the cause, not on a timeout: a browser that cannot show notifications proves nothing here.
   expect(await page.evaluate(() => Notification.permission)).toBe('granted');
+  const probe = await page.evaluate(async () => {
+    const reg = await navigator.serviceWorker.ready;
+    try {
+      await reg.showNotification('probe', { tag: 'probe' });
+    } catch (e) {
+      return `showNotification failed: ${e}`;
+    }
+    const shown = await reg.getNotifications({ tag: 'probe' });
+    shown.forEach((n) => n.close());
+    return `shown ${shown.length}`;
+  });
+  expect(probe, 'this browser must be able to show and list notifications').toBe('shown 1');
+  // What the worker logs (sw-push.js reports a failed showNotification) goes into the test output.
+  const worker = page.context().serviceWorkers().find((w) => w.url().startsWith(BASE));
+  worker?.on('console', (m) => console.log(`[sw] ${m.text()}`));
+  // Test-only listener: says in the output whether the browser delivered the push at all.
+  await worker?.evaluate(() => self.addEventListener('push', () => console.log('push event received')));
   /** @param {any} payload */
   const deliver = (payload) => cdp.send('ServiceWorker.deliverPushMessage', { origin: BASE.slice(0, -1), registrationId, data: typeof payload === 'string' ? payload : JSON.stringify(payload) });
   const notifications = () => page.evaluate(async () => (await (await navigator.serviceWorker.ready).getNotifications()).map((n) => ({ title: n.title, body: n.body, tag: n.tag, data: n.data })));
