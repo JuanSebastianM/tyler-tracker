@@ -9,6 +9,8 @@ import { t } from '../lib/i18n.js';
 import { editorName, onEditorChange, isEditor, getAccessToken } from '../lib/auth.js';
 import { daysRange, todayIn } from '../lib/dates.js';
 import { DEFAULT_RANGE_DAYS, DEFAULT_TIMEZONE } from '../config.js';
+import { outbox, startSync } from './sync.js';
+import { onReconnect } from '../lib/connectivity.js';
 
 /** @type {import('./table-store.js').Deps} */
 const deps = {
@@ -22,6 +24,7 @@ const deps = {
   t: (k) => t(k),
   uuid: () => crypto.randomUUID(),
   beginBusy,
+  outbox,
   ensureSession: async () => !(await getAccessToken()).error,
 };
 
@@ -59,7 +62,8 @@ export const faqEntries = make({ table: 'faq_entries', orderBy: { column: 'creat
 
 // In-app assistant (editors only). Messages are loaded per thread by the assistant feature;
 // ai_settings is read by the `chat` Edge Function, which reports usage to the app.
-export const chatThreads = make({ table: 'chat_threads', orderBy: { column: 'updated_at' }, private: true });
+// The assistant needs a connection, so thread renames/deletes are not queued offline.
+export const chatThreads = make({ table: 'chat_threads', orderBy: { column: 'updated_at' }, private: true, offline: false });
 
 // Per-person preferences (theme). RLS returns only the signed-in user's own row.
 export const userSettings = make({ table: 'user_settings', key: 'user_id', keyKind: 'text', private: true });
@@ -105,7 +109,9 @@ let started = false;
 export function startDataSync() {
   if (started) return;
   started = true;
+  startSync();
   updateDefaultRanges();
+  if (isEditor()) privateStores.forEach((s) => s.hydrate());
   lastRefresh = Date.now();
   refreshAll();
   if (typeof document !== 'undefined') {
@@ -120,9 +126,16 @@ export function startDataSync() {
       lastRefresh = Date.now();
       refreshAll();
     });
+    // The server answered again after requests failed (signal came back with navigator.onLine
+    // true all along): refresh what is shown.
+    onReconnect(() => {
+      if (Date.now() - lastRefresh < 5000) return;
+      lastRefresh = Date.now();
+      refreshAll();
+    });
   }
   onEditorChange((editor) => {
-    if (editor) privateStores.forEach((s) => s.load());
+    if (editor) privateStores.forEach((s) => (s.hydrate(), s.load()));
     else privateStores.forEach((s) => s.clear());
   });
 }
