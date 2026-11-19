@@ -156,7 +156,8 @@ Ranged tables (`feedings`, `routineEvents`) hold the last 14 days by default. Fo
 `feedings.loadRange(start, end)` (ISO instants from `dayRange(date, tz)`) and read with
 `feedings.inRange(start, end)` (subscribe with `feedings.useRows()` to re-render).
 
-Write (optimistic; rolls back and toasts on failure; offline fails fast; refreshes afterwards):
+Write (optimistic; queued on the device when offline, `res.queued`; rolls back and toasts when the server
+refuses it while the person waits; refreshes afterwards; ARCHITECTURE.md "Offline writes"):
 
 ```js
 const { error } = await feedings.insert({ fed_at: new Date().toISOString(), meal_slot: 2, appetite: 'all' });
@@ -171,8 +172,10 @@ await petPrivate.upsert({ id: 1, vet_phone });                          // pet_p
 
 Never send `created_at`, `updated_at`, `created_by`, `created_by_name` (stripped anyway). Show
 `row.created_by_name` as "who logged it" (`t('common.loggedBy', { name })`). Rows with `_pending`
-are still syncing; you may dim them. Convert a local date + time input to an instant with
-`zonedToUtc(date, time, tz).toISOString()` (`src/lib/dates.js`), never `new Date(local string)`.
+are not on the server yet (queued or in flight): show `<${PendingMark} row=${row} />` next to the title
+(`src/lib/ui/sync-status.js`, via the UI kit), and you may dim them. Anything that needs a connection
+(photo uploads) shows `<${OfflineNote} text=...>` and still saves the rest. Convert a local date + time
+input to an instant with `zonedToUtc(date, time, tz).toISOString()` (`src/lib/dates.js`), never `new Date(local string)`.
 
 Derived helpers (`src/data/derived.js`): `getAge(birth, today)` → `{ totalDays, weeks, days, months }`,
 `getDueItems({ vaccinations, dewormings, vetVisits, reminders }, today, { soonDays, horizonDays })`
@@ -229,7 +232,10 @@ method)` lists requests.
 `FIXED_NOW` is `stage-early`). Read ids and titles from there (`contentItems('training')[0]`,
 `fixtureStage(7)`), and override per test: `openApp(page, '/learn/faq', { content: { faq: { version:
 1, items: [] } } })`; `null` makes the file 404. Do not `page.route()` content yourself (the mock's
-route wins). Only review screenshot specs may pass `content: 'real'`. Use `failWrites: true` to test rollback. Prefer role/label locators; add
+route wins). Only review screenshot specs may pass `content: 'real'`. Use `failWrites: true` to test rollback. Offline: `context.setOffline(true)` does not stop the mock's routes, so also
+call `sb.setOffline(true)` (alone it is "lie-fi": the phone says online, the server is unreachable);
+`sb.setReject(fn)` refuses writes for good (HTTP 400) and `sb.loseNextWriteResponse()` drops one answer
+(see `tests/e2e/offline.spec.js`). Prefer role/label locators; add
 `data-testid` only where text is ambiguous. Each feature: both signed-out and editor coverage, and
 keep the "no horizontal scroll" check green.
 

@@ -22,7 +22,8 @@ change.
 3. **Read is public, write is for editors.** Signed-out visitors see the same screens without add/edit/delete
    controls. Hiding buttons is cosmetic; the database (RLS) is what enforces it. Never rely on the client.
 4. **Fast logging.** The most common actions (fed, pee, poop) are one tap from the Today tab. Writes are
-   optimistic: the UI updates immediately, syncs in the background, and rolls back with a toast on failure.
+   optimistic: the UI updates immediately, syncs in the background (queued on the device when
+   offline, section 7 "Offline writes"), and rolls back with a toast when the server refuses it.
 5. **Private data.** `pet_private` and `vet_visit_private` are only fetched and rendered for editors.
 6. **Health content** always carries its sources and a line saying Tyler's vet has the final word.
 
@@ -66,10 +67,12 @@ src/
     storage.js (safe localStorage)  toast.js  pwa.js (service worker, install detection)
     busy.js (work in flight that an update must not interrupt)
     push.js (+ push-logic.js) push notifications on this device; sw-push.js (service worker part)
+    connectivity.js (online = browser + real request outcomes)  idb.js (outbox storage)
     ui/                    UI kit (index.js re-exports everything); kitchen-sink.js = #/dev/ui;
                            photo-viewer.js + back-close.js (shared full-screen photo viewer)
   version.js               APP_VERSION, stamped at deploy ('dev' locally)
   data/                    table-store.js (generic store), stores.js (one per table),
+                           outbox.js + outbox-logic.js + sync.js (offline writes, section 7),
                            derived.js (age, today, due items), photos.js, types.d.ts (row types)
   features/
     registry.js            Imports every feature and exposes routes + tabs
@@ -319,7 +322,8 @@ site.
   `updateViaCache: 'none'`.
 - **Updates never interrupt the person** (`src/lib/pwa.js`). "Busy" means work in flight that a
   reload would lose, registered with `beginBusy()` (`src/lib/busy.js`): an assistant answer being
-  requested or streamed, an FAQ draft request, a store write, a photo upload. "Unsaved" means an open
+  requested or streamed, an FAQ draft request, a store write in flight, the outbox being written to
+  IndexedDB, a photo upload. Queued offline changes are not "busy": they are on disk. "Unsaved" means an open
   sheet/dialog or text typed in any input.
   - A new version that finishes installing within 15 s of launch, or of the app coming back to the
     foreground (iOS resumes home-screen apps), is applied at once only if nobody has touched the app
@@ -340,11 +344,69 @@ site.
   by `scripts/build-site.mjs` with the same value as the service worker cache; `'dev'` locally. Use
   it wherever the running version is shown (About card); never parse cache names. The deploy smoke
   step checks the stamp on Pages.
-- Content JSON: network-first with cache fallback. Supabase requests are never cached by the service
-  worker; each data store keeps its last successful result in `localStorage` and renders it immediately
-  (stale-while-revalidate), refreshing on launch, on tab focus and after writes.
-- Writes need a connection in v1. Offline writes fail fast with a clear toast. Long-running work
-  that must not be cut by an update reload calls `beginBusy()` and ends it in `finally`.
+- Content JSON: network-first with cache fallback; every `/content` file is also in the precache
+  list, so all content is readable offline after the first online launch, and on a bad signal (no
+  answer within 4 s) the cached copy is shown while the network answer refreshes the cache. Supabase
+  requests are never cached by the service worker; each data store keeps its last successful
+  result in `localStorage` and renders it immediately (stale-while-revalidate), refreshing on
+  launch, on tab focus, on reconnect and after writes. Private tables (editors only) render their
+  device cache once the person is known to be an editor (`hydrate()`), so they read offline too.
+- Long-running work that must not be cut by an update reload calls `beginBusy()` and ends it in
+  `finally`.
+
+### Offline writes (the outbox)
+
+The owner's top priority: log everything with no connection and trust that nothing is lost. Every
+store write (all tables except `chat_threads`, whose store has `offline: false`) goes through the
+outbox (`src/data/outbox.js` engine, `outbox-logic.js` pure rules, `sync.js` wiring):
+
+- **Stored first.** A write becomes an op `{ v, id, seq, table, key, rowKey, kind, values, userId,
+  userName, at, attempts }` stored in IndexedDB (`tyler-tracker` database, stores `ops` and
+  `rejected`, one record per op so tabs never overwrite each other; `src/lib/idb.js`, localStorage
+  fallback when IndexedDB cannot open) before anything is sent, and removed only after the server
+  confirmed it. It survives closing the app, a phone restart and app updates (the service worker
+  never touches IndexedDB; ops of an unknown `v` are kept and never sent). The app asks for
+  persistent storage (`navigator.storage.persist()`).
+- **Shown at once.** Stores keep the server's rows (`base`, the localStorage cache) and show them
+  with the queued ops applied on top (`applyOps`), rows marked `_pending: true`; a refresh never
+  hides a queued change, and changes confirmed while a fetch was running are applied again on its
+  result. Writes resolve `{ data, error: null, queued: true }` when the change is kept for later.
+- **Sent in order, one at a time**, with the values and times the person entered (`fed_at`,
+  `started_at`... are never re-stamped), when: the app launches, the connection returns (the
+  browser's `online` event or any request answered again), the app comes back to the foreground,
+  after sign-in, and every 30 s while open (also a 15 s retry after a network failure). iOS has no
+  Background Sync for web apps: nothing is sent while the app is closed.
+- **Coalesced** while not in flight: insert + edits → one insert; edits → one update; insert +
+  delete → nothing sent (and queued private cost of that visit dropped); update + delete → delete.
+- **Idempotent.** Ids are generated on the device. An insert retried after a lost answer gets
+  `23505` and is applied as an update of the same id (no duplicate, later edits kept); deleting a
+  row twice is harmless; text-key tables use upserts.
+- **Session.** Ops are sent only while their author is signed in, after `getAccessToken()` (refresh
+  first). `network` → wait; a session that really ended blocks the queue, keeps everything and asks
+  to sign in (toast + sync sheet); nothing is dropped. With nobody signed in a new write is refused
+  at once (visitors, RLS would refuse it anyway).
+- **Answers.** OK → the server row replaces the pending one. Network failure or a 20 s timeout →
+  queued. 5xx/429 → retried with backoff (5 s, 15 s, 45 s... at most 6 times, then listed). An update
+  whose row no longer exists (deleted on the other phone) → dropped, the row stays deleted, quiet
+  toast. Refused for good (4xx: validation, permission) → if the person is still waiting for that
+  write (up to 8 s, "online"), it rolls back with the usual toast and the form reopens; otherwise it
+  moves to the **"could not be saved" list** (stored too) with its data, a toast "Revisar", and
+  Retry / Discard in the sync sheet.
+- **Conflicts** between the two phones: last write wins per row by server time (the trigger's
+  `updated_at`; an update sends only the changed columns).
+- **Connectivity** (`src/lib/connectivity.js`): online = `navigator.onLine` and the latest Supabase
+  request reached the server (`sessionFetch` reports every outcome; a stale retry that started before
+  the connection came back does not count); a probe runs every 30 s while it believes it is offline.
+  With `navigator.onLine === false` nothing is tried (queued at once) and stores skip fetching.
+- **UI** (`src/lib/ui/sync-status.js`): `SyncIndicator` in the header (hidden when online with
+  nothing waiting; icon + count, accessible label says the state), `SyncSheet` (status, queued
+  changes, sign-in, refused changes), `PendingMark` (fades in after 1.2 s so an online save never
+  flashes it), `OfflineNote` (shown only offline).
+- **Needs a connection** (said in the UI): the assistant, signing in, photo uploads (forms save the
+  rest of the entry and say the photo can be added later), export, and log days outside the loaded
+  window ("Este día no está guardado en el teléfono").
+- **Updates.** A queued change is on disk, so a non-empty outbox does not hold back an update; only
+  writing the outbox to IndexedDB (`beginBusy('outbox')`) and a request in flight (`'write'`) do.
 
 ## 8. Shared UI conventions introduced by the features
 
