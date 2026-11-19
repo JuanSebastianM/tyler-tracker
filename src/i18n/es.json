@@ -46,7 +46,9 @@
     "deleteFailed": "No se pudo eliminar y se restauró el registro. Inténtalo de nuevo.",
     "loadFailed": "No se pudieron cargar los datos. Inténtalo de nuevo en un momento.",
     "photoFailed": "No se pudo subir la foto. Inténtalo de nuevo.",
-    "required": "Este campo es obligatorio."
+    "required": "Este campo es obligatorio.",
+    "photoOffline": "Las fotos necesitan conexión. Intenta subirla cuando vuelvas a tener señal.",
+    "exportOffline": "Exportar necesita conexión para traer todos los registros. Conéctate e inténtalo de nuevo."
   },
   "auth": {
     "signIn": "Iniciar sesión",
@@ -55,6 +57,7 @@
     "email": "Correo",
     "password": "Contraseña",
     "sessionEnded": "Tu sesión terminó. Inicia sesión de nuevo para editar.",
+    "offlineNote": "Sin conexión: para iniciar sesión necesitas internet.",
     "signOut": "Cerrar sesión",
     "signedIn": "Sesión iniciada",
     "signedOut": "Sesión cerrada",
@@ -148,5 +151,150 @@
     "toast": "Mostrar aviso",
     "toastError": "Mostrar error",
     "loading": "Cargando"
+  },
+  "sync": {
+    "title": "Sincronización",
+    "pendingMark": "Pendiente",
+    "pendingMarkLabel": "Pendiente de sincronizar",
+    "indicator": {
+      "offline": "Sin conexión",
+      "offlinePending": {
+        "one": "Sin conexión, {count} cambio por sincronizar",
+        "other": "Sin conexión, {count} cambios por sincronizar"
+      },
+      "pending": {
+        "one": "{count} cambio por sincronizar",
+        "other": "{count} cambios por sincronizar"
+      },
+      "signIn": {
+        "one": "{count} cambio espera que inicies sesión",
+        "other": "{count} cambios esperan que inicies sesión"
+      },
+      "rejected": {
+        "one": "{count} cambio no se pudo guardar",
+        "other": "{count} cambios no se pudieron guardar"
+      }
+    },
+    "status": {
+      "offlineTitle": "Sin conexión",
+      "offlineBody": "Puedes seguir registrando. Todo se guarda en este teléfono y se envía solo cuando vuelva la señal.",
+      "pendingTitle": {
+        "one": "{count} cambio por enviar",
+        "other": "{count} cambios por enviar"
+      },
+      "pendingBody": "Están guardados en este teléfono. Se envían en orden, con la hora en que los registraste.",
+      "syncing": "Enviando…",
+      "serverTitle": "El servidor no responde",
+      "serverBody": "Lo volvemos a intentar en un momento. Tus cambios siguen guardados en este teléfono.",
+      "signInTitle": "Inicia sesión para sincronizar",
+      "signInBody": "Tu sesión terminó. Tus cambios siguen guardados en este teléfono y se envían cuando vuelvas a entrar.",
+      "syncedTitle": "Todo está sincronizado",
+      "syncedBody": "No hay cambios pendientes en este teléfono."
+    },
+    "yes": "Sí",
+    "no": "No",
+    "syncNow": "Sincronizar ahora",
+    "madeAt": "Registrado {time}",
+    "pendingList": "Por enviar",
+    "more": {
+      "one": "y {count} más",
+      "other": "y {count} más"
+    },
+    "kinds": {
+      "insert": "Nuevo",
+      "update": "Cambio",
+      "upsert": "Cambio",
+      "delete": "Eliminado"
+    },
+    "rejectedTitle": "No se pudieron guardar",
+    "rejectedBody": "El servidor rechazó estos cambios. Revisa los datos e inténtalo de nuevo, o descártalos.",
+    "reason": "Motivo: {message}",
+    "reasons": {
+      "permission": "esta cuenta no tiene permiso para guardarlo.",
+      "invalid": "algún dato no es válido.",
+      "generic": "el servidor no lo aceptó."
+    },
+    "retry": "Reintentar",
+    "discard": "Descartar",
+    "discardTitle": "¿Descartar este cambio?",
+    "discardBody": "Se borra de este teléfono y no se guardará.",
+    "discarded": "Cambio descartado",
+    "offlineLimits": "Sin conexión no funcionan: el asistente, iniciar sesión, subir fotos y exportar.",
+    "rejectedToast": { "one": "Un cambio no se pudo guardar. Revísalo para no perderlo.", "other": "{count} cambios no se pudieron guardar. Revísalos para no perderlos." },
+    "review": "Revisar",
+    "goneToast": "Ese registro se eliminó en el otro teléfono, así que tu cambio no se aplicó.",
+    "signInToSync": {
+      "one": "Tu cambio sigue guardado en este teléfono. Inicia sesión para sincronizarlo.",
+      "other": "Tus {count} cambios siguen guardados en este teléfono. Inicia sesión para sincronizarlos."
+    },
+    "dayNeedsConnection": "Este día no está guardado en el teléfono. Conéctate para verlo.",
+    "photoNeedsConnection": "Sin conexión: la foto necesita internet. Puedes guardar lo demás ahora y agregar la foto después.",
+    "savedWithoutPhoto": "Guardado sin la foto. Agrégala cuando tengas conexión.",
+    "tables": {
+      "feedings": "Comida",
+      "routine_events": "Rutina",
+      "weights": "Peso",
+      "vaccinations": "Vacuna",
+      "dewormings": "Desparasitación",
+      "vet_visits": "Visita al veterinario",
+      "vet_visit_private": "Costo de la visita",
+      "medications": "Medicamento",
+      "reminders": "Recordatorio",
+      "training_skills": "Entrenamiento",
+      "checklist_done": "Tarea de la guía",
+      "milestones": "Recuerdo",
+      "photos": "Foto",
+      "pet_profile": "Perfil de Tyler",
+      "pet_private": "Datos privados",
+      "settings": "Ajustes",
+      "faq_entries": "Pregunta frecuente",
+      "user_settings": "Tema",
+      "generic": "Registro"
+    },
+    "fields": {
+      "fed_at": "Hora",
+      "started_at": "Inicio",
+      "ended_at": "Fin",
+      "meal_slot": "Comida n.º",
+      "amount_g": "Gramos",
+      "amount_note": "Porción",
+      "appetite": "Apetito",
+      "type": "Tipo",
+      "location": "Lugar",
+      "accident": "Accidente",
+      "notes": "Notas",
+      "measured_on": "Fecha",
+      "weight_kg": "Peso (kg)",
+      "vaccine": "Vacuna",
+      "given_on": "Fecha",
+      "next_due_on": "Próxima dosis",
+      "vet": "Veterinario",
+      "batch": "Lote",
+      "product": "Producto",
+      "kind": "Tipo",
+      "visited_on": "Fecha",
+      "reason": "Motivo",
+      "findings": "Hallazgos",
+      "treatment": "Tratamiento",
+      "follow_up_on": "Control",
+      "cost": "Costo",
+      "private_notes": "Notas privadas",
+      "name": "Nombre",
+      "dose": "Dosis",
+      "frequency": "Frecuencia",
+      "start_on": "Inicio",
+      "end_on": "Fin",
+      "title": "Título",
+      "due_on": "Fecha",
+      "due_time": "Hora",
+      "done_at": "Hecho",
+      "status": "Estado",
+      "story": "Historia",
+      "happened_on": "Fecha",
+      "caption": "Descripción",
+      "taken_on": "Fecha",
+      "theme": "Tema",
+      "color_mode": "Modo"
+    }
   }
 }

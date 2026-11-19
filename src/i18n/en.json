@@ -46,7 +46,9 @@
     "deleteFailed": "Couldn’t delete, so the entry was restored. Try again.",
     "loadFailed": "Couldn’t load the data. Try again in a moment.",
     "photoFailed": "Couldn’t upload the photo. Try again.",
-    "required": "This field is required."
+    "required": "This field is required.",
+    "photoOffline": "Photos need a connection. Try uploading it when you have signal again.",
+    "exportOffline": "Exporting needs a connection to fetch every record. Connect and try again."
   },
   "auth": {
     "signIn": "Sign in",
@@ -55,6 +57,7 @@
     "email": "Email",
     "password": "Password",
     "sessionEnded": "Your session ended. Sign in again to edit.",
+    "offlineNote": "You're offline: signing in needs internet.",
     "signOut": "Sign out",
     "signedIn": "Signed in",
     "signedOut": "Signed out",
@@ -148,5 +151,150 @@
     "toast": "Show notice",
     "toastError": "Show error",
     "loading": "Loading"
+  },
+  "sync": {
+    "title": "Sync",
+    "pendingMark": "Pending",
+    "pendingMarkLabel": "Waiting to sync",
+    "indicator": {
+      "offline": "Offline",
+      "offlinePending": {
+        "one": "Offline, {count} change waiting to sync",
+        "other": "Offline, {count} changes waiting to sync"
+      },
+      "pending": {
+        "one": "{count} change waiting to sync",
+        "other": "{count} changes waiting to sync"
+      },
+      "signIn": {
+        "one": "{count} change waits for you to sign in",
+        "other": "{count} changes wait for you to sign in"
+      },
+      "rejected": {
+        "one": "{count} change could not be saved",
+        "other": "{count} changes could not be saved"
+      }
+    },
+    "status": {
+      "offlineTitle": "Offline",
+      "offlineBody": "Keep logging. Everything is saved on this phone and sent automatically when the signal is back.",
+      "pendingTitle": {
+        "one": "{count} change to send",
+        "other": "{count} changes to send"
+      },
+      "pendingBody": "They are saved on this phone. They are sent in order, with the time you logged them.",
+      "syncing": "Sending…",
+      "serverTitle": "The server is not answering",
+      "serverBody": "We'll try again in a moment. Your changes are still saved on this phone.",
+      "signInTitle": "Sign in to sync",
+      "signInBody": "Your session ended. Your changes are still saved on this phone and are sent when you sign in again.",
+      "syncedTitle": "Everything is synced",
+      "syncedBody": "No changes are waiting on this phone."
+    },
+    "yes": "Yes",
+    "no": "No",
+    "syncNow": "Sync now",
+    "madeAt": "Logged {time}",
+    "pendingList": "To send",
+    "more": {
+      "one": "and {count} more",
+      "other": "and {count} more"
+    },
+    "kinds": {
+      "insert": "New",
+      "update": "Change",
+      "upsert": "Change",
+      "delete": "Deleted"
+    },
+    "rejectedTitle": "Could not be saved",
+    "rejectedBody": "The server refused these changes. Check the data and try again, or discard them.",
+    "reason": "Reason: {message}",
+    "reasons": {
+      "permission": "this account is not allowed to save it.",
+      "invalid": "some value is not valid.",
+      "generic": "the server did not accept it."
+    },
+    "retry": "Try again",
+    "discard": "Discard",
+    "discardTitle": "Discard this change?",
+    "discardBody": "It is removed from this phone and will not be saved.",
+    "discarded": "Change discarded",
+    "offlineLimits": "These need a connection: the assistant, signing in, uploading photos and exporting.",
+    "rejectedToast": { "one": "A change could not be saved. Review it so it isn't lost.", "other": "{count} changes could not be saved. Review them so they aren't lost." },
+    "review": "Review",
+    "goneToast": "That record was deleted on the other phone, so your change was not applied.",
+    "signInToSync": {
+      "one": "Your change is still saved on this phone. Sign in to sync it.",
+      "other": "Your {count} changes are still saved on this phone. Sign in to sync them."
+    },
+    "dayNeedsConnection": "This day is not saved on the phone. Connect to see it.",
+    "photoNeedsConnection": "Offline: the photo needs internet. You can save the rest now and add the photo later.",
+    "savedWithoutPhoto": "Saved without the photo. Add it when you have a connection.",
+    "tables": {
+      "feedings": "Meal",
+      "routine_events": "Routine",
+      "weights": "Weight",
+      "vaccinations": "Vaccine",
+      "dewormings": "Deworming",
+      "vet_visits": "Vet visit",
+      "vet_visit_private": "Visit cost",
+      "medications": "Medication",
+      "reminders": "Reminder",
+      "training_skills": "Training",
+      "checklist_done": "Guide to-do",
+      "milestones": "Memory",
+      "photos": "Photo",
+      "pet_profile": "Tyler's profile",
+      "pet_private": "Private details",
+      "settings": "Settings",
+      "faq_entries": "FAQ entry",
+      "user_settings": "Theme",
+      "generic": "Record"
+    },
+    "fields": {
+      "fed_at": "Time",
+      "started_at": "Start",
+      "ended_at": "End",
+      "meal_slot": "Meal no.",
+      "amount_g": "Grams",
+      "amount_note": "Portion",
+      "appetite": "Appetite",
+      "type": "Type",
+      "location": "Place",
+      "accident": "Accident",
+      "notes": "Notes",
+      "measured_on": "Date",
+      "weight_kg": "Weight (kg)",
+      "vaccine": "Vaccine",
+      "given_on": "Date",
+      "next_due_on": "Next dose",
+      "vet": "Vet",
+      "batch": "Batch",
+      "product": "Product",
+      "kind": "Kind",
+      "visited_on": "Date",
+      "reason": "Reason",
+      "findings": "Findings",
+      "treatment": "Treatment",
+      "follow_up_on": "Follow-up",
+      "cost": "Cost",
+      "private_notes": "Private notes",
+      "name": "Name",
+      "dose": "Dose",
+      "frequency": "Frequency",
+      "start_on": "Start",
+      "end_on": "End",
+      "title": "Title",
+      "due_on": "Date",
+      "due_time": "Time",
+      "done_at": "Done",
+      "status": "Status",
+      "story": "Story",
+      "happened_on": "Date",
+      "caption": "Caption",
+      "taken_on": "Date",
+      "theme": "Theme",
+      "color_mode": "Mode"
+    }
   }
 }

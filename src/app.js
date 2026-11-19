@@ -7,6 +7,7 @@ import { routes as featureRoutes, tabs } from './features/registry.js';
 import { Icon, IconButton, Toaster, SignInSheet } from './lib/ui/index.js';
 import { InstallHint } from './lib/ui/install-hint.js';
 import { KitchenSink } from './lib/ui/kitchen-sink.js';
+import { SyncIndicator, SyncSheet } from './lib/ui/sync-status.js';
 
 const DEFAULT_PATH = '/today';
 
@@ -34,6 +35,7 @@ function Header({ title, backTo, path }) {
         : html`<img class="header-avatar" src="assets/icons/icon-192.png" alt="" width="36" height="36" />`}
       <h1 class="app-title" tabindex="-1" ref=${h1}>${title}</h1>
       <div class="header-end">
+        <${SyncIndicator} />
         ${auth.status === 'signedOut'
           ? html`<${IconButton} icon="lock" label=${t('auth.signIn')} onClick=${openSignIn} data-testid="header-sign-in" />`
           : auth.editor
@@ -98,5 +100,6 @@ export function App() {
     <${TabBar} activeId=${route.featureId} />
     <${Toaster} />
     <${SignInSheet} />
+    <${SyncSheet} />
   </div>`;
 }

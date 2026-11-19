@@ -12,6 +12,7 @@ import { Sheet } from './sheet.js';
 import { Icon } from './icons.js';
 import { Badge } from './feedback.js';
 import { safeHref } from '../markdown.js';
+import { OfflineNote } from './sync-status.js';
 
 /** Spanish / English switch. */
 export function LanguageSwitch() {
@@ -63,6 +64,7 @@ export function SignInSheet() {
   return html`<${Sheet} open=${open} onClose=${close} title=${t('auth.signInTitle')}>
     <form class="stack" onSubmit=${submit} novalidate>
       <p class="muted">${t('auth.signInIntro')}</p>
+      <${OfflineNote} text=${t('auth.offlineNote')} testid="sign-in-offline" />
       <${TextInput} label=${t('auth.email')} type="email" autocomplete="username" inputmode="email" autocapitalize="none" value=${email} onValue=${setEmail} />
       <${TextInput} label=${t('auth.password')} type="password" autocomplete="current-password" value=${password} onValue=${setPassword} />
       ${error ? html`<p class="form-error" role="alert"><${Icon} name="alert" size=${18} />${error}</p>` : null}
