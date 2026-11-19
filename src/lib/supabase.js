@@ -1,6 +1,7 @@
 // Supabase client singleton. Import `getSupabase()` instead of creating clients.
 import { createClient } from '../../vendor/supabase.js';
 import { SUPABASE_KEY, SUPABASE_URL } from '../config.js';
+import { reportRequest, monotonicNow } from './connectivity.js';
 
 /** localStorage key of the persisted auth session (tests seed it to simulate an editor). */
 export const AUTH_STORAGE_KEY = 'tt-auth';
@@ -26,7 +27,7 @@ export function setTokenRenewer(fn) {
  * @param {RequestInit} [init]
  */
 export async function sessionFetch(input, init) {
-  const res = await fetch(input, init);
+  const res = await reportedFetch(input, init);
   if (res.status !== 401 || !renewToken) return res;
   const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
   if (!/\/(rest|storage)\/v1\//.test(url)) return res;
@@ -35,7 +36,24 @@ export async function sessionFetch(input, init) {
   const token = await renewToken();
   if (!token || token === sent) return res;
   headers.set('Authorization', `Bearer ${token}`);
-  return fetch(input, { ...init, headers });
+  return reportedFetch(input, { ...init, headers });
+}
+
+/**
+ * fetch that tells connectivity.js whether the server was reached (any HTTP answer) or not
+ * (network failure, or the write timeout in sync.js: the only abort of a Supabase request).
+ * @param {RequestInfo | URL} input @param {RequestInit} [init]
+ */
+async function reportedFetch(input, init) {
+  const startedAt = monotonicNow();
+  try {
+    const res = await fetch(input, init);
+    reportRequest(true);
+    return res;
+  } catch (e) {
+    reportRequest(false, startedAt);
+    throw e;
+  }
 }
 
 /** @returns {any} SupabaseClient */
