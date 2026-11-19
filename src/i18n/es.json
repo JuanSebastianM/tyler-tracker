@@ -188,6 +188,8 @@
       "serverBody": "Lo volvemos a intentar en un momento. Tus cambios siguen guardados en este teléfono.",
       "signInTitle": "Inicia sesión para sincronizar",
       "signInBody": "Tu sesión terminó. Tus cambios siguen guardados en este teléfono y se envían cuando vuelvas a entrar.",
+      "reviewTitle": "Nada por enviar",
+      "reviewBody": "Revisa abajo los cambios que no se pudieron guardar.",
       "syncedTitle": "Todo está sincronizado",
       "syncedBody": "No hay cambios pendientes en este teléfono."
     },

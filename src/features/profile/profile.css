@@ -95,7 +95,7 @@
 .profile .entry-title { font-size: var(--fs-lg); font-weight: 750; margin: var(--sp-1) 0 0; overflow-wrap: anywhere; }
 .profile .entry-title-sm { font-size: var(--fs-md); }
 .profile .entry-story { margin: var(--sp-2) 0 0; }
-.profile .is-pending { opacity: 0.6; }
+.profile .is-pending { opacity: 0.85; }
 .profile .photo-grid { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: var(--sp-1); grid-template-columns: repeat(3, 1fr); border-radius: var(--r-control); overflow: hidden; }
 .profile .photo-grid-1 { grid-template-columns: 1fr; }
 .profile .photo-grid-2 { grid-template-columns: 1fr 1fr; }

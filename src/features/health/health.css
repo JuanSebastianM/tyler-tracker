@@ -3,7 +3,7 @@
 /* Rows: list row + optional side button (calendar, mark done) */
 .health .health-row { display: flex; align-items: center; gap: var(--sp-1); min-width: 0; }
 .health .health-row > .row { flex: 1; min-width: 0; }
-.health .health-row.is-pending { opacity: 0.6; }
+.health .health-row.is-pending { opacity: 0.85; }
 .health .health-row.is-dim .row-title { color: var(--c-ink-2); font-weight: 500; }
 .health .health-row .row-title { overflow-wrap: anywhere; }
 .health .health-row .row-meta { white-space: nowrap; }
@@ -83,3 +83,4 @@
 .health .health-form .grid-2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .health .health-form .grid-2 > div { min-width: 0; }
 .health .health-form .input { min-width: 0; max-width: 100%; }
+.health .health-pending { display: block; margin-top: var(--sp-1); }

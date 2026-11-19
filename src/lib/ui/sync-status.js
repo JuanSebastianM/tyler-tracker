@@ -4,7 +4,7 @@
 //   html`<${PendingMark} row=${row} />`        // renders only while row._pending
 //   html`<${OfflineNote} text=${t('sync.photoNeedsConnection')} />`   // renders only offline
 import { html, useState } from '../../../vendor/preact.js';
-import { t, formatDate, formatDateTime } from '../i18n.js';
+import { t, formatDate, formatDateTime, formatNumber } from '../i18n.js';
 import { useStore } from '../store.js';
 import { useOnline } from '../connectivity.js';
 import { openSignIn } from '../auth.js';
@@ -74,6 +74,7 @@ function formatField(col, value, tz) {
   if (/_at$/.test(col) && !Number.isNaN(Date.parse(value))) shown = formatDateTime(value, tz);
   else if (/_on$/.test(col) && /^\d{4}-\d{2}-\d{2}$/.test(value)) shown = formatDate(value, 'medium');
   else if (value === 'true' || value === 'false') shown = t(value === 'true' ? 'sync.yes' : 'sync.no');
+  else if (/^-?\d+(\.\d+)?$/.test(value)) shown = formatNumber(Number(value));
   return [label, shown];
 }
 
@@ -128,7 +129,9 @@ export function SyncSheet() {
         ? ['alert', t('sync.status.serverTitle'), t('sync.status.serverBody')]
         : pending.length
           ? ['cloud', t('sync.status.pendingTitle', { count: pending.length }), s.syncing ? t('sync.status.syncing') : t('sync.status.pendingBody')]
-          : ['check', t('sync.status.syncedTitle'), t('sync.status.syncedBody')];
+          : box.rejected.length
+            ? ['alert', t('sync.status.reviewTitle'), t('sync.status.reviewBody')]
+            : ['check', t('sync.status.syncedTitle'), t('sync.status.syncedBody')];
 
   const doDiscard = async () => {
     const id = discarding;

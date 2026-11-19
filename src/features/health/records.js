@@ -143,11 +143,12 @@ function RecordRow({ config, row, ctx, onOpen }) {
   const due = ctx.dueByRow.get(row.id);
   const subtitle = html`${v.subtitle ? html`<span class="health-sub">${v.subtitle}</span>` : null}
     ${due ? html`<span class="health-due-line"><${DueBadge} item=${due} today=${ctx.today} /></span>` : null}
-    <${LoggedBy} row=${row} />`;
+    <${LoggedBy} row=${row} />
+    ${row._pending ? html`<span class="health-pending"><${PendingMark} row=${row} /></span>` : null}`;
   const side = ctx.isEditor && config.sideAction ? config.sideAction(row, ctx) : null;
   return html`<div class=${`health-row${row._pending ? ' is-pending' : ''}${v.dim ? ' is-dim' : ''}`}>
     <${ListRow} icon=${v.icon || config.icon} iconTone=${v.iconTone || config.iconTone || 'gold'} title=${v.title}
-      subtitle=${subtitle} meta=${row._pending ? html`${v.meta || null}<${PendingMark} row=${row} />` : v.meta} onClick=${onOpen} data-testid=${`${config.id}-row`} />
+      subtitle=${subtitle} meta=${v.meta} onClick=${onOpen} data-testid=${`${config.id}-row`} />
     ${side}
   </div>`;
 }

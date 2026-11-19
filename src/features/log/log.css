@@ -1,5 +1,5 @@
 /* Log feature styles. Scope every selector under .log (the entry sheet under .entry-sheet). */
-.log .is-pending { opacity: 0.6; }
+.log .is-pending { opacity: 0.85; }
 
 /* Day picker */
 .log .log-daybar { display: flex; align-items: center; gap: var(--sp-2); }
