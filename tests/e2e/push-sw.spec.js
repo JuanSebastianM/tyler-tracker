@@ -23,7 +23,11 @@ const freePort = () =>
 let BASE = '';
 
 test.describe.configure({ mode: 'serial', timeout: 45_000 });
-test.use({ serviceWorkers: 'allow', permissions: ['notifications'] });
+// channel 'chromium': the full Chromium build in new headless mode. Playwright's default headless
+// browser (chromium-headless-shell, what CI runs) has no notification support: Notification.permission
+// stays 'denied' whatever the context grants, so showNotification() rejects even though the push
+// event is delivered. Locally the config's /usr/bin/google-chrome (also new headless) is used instead.
+test.use({ serviceWorkers: 'allow', permissions: ['notifications'], channel: 'chromium' });
 
 let dir = '';
 /** @type {import('node:child_process').ChildProcess | null} */
@@ -68,6 +72,8 @@ async function openWithWorker(page) {
     if (!navigator.serviceWorker.controller) await new Promise((r) => navigator.serviceWorker.addEventListener('controllerchange', r, { once: true }));
   });
   await expect.poll(() => registrationId).not.toBeNull();
+  // Fail on the cause, not on a timeout: a browser that cannot show notifications proves nothing here.
+  expect(await page.evaluate(() => Notification.permission)).toBe('granted');
   /** @param {any} payload */
   const deliver = (payload) => cdp.send('ServiceWorker.deliverPushMessage', { origin: BASE.slice(0, -1), registrationId, data: typeof payload === 'string' ? payload : JSON.stringify(payload) });
   const notifications = () => page.evaluate(async () => (await (await navigator.serviceWorker.ready).getNotifications()).map((n) => ({ title: n.title, body: n.body, tag: n.tag, data: n.data })));
