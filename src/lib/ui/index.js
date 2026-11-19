@@ -8,6 +8,7 @@ export { PhotoViewer } from './photo-viewer.js';
 export { useCloseOnBack } from './back-close.js';
 export { EmptyState, Badge, Spinner, Skeleton } from './feedback.js';
 export { Toaster } from './toaster.js';
+export { PendingMark, OfflineNote } from './sync-status.js';
 export { EditorOnly } from '../auth.js';
 export { Markdown } from '../markdown.js';
 export { LanguageSwitch, AccountPanel, SignInSheet, HealthDisclaimer, Sources } from './app-widgets.js';
